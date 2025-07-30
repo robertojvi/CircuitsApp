@@ -1,4 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
+import AccessLogo from "../images/Access.png";
 
 function Layout() {
 	return (
@@ -18,7 +19,13 @@ function Layout() {
 				}}
 			>
 				<div className="logo">
-					<Link to="/">LOGO</Link>
+					<Link to="/">
+						<img
+							src={AccessLogo}
+							alt="Access Logo"
+							style={{ height: "40px" }}
+						/>
+					</Link>
 				</div>
 				<div style={{ display: "flex", gap: "1rem" }}>
 					<Link to="/admin">Admin</Link>

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import AccessLogo from "../images/Access.png";
 
 function Home() {
 	return (
@@ -18,8 +19,13 @@ function Home() {
 				}}
 			>
 				<div className="logo">
-					{/* Logo placeholder */}
-					<Link to="/">LOGO</Link>
+					<Link to="/">
+						<img
+							src={AccessLogo}
+							alt="Access Logo"
+							style={{ height: "40px" }}
+						/>
+					</Link>
 				</div>
 				<div style={{ display: "flex", gap: "1rem" }}>
 					<Link to="/admin">Admin</Link>
