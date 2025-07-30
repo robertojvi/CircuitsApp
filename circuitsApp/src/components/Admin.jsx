@@ -366,6 +366,107 @@ const CreateCircuitModal = ({
 	</div>
 );
 
+const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
+	<div
+		style={{
+			position: "fixed",
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0,
+			backgroundColor: "rgba(0,0,0,0.5)",
+			display: "flex",
+			justifyContent: "center",
+			alignItems: "center",
+			zIndex: 1000,
+		}}
+	>
+		<div
+			style={{
+				backgroundColor: "white",
+				padding: "20px",
+				borderRadius: "8px",
+				width: "400px",
+			}}
+		>
+			<h2 style={{ marginBottom: "20px" }}>Edit Site</h2>
+			<form onSubmit={onSubmit}>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Name"
+						value={site.name}
+						onChange={(e) => setSite({ ...site, name: e.target.value })}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Address"
+						value={site.address}
+						onChange={(e) => setSite({ ...site, address: e.target.value })}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="City"
+						value={site.city}
+						onChange={(e) => setSite({ ...site, city: e.target.value })}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="State"
+						value={site.state}
+						onChange={(e) => setSite({ ...site, state: e.target.value })}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Zip Code"
+						value={site.zipCode}
+						onChange={(e) => setSite({ ...site, zipCode: e.target.value })}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div
+					style={{
+						display: "flex",
+						justifyContent: "flex-end",
+						gap: "10px",
+					}}
+				>
+					<button
+						type="button"
+						onClick={onClose}
+						style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}
+					>
+						Cancel
+					</button>
+					<button
+						type="submit"
+						style={{ ...buttonStyle, backgroundColor: "#4299E1" }}
+					>
+						Save
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+);
+
 function Admin() {
 	const [selectedItem, setSelectedItem] = useState("");
 	const [sites, setSites] = useState([]);
@@ -398,6 +499,8 @@ function Admin() {
 		circuitBandwidth: "",
 		monthlyCost: "",
 	});
+	const [showEditSiteModal, setShowEditSiteModal] = useState(false);
+	const [selectedSite, setSelectedSite] = useState(null);
 
 	const fetchSites = async () => {
 		setLoading(true);
@@ -526,8 +629,37 @@ function Admin() {
 		}
 	};
 
+	const editSite = async (e) => {
+		e.preventDefault();
+		setLoading(true);
+		try {
+			const response = await fetch(`/api/sites`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(selectedSite),
+			});
+			if (!response.ok) throw new Error("Failed to update site");
+
+			fetchSites(); // Refresh the list
+			setShowEditSiteModal(false);
+			setSelectedSite(null);
+		} catch (error) {
+			console.error("Error updating site:", error);
+			setError("Failed to update site");
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	const handleEdit = (id, type) => {
-		console.log(`Edit ${type}:`, id);
+		if (type === "site") {
+			const site = sites.find((s) => s.id === id);
+			setSelectedSite(site);
+			setShowEditSiteModal(true);
+		}
+		// ...handle other types...
 	};
 
 	const handleDelete = (id, type) => {
@@ -828,6 +960,17 @@ function Admin() {
 						setNewCircuit={setNewCircuit}
 						sites={sites}
 						providers={providers}
+					/>
+				)}
+				{showEditSiteModal && selectedSite && (
+					<EditSiteModal
+						onClose={() => {
+							setShowEditSiteModal(false);
+							setSelectedSite(null);
+						}}
+						onSubmit={editSite}
+						site={selectedSite}
+						setSite={setSelectedSite}
 					/>
 				)}
 			</div>
