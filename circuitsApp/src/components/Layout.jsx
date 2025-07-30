@@ -10,20 +10,39 @@ function Layout() {
 					top: 0,
 					left: 0,
 					right: 0,
-					padding: "1rem",
+					padding: "0.5rem", // Reduced from 1rem
+					height: "50px", // Added fixed height
 					backgroundColor: "#fff",
 					boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
 					display: "flex",
 					alignItems: "center",
 					gap: "2rem",
+					zIndex: 1000, // Ensure navbar stays on top
 				}}
 			>
-				<div className="logo">
-					<Link to="/">
+				<div
+					className="logo"
+					style={{
+						display: "flex",
+						alignItems: "center",
+						height: "100%",
+						padding: "5px 0",
+					}}
+				>
+					<Link
+						to="/"
+						style={{
+							display: "flex",
+							alignItems: "center",
+						}}
+					>
 						<img
 							src={AccessLogo}
 							alt="Access Logo"
-							style={{ height: "40px" }}
+							style={{
+								height: "30px",
+								objectFit: "contain",
+							}}
 						/>
 					</Link>
 				</div>
