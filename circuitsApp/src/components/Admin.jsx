@@ -105,6 +105,122 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 	</div>
 );
 
+const CreateProviderModal = ({
+	onClose,
+	onSubmit,
+	newProvider,
+	setNewProvider,
+}) => (
+	<div
+		style={{
+			position: "fixed",
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0,
+			backgroundColor: "rgba(0,0,0,0.5)",
+			display: "flex",
+			justifyContent: "center",
+			alignItems: "center",
+			zIndex: 1000,
+		}}
+	>
+		<div
+			style={{
+				backgroundColor: "white",
+				padding: "20px",
+				borderRadius: "8px",
+				width: "400px",
+			}}
+		>
+			<h2 style={{ marginBottom: "20px" }}>Create New Provider</h2>
+			<form onSubmit={onSubmit}>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Name"
+						value={newProvider.name}
+						onChange={(e) =>
+							setNewProvider({ ...newProvider, name: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Address"
+						value={newProvider.address}
+						onChange={(e) =>
+							setNewProvider({ ...newProvider, address: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="City"
+						value={newProvider.city}
+						onChange={(e) =>
+							setNewProvider({ ...newProvider, city: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="State"
+						value={newProvider.state}
+						onChange={(e) =>
+							setNewProvider({ ...newProvider, state: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Zip Code"
+						value={newProvider.zipCode}
+						onChange={(e) =>
+							setNewProvider({ ...newProvider, zipCode: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div
+					style={{
+						display: "flex",
+						justifyContent: "flex-end",
+						gap: "10px",
+					}}
+				>
+					<button
+						type="button"
+						onClick={onClose}
+						style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}
+					>
+						Cancel
+					</button>
+					<button
+						type="submit"
+						style={{ ...buttonStyle, backgroundColor: "#4299E1" }}
+					>
+						Create
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+);
+
 function Admin() {
 	const [selectedItem, setSelectedItem] = useState("");
 	const [sites, setSites] = useState([]);
@@ -114,6 +230,14 @@ function Admin() {
 	const [error, setError] = useState(null);
 	const [showCreateSiteModal, setShowCreateSiteModal] = useState(false);
 	const [newSite, setNewSite] = useState({
+		name: "",
+		address: "",
+		city: "",
+		state: "",
+		zipCode: "",
+	});
+	const [showCreateProviderModal, setShowCreateProviderModal] = useState(false);
+	const [newProvider, setNewProvider] = useState({
 		name: "",
 		address: "",
 		city: "",
@@ -182,6 +306,36 @@ function Admin() {
 		} catch (error) {
 			console.error("Error creating site:", error);
 			setError("Failed to create site");
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const createProvider = async (e) => {
+		e.preventDefault();
+		setLoading(true);
+		try {
+			const response = await fetch("/api/providers", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(newProvider),
+			});
+			if (!response.ok) throw new Error("Failed to create provider");
+
+			fetchProviders(); // Refresh the list
+			setShowCreateProviderModal(false);
+			setNewProvider({
+				name: "",
+				address: "",
+				city: "",
+				state: "",
+				zipCode: "",
+			});
+		} catch (error) {
+			console.error("Error creating provider:", error);
+			setError("Failed to create provider");
 		} finally {
 			setLoading(false);
 		}
@@ -265,48 +419,62 @@ function Admin() {
 
 		if (selectedItem === "Providers") {
 			return (
-				<table style={{ width: "100%", borderCollapse: "collapse" }}>
-					<thead>
-						<tr style={{ backgroundColor: "#f8f9fa" }}>
-							<th style={headerStyle}>ID</th>
-							<th style={headerStyle}>Name</th>
-							<th style={headerStyle}>Address</th>
-							<th style={headerStyle}>City</th>
-							<th style={headerStyle}>State</th>
-							<th style={headerStyle}>Zip Code</th>
-							<th style={headerStyle}>Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						{providers.map((provider) => (
-							<tr
-								key={provider.id}
-								style={{ borderBottom: "1px solid #dee2e6" }}
-							>
-								<td style={cellStyle}>{provider.id}</td>
-								<td style={cellStyle}>{provider.name}</td>
-								<td style={cellStyle}>{provider.address}</td>
-								<td style={cellStyle}>{provider.city}</td>
-								<td style={cellStyle}>{provider.state}</td>
-								<td style={cellStyle}>{provider.zipCode}</td>
-								<td style={cellStyle}>
-									<button
-										onClick={() => handleEdit(provider.id, "provider")}
-										style={{ ...buttonStyle, backgroundColor: "#4299e1" }}
-									>
-										Edit
-									</button>
-									<button
-										onClick={() => handleDelete(provider.id, "provider")}
-										style={{ ...buttonStyle, backgroundColor: "#f56565" }}
-									>
-										Delete
-									</button>
-								</td>
+				<div>
+					<div style={{ marginBottom: "20px" }}>
+						<button
+							onClick={() => setShowCreateProviderModal(true)}
+							style={{
+								...buttonStyle,
+								backgroundColor: "#10B981",
+								padding: "8px 16px",
+							}}
+						>
+							Create New Provider
+						</button>
+					</div>
+					<table style={{ width: "100%", borderCollapse: "collapse" }}>
+						<thead>
+							<tr style={{ backgroundColor: "#f8f9fa" }}>
+								<th style={headerStyle}>ID</th>
+								<th style={headerStyle}>Name</th>
+								<th style={headerStyle}>Address</th>
+								<th style={headerStyle}>City</th>
+								<th style={headerStyle}>State</th>
+								<th style={headerStyle}>Zip Code</th>
+								<th style={headerStyle}>Actions</th>
 							</tr>
-						))}
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							{providers.map((provider) => (
+								<tr
+									key={provider.id}
+									style={{ borderBottom: "1px solid #dee2e6" }}
+								>
+									<td style={cellStyle}>{provider.id}</td>
+									<td style={cellStyle}>{provider.name}</td>
+									<td style={cellStyle}>{provider.address}</td>
+									<td style={cellStyle}>{provider.city}</td>
+									<td style={cellStyle}>{provider.state}</td>
+									<td style={cellStyle}>{provider.zipCode}</td>
+									<td style={cellStyle}>
+										<button
+											onClick={() => handleEdit(provider.id, "provider")}
+											style={{ ...buttonStyle, backgroundColor: "#4299e1" }}
+										>
+											Edit
+										</button>
+										<button
+											onClick={() => handleDelete(provider.id, "provider")}
+											style={{ ...buttonStyle, backgroundColor: "#f56565" }}
+										>
+											Delete
+										</button>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
 			);
 		}
 
@@ -439,6 +607,14 @@ function Admin() {
 						onSubmit={createSite}
 						newSite={newSite}
 						setNewSite={setNewSite}
+					/>
+				)}
+				{showCreateProviderModal && (
+					<CreateProviderModal
+						onClose={() => setShowCreateProviderModal(false)}
+						onSubmit={createProvider}
+						newProvider={newProvider}
+						setNewProvider={setNewProvider}
 					/>
 				)}
 			</div>
