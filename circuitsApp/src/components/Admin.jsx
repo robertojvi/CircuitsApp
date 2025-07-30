@@ -4,6 +4,7 @@ function Admin() {
 	const [selectedItem, setSelectedItem] = useState("");
 	const [sites, setSites] = useState([]);
 	const [providers, setProviders] = useState([]); // Add providers state
+	const [circuits, setCircuits] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 
@@ -30,6 +31,20 @@ function Admin() {
 		} catch (error) {
 			console.error("Error:", error);
 			setError("Failed to load providers");
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const fetchCircuits = async () => {
+		setLoading(true);
+		try {
+			const response = await fetch("/api/circuits");
+			const data = await response.json();
+			setCircuits(data);
+		} catch (error) {
+			console.error("Error:", error);
+			setError("Failed to load circuits");
 		} finally {
 			setLoading(false);
 		}
@@ -144,6 +159,55 @@ function Admin() {
 			);
 		}
 
+		if (selectedItem === "Circuits") {
+			return (
+				<table style={{ width: "100%", borderCollapse: "collapse" }}>
+					<thead>
+						<tr style={{ backgroundColor: "#f8f9fa" }}>
+							<th style={headerStyle}>ID</th>
+							<th style={headerStyle}>Site</th>
+							<th style={headerStyle}>Provider</th>
+							<th style={headerStyle}>Account Number</th>
+							<th style={headerStyle}>Circuit ID</th>
+							<th style={headerStyle}>Bandwidth</th>
+							<th style={headerStyle}>Monthly Cost</th>
+							<th style={headerStyle}>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{circuits.map((circuit) => (
+							<tr
+								key={circuit.id}
+								style={{ borderBottom: "1px solid #dee2e6" }}
+							>
+								<td style={cellStyle}>{circuit.id}</td>
+								<td style={cellStyle}>{circuit.site.name}</td>
+								<td style={cellStyle}>{circuit.provider.name}</td>
+								<td style={cellStyle}>{circuit.accountNumber}</td>
+								<td style={cellStyle}>{circuit.circuitId}</td>
+								<td style={cellStyle}>{circuit.circuitBandwidth}</td>
+								<td style={cellStyle}>${circuit.monthlyCost}</td>
+								<td style={cellStyle}>
+									<button
+										onClick={() => handleEdit(circuit.id, "circuit")}
+										style={{ ...buttonStyle, backgroundColor: "#4299e1" }}
+									>
+										Edit
+									</button>
+									<button
+										onClick={() => handleDelete(circuit.id, "circuit")}
+										style={{ ...buttonStyle, backgroundColor: "#f56565" }}
+									>
+										Delete
+									</button>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			);
+		}
+
 		return <h1>Admin Page</h1>;
 	};
 
@@ -204,7 +268,12 @@ function Admin() {
 							marginBottom: "15px",
 							padding: "10px",
 							cursor: "pointer",
-							"&:hover": { backgroundColor: "#34495e" },
+							backgroundColor:
+								selectedItem === "Circuits" ? "#34495e" : "transparent",
+						}}
+						onClick={() => {
+							setSelectedItem("Circuits");
+							fetchCircuits();
 						}}
 					>
 						Circuits
