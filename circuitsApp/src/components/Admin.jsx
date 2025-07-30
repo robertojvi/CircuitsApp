@@ -1,5 +1,112 @@
 import { useState, useEffect } from "react";
 
+const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
+	<div
+		style={{
+			position: "fixed",
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0,
+			backgroundColor: "rgba(0,0,0,0.5)",
+			display: "flex",
+			justifyContent: "center",
+			alignItems: "center",
+			zIndex: 1000,
+		}}
+	>
+		<div
+			style={{
+				backgroundColor: "white",
+				padding: "20px",
+				borderRadius: "8px",
+				width: "400px",
+			}}
+		>
+			<h2 style={{ marginBottom: "20px" }}>Create New Site</h2>
+			<form onSubmit={onSubmit}>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Name"
+						value={newSite.name}
+						onChange={(e) => setNewSite({ ...newSite, name: e.target.value })}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Address"
+						value={newSite.address}
+						onChange={(e) =>
+							setNewSite({ ...newSite, address: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="City"
+						value={newSite.city}
+						onChange={(e) => setNewSite({ ...newSite, city: e.target.value })}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="State"
+						value={newSite.state}
+						onChange={(e) =>
+							setNewSite({ ...newSite, state: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Zip Code"
+						value={newSite.zipCode}
+						onChange={(e) =>
+							setNewSite({ ...newSite, zipCode: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div
+					style={{
+						display: "flex",
+						justifyContent: "flex-end",
+						gap: "10px",
+					}}
+				>
+					<button
+						type="button"
+						onClick={onClose}
+						style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}
+					>
+						Cancel
+					</button>
+					<button
+						type="submit"
+						style={{ ...buttonStyle, backgroundColor: "#4299E1" }}
+					>
+						Create
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+);
+
 function Admin() {
 	const [selectedItem, setSelectedItem] = useState("");
 	const [sites, setSites] = useState([]);
@@ -7,6 +114,14 @@ function Admin() {
 	const [circuits, setCircuits] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
+	const [showCreateSiteModal, setShowCreateSiteModal] = useState(false);
+	const [newSite, setNewSite] = useState({
+		name: "",
+		address: "",
+		city: "",
+		state: "",
+		zipCode: "",
+	});
 
 	const fetchSites = async () => {
 		setLoading(true);
@@ -50,6 +165,30 @@ function Admin() {
 		}
 	};
 
+	const createSite = async (e) => {
+		e.preventDefault();
+		setLoading(true);
+		try {
+			const response = await fetch("/api/sites", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(newSite),
+			});
+			if (!response.ok) throw new Error("Failed to create site");
+
+			fetchSites(); // Refresh the list
+			setShowCreateSiteModal(false);
+			setNewSite({ name: "", address: "", city: "", state: "", zipCode: "" });
+		} catch (error) {
+			console.error("Error creating site:", error);
+			setError("Failed to create site");
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	const handleEdit = (id, type) => {
 		console.log(`Edit ${type}:`, id);
 	};
@@ -64,51 +203,65 @@ function Admin() {
 
 		if (selectedItem === "Sites") {
 			return (
-				<table style={{ width: "100%", borderCollapse: "collapse" }}>
-					<thead>
-						<tr style={{ backgroundColor: "#f8f9fa" }}>
-							<th style={headerStyle}>ID</th>
-							<th style={headerStyle}>Name</th>
-							<th style={headerStyle}>Address</th>
-							<th style={headerStyle}>City</th>
-							<th style={headerStyle}>State</th>
-							<th style={headerStyle}>Zip Code</th>
-							<th style={headerStyle}>Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						{sites.map((site) => (
-							<tr key={site.id} style={{ borderBottom: "1px solid #dee2e6" }}>
-								<td style={cellStyle}>{site.id}</td>
-								<td style={cellStyle}>{site.name}</td>
-								<td style={cellStyle}>{site.address}</td>
-								<td style={cellStyle}>{site.city}</td>
-								<td style={cellStyle}>{site.state}</td>
-								<td style={cellStyle}>{site.zipCode}</td>
-								<td style={cellStyle}>
-									<button
-										onClick={() => handleEdit(site.id, "site")}
-										style={{
-											...buttonStyle,
-											backgroundColor: "#4299e1",
-										}}
-									>
-										Edit
-									</button>
-									<button
-										onClick={() => handleDelete(site.id, "site")}
-										style={{
-											...buttonStyle,
-											backgroundColor: "#f56565",
-										}}
-									>
-										Delete
-									</button>
-								</td>
+				<div>
+					<div style={{ marginBottom: "20px" }}>
+						<button
+							onClick={() => setShowCreateSiteModal(true)}
+							style={{
+								...buttonStyle,
+								backgroundColor: "#10B981",
+								padding: "8px 16px",
+							}}
+						>
+							Create New Site
+						</button>
+					</div>
+					<table style={{ width: "100%", borderCollapse: "collapse" }}>
+						<thead>
+							<tr style={{ backgroundColor: "#f8f9fa" }}>
+								<th style={headerStyle}>ID</th>
+								<th style={headerStyle}>Name</th>
+								<th style={headerStyle}>Address</th>
+								<th style={headerStyle}>City</th>
+								<th style={headerStyle}>State</th>
+								<th style={headerStyle}>Zip Code</th>
+								<th style={headerStyle}>Actions</th>
 							</tr>
-						))}
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							{sites.map((site) => (
+								<tr key={site.id} style={{ borderBottom: "1px solid #dee2e6" }}>
+									<td style={cellStyle}>{site.id}</td>
+									<td style={cellStyle}>{site.name}</td>
+									<td style={cellStyle}>{site.address}</td>
+									<td style={cellStyle}>{site.city}</td>
+									<td style={cellStyle}>{site.state}</td>
+									<td style={cellStyle}>{site.zipCode}</td>
+									<td style={cellStyle}>
+										<button
+											onClick={() => handleEdit(site.id, "site")}
+											style={{
+												...buttonStyle,
+												backgroundColor: "#4299e1",
+											}}
+										>
+											Edit
+										</button>
+										<button
+											onClick={() => handleDelete(site.id, "site")}
+											style={{
+												...buttonStyle,
+												backgroundColor: "#f56565",
+											}}
+										>
+											Delete
+										</button>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
 			);
 		}
 
@@ -282,6 +435,14 @@ function Admin() {
 			</nav>
 			<div style={{ marginLeft: "250px", padding: "20px", flex: 1 }}>
 				{renderContent()}
+				{showCreateSiteModal && (
+					<CreateSiteModal
+						onClose={() => setShowCreateSiteModal(false)}
+						onSubmit={createSite}
+						newSite={newSite}
+						setNewSite={setNewSite}
+					/>
+				)}
 			</div>
 		</div>
 	);
@@ -304,6 +465,14 @@ const buttonStyle = {
 	borderRadius: "4px",
 	color: "white",
 	cursor: "pointer",
+};
+
+const inputStyle = {
+	width: "100%",
+	padding: "8px",
+	border: "1px solid #D1D5DB",
+	borderRadius: "4px",
+	fontSize: "14px",
 };
 
 export default Admin;
