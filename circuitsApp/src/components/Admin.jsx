@@ -29,7 +29,7 @@ function Admin() {
 							"&:hover": { backgroundColor: "#34495e" },
 						}}
 					>
-						Users Management
+						Sites
 					</li>
 					<li
 						style={{
@@ -39,7 +39,7 @@ function Admin() {
 							"&:hover": { backgroundColor: "#34495e" },
 						}}
 					>
-						Role Configuration
+						Providers
 					</li>
 					<li
 						style={{
@@ -49,7 +49,7 @@ function Admin() {
 							"&:hover": { backgroundColor: "#34495e" },
 						}}
 					>
-						System Settings
+						Circuits
 					</li>
 				</ul>
 			</nav>

@@ -1,7 +1,17 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import AccessLogo from "../images/Access.png";
 
 function Layout() {
+	const location = useLocation();
+
+	const getLinkStyle = (path) => ({
+		padding: "8px 16px",
+		borderRadius: "4px",
+		textDecoration: "none",
+		color: "#333",
+		backgroundColor: location.pathname === path ? "#e2e8f0" : "transparent",
+	});
+
 	return (
 		<div>
 			<nav
@@ -47,9 +57,15 @@ function Layout() {
 					</Link>
 				</div>
 				<div style={{ display: "flex", gap: "1rem" }}>
-					<Link to="/admin">Admin</Link>
-					<Link to="/circuits">Circuits</Link>
-					<Link to="/reports">Reports</Link>
+					<Link to="/admin" style={getLinkStyle("/admin")}>
+						Admin
+					</Link>
+					<Link to="/circuits" style={getLinkStyle("/circuits")}>
+						Circuits
+					</Link>
+					<Link to="/reports" style={getLinkStyle("/reports")}>
+						Reports
+					</Link>
 				</div>
 			</nav>
 			<Outlet />
