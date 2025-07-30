@@ -62,9 +62,7 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 						type="text"
 						placeholder="State"
 						value={newSite.state}
-						onChange={(e) =>
-							setNewSite({ ...newSite, state: e.target.value })
-						}
+						onChange={(e) => setNewSite({ ...newSite, state: e.target.value })}
 						style={inputStyle}
 						required
 					/>
