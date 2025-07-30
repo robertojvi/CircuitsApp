@@ -221,6 +221,151 @@ const CreateProviderModal = ({
 	</div>
 );
 
+const CreateCircuitModal = ({
+	onClose,
+	onSubmit,
+	newCircuit,
+	setNewCircuit,
+	sites,
+	providers,
+}) => (
+	<div
+		style={{
+			position: "fixed",
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0,
+			backgroundColor: "rgba(0,0,0,0.5)",
+			display: "flex",
+			justifyContent: "center",
+			alignItems: "center",
+			zIndex: 1000,
+		}}
+	>
+		<div
+			style={{
+				backgroundColor: "white",
+				padding: "20px",
+				borderRadius: "8px",
+				width: "400px",
+			}}
+		>
+			<h2 style={{ marginBottom: "20px" }}>Create New Circuit</h2>
+			<form onSubmit={onSubmit}>
+				<div style={{ marginBottom: "15px" }}>
+					<select
+						value={newCircuit.site?.id || ""}
+						onChange={(e) =>
+							setNewCircuit({
+								...newCircuit,
+								site: { id: Number(e.target.value) },
+							})
+						}
+						style={inputStyle}
+						required
+					>
+						<option value="">Select Site</option>
+						{sites.map((site) => (
+							<option key={site.id} value={site.id}>
+								{site.name}
+							</option>
+						))}
+					</select>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<select
+						value={newCircuit.provider?.id || ""}
+						onChange={(e) =>
+							setNewCircuit({
+								...newCircuit,
+								provider: { id: Number(e.target.value) },
+							})
+						}
+						style={inputStyle}
+						required
+					>
+						<option value="">Select Provider</option>
+						{providers.map((provider) => (
+							<option key={provider.id} value={provider.id}>
+								{provider.name}
+							</option>
+						))}
+					</select>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Account Number"
+						value={newCircuit.accountNumber || ""}
+						onChange={(e) =>
+							setNewCircuit({ ...newCircuit, accountNumber: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Circuit ID"
+						value={newCircuit.circuitId || ""}
+						onChange={(e) =>
+							setNewCircuit({ ...newCircuit, circuitId: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Bandwidth"
+						value={newCircuit.circuitBandwidth || ""}
+						onChange={(e) =>
+							setNewCircuit({ ...newCircuit, circuitBandwidth: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="number"
+						placeholder="Monthly Cost"
+						value={newCircuit.monthlyCost || ""}
+						onChange={(e) =>
+							setNewCircuit({
+								...newCircuit,
+								monthlyCost: Number(e.target.value),
+							})
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div
+					style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
+				>
+					<button
+						type="button"
+						onClick={onClose}
+						style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}
+					>
+						Cancel
+					</button>
+					<button
+						type="submit"
+						style={{ ...buttonStyle, backgroundColor: "#4299E1" }}
+					>
+						Create
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+);
+
 function Admin() {
 	const [selectedItem, setSelectedItem] = useState("");
 	const [sites, setSites] = useState([]);
@@ -243,6 +388,15 @@ function Admin() {
 		city: "",
 		state: "",
 		zipCode: "",
+	});
+	const [showCreateCircuitModal, setShowCreateCircuitModal] = useState(false);
+	const [newCircuit, setNewCircuit] = useState({
+		site: { id: "" },
+		provider: { id: "" },
+		accountNumber: "",
+		circuitId: "",
+		circuitBandwidth: "",
+		monthlyCost: "",
 	});
 
 	const fetchSites = async () => {
@@ -336,6 +490,37 @@ function Admin() {
 		} catch (error) {
 			console.error("Error creating provider:", error);
 			setError("Failed to create provider");
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const createCircuit = async (e) => {
+		e.preventDefault();
+		setLoading(true);
+		try {
+			const response = await fetch("/api/circuits", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(newCircuit),
+			});
+			if (!response.ok) throw new Error("Failed to create circuit");
+
+			fetchCircuits();
+			setShowCreateCircuitModal(false);
+			setNewCircuit({
+				site: { id: "" },
+				provider: { id: "" },
+				accountNumber: "",
+				circuitId: "",
+				circuitBandwidth: "",
+				monthlyCost: "",
+			});
+		} catch (error) {
+			console.error("Error creating circuit:", error);
+			setError("Failed to create circuit");
 		} finally {
 			setLoading(false);
 		}
@@ -480,50 +665,68 @@ function Admin() {
 
 		if (selectedItem === "Circuits") {
 			return (
-				<table style={{ width: "100%", borderCollapse: "collapse" }}>
-					<thead>
-						<tr style={{ backgroundColor: "#f8f9fa" }}>
-							<th style={headerStyle}>ID</th>
-							<th style={headerStyle}>Site</th>
-							<th style={headerStyle}>Provider</th>
-							<th style={headerStyle}>Account Number</th>
-							<th style={headerStyle}>Circuit ID</th>
-							<th style={headerStyle}>Bandwidth</th>
-							<th style={headerStyle}>Monthly Cost</th>
-							<th style={headerStyle}>Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						{circuits.map((circuit) => (
-							<tr
-								key={circuit.id}
-								style={{ borderBottom: "1px solid #dee2e6" }}
-							>
-								<td style={cellStyle}>{circuit.id}</td>
-								<td style={cellStyle}>{circuit.site.name}</td>
-								<td style={cellStyle}>{circuit.provider.name}</td>
-								<td style={cellStyle}>{circuit.accountNumber}</td>
-								<td style={cellStyle}>{circuit.circuitId}</td>
-								<td style={cellStyle}>{circuit.circuitBandwidth}</td>
-								<td style={cellStyle}>${circuit.monthlyCost}</td>
-								<td style={cellStyle}>
-									<button
-										onClick={() => handleEdit(circuit.id, "circuit")}
-										style={{ ...buttonStyle, backgroundColor: "#4299e1" }}
-									>
-										Edit
-									</button>
-									<button
-										onClick={() => handleDelete(circuit.id, "circuit")}
-										style={{ ...buttonStyle, backgroundColor: "#f56565" }}
-									>
-										Delete
-									</button>
-								</td>
+				<div>
+					<div style={{ marginBottom: "20px" }}>
+						<button
+							onClick={() => {
+								fetchSites();
+								fetchProviders();
+								setShowCreateCircuitModal(true);
+							}}
+							style={{
+								...buttonStyle,
+								backgroundColor: "#10B981",
+								padding: "8px 16px",
+							}}
+						>
+							Create New Circuit
+						</button>
+					</div>
+					<table style={{ width: "100%", borderCollapse: "collapse" }}>
+						<thead>
+							<tr style={{ backgroundColor: "#f8f9fa" }}>
+								<th style={headerStyle}>ID</th>
+								<th style={headerStyle}>Site</th>
+								<th style={headerStyle}>Provider</th>
+								<th style={headerStyle}>Account Number</th>
+								<th style={headerStyle}>Circuit ID</th>
+								<th style={headerStyle}>Bandwidth</th>
+								<th style={headerStyle}>Monthly Cost</th>
+								<th style={headerStyle}>Actions</th>
 							</tr>
-						))}
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							{circuits.map((circuit) => (
+								<tr
+									key={circuit.id}
+									style={{ borderBottom: "1px solid #dee2e6" }}
+								>
+									<td style={cellStyle}>{circuit.id}</td>
+									<td style={cellStyle}>{circuit.site.name}</td>
+									<td style={cellStyle}>{circuit.provider.name}</td>
+									<td style={cellStyle}>{circuit.accountNumber}</td>
+									<td style={cellStyle}>{circuit.circuitId}</td>
+									<td style={cellStyle}>{circuit.circuitBandwidth}</td>
+									<td style={cellStyle}>${circuit.monthlyCost}</td>
+									<td style={cellStyle}>
+										<button
+											onClick={() => handleEdit(circuit.id, "circuit")}
+											style={{ ...buttonStyle, backgroundColor: "#4299e1" }}
+										>
+											Edit
+										</button>
+										<button
+											onClick={() => handleDelete(circuit.id, "circuit")}
+											style={{ ...buttonStyle, backgroundColor: "#f56565" }}
+										>
+											Delete
+										</button>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
 			);
 		}
 
@@ -615,6 +818,16 @@ function Admin() {
 						onSubmit={createProvider}
 						newProvider={newProvider}
 						setNewProvider={setNewProvider}
+					/>
+				)}
+				{showCreateCircuitModal && (
+					<CreateCircuitModal
+						onClose={() => setShowCreateCircuitModal(false)}
+						onSubmit={createCircuit}
+						newCircuit={newCircuit}
+						setNewCircuit={setNewCircuit}
+						sites={sites}
+						providers={providers}
 					/>
 				)}
 			</div>
