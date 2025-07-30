@@ -1,39 +1,61 @@
-import { Link } from "react-router-dom";
-import AccessLogo from "../images/Access.png";
-
 function Home() {
 	return (
-		<div style={{ paddingTop: "80px" }}>
+		<div style={{ paddingTop: "50px", display: "flex", width: "100%" }}>
 			<nav
 				style={{
+					width: "250px",
+					minHeight: "calc(100vh - 50px)",
+					backgroundColor: "#2c3e50",
+					padding: "20px",
 					position: "fixed",
-					top: 0,
 					left: 0,
-					right: 0,
-					padding: "1rem",
-					backgroundColor: "#fff",
-					boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-					display: "flex",
-					alignItems: "center",
-					gap: "2rem",
+					top: "50px",
+					zIndex: 999,
 				}}
 			>
-				<div className="logo">
-					<Link to="/">
-						<img
-							src={AccessLogo}
-							alt="Access Logo"
-							style={{ height: "40px" }}
-						/>
-					</Link>
-				</div>
-				<div style={{ display: "flex", gap: "1rem" }}>
-					<Link to="/admin">Admin</Link>
-					<Link to="/circuits">Circuits</Link>
-					<Link to="/reports">Reports</Link>
-				</div>
+				<ul
+					style={{
+						listStyle: "none",
+						padding: 0,
+						color: "#ecf0f1",
+						fontSize: "16px",
+					}}
+				>
+					<li
+						style={{
+							marginBottom: "15px",
+							padding: "10px",
+							cursor: "pointer",
+							"&:hover": { backgroundColor: "#34495e" },
+						}}
+					>
+						Dashboard
+					</li>
+					<li
+						style={{
+							marginBottom: "15px",
+							padding: "10px",
+							cursor: "pointer",
+							"&:hover": { backgroundColor: "#34495e" },
+						}}
+					>
+						Overview
+					</li>
+					<li
+						style={{
+							marginBottom: "15px",
+							padding: "10px",
+							cursor: "pointer",
+							"&:hover": { backgroundColor: "#34495e" },
+						}}
+					>
+						Quick Links
+					</li>
+				</ul>
 			</nav>
-			<h1>Welcome to the Home Page</h1>
+			<div style={{ marginLeft: "250px", padding: "20px", flex: 1 }}>
+				<h1>Welcome to the Home Page</h1>
+			</div>
 		</div>
 	);
 }
