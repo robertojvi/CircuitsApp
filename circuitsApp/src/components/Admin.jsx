@@ -574,6 +574,145 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 	</div>
 );
 
+const EditCircuitModal = ({
+	onClose,
+	onSubmit,
+	circuit,
+	setCircuit,
+	sites,
+	providers,
+}) => (
+	<div
+		style={{
+			position: "fixed",
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0,
+			backgroundColor: "rgba(0,0,0,0.5)",
+			display: "flex",
+			justifyContent: "center",
+			alignItems: "center",
+			zIndex: 1000,
+		}}
+	>
+		<div
+			style={{
+				backgroundColor: "white",
+				padding: "20px",
+				borderRadius: "8px",
+				width: "400px",
+			}}
+		>
+			<h2 style={{ marginBottom: "20px" }}>Edit Circuit</h2>
+			<form onSubmit={onSubmit}>
+				<div style={{ marginBottom: "15px" }}>
+					<select
+						value={circuit.site?.id || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, site: { id: Number(e.target.value) } })
+						}
+						style={inputStyle}
+						required
+					>
+						<option value="">Select Site</option>
+						{sites.map((site) => (
+							<option key={site.id} value={site.id}>
+								{site.name}
+							</option>
+						))}
+					</select>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<select
+						value={circuit.provider?.id || ""}
+						onChange={(e) =>
+							setCircuit({
+								...circuit,
+								provider: { id: Number(e.target.value) },
+							})
+						}
+						style={inputStyle}
+						required
+					>
+						<option value="">Select Provider</option>
+						{providers.map((provider) => (
+							<option key={provider.id} value={provider.id}>
+								{provider.name}
+							</option>
+						))}
+					</select>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Account Number"
+						value={circuit.accountNumber || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, accountNumber: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Circuit ID"
+						value={circuit.circuitId || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, circuitId: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Bandwidth"
+						value={circuit.circuitBandwidth || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, circuitBandwidth: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="number"
+						placeholder="Monthly Cost"
+						value={circuit.monthlyCost || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, monthlyCost: Number(e.target.value) })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div
+					style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
+				>
+					<button
+						type="button"
+						onClick={onClose}
+						style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}
+					>
+						Cancel
+					</button>
+					<button
+						type="submit"
+						style={{ ...buttonStyle, backgroundColor: "#4299E1" }}
+					>
+						Save
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+);
+
 function Admin() {
 	const [selectedItem, setSelectedItem] = useState("");
 	const [sites, setSites] = useState([]);
@@ -610,6 +749,8 @@ function Admin() {
 	const [selectedSite, setSelectedSite] = useState(null);
 	const [showEditProviderModal, setShowEditProviderModal] = useState(false);
 	const [selectedProvider, setSelectedProvider] = useState(null);
+	const [showEditCircuitModal, setShowEditCircuitModal] = useState(false);
+	const [selectedCircuit, setSelectedCircuit] = useState(null);
 
 	const fetchSites = async () => {
 		setLoading(true);
@@ -786,6 +927,30 @@ function Admin() {
 		}
 	};
 
+	const editCircuit = async (e) => {
+		e.preventDefault();
+		setLoading(true);
+		try {
+			const response = await fetch(`/api/circuits`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(selectedCircuit),
+			});
+			if (!response.ok) throw new Error("Failed to update circuit");
+
+			fetchCircuits();
+			setShowEditCircuitModal(false);
+			setSelectedCircuit(null);
+		} catch (error) {
+			console.error("Error updating circuit:", error);
+			setError("Failed to update circuit");
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	const handleEdit = (id, type) => {
 		if (type === "site") {
 			const site = sites.find((s) => s.id === id);
@@ -795,6 +960,12 @@ function Admin() {
 			const provider = providers.find((p) => p.id === id);
 			setSelectedProvider(provider);
 			setShowEditProviderModal(true);
+		} else if (type === "circuit") {
+			const circuit = circuits.find((c) => c.id === id);
+			setSelectedCircuit(circuit);
+			fetchSites();
+			fetchProviders();
+			setShowEditCircuitModal(true);
 		}
 	};
 
@@ -1118,6 +1289,19 @@ function Admin() {
 						onSubmit={editProvider}
 						provider={selectedProvider}
 						setProvider={setSelectedProvider}
+					/>
+				)}
+				{showEditCircuitModal && selectedCircuit && (
+					<EditCircuitModal
+						onClose={() => {
+							setShowEditCircuitModal(false);
+							setSelectedCircuit(null);
+						}}
+						onSubmit={editCircuit}
+						circuit={selectedCircuit}
+						setCircuit={setSelectedCircuit}
+						sites={sites}
+						providers={providers}
 					/>
 				)}
 			</div>
