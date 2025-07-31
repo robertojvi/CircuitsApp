@@ -65,6 +65,26 @@ function Reports() {
 		};
 	};
 
+	const getProviderDistribution = () => {
+		const distribution = circuits.reduce((acc, circuit) => {
+			acc[circuit.provider.name] = (acc[circuit.provider.name] || 0) + 1;
+			return acc;
+		}, {});
+
+		return {
+			labels: Object.keys(distribution),
+			datasets: [
+				{
+					label: "Sites per Provider",
+					data: Object.values(distribution),
+					backgroundColor: "#2ecc71",
+					borderColor: "#27ae60",
+					borderWidth: 1,
+				},
+			],
+		};
+	};
+
 	const renderContent = () => {
 		if (loading) return <div>Loading...</div>;
 		if (error) return <div style={{ color: "red" }}>{error}</div>;
@@ -72,40 +92,80 @@ function Reports() {
 		if (selectedMenu === "Usage Analytics") {
 			return (
 				<div style={{ padding: "20px" }}>
-					<h2 style={{ marginBottom: "20px", color: "#2c3e50" }}>
-						Bandwidth Distribution
-					</h2>
 					<div
 						style={{
-							backgroundColor: "#f8f9fa",
-							padding: "20px",
-							borderRadius: "8px",
-							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+							display: "grid",
+							gridTemplateColumns: "1fr 1fr",
+							gap: "20px",
+							marginBottom: "20px",
 						}}
 					>
-						<Bar
-							data={getBandwidthDistribution()}
-							options={{
-								responsive: true,
-								plugins: {
-									legend: {
-										position: "top",
-									},
-									title: {
-										display: true,
-										text: "Sites per Bandwidth",
-									},
-								},
-								scales: {
-									y: {
-										beginAtZero: true,
-										ticks: {
-											stepSize: 1,
+						<div>
+							<h2 style={{ marginBottom: "20px", color: "#2c3e50" }}>
+								Bandwidth Distribution
+							</h2>
+							<div
+								style={{
+									backgroundColor: "#f8f9fa",
+									padding: "20px",
+									borderRadius: "8px",
+									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+								}}
+							>
+								<Bar
+									data={getBandwidthDistribution()}
+									options={{
+										responsive: true,
+										plugins: {
+											legend: { position: "top" },
+											title: {
+												display: true,
+												text: "Sites per Bandwidth",
+											},
 										},
-									},
-								},
-							}}
-						/>
+										scales: {
+											y: {
+												beginAtZero: true,
+												ticks: { stepSize: 1 },
+											},
+										},
+									}}
+								/>
+							</div>
+						</div>
+						<div>
+							<h2 style={{ marginBottom: "20px", color: "#2c3e50" }}>
+								Provider Distribution
+							</h2>
+							<div
+								style={{
+									backgroundColor: "#f8f9fa",
+									padding: "20px",
+									borderRadius: "8px",
+									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+								}}
+							>
+								<Bar
+									data={getProviderDistribution()}
+									options={{
+										responsive: true,
+										plugins: {
+											legend: { position: "top" },
+											title: {
+												display: true,
+												text: "Sites per Provider",
+											},
+										},
+										scales: {
+											y: {
+												beginAtZero: true,
+												ticks: { stepSize: 1 },
+											},
+										},
+									}}
+								/>
+							</div>
+						</div>
 					</div>
 				</div>
 			);
