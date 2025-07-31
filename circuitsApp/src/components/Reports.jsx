@@ -91,13 +91,14 @@ function Reports() {
 
 		if (selectedMenu === "Usage Analytics") {
 			return (
-				<div style={{ padding: "20px" }}>
+				<div style={{ padding: 0, width: "100%" }}>
 					<div
 						style={{
-							display: "grid",
-							gridTemplateColumns: "1fr 1fr",
-							gap: "20px",
+							display: "flex",
+							flexDirection: "column",
+							gap: "40px",
 							marginBottom: "20px",
+							width: "100%",
 						}}
 					>
 						<div>
@@ -119,12 +120,14 @@ function Reports() {
 									padding: "20px",
 									borderRadius: "8px",
 									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+									height: "400px",
 								}}
 							>
 								<Bar
 									data={getBandwidthDistribution()}
 									options={{
 										responsive: true,
+										maintainAspectRatio: false,
 										plugins: {
 											legend: { position: "top" },
 											title: {
@@ -161,12 +164,14 @@ function Reports() {
 									padding: "20px",
 									borderRadius: "8px",
 									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+									height: "400px",
 								}}
 							>
 								<Bar
 									data={getProviderDistribution()}
 									options={{
 										responsive: true,
+										maintainAspectRatio: false,
 										plugins: {
 											legend: { position: "top" },
 											title: {
