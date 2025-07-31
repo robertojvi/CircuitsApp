@@ -754,6 +754,11 @@ function Admin() {
 	const [siteSearch, setSiteSearch] = useState("");
 	const [providerSearch, setProviderSearch] = useState("");
 	const [circuitSearch, setCircuitSearch] = useState("");
+	// Add sort state
+	const [sortConfig, setSortConfig] = useState({
+		key: null,
+		direction: "ascending",
+	});
 
 	const fetchSites = async () => {
 		setLoading(true);
@@ -1066,11 +1071,64 @@ function Admin() {
 		outline: "none",
 	};
 
+	// Add sort function
+	const onSort = (key) => {
+		let direction = "ascending";
+		if (sortConfig.key === key && sortConfig.direction === "ascending") {
+			direction = "descending";
+		}
+		setSortConfig({ key, direction });
+	};
+
+	// Add sort handler function
+	const getSortedItems = (items) => {
+		if (!sortConfig.key) return items;
+
+		return [...items].sort((a, b) => {
+			let aValue = sortConfig.key.split(".").reduce((obj, key) => obj[key], a);
+			let bValue = sortConfig.key.split(".").reduce((obj, key) => obj[key], b);
+
+			if (typeof aValue === "string") {
+				aValue = aValue.toLowerCase();
+				bValue = bValue.toLowerCase();
+			}
+
+			if (aValue < bValue) {
+				return sortConfig.direction === "ascending" ? -1 : 1;
+			}
+			if (aValue > bValue) {
+				return sortConfig.direction === "ascending" ? 1 : -1;
+			}
+			return 0;
+		});
+	};
+
+	// Add sortable header style
+	const getSortableHeaderStyle = (key) => ({
+		...headerStyle,
+		cursor: "pointer",
+		userSelect: "none",
+		position: "relative",
+		paddingRight: "20px",
+		"&:after": {
+			content:
+				sortConfig.key === key
+					? sortConfig.direction === "ascending"
+						? '"↑"'
+						: '"↓"'
+					: '""',
+			position: "absolute",
+			right: "5px",
+		},
+	});
+
+	// Update the table headers in renderContent
 	const renderContent = () => {
 		if (loading) return <div>Loading...</div>;
 		if (error) return <div style={{ color: "red" }}>{error}</div>;
 
 		if (selectedItem === "Sites") {
+			const sortedSites = getSortedItems(filteredSites);
 			return (
 				<div>
 					<div style={{ marginBottom: "20px", display: "flex", gap: "20px" }}>
@@ -1094,18 +1152,48 @@ function Admin() {
 					</div>
 					<table style={{ width: "100%", borderCollapse: "collapse" }}>
 						<thead>
-							<tr style={{ backgroundColor: "#f8f9fa" }}>
-								<th style={headerStyle}>ID</th>
-								<th style={headerStyle}>Name</th>
-								<th style={headerStyle}>Address</th>
-								<th style={headerStyle}>City</th>
-								<th style={headerStyle}>State</th>
-								<th style={headerStyle}>Zip Code</th>
+							<tr style={{ backgroundColor: "#2c3e50" }}>
+								<th
+									onClick={() => onSort("id")}
+									style={getSortableHeaderStyle("id")}
+								>
+									ID
+								</th>
+								<th
+									onClick={() => onSort("name")}
+									style={getSortableHeaderStyle("name")}
+								>
+									Name
+								</th>
+								<th
+									onClick={() => onSort("address")}
+									style={getSortableHeaderStyle("address")}
+								>
+									Address
+								</th>
+								<th
+									onClick={() => onSort("city")}
+									style={getSortableHeaderStyle("city")}
+								>
+									City
+								</th>
+								<th
+									onClick={() => onSort("state")}
+									style={getSortableHeaderStyle("state")}
+								>
+									State
+								</th>
+								<th
+									onClick={() => onSort("zipCode")}
+									style={getSortableHeaderStyle("zipCode")}
+								>
+									Zip Code
+								</th>
 								<th style={headerStyle}>Actions</th>
 							</tr>
 						</thead>
 						<tbody>
-							{filteredSites.map((site) => (
+							{sortedSites.map((site) => (
 								<tr key={site.id} style={{ borderBottom: "1px solid #dee2e6" }}>
 									<td style={cellStyle}>{site.id}</td>
 									<td style={cellStyle}>{site.name}</td>
@@ -1142,6 +1230,7 @@ function Admin() {
 		}
 
 		if (selectedItem === "Providers") {
+			const sortedProviders = getSortedItems(filteredProviders);
 			return (
 				<div>
 					<div style={{ marginBottom: "20px", display: "flex", gap: "20px" }}>
@@ -1165,18 +1254,48 @@ function Admin() {
 					</div>
 					<table style={{ width: "100%", borderCollapse: "collapse" }}>
 						<thead>
-							<tr style={{ backgroundColor: "#f8f9fa" }}>
-								<th style={headerStyle}>ID</th>
-								<th style={headerStyle}>Name</th>
-								<th style={headerStyle}>Address</th>
-								<th style={headerStyle}>City</th>
-								<th style={headerStyle}>State</th>
-								<th style={headerStyle}>Zip Code</th>
+							<tr style={{ backgroundColor: "#2c3e50" }}>
+								<th
+									onClick={() => onSort("id")}
+									style={getSortableHeaderStyle("id")}
+								>
+									ID
+								</th>
+								<th
+									onClick={() => onSort("name")}
+									style={getSortableHeaderStyle("name")}
+								>
+									Name
+								</th>
+								<th
+									onClick={() => onSort("address")}
+									style={getSortableHeaderStyle("address")}
+								>
+									Address
+								</th>
+								<th
+									onClick={() => onSort("city")}
+									style={getSortableHeaderStyle("city")}
+								>
+									City
+								</th>
+								<th
+									onClick={() => onSort("state")}
+									style={getSortableHeaderStyle("state")}
+								>
+									State
+								</th>
+								<th
+									onClick={() => onSort("zipCode")}
+									style={getSortableHeaderStyle("zipCode")}
+								>
+									Zip Code
+								</th>
 								<th style={headerStyle}>Actions</th>
 							</tr>
 						</thead>
 						<tbody>
-							{filteredProviders.map((provider) => (
+							{sortedProviders.map((provider) => (
 								<tr
 									key={provider.id}
 									style={{ borderBottom: "1px solid #dee2e6" }}
@@ -1210,6 +1329,7 @@ function Admin() {
 		}
 
 		if (selectedItem === "Circuits") {
+			const sortedCircuits = getSortedItems(filteredCircuits);
 			return (
 				<div>
 					<div style={{ marginBottom: "20px", display: "flex", gap: "20px" }}>
@@ -1237,19 +1357,54 @@ function Admin() {
 					</div>
 					<table style={{ width: "100%", borderCollapse: "collapse" }}>
 						<thead>
-							<tr style={{ backgroundColor: "#f8f9fa" }}>
-								<th style={headerStyle}>ID</th>
-								<th style={headerStyle}>Site</th>
-								<th style={headerStyle}>Provider</th>
-								<th style={headerStyle}>Account Number</th>
-								<th style={headerStyle}>Circuit ID</th>
-								<th style={headerStyle}>Bandwidth</th>
-								<th style={headerStyle}>Monthly Cost</th>
+							<tr style={{ backgroundColor: "#2c3e50" }}>
+								<th
+									onClick={() => onSort("id")}
+									style={getSortableHeaderStyle("id")}
+								>
+									ID
+								</th>
+								<th
+									onClick={() => onSort("site.name")}
+									style={getSortableHeaderStyle("site.name")}
+								>
+									Site
+								</th>
+								<th
+									onClick={() => onSort("provider.name")}
+									style={getSortableHeaderStyle("provider.name")}
+								>
+									Provider
+								</th>
+								<th
+									onClick={() => onSort("accountNumber")}
+									style={getSortableHeaderStyle("accountNumber")}
+								>
+									Account Number
+								</th>
+								<th
+									onClick={() => onSort("circuitId")}
+									style={getSortableHeaderStyle("circuitId")}
+								>
+									Circuit ID
+								</th>
+								<th
+									onClick={() => onSort("circuitBandwidth")}
+									style={getSortableHeaderStyle("circuitBandwidth")}
+								>
+									Bandwidth
+								</th>
+								<th
+									onClick={() => onSort("monthlyCost")}
+									style={getSortableHeaderStyle("monthlyCost")}
+								>
+									Monthly Cost
+								</th>
 								<th style={headerStyle}>Actions</th>
 							</tr>
 						</thead>
 						<tbody>
-							{filteredCircuits.map((circuit) => (
+							{sortedCircuits.map((circuit) => (
 								<tr
 									key={circuit.id}
 									style={{ borderBottom: "1px solid #dee2e6" }}
