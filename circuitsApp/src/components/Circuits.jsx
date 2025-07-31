@@ -131,9 +131,14 @@ function Circuits() {
 								width: "100%",
 								padding: "8px 12px",
 								fontSize: "16px",
-								border: "1px solid #e2e8f0",
+								border: "1px solid #3498db",
 								borderRadius: "4px",
-								backgroundColor: "#f8fafc",
+								backgroundColor: "#34495e",
+								color: "#ffffff",
+								outline: "none",
+								"::placeholder": {
+									color: "#95a5a6",
+								},
 							}}
 						/>
 					</div>
