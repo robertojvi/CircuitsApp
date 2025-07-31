@@ -101,7 +101,16 @@ function Reports() {
 						}}
 					>
 						<div>
-							<h2 style={{ marginBottom: "20px", color: "#2c3e50" }}>
+							<h2
+								style={{
+									marginBottom: "20px",
+									color: "#ffffff",
+									backgroundColor: "#2c3e50",
+									padding: "10px 20px",
+									borderRadius: "4px",
+									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+								}}
+							>
 								Bandwidth Distribution
 							</h2>
 							<div
@@ -134,7 +143,16 @@ function Reports() {
 							</div>
 						</div>
 						<div>
-							<h2 style={{ marginBottom: "20px", color: "#2c3e50" }}>
+							<h2
+								style={{
+									marginBottom: "20px",
+									color: "#ffffff",
+									backgroundColor: "#2c3e50",
+									padding: "10px 20px",
+									borderRadius: "4px",
+									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+								}}
+							>
 								Provider Distribution
 							</h2>
 							<div
