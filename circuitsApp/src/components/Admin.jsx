@@ -969,8 +969,37 @@ function Admin() {
 		}
 	};
 
-	const handleDelete = (id, type) => {
-		console.log(`Delete ${type}:`, id);
+	const handleDelete = async (id, type) => {
+		if (window.confirm(`Are you sure you want to delete this ${type}?`)) {
+			setLoading(true);
+			try {
+				const response = await fetch(`/api/${type}s/${id}`, {
+					method: "DELETE",
+				});
+
+				if (!response.ok) {
+					throw new Error(`Failed to delete ${type}`);
+				}
+
+				// Refresh the corresponding list
+				switch (type) {
+					case "site":
+						fetchSites();
+						break;
+					case "provider":
+						fetchProviders();
+						break;
+					case "circuit":
+						fetchCircuits();
+						break;
+				}
+			} catch (error) {
+				console.error(`Error deleting ${type}:`, error);
+				setError(`Failed to delete ${type}`);
+			} finally {
+				setLoading(false);
+			}
+		}
 	};
 
 	const renderContent = () => {
