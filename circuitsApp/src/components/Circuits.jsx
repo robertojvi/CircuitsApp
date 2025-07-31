@@ -82,6 +82,10 @@ function Circuits() {
 	const [showCircuitDetail, setShowCircuitDetail] = useState(false);
 	const [selectedCircuit, setSelectedCircuit] = useState(null);
 	const [searchTerm, setSearchTerm] = useState("");
+	const [sortConfig, setSortConfig] = useState({
+		key: null,
+		direction: "ascending",
+	});
 
 	useEffect(() => {
 		if (selectedMenu === "Circuit Information") {
@@ -114,11 +118,54 @@ function Circuits() {
 			circuit.circuitId.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
+	const onSort = (key) => {
+		let direction = "ascending";
+		if (sortConfig.key === key && sortConfig.direction === "ascending") {
+			direction = "descending";
+		}
+		setSortConfig({ key, direction });
+	};
+
+	const getSortedCircuits = (circuits) => {
+		if (!sortConfig.key) return circuits;
+
+		return [...circuits].sort((a, b) => {
+			let aValue = sortConfig.key.split(".").reduce((obj, key) => obj[key], a);
+			let bValue = sortConfig.key.split(".").reduce((obj, key) => obj[key], b);
+
+			if (typeof aValue === "string") {
+				aValue = aValue.toLowerCase();
+				bValue = bValue.toLowerCase();
+			}
+
+			if (aValue < bValue) return sortConfig.direction === "ascending" ? -1 : 1;
+			if (aValue > bValue) return sortConfig.direction === "ascending" ? 1 : -1;
+			return 0;
+		});
+	};
+
+	const getSortableHeaderStyle = (key) => ({
+		...headerStyle,
+		cursor: "pointer",
+		position: "relative",
+		paddingRight: "20px",
+		backgroundColor: sortConfig.key === key ? "#34495e" : "#2c3e50",
+		"&:after": {
+			content:
+				sortConfig.key === key
+					? `"${sortConfig.direction === "ascending" ? "↑" : "↓"}"`
+					: '""',
+			position: "absolute",
+			right: "5px",
+		},
+	});
+
 	const renderContent = () => {
 		if (loading) return <div>Loading...</div>;
 		if (error) return <div style={{ color: "red" }}>{error}</div>;
 
 		if (selectedMenu === "Circuit Information") {
+			const sortedCircuits = getSortedCircuits(filteredCircuits);
 			return (
 				<div>
 					<div style={{ marginBottom: "20px" }}>
@@ -145,15 +192,35 @@ function Circuits() {
 					<table style={{ width: "100%", borderCollapse: "collapse" }}>
 						<thead>
 							<tr style={{ backgroundColor: "#2c3e50" }}>
-								<th style={headerStyle}>Site</th>
-								<th style={headerStyle}>Provider</th>
-								<th style={headerStyle}>Bandwidth</th>
-								<th style={headerStyle}>Monthly Cost</th>
+								<th
+									onClick={() => onSort("site.name")}
+									style={getSortableHeaderStyle("site.name")}
+								>
+									Site
+								</th>
+								<th
+									onClick={() => onSort("provider.name")}
+									style={getSortableHeaderStyle("provider.name")}
+								>
+									Provider
+								</th>
+								<th
+									onClick={() => onSort("circuitBandwidth")}
+									style={getSortableHeaderStyle("circuitBandwidth")}
+								>
+									Bandwidth
+								</th>
+								<th
+									onClick={() => onSort("monthlyCost")}
+									style={getSortableHeaderStyle("monthlyCost")}
+								>
+									Monthly Cost
+								</th>
 								<th style={headerStyle}>Details</th>
 							</tr>
 						</thead>
 						<tbody>
-							{filteredCircuits.map((circuit) => (
+							{sortedCircuits.map((circuit) => (
 								<tr
 									key={circuit.id}
 									style={{ borderBottom: "1px solid #dee2e6" }}
