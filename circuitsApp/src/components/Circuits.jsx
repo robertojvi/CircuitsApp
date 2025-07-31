@@ -75,7 +75,7 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 );
 
 function Circuits() {
-	const [selectedMenu, setSelectedMenu] = useState("Circuit Status");
+	const [selectedMenu, setSelectedMenu] = useState("Circuit Information");
 	const [circuits, setCircuits] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
@@ -83,7 +83,7 @@ function Circuits() {
 	const [selectedCircuit, setSelectedCircuit] = useState(null);
 
 	useEffect(() => {
-		if (selectedMenu === "Circuit Status") {
+		if (selectedMenu === "Circuit Information") {
 			fetchCircuits();
 		}
 	}, [selectedMenu]);
@@ -106,7 +106,7 @@ function Circuits() {
 		if (loading) return <div>Loading...</div>;
 		if (error) return <div style={{ color: "red" }}>{error}</div>;
 
-		if (selectedMenu === "Circuit Status") {
+		if (selectedMenu === "Circuit Information") {
 			return (
 				<div>
 					<table style={{ width: "100%", borderCollapse: "collapse" }}>
@@ -174,7 +174,7 @@ function Circuits() {
 					}}
 				>
 					{[
-						"Circuit Status",
+						"Circuit Information",
 						"Circuit Configuration",
 						"Circuit Monitoring",
 					].map((item) => (
