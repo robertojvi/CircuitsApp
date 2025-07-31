@@ -17,35 +17,56 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 	>
 		<div
 			style={{
-				backgroundColor: "white",
+				backgroundColor: "#2c3e50",
 				padding: "20px",
 				borderRadius: "8px",
 				width: "400px",
+				boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+				color: "#ffffff",
 			}}
 		>
-			<h2 style={{ marginBottom: "20px" }}>Circuit Details</h2>
-			<div style={{ marginBottom: "15px" }}>
-				<p>
+			<h2
+				style={{
+					marginBottom: "20px",
+					color: "#fff",
+					borderBottom: "2px solid #3498db",
+				}}
+			>
+				Circuit Details
+			</h2>
+			<div
+				style={{
+					marginBottom: "15px",
+					backgroundColor: "#34495e",
+					padding: "15px",
+					borderRadius: "6px",
+					border: "1px solid #3498db",
+				}}
+			>
+				<p style={detailRowStyle}>
 					<strong>Site:</strong> {circuit.site.name}
 				</p>
-				<p>
+				<p style={detailRowStyle}>
 					<strong>Provider:</strong> {circuit.provider.name}
 				</p>
-				<p>
+				<p style={detailRowStyle}>
 					<strong>Account Number:</strong> {circuit.accountNumber}
 				</p>
-				<p>
+				<p style={detailRowStyle}>
 					<strong>Circuit ID:</strong> {circuit.circuitId}
 				</p>
-				<p>
+				<p style={detailRowStyle}>
 					<strong>Bandwidth:</strong> {circuit.circuitBandwidth}
 				</p>
-				<p>
+				<p style={detailRowStyle}>
 					<strong>Monthly Cost:</strong> ${circuit.monthlyCost}
 				</p>
 			</div>
 			<div style={{ display: "flex", justifyContent: "flex-end" }}>
-				<button onClick={onClose} style={buttonStyle}>
+				<button
+					onClick={onClose}
+					style={{ ...buttonStyle, backgroundColor: "#3498db" }}
+				>
 					Close
 				</button>
 			</div>
@@ -216,6 +237,13 @@ const iconButtonStyle = {
 	backgroundColor: "transparent",
 	cursor: "pointer",
 	fontSize: "20px",
+};
+
+const detailRowStyle = {
+	padding: "8px 0",
+	borderBottom: "1px solid #edf2f7",
+	fontSize: "14px",
+	lineHeight: "1.5",
 };
 
 export default Circuits;
