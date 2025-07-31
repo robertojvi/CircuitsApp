@@ -467,6 +467,113 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 	</div>
 );
 
+const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
+	<div
+		style={{
+			position: "fixed",
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0,
+			backgroundColor: "rgba(0,0,0,0.5)",
+			display: "flex",
+			justifyContent: "center",
+			alignItems: "center",
+			zIndex: 1000,
+		}}
+	>
+		<div
+			style={{
+				backgroundColor: "white",
+				padding: "20px",
+				borderRadius: "8px",
+				width: "400px",
+			}}
+		>
+			<h2 style={{ marginBottom: "20px" }}>Edit Provider</h2>
+			<form onSubmit={onSubmit}>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Name"
+						value={provider.name}
+						onChange={(e) => setProvider({ ...provider, name: e.target.value })}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Address"
+						value={provider.address}
+						onChange={(e) =>
+							setProvider({ ...provider, address: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="City"
+						value={provider.city}
+						onChange={(e) => setProvider({ ...provider, city: e.target.value })}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="State"
+						value={provider.state}
+						onChange={(e) =>
+							setProvider({ ...provider, state: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Zip Code"
+						value={provider.zipCode}
+						onChange={(e) =>
+							setProvider({ ...provider, zipCode: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div
+					style={{
+						display: "flex",
+						justifyContent: "flex-end",
+						gap: "10px",
+					}}
+				>
+					<button
+						type="button"
+						onClick={onClose}
+						style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}
+					>
+						Cancel
+					</button>
+					<button
+						type="submit"
+						style={{ ...buttonStyle, backgroundColor: "#4299E1" }}
+					>
+						Save
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+);
+
 function Admin() {
 	const [selectedItem, setSelectedItem] = useState("");
 	const [sites, setSites] = useState([]);
@@ -501,6 +608,8 @@ function Admin() {
 	});
 	const [showEditSiteModal, setShowEditSiteModal] = useState(false);
 	const [selectedSite, setSelectedSite] = useState(null);
+	const [showEditProviderModal, setShowEditProviderModal] = useState(false);
+	const [selectedProvider, setSelectedProvider] = useState(null);
 
 	const fetchSites = async () => {
 		setLoading(true);
@@ -653,13 +762,40 @@ function Admin() {
 		}
 	};
 
+	const editProvider = async (e) => {
+		e.preventDefault();
+		setLoading(true);
+		try {
+			const response = await fetch(`/api/providers`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(selectedProvider),
+			});
+			if (!response.ok) throw new Error("Failed to update provider");
+
+			fetchProviders();
+			setShowEditProviderModal(false);
+			setSelectedProvider(null);
+		} catch (error) {
+			console.error("Error updating provider:", error);
+			setError("Failed to update provider");
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	const handleEdit = (id, type) => {
 		if (type === "site") {
 			const site = sites.find((s) => s.id === id);
 			setSelectedSite(site);
 			setShowEditSiteModal(true);
+		} else if (type === "provider") {
+			const provider = providers.find((p) => p.id === id);
+			setSelectedProvider(provider);
+			setShowEditProviderModal(true);
 		}
-		// ...handle other types...
 	};
 
 	const handleDelete = (id, type) => {
@@ -971,6 +1107,17 @@ function Admin() {
 						onSubmit={editSite}
 						site={selectedSite}
 						setSite={setSelectedSite}
+					/>
+				)}
+				{showEditProviderModal && selectedProvider && (
+					<EditProviderModal
+						onClose={() => {
+							setShowEditProviderModal(false);
+							setSelectedProvider(null);
+						}}
+						onSubmit={editProvider}
+						provider={selectedProvider}
+						setProvider={setSelectedProvider}
 					/>
 				)}
 			</div>
