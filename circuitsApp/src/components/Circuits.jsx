@@ -81,6 +81,7 @@ function Circuits() {
 	const [error, setError] = useState(null);
 	const [showCircuitDetail, setShowCircuitDetail] = useState(false);
 	const [selectedCircuit, setSelectedCircuit] = useState(null);
+	const [searchTerm, setSearchTerm] = useState("");
 
 	useEffect(() => {
 		if (selectedMenu === "Circuit Information") {
@@ -102,6 +103,17 @@ function Circuits() {
 		}
 	};
 
+	const filteredCircuits = circuits.filter(
+		(circuit) =>
+			circuit.site.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			circuit.provider.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			circuit.circuitBandwidth
+				.toLowerCase()
+				.includes(searchTerm.toLowerCase()) ||
+			circuit.accountNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			circuit.circuitId.toLowerCase().includes(searchTerm.toLowerCase())
+	);
+
 	const renderContent = () => {
 		if (loading) return <div>Loading...</div>;
 		if (error) return <div style={{ color: "red" }}>{error}</div>;
@@ -109,6 +121,22 @@ function Circuits() {
 		if (selectedMenu === "Circuit Information") {
 			return (
 				<div>
+					<div style={{ marginBottom: "20px" }}>
+						<input
+							type="text"
+							placeholder="Search circuits..."
+							value={searchTerm}
+							onChange={(e) => setSearchTerm(e.target.value)}
+							style={{
+								width: "100%",
+								padding: "8px 12px",
+								fontSize: "16px",
+								border: "1px solid #e2e8f0",
+								borderRadius: "4px",
+								backgroundColor: "#f8fafc",
+							}}
+						/>
+					</div>
 					<table style={{ width: "100%", borderCollapse: "collapse" }}>
 						<thead>
 							<tr style={{ backgroundColor: "#2c3e50" }}>
@@ -120,7 +148,7 @@ function Circuits() {
 							</tr>
 						</thead>
 						<tbody>
-							{circuits.map((circuit) => (
+							{filteredCircuits.map((circuit) => (
 								<tr
 									key={circuit.id}
 									style={{ borderBottom: "1px solid #dee2e6" }}
