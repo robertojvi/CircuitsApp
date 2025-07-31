@@ -751,6 +751,9 @@ function Admin() {
 	const [selectedProvider, setSelectedProvider] = useState(null);
 	const [showEditCircuitModal, setShowEditCircuitModal] = useState(false);
 	const [selectedCircuit, setSelectedCircuit] = useState(null);
+	const [siteSearch, setSiteSearch] = useState("");
+	const [providerSearch, setProviderSearch] = useState("");
+	const [circuitSearch, setCircuitSearch] = useState("");
 
 	const fetchSites = async () => {
 		setLoading(true);
@@ -1017,6 +1020,52 @@ function Admin() {
 		}
 	};
 
+	// Add filter functions
+	const filteredSites = sites.filter(
+		(site) =>
+			site.name.toLowerCase().includes(siteSearch.toLowerCase()) ||
+			site.address.toLowerCase().includes(siteSearch.toLowerCase()) ||
+			site.city.toLowerCase().includes(siteSearch.toLowerCase()) ||
+			site.state.toLowerCase().includes(siteSearch.toLowerCase()) ||
+			site.zipCode.toLowerCase().includes(siteSearch.toLowerCase())
+	);
+
+	const filteredProviders = providers.filter(
+		(provider) =>
+			provider.name.toLowerCase().includes(providerSearch.toLowerCase()) ||
+			provider.address.toLowerCase().includes(providerSearch.toLowerCase()) ||
+			provider.city.toLowerCase().includes(providerSearch.toLowerCase()) ||
+			provider.state.toLowerCase().includes(providerSearch.toLowerCase()) ||
+			provider.zipCode.toLowerCase().includes(providerSearch.toLowerCase())
+	);
+
+	const filteredCircuits = circuits.filter(
+		(circuit) =>
+			circuit.site.name.toLowerCase().includes(circuitSearch.toLowerCase()) ||
+			circuit.provider.name
+				.toLowerCase()
+				.includes(circuitSearch.toLowerCase()) ||
+			circuit.accountNumber
+				.toLowerCase()
+				.includes(circuitSearch.toLowerCase()) ||
+			circuit.circuitId.toLowerCase().includes(circuitSearch.toLowerCase()) ||
+			circuit.circuitBandwidth
+				.toLowerCase()
+				.includes(circuitSearch.toLowerCase())
+	);
+
+	const searchInputStyle = {
+		width: "100%",
+		padding: "8px 12px",
+		marginBottom: "20px",
+		fontSize: "16px",
+		border: "1px solid #3498db",
+		borderRadius: "4px",
+		backgroundColor: "#34495e",
+		color: "#ffffff",
+		outline: "none",
+	};
+
 	const renderContent = () => {
 		if (loading) return <div>Loading...</div>;
 		if (error) return <div style={{ color: "red" }}>{error}</div>;
@@ -1024,7 +1073,14 @@ function Admin() {
 		if (selectedItem === "Sites") {
 			return (
 				<div>
-					<div style={{ marginBottom: "20px" }}>
+					<div style={{ marginBottom: "20px", display: "flex", gap: "20px" }}>
+						<input
+							type="text"
+							placeholder="Search sites..."
+							value={siteSearch}
+							onChange={(e) => setSiteSearch(e.target.value)}
+							style={searchInputStyle}
+						/>
 						<button
 							onClick={() => setShowCreateSiteModal(true)}
 							style={{
@@ -1049,7 +1105,7 @@ function Admin() {
 							</tr>
 						</thead>
 						<tbody>
-							{sites.map((site) => (
+							{filteredSites.map((site) => (
 								<tr key={site.id} style={{ borderBottom: "1px solid #dee2e6" }}>
 									<td style={cellStyle}>{site.id}</td>
 									<td style={cellStyle}>{site.name}</td>
@@ -1088,7 +1144,14 @@ function Admin() {
 		if (selectedItem === "Providers") {
 			return (
 				<div>
-					<div style={{ marginBottom: "20px" }}>
+					<div style={{ marginBottom: "20px", display: "flex", gap: "20px" }}>
+						<input
+							type="text"
+							placeholder="Search providers..."
+							value={providerSearch}
+							onChange={(e) => setProviderSearch(e.target.value)}
+							style={searchInputStyle}
+						/>
 						<button
 							onClick={() => setShowCreateProviderModal(true)}
 							style={{
@@ -1113,7 +1176,7 @@ function Admin() {
 							</tr>
 						</thead>
 						<tbody>
-							{providers.map((provider) => (
+							{filteredProviders.map((provider) => (
 								<tr
 									key={provider.id}
 									style={{ borderBottom: "1px solid #dee2e6" }}
@@ -1149,7 +1212,14 @@ function Admin() {
 		if (selectedItem === "Circuits") {
 			return (
 				<div>
-					<div style={{ marginBottom: "20px" }}>
+					<div style={{ marginBottom: "20px", display: "flex", gap: "20px" }}>
+						<input
+							type="text"
+							placeholder="Search circuits..."
+							value={circuitSearch}
+							onChange={(e) => setCircuitSearch(e.target.value)}
+							style={searchInputStyle}
+						/>
 						<button
 							onClick={() => {
 								fetchSites();
@@ -1179,7 +1249,7 @@ function Admin() {
 							</tr>
 						</thead>
 						<tbody>
-							{circuits.map((circuit) => (
+							{filteredCircuits.map((circuit) => (
 								<tr
 									key={circuit.id}
 									style={{ borderBottom: "1px solid #dee2e6" }}
