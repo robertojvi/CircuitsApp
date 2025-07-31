@@ -1313,6 +1313,9 @@ const headerStyle = {
 	padding: "12px",
 	textAlign: "left",
 	borderBottom: "2px solid #dee2e6",
+	backgroundColor: "#2c3e50", // Dark blue background
+	color: "#ffffff", // White text
+	fontWeight: "600", // Semi-bold text
 };
 
 const cellStyle = {
