@@ -970,6 +970,21 @@ function Admin() {
 	};
 
 	const handleDelete = async (id, type) => {
+		// Check for dependencies before deleting
+		if (type === "site" || type === "provider") {
+			const isUsed = circuits.some((circuit) => {
+				if (type === "site") return circuit.site.id === id;
+				if (type === "provider") return circuit.provider.id === id;
+			});
+
+			if (isUsed) {
+				alert(
+					`This ${type} cannot be deleted because it is being used in one or more circuits.`
+				);
+				return;
+			}
+		}
+
 		if (window.confirm(`Are you sure you want to delete this ${type}?`)) {
 			setLoading(true);
 			try {
