@@ -1467,11 +1467,25 @@ function Admin() {
 		}
 
 		return (
-			<div style={{ textAlign: "center", marginTop: "0px" }}>
+			<div style={{ textAlign: "center", marginTop: "10px" }}>
 				<div
-					style={{ fontSize: "36px", color: "#3498db", marginBottom: "20px" }}
+					style={{
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+						gap: "20px",
+						marginBottom: "20px",
+					}}
 				>
-					←
+					<span style={{ fontSize: "36px", color: "#3498db" }}>←</span>
+					<img
+						src="src/images/Access.png"
+						alt="Access Parks Logo"
+						style={{
+							width: "100px",
+							maxWidth: "100%",
+						}}
+					/>
 				</div>
 				<h1 style={{ color: "#2c3e50" }}>
 					Please select an option from the menu
@@ -1483,7 +1497,7 @@ function Admin() {
 	return (
 		<div
 			style={{
-				paddingTop: "0px",
+				paddingTop: "30px",
 				display: "flex",
 				width: "100%",
 				flexDirection: "column",
