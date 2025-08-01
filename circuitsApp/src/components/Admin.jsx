@@ -1217,21 +1217,15 @@ function Admin() {
 									<td style={cellStyle}>
 										<button
 											onClick={() => handleEdit(site.id, "site")}
-											style={{
-												...buttonStyle,
-												backgroundColor: "#4299e1",
-											}}
+											style={iconButtonStyle}
 										>
-											Edit
+											✏️
 										</button>
 										<button
 											onClick={() => handleDelete(site.id, "site")}
-											style={{
-												...buttonStyle,
-												backgroundColor: "#f56565",
-											}}
+											style={iconButtonStyle}
 										>
-											Delete
+											🗑️
 										</button>
 									</td>
 								</tr>
@@ -1322,15 +1316,15 @@ function Admin() {
 									<td style={cellStyle}>
 										<button
 											onClick={() => handleEdit(provider.id, "provider")}
-											style={{ ...buttonStyle, backgroundColor: "#4299e1" }}
+											style={iconButtonStyle}
 										>
-											Edit
+											✏️
 										</button>
 										<button
 											onClick={() => handleDelete(provider.id, "provider")}
-											style={{ ...buttonStyle, backgroundColor: "#f56565" }}
+											style={iconButtonStyle}
 										>
-											Delete
+											🗑️
 										</button>
 									</td>
 								</tr>
@@ -1432,15 +1426,15 @@ function Admin() {
 									<td style={cellStyle}>
 										<button
 											onClick={() => handleEdit(circuit.id, "circuit")}
-											style={{ ...buttonStyle, backgroundColor: "#4299e1" }}
+											style={iconButtonStyle}
 										>
-											Edit
+											✏️
 										</button>
 										<button
 											onClick={() => handleDelete(circuit.id, "circuit")}
-											style={{ ...buttonStyle, backgroundColor: "#f56565" }}
+											style={iconButtonStyle}
 										>
-											Delete
+											🗑️
 										</button>
 									</td>
 								</tr>
@@ -1469,7 +1463,7 @@ function Admin() {
 		<div style={{ paddingTop: "50px", display: "flex", width: "100%" }}>
 			<nav
 				style={{
-					width: "250px",
+					width: "150px",
 					minHeight: "calc(100vh - 50px)",
 					backgroundColor: "#2c3e50",
 					padding: "20px",
@@ -1534,7 +1528,8 @@ function Admin() {
 					</li>
 				</ul>
 			</nav>
-			<div style={{ marginLeft: "250px", padding: "20px", flex: 1 }}>
+			<div style={{ marginLeft: "200px", padding: "20px", flex: 1 }}>
+				{" "}
 				{renderContent()}
 				{showCreateSiteModal && (
 					<CreateSiteModal
@@ -1622,6 +1617,15 @@ const buttonStyle = {
 	borderRadius: "4px",
 	color: "white",
 	cursor: "pointer",
+};
+
+const iconButtonStyle = {
+	padding: "4px 8px",
+	border: "none",
+	borderRadius: "4px",
+	backgroundColor: "transparent",
+	cursor: "pointer",
+	fontSize: "20px",
 };
 
 const inputStyle = {

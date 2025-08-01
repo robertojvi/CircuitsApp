@@ -255,7 +255,7 @@ function Circuits() {
 		<div style={{ paddingTop: "50px", display: "flex", width: "100%" }}>
 			<nav
 				style={{
-					width: "250px",
+					width: "150px",
 					minHeight: "calc(100vh - 50px)",
 					backgroundColor: "#2c3e50",
 					padding: "20px",
