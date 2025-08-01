@@ -20,13 +20,13 @@ ChartJS.register(
 );
 
 function Reports() {
-	const [selectedMenu, setSelectedMenu] = useState("Usage Analytics");
+	const [selectedMenu, setSelectedMenu] = useState("Circuit Analytics");
 	const [circuits, setCircuits] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
-		if (selectedMenu === "Usage Analytics") {
+		if (selectedMenu === "Circuit Analytics") {
 			fetchCircuits();
 		}
 	}, [selectedMenu]);
@@ -89,15 +89,14 @@ function Reports() {
 		if (loading) return <div>Loading...</div>;
 		if (error) return <div style={{ color: "red" }}>{error}</div>;
 
-		if (selectedMenu === "Usage Analytics") {
+		if (selectedMenu === "Circuit Analytics") {
 			return (
-				<div style={{ padding: 0, width: "100%" }}>
+				<div style={{ width: "100%" }}>
 					<div
 						style={{
 							display: "flex",
 							flexDirection: "column",
 							gap: "40px",
-							marginBottom: "20px",
 							width: "100%",
 						}}
 					>
@@ -117,10 +116,11 @@ function Reports() {
 							<div
 								style={{
 									backgroundColor: "#f8f9fa",
-									padding: "20px",
+									padding: "30px",
 									borderRadius: "8px",
 									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
 									height: "400px",
+									margin: "0 -20px",
 								}}
 							>
 								<Bar
@@ -161,10 +161,11 @@ function Reports() {
 							<div
 								style={{
 									backgroundColor: "#f8f9fa",
-									padding: "20px",
+									padding: "30px",
 									borderRadius: "8px",
 									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
 									height: "400px",
+									margin: "0 -20px",
 								}}
 							>
 								<Bar
@@ -219,7 +220,7 @@ function Reports() {
 						fontSize: "16px",
 					}}
 				>
-					{["Usage Analytics", "Performance Metrics", "System Logs"].map(
+					{["Circuit Analytics", "Performance Metrics", "System Logs"].map(
 						(item) => (
 							<li
 								key={item}
