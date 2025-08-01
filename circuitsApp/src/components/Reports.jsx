@@ -116,11 +116,17 @@ function Reports() {
 							<div
 								style={{
 									backgroundColor: "#f8f9fa",
-									padding: "30px",
+									padding: "20px",
 									borderRadius: "8px",
 									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-									height: "400px",
-									margin: "0 -20px",
+									height: "300px",
+									margin: "0 auto",
+									maxWidth: "800px",
+									width: "100%",
+									"@media (max-width: 768px)": {
+										padding: "10px",
+										height: "250px",
+									},
 								}}
 							>
 								<Bar
@@ -129,16 +135,31 @@ function Reports() {
 										responsive: true,
 										maintainAspectRatio: false,
 										plugins: {
-											legend: { position: "top" },
+											legend: {
+												position: "top",
+												labels: {
+													boxWidth: 20,
+													font: { size: 12 },
+												},
+											},
 											title: {
 												display: true,
 												text: "Sites per Bandwidth",
+												font: { size: 14 },
 											},
 										},
 										scales: {
 											y: {
 												beginAtZero: true,
-												ticks: { stepSize: 1 },
+												ticks: {
+													stepSize: 1,
+													font: { size: 11 },
+												},
+											},
+											x: {
+												ticks: {
+													font: { size: 11 },
+												},
 											},
 										},
 									}}
@@ -161,11 +182,17 @@ function Reports() {
 							<div
 								style={{
 									backgroundColor: "#f8f9fa",
-									padding: "30px",
+									padding: "20px",
 									borderRadius: "8px",
 									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-									height: "400px",
-									margin: "0 -20px",
+									height: "300px",
+									margin: "0 auto",
+									maxWidth: "800px",
+									width: "100%",
+									"@media (max-width: 768px)": {
+										padding: "10px",
+										height: "250px",
+									},
 								}}
 							>
 								<Bar
@@ -199,7 +226,7 @@ function Reports() {
 	};
 
 	const responsiveChartContainer = {
-		width: "100%",
+		width: "96%",
 		padding: "15px",
 		"@media (max-width: 768px)": {
 			padding: "10px",
@@ -216,7 +243,7 @@ function Reports() {
 		top: "50px",
 		zIndex: 999,
 		"@media (max-width: 768px)": {
-			width: "100%",
+			width: "70%",
 			position: "static",
 			minHeight: "auto",
 		},
@@ -236,7 +263,7 @@ function Reports() {
 			style={{
 				paddingTop: "50px",
 				display: "flex",
-				width: "100%",
+				width: "94%",
 				flexDirection: "column",
 			}}
 		>
