@@ -1438,7 +1438,18 @@ function Admin() {
 			);
 		}
 
-		return <h1>Admin Page</h1>;
+		return (
+			<div style={{ textAlign: "center", marginTop: "100px" }}>
+				<div
+					style={{ fontSize: "48px", color: "#3498db", marginBottom: "20px" }}
+				>
+					←
+				</div>
+				<h1 style={{ color: "#2c3e50" }}>
+					Please select an option from the menu
+				</h1>
+			</div>
+		);
 	};
 
 	return (
