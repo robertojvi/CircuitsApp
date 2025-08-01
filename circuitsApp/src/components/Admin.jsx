@@ -1656,15 +1656,17 @@ function Admin() {
 
 const headerStyle = {
 	padding: "12px",
-	textAlign: "left",
+	textAlign: "center",
 	borderBottom: "2px solid #dee2e6",
 	backgroundColor: "#2c3e50", // Dark blue background
 	color: "#ffffff", // White text
 	fontWeight: "600", // Semi-bold text
+	fontSize: "14px",
 };
 
 const cellStyle = {
 	padding: "12px",
+	fontSize: "13px",
 };
 
 const buttonStyle = {
@@ -1690,7 +1692,7 @@ const inputStyle = {
 	padding: "8px",
 	border: "1px solid #D1D5DB",
 	borderRadius: "4px",
-	fontSize: "14px",
+	fontSize: "12px",
 };
 
 export default Admin;
