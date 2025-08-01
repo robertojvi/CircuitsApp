@@ -53,8 +53,24 @@ function Home() {
 					</li>
 				</ul>
 			</nav>
-			<div style={{ marginLeft: "250px", padding: "20px", flex: 1 }}>
-				<h1>Welcome to the Home Page</h1>
+			<div
+				style={{
+					marginLeft: "250px",
+					padding: "20px",
+					flex: 1,
+					textAlign: "center",
+				}}
+			>
+				<img
+					src="src/images/Access.png"
+					alt="Access Parks Logo"
+					style={{
+						width: "200px",
+						marginBottom: "20px",
+					}}
+				/>
+				<h1>AccessParks Circuits</h1>
+				<p>Select an Option from the top Menu</p>
 			</div>
 		</div>
 	);
