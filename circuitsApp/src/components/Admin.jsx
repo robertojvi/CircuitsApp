@@ -20,7 +20,9 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 				backgroundColor: "white",
 				padding: "20px",
 				borderRadius: "8px",
-				width: "400px",
+				width: "90%",
+				maxWidth: "400px",
+				margin: "20px",
 			}}
 		>
 			<h2 style={{ marginBottom: "20px" }}>Create New Site</h2>
@@ -130,7 +132,9 @@ const CreateProviderModal = ({
 				backgroundColor: "white",
 				padding: "20px",
 				borderRadius: "8px",
-				width: "400px",
+				width: "90%",
+				maxWidth: "400px",
+				margin: "20px",
 			}}
 		>
 			<h2 style={{ marginBottom: "20px" }}>Create New Provider</h2>
@@ -257,7 +261,9 @@ const CreateCircuitModal = ({
 					backgroundColor: "white",
 					padding: "20px",
 					borderRadius: "8px",
-					width: "400px",
+					width: "90%",
+					maxWidth: "400px",
+					margin: "20px",
 				}}
 			>
 				<h2 style={{ marginBottom: "20px" }}>Create New Circuit</h2>
@@ -399,7 +405,9 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 				backgroundColor: "white",
 				padding: "20px",
 				borderRadius: "8px",
-				width: "400px",
+				width: "90%",
+				maxWidth: "400px",
+				margin: "20px",
 			}}
 		>
 			<h2 style={{ marginBottom: "20px" }}>Edit Site</h2>
@@ -500,7 +508,9 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 				backgroundColor: "white",
 				padding: "20px",
 				borderRadius: "8px",
-				width: "400px",
+				width: "90%",
+				maxWidth: "400px",
+				margin: "20px",
 			}}
 		>
 			<h2 style={{ marginBottom: "20px" }}>Edit Provider</h2>
@@ -614,7 +624,9 @@ const EditCircuitModal = ({
 				backgroundColor: "white",
 				padding: "20px",
 				borderRadius: "8px",
-				width: "400px",
+				width: "90%",
+				maxWidth: "400px",
+				margin: "20px",
 			}}
 		>
 			<h2 style={{ marginBottom: "20px" }}>Edit Circuit</h2>
@@ -1163,75 +1175,80 @@ function Admin() {
 							Create New Site
 						</button>
 					</div>
-					<table style={{ width: "100%", borderCollapse: "collapse" }}>
-						<thead>
-							<tr style={{ backgroundColor: "#2c3e50" }}>
-								<th
-									onClick={() => onSort("id")}
-									style={getSortableHeaderStyle("id")}
-								>
-									ID
-								</th>
-								<th
-									onClick={() => onSort("name")}
-									style={getSortableHeaderStyle("name")}
-								>
-									Name
-								</th>
-								<th
-									onClick={() => onSort("address")}
-									style={getSortableHeaderStyle("address")}
-								>
-									Address
-								</th>
-								<th
-									onClick={() => onSort("city")}
-									style={getSortableHeaderStyle("city")}
-								>
-									City
-								</th>
-								<th
-									onClick={() => onSort("state")}
-									style={getSortableHeaderStyle("state")}
-								>
-									State
-								</th>
-								<th
-									onClick={() => onSort("zipCode")}
-									style={getSortableHeaderStyle("zipCode")}
-								>
-									Zip Code
-								</th>
-								<th style={headerStyle}>Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							{sortedSites.map((site) => (
-								<tr key={site.id} style={{ borderBottom: "1px solid #dee2e6" }}>
-									<td style={cellStyle}>{site.id}</td>
-									<td style={cellStyle}>{site.name}</td>
-									<td style={cellStyle}>{site.address}</td>
-									<td style={cellStyle}>{site.city}</td>
-									<td style={cellStyle}>{site.state}</td>
-									<td style={cellStyle}>{site.zipCode}</td>
-									<td style={cellStyle}>
-										<button
-											onClick={() => handleEdit(site.id, "site")}
-											style={iconButtonStyle}
-										>
-											✏️
-										</button>
-										<button
-											onClick={() => handleDelete(site.id, "site")}
-											style={iconButtonStyle}
-										>
-											🗑️
-										</button>
-									</td>
+					<div style={{ width: "100%", overflowX: "auto" }}>
+						<table style={{ width: "100%", borderCollapse: "collapse" }}>
+							<thead>
+								<tr style={{ backgroundColor: "#2c3e50" }}>
+									<th
+										onClick={() => onSort("id")}
+										style={getSortableHeaderStyle("id")}
+									>
+										ID
+									</th>
+									<th
+										onClick={() => onSort("name")}
+										style={getSortableHeaderStyle("name")}
+									>
+										Name
+									</th>
+									<th
+										onClick={() => onSort("address")}
+										style={getSortableHeaderStyle("address")}
+									>
+										Address
+									</th>
+									<th
+										onClick={() => onSort("city")}
+										style={getSortableHeaderStyle("city")}
+									>
+										City
+									</th>
+									<th
+										onClick={() => onSort("state")}
+										style={getSortableHeaderStyle("state")}
+									>
+										State
+									</th>
+									<th
+										onClick={() => onSort("zipCode")}
+										style={getSortableHeaderStyle("zipCode")}
+									>
+										Zip Code
+									</th>
+									<th style={headerStyle}>Actions</th>
 								</tr>
-							))}
-						</tbody>
-					</table>
+							</thead>
+							<tbody>
+								{sortedSites.map((site) => (
+									<tr
+										key={site.id}
+										style={{ borderBottom: "1px solid #dee2e6" }}
+									>
+										<td style={cellStyle}>{site.id}</td>
+										<td style={cellStyle}>{site.name}</td>
+										<td style={cellStyle}>{site.address}</td>
+										<td style={cellStyle}>{site.city}</td>
+										<td style={cellStyle}>{site.state}</td>
+										<td style={cellStyle}>{site.zipCode}</td>
+										<td style={cellStyle}>
+											<button
+												onClick={() => handleEdit(site.id, "site")}
+												style={iconButtonStyle}
+											>
+												✏️
+											</button>
+											<button
+												onClick={() => handleDelete(site.id, "site")}
+												style={iconButtonStyle}
+											>
+												🗑️
+											</button>
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
 				</div>
 			);
 		}
@@ -1259,78 +1276,80 @@ function Admin() {
 							Create New Provider
 						</button>
 					</div>
-					<table style={{ width: "100%", borderCollapse: "collapse" }}>
-						<thead>
-							<tr style={{ backgroundColor: "#2c3e50" }}>
-								<th
-									onClick={() => onSort("id")}
-									style={getSortableHeaderStyle("id")}
-								>
-									ID
-								</th>
-								<th
-									onClick={() => onSort("name")}
-									style={getSortableHeaderStyle("name")}
-								>
-									Name
-								</th>
-								<th
-									onClick={() => onSort("address")}
-									style={getSortableHeaderStyle("address")}
-								>
-									Address
-								</th>
-								<th
-									onClick={() => onSort("city")}
-									style={getSortableHeaderStyle("city")}
-								>
-									City
-								</th>
-								<th
-									onClick={() => onSort("state")}
-									style={getSortableHeaderStyle("state")}
-								>
-									State
-								</th>
-								<th
-									onClick={() => onSort("zipCode")}
-									style={getSortableHeaderStyle("zipCode")}
-								>
-									Zip Code
-								</th>
-								<th style={headerStyle}>Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							{sortedProviders.map((provider) => (
-								<tr
-									key={provider.id}
-									style={{ borderBottom: "1px solid #dee2e6" }}
-								>
-									<td style={cellStyle}>{provider.id}</td>
-									<td style={cellStyle}>{provider.name}</td>
-									<td style={cellStyle}>{provider.address}</td>
-									<td style={cellStyle}>{provider.city}</td>
-									<td style={cellStyle}>{provider.state}</td>
-									<td style={cellStyle}>{provider.zipCode}</td>
-									<td style={cellStyle}>
-										<button
-											onClick={() => handleEdit(provider.id, "provider")}
-											style={iconButtonStyle}
-										>
-											✏️
-										</button>
-										<button
-											onClick={() => handleDelete(provider.id, "provider")}
-											style={iconButtonStyle}
-										>
-											🗑️
-										</button>
-									</td>
+					<div style={{ width: "100%", overflowX: "auto" }}>
+						<table style={{ width: "100%", borderCollapse: "collapse" }}>
+							<thead>
+								<tr style={{ backgroundColor: "#2c3e50" }}>
+									<th
+										onClick={() => onSort("id")}
+										style={getSortableHeaderStyle("id")}
+									>
+										ID
+									</th>
+									<th
+										onClick={() => onSort("name")}
+										style={getSortableHeaderStyle("name")}
+									>
+										Name
+									</th>
+									<th
+										onClick={() => onSort("address")}
+										style={getSortableHeaderStyle("address")}
+									>
+										Address
+									</th>
+									<th
+										onClick={() => onSort("city")}
+										style={getSortableHeaderStyle("city")}
+									>
+										City
+									</th>
+									<th
+										onClick={() => onSort("state")}
+										style={getSortableHeaderStyle("state")}
+									>
+										State
+									</th>
+									<th
+										onClick={() => onSort("zipCode")}
+										style={getSortableHeaderStyle("zipCode")}
+									>
+										Zip Code
+									</th>
+									<th style={headerStyle}>Actions</th>
 								</tr>
-							))}
-						</tbody>
-					</table>
+							</thead>
+							<tbody>
+								{sortedProviders.map((provider) => (
+									<tr
+										key={provider.id}
+										style={{ borderBottom: "1px solid #dee2e6" }}
+									>
+										<td style={cellStyle}>{provider.id}</td>
+										<td style={cellStyle}>{provider.name}</td>
+										<td style={cellStyle}>{provider.address}</td>
+										<td style={cellStyle}>{provider.city}</td>
+										<td style={cellStyle}>{provider.state}</td>
+										<td style={cellStyle}>{provider.zipCode}</td>
+										<td style={cellStyle}>
+											<button
+												onClick={() => handleEdit(provider.id, "provider")}
+												style={iconButtonStyle}
+											>
+												✏️
+											</button>
+											<button
+												onClick={() => handleDelete(provider.id, "provider")}
+												style={iconButtonStyle}
+											>
+												🗑️
+											</button>
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
 				</div>
 			);
 		}
@@ -1362,85 +1381,87 @@ function Admin() {
 							Create New Circuit
 						</button>
 					</div>
-					<table style={{ width: "100%", borderCollapse: "collapse" }}>
-						<thead>
-							<tr style={{ backgroundColor: "#2c3e50" }}>
-								<th
-									onClick={() => onSort("id")}
-									style={getSortableHeaderStyle("id")}
-								>
-									ID
-								</th>
-								<th
-									onClick={() => onSort("site.name")}
-									style={getSortableHeaderStyle("site.name")}
-								>
-									Site
-								</th>
-								<th
-									onClick={() => onSort("provider.name")}
-									style={getSortableHeaderStyle("provider.name")}
-								>
-									Provider
-								</th>
-								<th
-									onClick={() => onSort("accountNumber")}
-									style={getSortableHeaderStyle("accountNumber")}
-								>
-									Account Number
-								</th>
-								<th
-									onClick={() => onSort("circuitId")}
-									style={getSortableHeaderStyle("circuitId")}
-								>
-									Circuit ID
-								</th>
-								<th
-									onClick={() => onSort("circuitBandwidth")}
-									style={getSortableHeaderStyle("circuitBandwidth")}
-								>
-									Bandwidth
-								</th>
-								<th
-									onClick={() => onSort("monthlyCost")}
-									style={getSortableHeaderStyle("monthlyCost")}
-								>
-									Monthly Cost
-								</th>
-								<th style={headerStyle}>Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							{sortedCircuits.map((circuit) => (
-								<tr
-									key={circuit.id}
-									style={{ borderBottom: "1px solid #dee2e6" }}
-								>
-									<td style={cellStyle}>{circuit.id}</td>
-									<td style={cellStyle}>{circuit.site.name}</td>
-									<td style={cellStyle}>{circuit.provider.name}</td>
-									<td style={cellStyle}>{circuit.accountNumber}</td>
-									<td style={cellStyle}>{circuit.circuitId}</td>
-									<td style={cellStyle}>{circuit.circuitBandwidth}</td>
-									<td style={cellStyle}>${circuit.monthlyCost}</td>
-									<td style={cellStyle}>
-										<button
-											onClick={() => handleEdit(circuit.id, "circuit")}
-											style={iconButtonStyle}
-										>
-											✏️
-										</button>
-										<button
-											onClick={() => handleDelete(circuit.id, "circuit")}
-											style={iconButtonStyle}
-										>
-											🗑️
-										</button>
-									</td>
+					<div style={{ width: "100%", overflowX: "auto" }}>
+						<table style={{ width: "100%", borderCollapse: "collapse" }}>
+							<thead>
+								<tr style={{ backgroundColor: "#2c3e50" }}>
+									<th
+										onClick={() => onSort("id")}
+										style={getSortableHeaderStyle("id")}
+									>
+										ID
+									</th>
+									<th
+										onClick={() => onSort("site.name")}
+										style={getSortableHeaderStyle("site.name")}
+									>
+										Site
+									</th>
+									<th
+										onClick={() => onSort("provider.name")}
+										style={getSortableHeaderStyle("provider.name")}
+									>
+										Provider
+									</th>
+									<th
+										onClick={() => onSort("accountNumber")}
+										style={getSortableHeaderStyle("accountNumber")}
+									>
+										Account Number
+									</th>
+									<th
+										onClick={() => onSort("circuitId")}
+										style={getSortableHeaderStyle("circuitId")}
+									>
+										Circuit ID
+									</th>
+									<th
+										onClick={() => onSort("circuitBandwidth")}
+										style={getSortableHeaderStyle("circuitBandwidth")}
+									>
+										Bandwidth
+									</th>
+									<th
+										onClick={() => onSort("monthlyCost")}
+										style={getSortableHeaderStyle("monthlyCost")}
+									>
+										Monthly Cost
+									</th>
+									<th style={headerStyle}>Actions</th>
 								</tr>
-							))}
-						</tbody>
-					</table>
+							</thead>
+							<tbody>
+								{sortedCircuits.map((circuit) => (
+									<tr
+										key={circuit.id}
+										style={{ borderBottom: "1px solid #dee2e6" }}
+									>
+										<td style={cellStyle}>{circuit.id}</td>
+										<td style={cellStyle}>{circuit.site.name}</td>
+										<td style={cellStyle}>{circuit.provider.name}</td>
+										<td style={cellStyle}>{circuit.accountNumber}</td>
+										<td style={cellStyle}>{circuit.circuitId}</td>
+										<td style={cellStyle}>{circuit.circuitBandwidth}</td>
+										<td style={cellStyle}>${circuit.monthlyCost}</td>
+										<td style={cellStyle}>
+											<button
+												onClick={() => handleEdit(circuit.id, "circuit")}
+												style={iconButtonStyle}
+											>
+												✏️
+											</button>
+											<button
+												onClick={() => handleDelete(circuit.id, "circuit")}
+												style={iconButtonStyle}
+											>
+												🗑️
+											</button>
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
 				</div>
 			);
 		}
@@ -1460,7 +1481,14 @@ function Admin() {
 	};
 
 	return (
-		<div style={{ paddingTop: "50px", display: "flex", width: "100%" }}>
+		<div
+			style={{
+				paddingTop: "50px",
+				display: "flex",
+				width: "100%",
+				flexDirection: "column",
+			}}
+		>
 			<nav
 				style={{
 					width: "150px",
@@ -1471,6 +1499,11 @@ function Admin() {
 					left: 0,
 					top: "50px",
 					zIndex: 999,
+					"@media (max-width: 768px)": {
+						width: "100%",
+						position: "static",
+						minHeight: "auto",
+					},
 				}}
 			>
 				<ul
@@ -1528,9 +1561,19 @@ function Admin() {
 					</li>
 				</ul>
 			</nav>
-			<div style={{ marginLeft: "200px", padding: "20px", flex: 1 }}>
-				{" "}
-				{renderContent()}
+			<div
+				style={{
+					marginLeft: "150px",
+					padding: "20px",
+					flex: 1,
+					"@media (max-width: 768px)": {
+						marginLeft: 0,
+					},
+				}}
+			>
+				<div style={{ width: "100%", overflowX: "auto" }}>
+					{renderContent()}
+				</div>
 				{showCreateSiteModal && (
 					<CreateSiteModal
 						onClose={() => setShowCreateSiteModal(false)}

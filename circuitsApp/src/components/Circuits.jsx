@@ -251,20 +251,46 @@ function Circuits() {
 		return <h1>{selectedMenu}</h1>;
 	};
 
+	const responsiveTableContainer = {
+		width: "100%",
+		overflowX: "auto",
+	};
+
+	const responsiveNavStyle = {
+		width: "150px",
+		minHeight: "calc(100vh - 50px)",
+		backgroundColor: "#2c3e50",
+		padding: "20px",
+		position: "fixed",
+		left: 0,
+		top: "50px",
+		zIndex: 999,
+		"@media (max-width: 768px)": {
+			width: "100%",
+			position: "static",
+			minHeight: "auto",
+		},
+	};
+
+	const responsiveContentStyle = {
+		marginLeft: "150px",
+		padding: "20px",
+		flex: 1,
+		"@media (max-width: 768px)": {
+			marginLeft: 0,
+		},
+	};
+
 	return (
-		<div style={{ paddingTop: "50px", display: "flex", width: "100%" }}>
-			<nav
-				style={{
-					width: "150px",
-					minHeight: "calc(100vh - 50px)",
-					backgroundColor: "#2c3e50",
-					padding: "20px",
-					position: "fixed",
-					left: 0,
-					top: "50px",
-					zIndex: 999,
-				}}
-			>
+		<div
+			style={{
+				paddingTop: "50px",
+				display: "flex",
+				width: "100%",
+				flexDirection: "column",
+			}}
+		>
+			<nav style={responsiveNavStyle}>
 				<ul
 					style={{
 						listStyle: "none",
@@ -290,8 +316,8 @@ function Circuits() {
 					))}
 				</ul>
 			</nav>
-			<div style={{ marginLeft: "250px", padding: "20px", flex: 1 }}>
-				{renderContent()}
+			<div style={responsiveContentStyle}>
+				<div style={responsiveTableContainer}>{renderContent()}</div>
 				{showCircuitDetail && selectedCircuit && (
 					<CircuitDetailModal
 						circuit={selectedCircuit}
