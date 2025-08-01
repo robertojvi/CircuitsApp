@@ -228,143 +228,156 @@ const CreateCircuitModal = ({
 	setNewCircuit,
 	sites,
 	providers,
-}) => (
-	<div
-		style={{
-			position: "fixed",
-			top: 0,
-			left: 0,
-			right: 0,
-			bottom: 0,
-			backgroundColor: "rgba(0,0,0,0.5)",
-			display: "flex",
-			justifyContent: "center",
-			alignItems: "center",
-			zIndex: 1000,
-		}}
-	>
+}) => {
+	const sortedSites = [...sites].sort((a, b) =>
+		a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+	);
+
+	const sortedProviders = [...providers].sort((a, b) =>
+		a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+	);
+
+	return (
 		<div
 			style={{
-				backgroundColor: "white",
-				padding: "20px",
-				borderRadius: "8px",
-				width: "400px",
+				position: "fixed",
+				top: 0,
+				left: 0,
+				right: 0,
+				bottom: 0,
+				backgroundColor: "rgba(0,0,0,0.5)",
+				display: "flex",
+				justifyContent: "center",
+				alignItems: "center",
+				zIndex: 1000,
 			}}
 		>
-			<h2 style={{ marginBottom: "20px" }}>Create New Circuit</h2>
-			<form onSubmit={onSubmit}>
-				<div style={{ marginBottom: "15px" }}>
-					<select
-						value={newCircuit.site?.id || ""}
-						onChange={(e) =>
-							setNewCircuit({
-								...newCircuit,
-								site: { id: Number(e.target.value) },
-							})
-						}
-						style={inputStyle}
-						required
+			<div
+				style={{
+					backgroundColor: "white",
+					padding: "20px",
+					borderRadius: "8px",
+					width: "400px",
+				}}
+			>
+				<h2 style={{ marginBottom: "20px" }}>Create New Circuit</h2>
+				<form onSubmit={onSubmit}>
+					<div style={{ marginBottom: "15px" }}>
+						<select
+							value={newCircuit.site?.id || ""}
+							onChange={(e) =>
+								setNewCircuit({
+									...newCircuit,
+									site: { id: Number(e.target.value) },
+								})
+							}
+							style={inputStyle}
+							required
+						>
+							<option value="">Select Site</option>
+							{sortedSites.map((site) => (
+								<option key={site.id} value={site.id}>
+									{site.name}
+								</option>
+							))}
+						</select>
+					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<select
+							value={newCircuit.provider?.id || ""}
+							onChange={(e) =>
+								setNewCircuit({
+									...newCircuit,
+									provider: { id: Number(e.target.value) },
+								})
+							}
+							style={inputStyle}
+							required
+						>
+							<option value="">Select Provider</option>
+							{sortedProviders.map((provider) => (
+								<option key={provider.id} value={provider.id}>
+									{provider.name}
+								</option>
+							))}
+						</select>
+					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<input
+							type="text"
+							placeholder="Account Number"
+							value={newCircuit.accountNumber || ""}
+							onChange={(e) =>
+								setNewCircuit({ ...newCircuit, accountNumber: e.target.value })
+							}
+							style={inputStyle}
+							required
+						/>
+					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<input
+							type="text"
+							placeholder="Circuit ID"
+							value={newCircuit.circuitId || ""}
+							onChange={(e) =>
+								setNewCircuit({ ...newCircuit, circuitId: e.target.value })
+							}
+							style={inputStyle}
+							required
+						/>
+					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<input
+							type="text"
+							placeholder="Bandwidth"
+							value={newCircuit.circuitBandwidth || ""}
+							onChange={(e) =>
+								setNewCircuit({
+									...newCircuit,
+									circuitBandwidth: e.target.value,
+								})
+							}
+							style={inputStyle}
+							required
+						/>
+					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<input
+							type="number"
+							placeholder="Monthly Cost"
+							value={newCircuit.monthlyCost || ""}
+							onChange={(e) =>
+								setNewCircuit({
+									...newCircuit,
+									monthlyCost: Number(e.target.value),
+								})
+							}
+							style={inputStyle}
+							required
+						/>
+					</div>
+					<div
+						style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
 					>
-						<option value="">Select Site</option>
-						{sites.map((site) => (
-							<option key={site.id} value={site.id}>
-								{site.name}
-							</option>
-						))}
-					</select>
-				</div>
-				<div style={{ marginBottom: "15px" }}>
-					<select
-						value={newCircuit.provider?.id || ""}
-						onChange={(e) =>
-							setNewCircuit({
-								...newCircuit,
-								provider: { id: Number(e.target.value) },
-							})
-						}
-						style={inputStyle}
-						required
-					>
-						<option value="">Select Provider</option>
-						{providers.map((provider) => (
-							<option key={provider.id} value={provider.id}>
-								{provider.name}
-							</option>
-						))}
-					</select>
-				</div>
-				<div style={{ marginBottom: "15px" }}>
-					<input
-						type="text"
-						placeholder="Account Number"
-						value={newCircuit.accountNumber || ""}
-						onChange={(e) =>
-							setNewCircuit({ ...newCircuit, accountNumber: e.target.value })
-						}
-						style={inputStyle}
-						required
-					/>
-				</div>
-				<div style={{ marginBottom: "15px" }}>
-					<input
-						type="text"
-						placeholder="Circuit ID"
-						value={newCircuit.circuitId || ""}
-						onChange={(e) =>
-							setNewCircuit({ ...newCircuit, circuitId: e.target.value })
-						}
-						style={inputStyle}
-						required
-					/>
-				</div>
-				<div style={{ marginBottom: "15px" }}>
-					<input
-						type="text"
-						placeholder="Bandwidth"
-						value={newCircuit.circuitBandwidth || ""}
-						onChange={(e) =>
-							setNewCircuit({ ...newCircuit, circuitBandwidth: e.target.value })
-						}
-						style={inputStyle}
-						required
-					/>
-				</div>
-				<div style={{ marginBottom: "15px" }}>
-					<input
-						type="number"
-						placeholder="Monthly Cost"
-						value={newCircuit.monthlyCost || ""}
-						onChange={(e) =>
-							setNewCircuit({
-								...newCircuit,
-								monthlyCost: Number(e.target.value),
-							})
-						}
-						style={inputStyle}
-						required
-					/>
-				</div>
-				<div
-					style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
-				>
-					<button
-						type="button"
-						onClick={onClose}
-						style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}
-					>
-						Cancel
-					</button>
-					<button
-						type="submit"
-						style={{ ...buttonStyle, backgroundColor: "#4299E1" }}
-					>
-						Create
-					</button>
-				</div>
-			</form>
+						<button
+							type="button"
+							onClick={onClose}
+							style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}
+						>
+							Cancel
+						</button>
+						<button
+							type="submit"
+							style={{ ...buttonStyle, backgroundColor: "#4299E1" }}
+						>
+							Create
+						</button>
+					</div>
+				</form>
+			</div>
 		</div>
-	</div>
-);
+	);
+};
 
 const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 	<div
