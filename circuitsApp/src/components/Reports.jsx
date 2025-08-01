@@ -220,23 +220,21 @@ function Reports() {
 						fontSize: "16px",
 					}}
 				>
-					{["Circuit Analytics", "Performance Metrics", "System Logs"].map(
-						(item) => (
-							<li
-								key={item}
-								style={{
-									marginBottom: "15px",
-									padding: "10px",
-									cursor: "pointer",
-									backgroundColor:
-										selectedMenu === item ? "#34495e" : "transparent",
-								}}
-								onClick={() => setSelectedMenu(item)}
-							>
-								{item}
-							</li>
-						)
-					)}
+					{["Circuit Analytics"].map((item) => (
+						<li
+							key={item}
+							style={{
+								marginBottom: "15px",
+								padding: "10px",
+								cursor: "pointer",
+								backgroundColor:
+									selectedMenu === item ? "#34495e" : "transparent",
+							}}
+							onClick={() => setSelectedMenu(item)}
+						>
+							{item}
+						</li>
+					))}
 				</ul>
 			</nav>
 			<div style={{ marginLeft: "250px", padding: "20px", flex: 1 }}>

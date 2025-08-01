@@ -273,11 +273,7 @@ function Circuits() {
 						fontSize: "16px",
 					}}
 				>
-					{[
-						"Circuit Information",
-						"Circuit Configuration",
-						"Circuit Monitoring",
-					].map((item) => (
+					{["Circuit Information"].map((item) => (
 						<li
 							key={item}
 							style={{
