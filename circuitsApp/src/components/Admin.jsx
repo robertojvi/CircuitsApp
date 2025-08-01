@@ -1467,9 +1467,9 @@ function Admin() {
 		}
 
 		return (
-			<div style={{ textAlign: "center", marginTop: "100px" }}>
+			<div style={{ textAlign: "center", marginTop: "0px" }}>
 				<div
-					style={{ fontSize: "48px", color: "#3498db", marginBottom: "20px" }}
+					style={{ fontSize: "36px", color: "#3498db", marginBottom: "20px" }}
 				>
 					←
 				</div>
@@ -1483,7 +1483,7 @@ function Admin() {
 	return (
 		<div
 			style={{
-				paddingTop: "50px",
+				paddingTop: "0px",
 				display: "flex",
 				width: "100%",
 				flexDirection: "column",
