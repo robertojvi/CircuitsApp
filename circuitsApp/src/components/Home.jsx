@@ -11,7 +11,7 @@ function Home() {
 					src="src/images/Access.png"
 					alt="Access Parks Logo"
 					style={{
-						width: "150px",
+						width: "100px",
 						marginBottom: "20px",
 					}}
 				/>
