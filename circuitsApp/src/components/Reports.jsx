@@ -162,15 +162,20 @@ function Reports() {
 												font: { size: 14 },
 											},
 											datalabels: {
+												display: true,
 												color: "#2c3e50",
-												anchor: "end",
-												align: "top",
-												offset: 4,
+												anchor: "start",
+												align: "end",
+												offset: -20,
 												font: {
 													size: 12,
 													weight: "bold",
 												},
-												formatter: (value) => value,
+												formatter: (value, context) => {
+													return context.dataIndex < context.dataset.data.length
+														? value
+														: "";
+												},
 											},
 										},
 										scales: {
@@ -232,15 +237,20 @@ function Reports() {
 												text: "Sites per Provider",
 											},
 											datalabels: {
+												display: true,
 												color: "#2c3e50",
-												anchor: "end",
-												align: "top",
-												offset: 4,
+												anchor: "start",
+												align: "end",
+												offset: -20,
 												font: {
 													size: 12,
 													weight: "bold",
 												},
-												formatter: (value) => value,
+												formatter: (value, context) => {
+													return context.dataIndex < context.dataset.data.length
+														? value
+														: "";
+												},
 											},
 										},
 										scales: {
