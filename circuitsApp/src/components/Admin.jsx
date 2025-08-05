@@ -830,6 +830,18 @@ function Admin() {
 	const createSite = async (e) => {
 		e.preventDefault();
 		setLoading(true);
+
+		// Check for duplicate site name
+		const isDuplicate = sites.some(
+			(site) => site.name.toLowerCase() === newSite.name.toLowerCase()
+		);
+
+		if (isDuplicate) {
+			alert("A site with this name already exists");
+			setLoading(false);
+			return;
+		}
+
 		try {
 			const response = await fetch("/api/sites", {
 				method: "POST",
@@ -854,6 +866,19 @@ function Admin() {
 	const createProvider = async (e) => {
 		e.preventDefault();
 		setLoading(true);
+
+		// Check for duplicate provider name
+		const isDuplicate = providers.some(
+			(provider) =>
+				provider.name.toLowerCase() === newProvider.name.toLowerCase()
+		);
+
+		if (isDuplicate) {
+			alert("A provider with this name already exists");
+			setLoading(false);
+			return;
+		}
+
 		try {
 			const response = await fetch("/api/providers", {
 				method: "POST",
