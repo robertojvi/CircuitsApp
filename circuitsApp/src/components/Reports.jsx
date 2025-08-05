@@ -9,6 +9,7 @@ import {
 	Tooltip,
 	Legend,
 } from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 ChartJS.register(
 	CategoryScale,
@@ -16,7 +17,8 @@ ChartJS.register(
 	BarElement,
 	Title,
 	Tooltip,
-	Legend
+	Legend,
+	ChartDataLabels
 );
 
 function Reports() {
@@ -159,6 +161,17 @@ function Reports() {
 												text: "Sites per Bandwidth",
 												font: { size: 14 },
 											},
+											datalabels: {
+												color: "#2c3e50",
+												anchor: "end",
+												align: "top",
+												offset: 4,
+												font: {
+													size: 12,
+													weight: "bold",
+												},
+												formatter: (value) => value,
+											},
 										},
 										scales: {
 											y: {
@@ -217,6 +230,17 @@ function Reports() {
 											title: {
 												display: true,
 												text: "Sites per Provider",
+											},
+											datalabels: {
+												color: "#2c3e50",
+												anchor: "end",
+												align: "top",
+												offset: 4,
+												font: {
+													size: 12,
+													weight: "bold",
+												},
+												formatter: (value) => value,
 											},
 										},
 										scales: {
