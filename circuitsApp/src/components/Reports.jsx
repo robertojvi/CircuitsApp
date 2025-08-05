@@ -51,12 +51,24 @@ function Reports() {
 			return acc;
 		}, {});
 
+		// Sort bandwidths by capacity
+		const sortedEntries = Object.entries(distribution).sort((a, b) => {
+			// Convert bandwidth strings to numbers for comparison
+			const getNumericValue = (str) => {
+				const num = parseInt(str);
+				if (str.toLowerCase().includes("gb")) return num * 1000;
+				if (str.toLowerCase().includes("mb")) return num;
+				return num;
+			};
+			return getNumericValue(b[0]) - getNumericValue(a[0]);
+		});
+
 		return {
-			labels: Object.keys(distribution),
+			labels: sortedEntries.map(([key]) => key),
 			datasets: [
 				{
 					label: "Number of Sites",
-					data: Object.values(distribution),
+					data: sortedEntries.map(([, value]) => value),
 					backgroundColor: "#3498db",
 					borderColor: "#2980b9",
 					borderWidth: 1,
