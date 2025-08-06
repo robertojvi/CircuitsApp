@@ -1247,6 +1247,19 @@ function Admin() {
 			const sortedSites = getSortedItems(filteredSites);
 			return (
 				<div>
+					<div
+						style={{
+							backgroundColor: "#2c3e50",
+							color: "white",
+							padding: "10px 20px",
+							borderRadius: "4px",
+							marginBottom: "20px",
+							textAlign: "center",
+							fontSize: "16px",
+						}}
+					>
+						Total Sites: {sites.length}
+					</div>
 					<div style={{ marginBottom: "20px", display: "flex", gap: "20px" }}>
 						<input
 							type="text"
@@ -1348,6 +1361,19 @@ function Admin() {
 			const sortedProviders = getSortedItems(filteredProviders);
 			return (
 				<div>
+					<div
+						style={{
+							backgroundColor: "#2c3e50",
+							color: "white",
+							padding: "10px 20px",
+							borderRadius: "4px",
+							marginBottom: "20px",
+							textAlign: "center",
+							fontSize: "16px",
+						}}
+					>
+						Total Providers: {providers.length}
+					</div>
 					<div style={{ marginBottom: "20px", display: "flex", gap: "20px" }}>
 						<input
 							type="text"
@@ -1449,6 +1475,19 @@ function Admin() {
 			const sortedCircuits = getSortedItems(filteredCircuits);
 			return (
 				<div>
+					<div
+						style={{
+							backgroundColor: "#2c3e50",
+							color: "white",
+							padding: "10px 20px",
+							borderRadius: "4px",
+							marginBottom: "20px",
+							textAlign: "center",
+							fontSize: "16px",
+						}}
+					>
+						Total Circuits: {circuits.length}
+					</div>
 					<div style={{ marginBottom: "20px", display: "flex", gap: "20px" }}>
 						<input
 							type="text"
