@@ -85,12 +85,17 @@ function Reports() {
 			return acc;
 		}, {});
 
+		// Sort providers alphabetically
+		const sortedEntries = Object.entries(distribution).sort((a, b) =>
+			a[0].toLowerCase().localeCompare(b[0].toLowerCase())
+		);
+
 		return {
-			labels: Object.keys(distribution),
+			labels: sortedEntries.map(([key]) => key),
 			datasets: [
 				{
 					label: "Sites per Provider",
-					data: Object.values(distribution),
+					data: sortedEntries.map(([, value]) => value),
 					backgroundColor: "#2ecc71",
 					borderColor: "#27ae60",
 					borderWidth: 1,
