@@ -25,7 +25,18 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 				margin: "20px",
 			}}
 		>
-			<h2 style={{ marginBottom: "20px" }}>Create New Site</h2>
+			<h2
+				style={{
+					marginBottom: "20px",
+					backgroundColor: "#2c3e50",
+					color: "white",
+					padding: "10px 20px",
+					borderRadius: "4px",
+					textAlign: "center",
+				}}
+			>
+				Create New Site
+			</h2>
 			<form onSubmit={onSubmit}>
 				<div style={{ marginBottom: "15px" }}>
 					<input
@@ -137,7 +148,18 @@ const CreateProviderModal = ({
 				margin: "20px",
 			}}
 		>
-			<h2 style={{ marginBottom: "20px" }}>Create New Provider</h2>
+			<h2
+				style={{
+					marginBottom: "20px",
+					backgroundColor: "#2c3e50",
+					color: "white",
+					padding: "10px 20px",
+					borderRadius: "4px",
+					textAlign: "center",
+				}}
+			>
+				Create New Provider
+			</h2>
 			<form onSubmit={onSubmit}>
 				<div style={{ marginBottom: "15px" }}>
 					<input
@@ -266,7 +288,18 @@ const CreateCircuitModal = ({
 					margin: "20px",
 				}}
 			>
-				<h2 style={{ marginBottom: "20px" }}>Create New Circuit</h2>
+				<h2
+					style={{
+						marginBottom: "20px",
+						backgroundColor: "#2c3e50",
+						color: "white",
+						padding: "10px 20px",
+						borderRadius: "4px",
+						textAlign: "center",
+					}}
+				>
+					Create New Circuit
+				</h2>
 				<form onSubmit={onSubmit}>
 					<div style={{ marginBottom: "15px" }}>
 						<select
@@ -410,7 +443,18 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 				margin: "20px",
 			}}
 		>
-			<h2 style={{ marginBottom: "20px" }}>Edit Site</h2>
+			<h2
+				style={{
+					marginBottom: "20px",
+					backgroundColor: "#2c3e50",
+					color: "white",
+					padding: "10px 20px",
+					borderRadius: "4px",
+					textAlign: "center",
+				}}
+			>
+				Edit Site
+			</h2>
 			<form onSubmit={onSubmit}>
 				<div style={{ marginBottom: "15px" }}>
 					<input
@@ -513,7 +557,18 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 				margin: "20px",
 			}}
 		>
-			<h2 style={{ marginBottom: "20px" }}>Edit Provider</h2>
+			<h2
+				style={{
+					marginBottom: "20px",
+					backgroundColor: "#2c3e50",
+					color: "white",
+					padding: "10px 20px",
+					borderRadius: "4px",
+					textAlign: "center",
+				}}
+			>
+				Edit Provider
+			</h2>
 			<form onSubmit={onSubmit}>
 				<div style={{ marginBottom: "15px" }}>
 					<input
@@ -629,7 +684,18 @@ const EditCircuitModal = ({
 				margin: "20px",
 			}}
 		>
-			<h2 style={{ marginBottom: "20px" }}>Edit Circuit</h2>
+			<h2
+				style={{
+					marginBottom: "20px",
+					backgroundColor: "#2c3e50",
+					color: "white",
+					padding: "10px 20px",
+					borderRadius: "4px",
+					textAlign: "center",
+				}}
+			>
+				Edit Circuit
+			</h2>
 			<form onSubmit={onSubmit}>
 				<div style={{ marginBottom: "15px" }}>
 					<select
