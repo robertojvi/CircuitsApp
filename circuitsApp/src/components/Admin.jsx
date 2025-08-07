@@ -1094,7 +1094,6 @@ function Admin() {
 	};
 
 	const handleDelete = async (id, type) => {
-		// Check for dependencies before deleting
 		if (type === "site" || type === "provider") {
 			const isUsed = circuits.some((circuit) => {
 				if (type === "site") return circuit.site.id === id;
@@ -1623,6 +1622,11 @@ function Admin() {
 			</div>
 		);
 	};
+
+	// Add useEffect to fetch circuits on mount
+	useEffect(() => {
+		fetchCircuits();
+	}, []);
 
 	return (
 		<div
