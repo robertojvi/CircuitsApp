@@ -17,6 +17,15 @@ public class Provider {
     private String city;
     private String state;
     private String zipCode;
+    private String contactNumber;
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
 
     @OneToMany(mappedBy = "provider")
     @JsonIgnore

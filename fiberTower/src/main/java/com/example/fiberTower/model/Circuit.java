@@ -20,6 +20,42 @@ public class Circuit {
     private String circuitId;
     private String circuitBandwidth;
     private Double monthlyCost;
+    private String status;
+    private String installationDate;
+    private String expirationDate;
+    private String circuitType;
+
+    public String getCircuitType() {
+        return circuitType;
+    }
+
+    public void setCircuitType(String circuitType) {
+        this.circuitType = circuitType;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getInstallationDate() {
+        return installationDate;
+    }
+
+    public void setInstallationDate(String installationDate) {
+        this.installationDate = installationDate;
+    }
+
+    public String getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
+    }
 
     public Long getId() {
         return id;

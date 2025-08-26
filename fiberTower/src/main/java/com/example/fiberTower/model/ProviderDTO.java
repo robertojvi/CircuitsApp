@@ -8,6 +8,15 @@ public class ProviderDTO {
     private String city;
     private String state;
     private String zipCode;
+    private String contactNumber;
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
 
     public Long getId() {
         return id;

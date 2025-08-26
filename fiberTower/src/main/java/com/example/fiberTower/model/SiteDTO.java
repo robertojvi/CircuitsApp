@@ -8,6 +8,69 @@ public class SiteDTO {
     private String city;
     private String state;
     private String zipCode;
+    private String siteType;
+    private String primaryName;
+    private String primaryPhone;
+    private String primaryEmail;
+    private String secondaryName;
+    private String secondaryPhone;
+    private String secondaryEmail;
+
+    public String getPrimaryName() {
+        return primaryName;
+    }
+
+    public void setPrimaryName(String primaryName) {
+        this.primaryName = primaryName;
+    }
+
+    public String getPrimaryPhone() {
+        return primaryPhone;
+    }
+
+    public void setPrimaryPhone(String primaryPhone) {
+        this.primaryPhone = primaryPhone;
+    }
+
+    public String getPrimaryEmail() {
+        return primaryEmail;
+    }
+
+    public void setPrimaryEmail(String primaryEmail) {
+        this.primaryEmail = primaryEmail;
+    }
+
+    public String getSecondaryName() {
+        return secondaryName;
+    }
+
+    public void setSecondaryName(String secondaryName) {
+        this.secondaryName = secondaryName;
+    }
+
+    public String getSecondaryPhone() {
+        return secondaryPhone;
+    }
+
+    public void setSecondaryPhone(String secondaryPhone) {
+        this.secondaryPhone = secondaryPhone;
+    }
+
+    public String getSecondaryEmail() {
+        return secondaryEmail;
+    }
+
+    public void setSecondaryEmail(String secondaryEmail) {
+        this.secondaryEmail = secondaryEmail;
+    }
+
+    public String getSiteType() {
+        return siteType;
+    }
+
+    public void setSiteType(String siteType) {
+        this.siteType = siteType;
+    }
 
     public Long getId() {
         return id;
