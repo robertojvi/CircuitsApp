@@ -585,6 +585,19 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 					/>
 				</div>
 				<div style={{ marginBottom: "15px" }}>
+					<select
+						value={site.siteType}
+						onChange={(e) => setSite({ ...site, siteType: e.target.value })}
+						style={inputStyle}
+						required
+					>
+						<option value="">Select Site Type</option>
+						<option value="MHC">MHC</option>
+						<option value="RV">RV</option>
+						<option value="Hybrid">Hybrid</option>
+					</select>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
 					<input
 						type="text"
 						placeholder="Address"
@@ -623,6 +636,109 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 						style={inputStyle}
 						required
 					/>
+				</div>
+				<div
+					style={{
+						marginBottom: "20px",
+						borderTop: "1px solid #eee",
+						paddingTop: "15px",
+					}}
+				>
+					<h3
+						style={{
+							marginBottom: "15px",
+							color: "#2c3e50",
+							fontSize: "16px",
+						}}
+					>
+						Primary Contact
+					</h3>
+					<div style={{ marginBottom: "15px" }}>
+						<input
+							type="text"
+							placeholder="Primary Contact Name"
+							value={site.primaryName}
+							onChange={(e) =>
+								setSite({ ...site, primaryName: e.target.value })
+							}
+							style={inputStyle}
+							required
+						/>
+					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<input
+							type="email"
+							placeholder="Primary Contact Email"
+							value={site.primaryEmail}
+							onChange={(e) =>
+								setSite({ ...site, primaryEmail: e.target.value })
+							}
+							style={inputStyle}
+							required
+						/>
+					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<input
+							type="tel"
+							placeholder="Primary Contact Phone"
+							value={site.primaryPhone}
+							onChange={(e) =>
+								setSite({ ...site, primaryPhone: e.target.value })
+							}
+							style={inputStyle}
+							required
+						/>
+					</div>
+				</div>
+				<div
+					style={{
+						marginBottom: "20px",
+						borderTop: "1px solid #eee",
+						paddingTop: "15px",
+					}}
+				>
+					<h3
+						style={{
+							marginBottom: "15px",
+							color: "#2c3e50",
+							fontSize: "16px",
+						}}
+					>
+						Secondary Contact
+					</h3>
+					<div style={{ marginBottom: "15px" }}>
+						<input
+							type="text"
+							placeholder="Secondary Contact Name"
+							value={site.secondaryName}
+							onChange={(e) =>
+								setSite({ ...site, secondaryName: e.target.value })
+							}
+							style={inputStyle}
+						/>
+					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<input
+							type="email"
+							placeholder="Secondary Contact Email"
+							value={site.secondaryEmail}
+							onChange={(e) =>
+								setSite({ ...site, secondaryEmail: e.target.value })
+							}
+							style={inputStyle}
+						/>
+					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<input
+							type="tel"
+							placeholder="Secondary Contact Phone"
+							value={site.secondaryPhone}
+							onChange={(e) =>
+								setSite({ ...site, secondaryPhone: e.target.value })
+							}
+							style={inputStyle}
+						/>
+					</div>
 				</div>
 				<div
 					style={{
