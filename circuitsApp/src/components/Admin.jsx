@@ -525,6 +525,63 @@ const CreateCircuitModal = ({
 							required
 						/>
 					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<input
+							type="date"
+							placeholder="Installation Date"
+							value={newCircuit.installationDate || ""}
+							onChange={(e) =>
+								setNewCircuit({
+									...newCircuit,
+									installationDate: e.target.value,
+								})
+							}
+							style={inputStyle}
+							required
+						/>
+					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<input
+							type="date"
+							placeholder="Expiration Date"
+							value={newCircuit.expirationDate || ""}
+							onChange={(e) =>
+								setNewCircuit({ ...newCircuit, expirationDate: e.target.value })
+							}
+							style={inputStyle}
+							required
+						/>
+					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<select
+							value={newCircuit.status || ""}
+							onChange={(e) =>
+								setNewCircuit({ ...newCircuit, status: e.target.value })
+							}
+							style={inputStyle}
+							required
+						>
+							<option value="">Select Status</option>
+							<option value="Active">Active</option>
+							<option value="Inactive">Inactive</option>
+							<option value="Pending">Pending</option>
+						</select>
+					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<select
+							value={newCircuit.circuitType || ""}
+							onChange={(e) =>
+								setNewCircuit({ ...newCircuit, circuitType: e.target.value })
+							}
+							style={inputStyle}
+							required
+						>
+							<option value="">Select Circuit Type</option>
+							<option value="Primary">Primary</option>
+							<option value="Backup">Backup</option>
+							<option value="Temporary">Temporary</option>
+						</select>
+					</div>
 					<div
 						style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
 					>
@@ -1040,6 +1097,58 @@ const EditCircuitModal = ({
 						required
 					/>
 				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="date"
+						placeholder="Installation Date"
+						value={circuit.installationDate || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, installationDate: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="date"
+						placeholder="Expiration Date"
+						value={circuit.expirationDate || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, expirationDate: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<select
+						value={circuit.status || ""}
+						onChange={(e) => setCircuit({ ...circuit, status: e.target.value })}
+						style={inputStyle}
+						required
+					>
+						<option value="">Select Status</option>
+						<option value="Active">Active</option>
+						<option value="Inactive">Inactive</option>
+						<option value="Pending">Pending</option>
+					</select>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<select
+						value={circuit.circuitType || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, circuitType: e.target.value })
+						}
+						style={inputStyle}
+						required
+					>
+						<option value="">Select Circuit Type</option>
+						<option value="Primary">Primary</option>
+						<option value="Backup">Backup</option>
+						<option value="Temporary">Temporary</option>
+					</select>
+				</div>
 				<div
 					style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
 				>
@@ -1101,6 +1210,10 @@ function Admin() {
 		circuitId: "",
 		circuitBandwidth: "",
 		monthlyCost: "",
+		installationDate: "",
+		expirationDate: "",
+		status: "",
+		circuitType: "",
 	});
 	const [showEditSiteModal, setShowEditSiteModal] = useState(false);
 	const [selectedSite, setSelectedSite] = useState(null);
@@ -1274,6 +1387,10 @@ function Admin() {
 				circuitId: "",
 				circuitBandwidth: "",
 				monthlyCost: "",
+				installationDate: "",
+				expirationDate: "",
+				status: "",
+				circuitType: "",
 			});
 		} catch (error) {
 			console.error("Error creating circuit:", error);
