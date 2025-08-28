@@ -526,6 +526,20 @@ const CreateCircuitModal = ({
 						/>
 					</div>
 					<div style={{ marginBottom: "15px" }}>
+						<label
+							style={{
+								display: "block",
+								marginBottom: "5px",
+								fontSize: "14px",
+								fontWeight: "500",
+								color: "#3498db", // Added blue color for better visibility
+								backgroundColor: "#f8f9fa", // Added light background
+								padding: "3px 5px",
+								borderRadius: "3px",
+							}}
+						>
+							Installation Date
+						</label>
 						<input
 							type="date"
 							placeholder="Installation Date"
@@ -541,6 +555,20 @@ const CreateCircuitModal = ({
 						/>
 					</div>
 					<div style={{ marginBottom: "15px" }}>
+						<label
+							style={{
+								display: "block",
+								marginBottom: "5px",
+								fontSize: "14px",
+								fontWeight: "500",
+								color: "#3498db", // Added blue color for better visibility
+								backgroundColor: "#f8f9fa", // Added light background
+								padding: "3px 5px",
+								borderRadius: "3px",
+							}}
+						>
+							Expiration Date
+						</label>
 						<input
 							type="date"
 							placeholder="Expiration Date"
@@ -1097,6 +1125,20 @@ const EditCircuitModal = ({
 					/>
 				</div>
 				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "block",
+							marginBottom: "5px",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db", // Added blue color for better visibility
+							backgroundColor: "#f8f9fa", // Added light background
+							padding: "3px 5px",
+							borderRadius: "3px",
+						}}
+					>
+						Installation Date
+					</label>
 					<input
 						type="date"
 						placeholder="Installation Date"
@@ -1109,6 +1151,20 @@ const EditCircuitModal = ({
 					/>
 				</div>
 				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "block",
+							marginBottom: "5px",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db", // Added blue color for better visibility
+							backgroundColor: "#f8f9fa", // Added light background
+							padding: "3px 5px",
+							borderRadius: "3px",
+						}}
+					>
+						Expiration Date
+					</label>
 					<input
 						type="date"
 						placeholder="Expiration Date"
