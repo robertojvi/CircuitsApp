@@ -49,6 +49,21 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 					/>
 				</div>
 				<div style={{ marginBottom: "15px" }}>
+					<select
+						value={newSite.siteType}
+						onChange={(e) =>
+							setNewSite({ ...newSite, siteType: e.target.value })
+						}
+						style={inputStyle}
+						required
+					>
+						<option value="">Select Site Type</option>
+						<option value="MHC">MHC</option>
+						<option value="RV">RV</option>
+						<option value="Hybrid">Hybrid</option>
+					</select>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
 					<input
 						type="text"
 						placeholder="Address"
@@ -91,6 +106,109 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 						style={inputStyle}
 						required
 					/>
+				</div>
+				<div
+					style={{
+						marginBottom: "20px",
+						borderTop: "1px solid #eee",
+						paddingTop: "15px",
+					}}
+				>
+					<h3
+						style={{
+							marginBottom: "15px",
+							color: "#2c3e50",
+							fontSize: "16px",
+						}}
+					>
+						Primary Contact
+					</h3>
+					<div style={{ marginBottom: "15px" }}>
+						<input
+							type="text"
+							placeholder="Primary Contact Name"
+							value={newSite.primaryName}
+							onChange={(e) =>
+								setNewSite({ ...newSite, primaryName: e.target.value })
+							}
+							style={inputStyle}
+							required
+						/>
+					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<input
+							type="email"
+							placeholder="Primary Contact Email"
+							value={newSite.primaryEmail}
+							onChange={(e) =>
+								setNewSite({ ...newSite, primaryEmail: e.target.value })
+							}
+							style={inputStyle}
+							required
+						/>
+					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<input
+							type="tel"
+							placeholder="Primary Contact Phone"
+							value={newSite.primaryPhone}
+							onChange={(e) =>
+								setNewSite({ ...newSite, primaryPhone: e.target.value })
+							}
+							style={inputStyle}
+							required
+						/>
+					</div>
+				</div>
+				<div
+					style={{
+						marginBottom: "20px",
+						borderTop: "1px solid #eee",
+						paddingTop: "15px",
+					}}
+				>
+					<h3
+						style={{
+							marginBottom: "15px",
+							color: "#2c3e50",
+							fontSize: "16px",
+						}}
+					>
+						Secondary Contact
+					</h3>
+					<div style={{ marginBottom: "15px" }}>
+						<input
+							type="text"
+							placeholder="Secondary Contact Name"
+							value={newSite.secondaryName}
+							onChange={(e) =>
+								setNewSite({ ...newSite, secondaryName: e.target.value })
+							}
+							style={inputStyle}
+						/>
+					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<input
+							type="email"
+							placeholder="Secondary Contact Email"
+							value={newSite.secondaryEmail}
+							onChange={(e) =>
+								setNewSite({ ...newSite, secondaryEmail: e.target.value })
+							}
+							style={inputStyle}
+						/>
+					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<input
+							type="tel"
+							placeholder="Secondary Contact Phone"
+							value={newSite.secondaryPhone}
+							onChange={(e) =>
+								setNewSite({ ...newSite, secondaryPhone: e.target.value })
+							}
+							style={inputStyle}
+						/>
+					</div>
 				</div>
 				<div
 					style={{
@@ -818,6 +936,13 @@ function Admin() {
 		city: "",
 		state: "",
 		zipCode: "",
+		siteType: "",
+		primaryName: "",
+		primaryEmail: "",
+		primaryPhone: "",
+		secondaryName: "",
+		secondaryEmail: "",
+		secondaryPhone: "",
 	});
 	const [showCreateProviderModal, setShowCreateProviderModal] = useState(false);
 	const [newProvider, setNewProvider] = useState({
@@ -920,7 +1045,20 @@ function Admin() {
 
 			fetchSites(); // Refresh the list
 			setShowCreateSiteModal(false);
-			setNewSite({ name: "", address: "", city: "", state: "", zipCode: "" });
+			setNewSite({
+				name: "",
+				address: "",
+				city: "",
+				state: "",
+				zipCode: "",
+				siteType: "",
+				primaryName: "",
+				primaryEmail: "",
+				primaryPhone: "",
+				secondaryName: "",
+				secondaryEmail: "",
+				secondaryPhone: "",
+			});
 		} catch (error) {
 			console.error("Error creating site:", error);
 			setError("Failed to create site");
