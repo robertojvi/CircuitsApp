@@ -577,9 +577,8 @@ const CreateCircuitModal = ({
 							required
 						>
 							<option value="">Select Circuit Type</option>
-							<option value="Primary">Primary</option>
-							<option value="Backup">Backup</option>
-							<option value="Temporary">Temporary</option>
+							<option value="Fiber">Fiber Circuit</option>
+							<option value="Tower">Tower</option>
 						</select>
 					</div>
 					<div
