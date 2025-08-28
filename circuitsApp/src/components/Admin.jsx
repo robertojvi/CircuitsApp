@@ -1160,7 +1160,7 @@ const EditCircuitModal = ({
 							color: "#3498db", // Added blue color for better visibility
 							backgroundColor: "#f8f9fa", // Added light background
 							padding: "3px 5px",
-							borderRadius: "3px",
+							borderRadius: "3px", 
 						}}
 					>
 						Expiration Date
