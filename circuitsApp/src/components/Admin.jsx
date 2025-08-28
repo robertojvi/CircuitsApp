@@ -339,6 +339,18 @@ const CreateProviderModal = ({
 						required
 					/>
 				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="tel"
+						placeholder="Contact Number"
+						value={newProvider.contactNumber}
+						onChange={(e) =>
+							setNewProvider({ ...newProvider, contactNumber: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
 				<div
 					style={{
 						display: "flex",
@@ -860,6 +872,18 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 						required
 					/>
 				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="tel"
+						placeholder="Contact Number"
+						value={provider.contactNumber}
+						onChange={(e) =>
+							setProvider({ ...provider, contactNumber: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
 				<div
 					style={{
 						display: "flex",
@@ -1067,6 +1091,7 @@ function Admin() {
 		city: "",
 		state: "",
 		zipCode: "",
+		contactNumber: "", // Add new field
 	});
 	const [showCreateCircuitModal, setShowCreateCircuitModal] = useState(false);
 	const [newCircuit, setNewCircuit] = useState({
@@ -1217,6 +1242,7 @@ function Admin() {
 				city: "",
 				state: "",
 				zipCode: "",
+				contactNumber: "", // Add new field
 			});
 		} catch (error) {
 			console.error("Error creating provider:", error);
