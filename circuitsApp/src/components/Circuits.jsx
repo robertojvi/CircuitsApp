@@ -1,5 +1,20 @@
 import { useState, useEffect } from "react";
 
+// Helper function to check if a date is within the next 6 months
+const isExpirationSoon = (dateString) => {
+	if (!dateString) return false;
+
+	const expirationDate = new Date(dateString);
+	const today = new Date();
+
+	// Add 6 months to today's date
+	const sixMonthsLater = new Date(today);
+	sixMonthsLater.setMonth(today.getMonth() + 6);
+
+	// Check if the expiration date is between today and 6 months from today
+	return expirationDate >= today && expirationDate <= sixMonthsLater;
+};
+
 const CircuitDetailModal = ({ circuit, onClose }) => (
 	<div
 		style={{
@@ -57,8 +72,8 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 					<strong>Provider:</strong> {circuit.provider.name}
 				</p>
 				<p style={detailRowStyle}>
-					<strong>Provider Contact:</strong>{" "}
-					{circuit.provider.contactInfo || "N/A"}
+					<strong>Contact Number:</strong>{" "}
+					{circuit.provider.contactNumber || "N/A"}
 				</p>
 				<p style={detailRowStyle}>
 					<strong>Circuit Type:</strong>{" "}
@@ -116,8 +131,48 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 					<strong>Installation Date:</strong>{" "}
 					{circuit.installationDate || "N/A"}
 				</p>
-				<p style={detailRowStyle}>
-					<strong>Expiration Date:</strong> {circuit.expirationDate || "N/A"}
+				<p
+					style={{
+						...detailRowStyle,
+						backgroundColor: isExpirationSoon(circuit.expirationDate)
+							? "#FEF3C7"
+							: "transparent",
+						padding: isExpirationSoon(circuit.expirationDate)
+							? "8px 5px"
+							: "8px 0",
+						borderRadius: isExpirationSoon(circuit.expirationDate)
+							? "4px"
+							: "0",
+					}}
+				>
+					<strong
+						style={{
+							color: isExpirationSoon(circuit.expirationDate)
+								? "#B45309"
+								: "inherit",
+						}}
+					>
+						Expiration Date:
+					</strong>{" "}
+					<span
+						style={{
+							color: isExpirationSoon(circuit.expirationDate)
+								? "#B45309"
+								: "inherit",
+							fontWeight: isExpirationSoon(circuit.expirationDate)
+								? "bold"
+								: "normal",
+						}}
+					>
+						{circuit.expirationDate || "N/A"}
+					</span>
+					{isExpirationSoon(circuit.expirationDate) && (
+						<span
+							style={{ marginLeft: "5px", fontSize: "12px", color: "#B45309" }}
+						>
+							(Expires soon)
+						</span>
+					)}
 				</p>
 			</div>
 			<div style={{ display: "flex", justifyContent: "flex-end" }}>
