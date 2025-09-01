@@ -13,6 +13,7 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 			justifyContent: "center",
 			alignItems: "center",
 			zIndex: 1000,
+			overflow: "auto",
 		}}
 	>
 		<div
@@ -20,7 +21,10 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 				backgroundColor: "#2c3e50",
 				padding: "20px",
 				borderRadius: "8px",
-				width: "400px",
+				width: "500px",
+				maxWidth: "90%",
+				maxHeight: "90vh",
+				overflowY: "auto",
 				boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
 				color: "#ffffff",
 			}}
@@ -47,19 +51,76 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 					<strong>Site:</strong> {circuit.site.name}
 				</p>
 				<p style={detailRowStyle}>
+					<strong>Site Address:</strong> {circuit.site.address || "N/A"}
+				</p>
+				<p style={detailRowStyle}>
 					<strong>Provider:</strong> {circuit.provider.name}
 				</p>
 				<p style={detailRowStyle}>
-					<strong>Account Number:</strong> {circuit.accountNumber}
+					<strong>Provider Contact:</strong>{" "}
+					{circuit.provider.contactInfo || "N/A"}
 				</p>
 				<p style={detailRowStyle}>
-					<strong>Circuit ID:</strong> {circuit.circuitId}
+					<strong>Circuit Type:</strong>{" "}
+					<span
+						style={{
+							padding: "4px 8px",
+							borderRadius: "4px",
+							fontSize: "12px",
+							fontWeight: "bold",
+							backgroundColor:
+								circuit.circuitType === "Fiber"
+									? "#3B82F6" // Blue for Fiber Circuit
+									: circuit.circuitType === "Tower"
+									? "#8B5CF6" // Purple for Tower
+									: "#94A3B8", // Gray for other types
+							color: "white",
+						}}
+					>
+						{circuit.circuitType || "Unknown"}
+					</span>
 				</p>
 				<p style={detailRowStyle}>
-					<strong>Bandwidth:</strong> {circuit.circuitBandwidth}
+					<strong>Status:</strong>{" "}
+					<span
+						style={{
+							padding: "4px 8px",
+							borderRadius: "4px",
+							fontSize: "12px",
+							fontWeight: "bold",
+							backgroundColor:
+								circuit.status === "Active"
+									? "#10B981" // Green for Active
+									: circuit.status === "Inactive"
+									? "#EF4444" // Red for Inactive
+									: "#F59E0B", // Yellow for Pending or other status
+							color: "white",
+						}}
+					>
+						{circuit.status || "Pending"}
+					</span>
 				</p>
 				<p style={detailRowStyle}>
-					<strong>Monthly Cost:</strong> ${circuit.monthlyCost}
+					<strong>Account Number:</strong> {circuit.accountNumber || "N/A"}
+				</p>
+				<p style={detailRowStyle}>
+					<strong>Circuit ID:</strong> {circuit.circuitId || "N/A"}
+				</p>
+				<p style={detailRowStyle}>
+					<strong>Bandwidth:</strong> {circuit.circuitBandwidth || "N/A"}
+				</p>
+				<p style={detailRowStyle}>
+					<strong>Monthly Cost:</strong> ${circuit.monthlyCost || "0.00"}
+				</p>
+				<p style={detailRowStyle}>
+					<strong>Installation Date:</strong>{" "}
+					{circuit.installationDate || "N/A"}
+				</p>
+				<p style={detailRowStyle}>
+					<strong>Contract End Date:</strong> {circuit.contractEndDate || "N/A"}
+				</p>
+				<p style={detailRowStyle}>
+					<strong>Notes:</strong> {circuit.notes || "No notes available"}
 				</p>
 			</div>
 			<div style={{ display: "flex", justifyContent: "flex-end" }}>
