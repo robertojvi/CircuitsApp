@@ -351,21 +351,6 @@ const CreateProviderModal = ({
 						required
 					/>
 				</div>
-				<div style={{ marginBottom: "15px" }}>
-					<select
-						value={newProvider.status}
-						onChange={(e) =>
-							setNewProvider({ ...newProvider, status: e.target.value })
-						}
-						style={inputStyle}
-						required
-					>
-						<option value="">Select Status</option>
-						<option value="Active">Active</option>
-						<option value="Inactive">Inactive</option>
-						<option value="Pending">Pending</option>
-					</select>
-				</div>
 				<div
 					style={{
 						display: "flex",
@@ -916,6 +901,20 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 			</h2>
 			<form onSubmit={onSubmit}>
 				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "block",
+							marginBottom: "5px",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
+							backgroundColor: "#f8f9fa",
+							padding: "3px 5px",
+							borderRadius: "3px",
+						}}
+					>
+						Name
+					</label>
 					<input
 						type="text"
 						placeholder="Name"
@@ -926,6 +925,20 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 					/>
 				</div>
 				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "block",
+							marginBottom: "5px",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
+							backgroundColor: "#f8f9fa",
+							padding: "3px 5px",
+							borderRadius: "3px",
+						}}
+					>
+						Address
+					</label>
 					<input
 						type="text"
 						placeholder="Address"
@@ -938,6 +951,20 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 					/>
 				</div>
 				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "block",
+							marginBottom: "5px",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
+							backgroundColor: "#f8f9fa",
+							padding: "3px 5px",
+							borderRadius: "3px",
+						}}
+					>
+						City
+					</label>
 					<input
 						type="text"
 						placeholder="City"
@@ -948,6 +975,20 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 					/>
 				</div>
 				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "block",
+							marginBottom: "5px",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
+							backgroundColor: "#f8f9fa",
+							padding: "3px 5px",
+							borderRadius: "3px",
+						}}
+					>
+						State
+					</label>
 					<input
 						type="text"
 						placeholder="State"
@@ -960,6 +1001,20 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 					/>
 				</div>
 				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "block",
+							marginBottom: "5px",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
+							backgroundColor: "#f8f9fa",
+							padding: "3px 5px",
+							borderRadius: "3px",
+						}}
+					>
+						Zip Code
+					</label>
 					<input
 						type="text"
 						placeholder="Zip Code"
@@ -972,6 +1027,20 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 					/>
 				</div>
 				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "block",
+							marginBottom: "5px",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
+							backgroundColor: "#f8f9fa",
+							padding: "3px 5px",
+							borderRadius: "3px",
+						}}
+					>
+						Contact Number
+					</label>
 					<input
 						type="tel"
 						placeholder="Contact Number"
@@ -982,21 +1051,6 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 						style={inputStyle}
 						required
 					/>
-				</div>
-				<div style={{ marginBottom: "15px" }}>
-					<select
-						value={provider.status}
-						onChange={(e) =>
-							setProvider({ ...provider, status: e.target.value })
-						}
-						style={inputStyle}
-						required
-					>
-						<option value="">Select Status</option>
-						<option value="Active">Active</option>
-						<option value="Inactive">Inactive</option>
-						<option value="Pending">Pending</option>
-					</select>
 				</div>
 				<div
 					style={{
@@ -1285,7 +1339,6 @@ function Admin() {
 		state: "",
 		zipCode: "",
 		contactNumber: "",
-		status: "Active", // Add status field with default value
 	});
 	const [showCreateCircuitModal, setShowCreateCircuitModal] = useState(false);
 	const [newCircuit, setNewCircuit] = useState({
