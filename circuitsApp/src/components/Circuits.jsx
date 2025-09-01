@@ -205,10 +205,22 @@ function Circuits() {
 									Provider
 								</th>
 								<th
+									onClick={() => onSort("circuitType")}
+									style={getSortableHeaderStyle("circuitType")}
+								>
+									Circuit Type
+								</th>
+								<th
 									onClick={() => onSort("circuitBandwidth")}
 									style={getSortableHeaderStyle("circuitBandwidth")}
 								>
 									Bandwidth
+								</th>
+								<th
+									onClick={() => onSort("status")}
+									style={getSortableHeaderStyle("status")}
+								>
+									Status
 								</th>
 								<th
 									onClick={() => onSort("monthlyCost")}
@@ -227,7 +239,45 @@ function Circuits() {
 								>
 									<td style={cellStyle}>{circuit.site.name}</td>
 									<td style={cellStyle}>{circuit.provider.name}</td>
+									<td style={cellStyle}>
+										<span
+											style={{
+												padding: "4px 8px",
+												borderRadius: "4px",
+												fontSize: "12px",
+												fontWeight: "bold",
+												backgroundColor:
+													circuit.circuitType === "Fiber"
+														? "#3B82F6" // Blue for Fiber Circuit
+														: circuit.circuitType === "Tower"
+														? "#8B5CF6" // Purple for Tower
+														: "#94A3B8", // Gray for other types
+												color: "white",
+											}}
+										>
+											{circuit.circuitType || "Unknown"}
+										</span>
+									</td>
 									<td style={cellStyle}>{circuit.circuitBandwidth}</td>
+									<td style={cellStyle}>
+										<span
+											style={{
+												padding: "4px 8px",
+												borderRadius: "4px",
+												fontSize: "12px",
+												fontWeight: "bold",
+												backgroundColor:
+													circuit.status === "Active"
+														? "#10B981" // Green for Active
+														: circuit.status === "Inactive"
+														? "#EF4444" // Red for Inactive
+														: "#F59E0B", // Yellow for Pending or other status
+												color: "white",
+											}}
+										>
+											{circuit.status || "Pending"}
+										</span>
+									</td>
 									<td style={cellStyle}>${circuit.monthlyCost}</td>
 									<td style={cellStyle}>
 										<button
