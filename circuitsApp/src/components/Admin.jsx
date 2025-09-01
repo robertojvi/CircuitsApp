@@ -1967,12 +1967,6 @@ function Admin() {
 							<thead>
 								<tr style={{ backgroundColor: "#2c3e50" }}>
 									<th
-										onClick={() => onSort("id")}
-										style={getSortableHeaderStyle("id")}
-									>
-										ID
-									</th>
-									<th
 										onClick={() => onSort("site.name")}
 										style={getSortableHeaderStyle("site.name")}
 									>
@@ -1997,6 +1991,12 @@ function Admin() {
 										Circuit ID
 									</th>
 									<th
+										onClick={() => onSort("circuitType")}
+										style={getSortableHeaderStyle("circuitType")}
+									>
+										Circuit Type
+									</th>
+									<th
 										onClick={() => onSort("circuitBandwidth")}
 										style={getSortableHeaderStyle("circuitBandwidth")}
 									>
@@ -2017,11 +2017,11 @@ function Admin() {
 										key={circuit.id}
 										style={{ borderBottom: "1px solid #dee2e6" }}
 									>
-										<td style={cellStyle}>{circuit.id}</td>
 										<td style={cellStyle}>{circuit.site.name}</td>
 										<td style={cellStyle}>{circuit.provider.name}</td>
 										<td style={cellStyle}>{circuit.accountNumber}</td>
 										<td style={cellStyle}>{circuit.circuitId}</td>
+										<td style={cellStyle}>{circuit.circuitType}</td>
 										<td style={cellStyle}>{circuit.circuitBandwidth}</td>
 										<td style={cellStyle}>${circuit.monthlyCost}</td>
 										<td style={cellStyle}>
