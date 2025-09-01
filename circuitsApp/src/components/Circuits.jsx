@@ -15,6 +15,17 @@ const isExpirationSoon = (dateString) => {
 	return expirationDate >= today && expirationDate <= sixMonthsLater;
 };
 
+// Helper function to check if a date is in the past (expired)
+const isExpired = (dateString) => {
+	if (!dateString) return false;
+
+	const expirationDate = new Date(dateString);
+	const today = new Date();
+
+	// Check if the expiration date is before today
+	return expirationDate < today;
+};
+
 const CircuitDetailModal = ({ circuit, onClose }) => (
 	<div
 		style={{
@@ -134,21 +145,29 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 				<p
 					style={{
 						...detailRowStyle,
-						backgroundColor: isExpirationSoon(circuit.expirationDate)
-							? "#FEF3C7"
+						backgroundColor: isExpired(circuit.expirationDate)
+							? "#FEE2E2" // Light red for expired
+							: isExpirationSoon(circuit.expirationDate)
+							? "#FEF3C7" // Yellow for expiring soon
 							: "transparent",
-						padding: isExpirationSoon(circuit.expirationDate)
-							? "8px 5px"
-							: "8px 0",
-						borderRadius: isExpirationSoon(circuit.expirationDate)
-							? "4px"
-							: "0",
+						padding:
+							isExpired(circuit.expirationDate) ||
+							isExpirationSoon(circuit.expirationDate)
+								? "8px 5px"
+								: "8px 0",
+						borderRadius:
+							isExpired(circuit.expirationDate) ||
+							isExpirationSoon(circuit.expirationDate)
+								? "4px"
+								: "0",
 					}}
 				>
 					<strong
 						style={{
-							color: isExpirationSoon(circuit.expirationDate)
-								? "#B45309"
+							color: isExpired(circuit.expirationDate)
+								? "#B91C1C" // Dark red for expired
+								: isExpirationSoon(circuit.expirationDate)
+								? "#B45309" // Amber for expiring soon
 								: "inherit",
 						}}
 					>
@@ -156,23 +175,39 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 					</strong>{" "}
 					<span
 						style={{
-							color: isExpirationSoon(circuit.expirationDate)
-								? "#B45309"
+							color: isExpired(circuit.expirationDate)
+								? "#B91C1C" // Dark red for expired
+								: isExpirationSoon(circuit.expirationDate)
+								? "#B45309" // Amber for expiring soon
 								: "inherit",
-							fontWeight: isExpirationSoon(circuit.expirationDate)
-								? "bold"
-								: "normal",
+							fontWeight:
+								isExpired(circuit.expirationDate) ||
+								isExpirationSoon(circuit.expirationDate)
+									? "bold"
+									: "normal",
 						}}
 					>
 						{circuit.expirationDate || "N/A"}
 					</span>
-					{isExpirationSoon(circuit.expirationDate) && (
+					{isExpired(circuit.expirationDate) && (
 						<span
-							style={{ marginLeft: "5px", fontSize: "12px", color: "#B45309" }}
+							style={{ marginLeft: "5px", fontSize: "12px", color: "#B91C1C" }}
 						>
-							(Expires soon)
+							(Expired)
 						</span>
 					)}
+					{!isExpired(circuit.expirationDate) &&
+						isExpirationSoon(circuit.expirationDate) && (
+							<span
+								style={{
+									marginLeft: "5px",
+									fontSize: "12px",
+									color: "#B45309",
+								}}
+							>
+								(Expires soon)
+							</span>
+						)}
 				</p>
 			</div>
 			<div style={{ display: "flex", justifyContent: "flex-end" }}>
