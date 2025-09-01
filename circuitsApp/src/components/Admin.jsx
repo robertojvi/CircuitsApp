@@ -1160,7 +1160,7 @@ const EditCircuitModal = ({
 							color: "#3498db", // Added blue color for better visibility
 							backgroundColor: "#f8f9fa", // Added light background
 							padding: "3px 5px",
-							borderRadius: "3px", 
+							borderRadius: "3px",
 						}}
 					>
 						Expiration Date
@@ -1735,16 +1735,16 @@ function Admin() {
 							<thead>
 								<tr style={{ backgroundColor: "#2c3e50" }}>
 									<th
-										onClick={() => onSort("id")}
-										style={getSortableHeaderStyle("id")}
-									>
-										ID
-									</th>
-									<th
 										onClick={() => onSort("name")}
 										style={getSortableHeaderStyle("name")}
 									>
 										Name
+									</th>
+									<th
+										onClick={() => onSort("siteType")}
+										style={getSortableHeaderStyle("siteType")}
+									>
+										Site Type
 									</th>
 									<th
 										onClick={() => onSort("address")}
@@ -1779,8 +1779,8 @@ function Admin() {
 										key={site.id}
 										style={{ borderBottom: "1px solid #dee2e6" }}
 									>
-										<td style={cellStyle}>{site.id}</td>
 										<td style={cellStyle}>{site.name}</td>
+										<td style={cellStyle}>{site.siteType}</td>
 										<td style={cellStyle}>{site.address}</td>
 										<td style={cellStyle}>{site.city}</td>
 										<td style={cellStyle}>{site.state}</td>
