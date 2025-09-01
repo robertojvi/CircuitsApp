@@ -1924,12 +1924,6 @@ function Admin() {
 									>
 										Zip Code
 									</th>
-									<th
-										onClick={() => onSort("status")}
-										style={getSortableHeaderStyle("status")}
-									>
-										Status
-									</th>
 									<th style={headerStyle}>Actions</th>
 								</tr>
 							</thead>
@@ -1944,25 +1938,6 @@ function Admin() {
 										<td style={cellStyle}>{provider.city}</td>
 										<td style={cellStyle}>{provider.state}</td>
 										<td style={cellStyle}>{provider.zipCode}</td>
-										<td style={cellStyle}>
-											<span
-												style={{
-													padding: "4px 8px",
-													borderRadius: "4px",
-													fontSize: "12px",
-													fontWeight: "bold",
-													backgroundColor:
-														provider.status === "Active"
-															? "#10B981"
-															: provider.status === "Inactive"
-															? "#EF4444"
-															: "#F59E0B",
-													color: "white",
-												}}
-											>
-												{provider.status || "Active"}
-											</span>
-										</td>
 										<td style={cellStyle}>
 											<button
 												onClick={() => handleEdit(provider.id, "provider")}
@@ -2072,6 +2047,12 @@ function Admin() {
 									>
 										Monthly Cost
 									</th>
+									<th
+										onClick={() => onSort("status")}
+										style={getSortableHeaderStyle("status")}
+									>
+										Status
+									</th>
 									<th style={headerStyle}>Actions</th>
 								</tr>
 							</thead>
@@ -2088,6 +2069,25 @@ function Admin() {
 										<td style={cellStyle}>{circuit.circuitType}</td>
 										<td style={cellStyle}>{circuit.circuitBandwidth}</td>
 										<td style={cellStyle}>${circuit.monthlyCost}</td>
+										<td style={cellStyle}>
+											<span
+												style={{
+													padding: "4px 8px",
+													borderRadius: "4px",
+													fontSize: "12px",
+													fontWeight: "bold",
+													backgroundColor:
+														circuit.status === "Active"
+															? "#10B981" // Green for Active
+															: circuit.status === "Inactive"
+															? "#EF4444" // Red for Inactive
+															: "#F59E0B", // Yellow for Pending or other status
+													color: "white",
+												}}
+											>
+												{circuit.status || "Pending"}
+											</span>
+										</td>
 										<td style={cellStyle}>
 											<button
 												onClick={() => handleEdit(circuit.id, "circuit")}
