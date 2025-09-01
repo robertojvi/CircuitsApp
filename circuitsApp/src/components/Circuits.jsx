@@ -117,10 +117,7 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 					{circuit.installationDate || "N/A"}
 				</p>
 				<p style={detailRowStyle}>
-					<strong>Contract End Date:</strong> {circuit.contractEndDate || "N/A"}
-				</p>
-				<p style={detailRowStyle}>
-					<strong>Notes:</strong> {circuit.notes || "No notes available"}
+					<strong>Expiration Date:</strong> {circuit.expirationDate || "N/A"}
 				</p>
 			</div>
 			<div style={{ display: "flex", justifyContent: "flex-end" }}>
