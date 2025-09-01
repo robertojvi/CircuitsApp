@@ -2065,7 +2065,25 @@ function Admin() {
 										<td style={cellStyle}>{circuit.provider.name}</td>
 										<td style={cellStyle}>{circuit.accountNumber}</td>
 										<td style={cellStyle}>{circuit.circuitId}</td>
-										<td style={cellStyle}>{circuit.circuitType}</td>
+										<td style={cellStyle}>
+											<span
+												style={{
+													padding: "4px 8px",
+													borderRadius: "4px",
+													fontSize: "12px",
+													fontWeight: "bold",
+													backgroundColor:
+														circuit.circuitType === "Fiber"
+															? "#3B82F6" // Blue for Fiber Circuit
+															: circuit.circuitType === "Tower"
+															? "#8B5CF6" // Purple for Tower
+															: "#94A3B8", // Gray for other types
+													color: "white",
+												}}
+											>
+												{circuit.circuitType || "Unknown"}
+											</span>
+										</td>
 										<td style={cellStyle}>{circuit.circuitBandwidth}</td>
 										<td style={cellStyle}>${circuit.monthlyCost}</td>
 										<td style={cellStyle}>
