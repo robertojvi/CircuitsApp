@@ -351,6 +351,21 @@ const CreateProviderModal = ({
 						required
 					/>
 				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<select
+						value={newProvider.status}
+						onChange={(e) =>
+							setNewProvider({ ...newProvider, status: e.target.value })
+						}
+						style={inputStyle}
+						required
+					>
+						<option value="">Select Status</option>
+						<option value="Active">Active</option>
+						<option value="Inactive">Inactive</option>
+						<option value="Pending">Pending</option>
+					</select>
+				</div>
 				<div
 					style={{
 						display: "flex",
@@ -968,6 +983,21 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 						required
 					/>
 				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<select
+						value={provider.status}
+						onChange={(e) =>
+							setProvider({ ...provider, status: e.target.value })
+						}
+						style={inputStyle}
+						required
+					>
+						<option value="">Select Status</option>
+						<option value="Active">Active</option>
+						<option value="Inactive">Inactive</option>
+						<option value="Pending">Pending</option>
+					</select>
+				</div>
 				<div
 					style={{
 						display: "flex",
@@ -1255,7 +1285,8 @@ function Admin() {
 		city: "",
 		state: "",
 		zipCode: "",
-		contactNumber: "", // Add new field
+		contactNumber: "",
+		status: "Active", // Add status field with default value
 	});
 	const [showCreateCircuitModal, setShowCreateCircuitModal] = useState(false);
 	const [newCircuit, setNewCircuit] = useState({
@@ -1864,12 +1895,6 @@ function Admin() {
 							<thead>
 								<tr style={{ backgroundColor: "#2c3e50" }}>
 									<th
-										onClick={() => onSort("id")}
-										style={getSortableHeaderStyle("id")}
-									>
-										ID
-									</th>
-									<th
 										onClick={() => onSort("name")}
 										style={getSortableHeaderStyle("name")}
 									>
@@ -1899,6 +1924,12 @@ function Admin() {
 									>
 										Zip Code
 									</th>
+									<th
+										onClick={() => onSort("status")}
+										style={getSortableHeaderStyle("status")}
+									>
+										Status
+									</th>
 									<th style={headerStyle}>Actions</th>
 								</tr>
 							</thead>
@@ -1908,12 +1939,30 @@ function Admin() {
 										key={provider.id}
 										style={{ borderBottom: "1px solid #dee2e6" }}
 									>
-										<td style={cellStyle}>{provider.id}</td>
 										<td style={cellStyle}>{provider.name}</td>
 										<td style={cellStyle}>{provider.address}</td>
 										<td style={cellStyle}>{provider.city}</td>
 										<td style={cellStyle}>{provider.state}</td>
 										<td style={cellStyle}>{provider.zipCode}</td>
+										<td style={cellStyle}>
+											<span
+												style={{
+													padding: "4px 8px",
+													borderRadius: "4px",
+													fontSize: "12px",
+													fontWeight: "bold",
+													backgroundColor:
+														provider.status === "Active"
+															? "#10B981"
+															: provider.status === "Inactive"
+															? "#EF4444"
+															: "#F59E0B",
+													color: "white",
+												}}
+											>
+												{provider.status || "Active"}
+											</span>
+										</td>
 										<td style={cellStyle}>
 											<button
 												onClick={() => handleEdit(provider.id, "provider")}
