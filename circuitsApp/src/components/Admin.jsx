@@ -1281,7 +1281,7 @@ function Admin() {
 	const [circuitSearch, setCircuitSearch] = useState("");
 	// Add sort state
 	const [sortConfig, setSortConfig] = useState({
-		key: null,
+		key: "name", // Default sort key for Sites and Providers
 		direction: "ascending",
 	});
 
@@ -1291,6 +1291,11 @@ function Admin() {
 			const response = await fetch("/api/sites");
 			const data = await response.json();
 			setSites(data);
+			// Set default sort for Sites
+			setSortConfig({
+				key: "name",
+				direction: "ascending",
+			});
 		} catch (error) {
 			console.error("Error:", error);
 			setError("Failed to load sites");
@@ -1305,6 +1310,11 @@ function Admin() {
 			const response = await fetch("/api/providers");
 			const data = await response.json();
 			setProviders(data);
+			// Set default sort for Providers
+			setSortConfig({
+				key: "name",
+				direction: "ascending",
+			});
 		} catch (error) {
 			console.error("Error:", error);
 			setError("Failed to load providers");
@@ -1319,6 +1329,11 @@ function Admin() {
 			const response = await fetch("/api/circuits");
 			const data = await response.json();
 			setCircuits(data);
+			// Set default sort for Circuits
+			setSortConfig({
+				key: "site.name",
+				direction: "ascending",
+			});
 		} catch (error) {
 			console.error("Error:", error);
 			setError("Failed to load circuits");
