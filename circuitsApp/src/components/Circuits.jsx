@@ -258,6 +258,10 @@ function Circuits() {
 	const filteredCircuits = circuits.filter(
 		(circuit) =>
 			circuit.site.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			(circuit.site.siteType &&
+				circuit.site.siteType
+					.toLowerCase()
+					.includes(searchTerm.toLowerCase())) ||
 			circuit.provider.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
 			circuit.circuitBandwidth
 				.toLowerCase()
@@ -347,6 +351,12 @@ function Circuits() {
 									Site
 								</th>
 								<th
+									onClick={() => onSort("site.siteType")}
+									style={getSortableHeaderStyle("site.siteType")}
+								>
+									Site Type
+								</th>
+								<th
 									onClick={() => onSort("provider.name")}
 									style={getSortableHeaderStyle("provider.name")}
 								>
@@ -386,6 +396,27 @@ function Circuits() {
 									style={{ borderBottom: "1px solid #dee2e6" }}
 								>
 									<td style={cellStyle}>{circuit.site.name}</td>
+									<td style={cellStyle}>
+										<span
+											style={{
+												padding: "4px 8px",
+												borderRadius: "4px",
+												fontSize: "12px",
+												fontWeight: "bold",
+												backgroundColor:
+													circuit.site.siteType === "MHC"
+														? "#3B82F6" // Blue for MHC
+														: circuit.site.siteType === "RV"
+														? "#10B981" // Green for RV
+														: circuit.site.siteType === "Hybrid"
+														? "#8B5CF6" // Purple for Hybrid
+														: "#94A3B8", // Gray for other types
+												color: "white",
+											}}
+										>
+											{circuit.site.siteType || "Unknown"}
+										</span>
+									</td>
 									<td style={cellStyle}>{circuit.provider.name}</td>
 									<td style={cellStyle}>
 										<span
