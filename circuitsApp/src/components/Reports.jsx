@@ -27,6 +27,7 @@ function Reports() {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const [siteTypeFilter, setSiteTypeFilter] = useState("All");
+	const [statusFilter, setStatusFilter] = useState("All");
 
 	useEffect(() => {
 		if (selectedMenu === "Circuit Analytics") {
@@ -48,16 +49,71 @@ function Reports() {
 		}
 	};
 
-	// Filter circuits based on selected site type
+	// Filter circuits based on selected site type and status
 	const getFilteredCircuits = () => {
-		if (siteTypeFilter === "All") {
-			return circuits;
-		}
-		return circuits.filter(
-			(circuit) => circuit.site && circuit.site.siteType === siteTypeFilter
-		);
+		return circuits.filter((circuit) => {
+			// Site Type filter
+			const siteTypeMatch =
+				siteTypeFilter === "All" ||
+				(circuit.site && circuit.site.siteType === siteTypeFilter);
+
+			// Status filter
+			const statusMatch =
+				statusFilter === "All" || circuit.status === statusFilter;
+
+			// Both filters must match
+			return siteTypeMatch && statusMatch;
+		});
 	};
 
+	// Helper function to generate filter subtitle text
+	const getFilterSubtitle = () => {
+		const parts = [];
+
+		if (siteTypeFilter !== "All") {
+			parts.push(`${siteTypeFilter} Sites`);
+		}
+
+		if (statusFilter !== "All") {
+			parts.push(`${statusFilter} Status`);
+		}
+
+		return parts.length > 0 ? ` (${parts.join(", ")})` : "";
+	};
+
+	// Helper function to generate dataset labels
+	const getDatasetLabel = (chartType) => {
+		let label = "";
+
+		if (chartType === "Bandwidth") {
+			label = "Number of ";
+		} else if (chartType === "Provider") {
+			label = "Sites per ";
+		} else if (chartType === "Status") {
+			label = "Number of ";
+		}
+
+		// Add site type if filtered
+		if (siteTypeFilter !== "All") {
+			label += `${siteTypeFilter} `;
+		}
+
+		// Add status if filtered (but not for the status chart itself)
+		if (statusFilter !== "All" && chartType !== "Status") {
+			label += `${statusFilter} `;
+		}
+
+		// Add the main label
+		if (chartType === "Bandwidth") {
+			label += "Sites";
+		} else if (chartType === "Provider") {
+			label += "Provider";
+		} else if (chartType === "Status") {
+			label += "Circuits by Status";
+		}
+
+		return label;
+	};
 	const getBandwidthDistribution = () => {
 		const filteredCircuits = getFilteredCircuits();
 		const distribution = filteredCircuits.reduce((acc, circuit) => {
@@ -81,10 +137,7 @@ function Reports() {
 			labels: sortedEntries.map(([key]) => key),
 			datasets: [
 				{
-					label:
-						siteTypeFilter === "All"
-							? "Number of Sites"
-							: `Number of ${siteTypeFilter} Sites`,
+					label: getDatasetLabel("Bandwidth"),
 					data: sortedEntries.map(([, value]) => value),
 					backgroundColor: "#3498db",
 					borderColor: "#2980b9",
@@ -110,13 +163,63 @@ function Reports() {
 			labels: sortedEntries.map(([key]) => key),
 			datasets: [
 				{
-					label:
-						siteTypeFilter === "All"
-							? "Sites per Provider"
-							: `${siteTypeFilter} Sites per Provider`,
+					label: getDatasetLabel("Provider"),
 					data: sortedEntries.map(([, value]) => value),
 					backgroundColor: "#2ecc71",
 					borderColor: "#27ae60",
+					borderWidth: 1,
+				},
+			],
+		};
+	};
+
+	const getStatusDistribution = () => {
+		const filteredCircuits = getFilteredCircuits();
+		const distribution = filteredCircuits.reduce((acc, circuit) => {
+			acc[circuit.status] = (acc[circuit.status] || 0) + 1;
+			return acc;
+		}, {});
+
+		// Sort statuses in a logical order
+		const statusOrder = ["Active", "Pending", "Inactive"];
+		const sortedEntries = Object.entries(distribution).sort((a, b) => {
+			const indexA = statusOrder.indexOf(a[0]);
+			const indexB = statusOrder.indexOf(b[0]);
+			return indexA - indexB;
+		});
+
+		return {
+			labels: sortedEntries.map(([key]) => key),
+			datasets: [
+				{
+					label: getDatasetLabel("Status"),
+					data: sortedEntries.map(([, value]) => value),
+					backgroundColor: sortedEntries.map(([key]) => {
+						// Color-code by status
+						switch (key) {
+							case "Active":
+								return "#2ecc71"; // Green for Active
+							case "Pending":
+								return "#f39c12"; // Orange for Pending
+							case "Inactive":
+								return "#e74c3c"; // Red for Inactive
+							default:
+								return "#95a5a6"; // Gray for other statuses
+						}
+					}),
+					borderColor: sortedEntries.map(([key]) => {
+						// Darker border colors
+						switch (key) {
+							case "Active":
+								return "#27ae60"; // Darker green
+							case "Pending":
+								return "#d35400"; // Darker orange
+							case "Inactive":
+								return "#c0392b"; // Darker red
+							default:
+								return "#7f8c8d"; // Darker gray
+						}
+					}),
 					borderWidth: 1,
 				},
 			],
@@ -149,36 +252,71 @@ function Reports() {
 								Circuit Analytics Dashboard
 							</h2>
 							<div style={{ fontSize: "14px", marginTop: "5px" }}>
-								{siteTypeFilter === "All"
-									? `Showing all ${getFilteredCircuits().length} circuits`
-									: `Showing ${
-											getFilteredCircuits().length
-									  } circuits for ${siteTypeFilter} sites`}
+								Showing {getFilteredCircuits().length} circuits
+								{siteTypeFilter !== "All" ? ` for ${siteTypeFilter} sites` : ""}
+								{statusFilter !== "All" ? ` with ${statusFilter} status` : ""}
 							</div>
 						</div>
-						<div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-							<label htmlFor="siteTypeFilter" style={{ fontSize: "14px" }}>
-								Filter by Site Type:
-							</label>
-							<select
-								id="siteTypeFilter"
-								value={siteTypeFilter}
-								onChange={(e) => setSiteTypeFilter(e.target.value)}
-								style={{
-									padding: "6px 10px",
-									borderRadius: "4px",
-									border: "1px solid #3498db",
-									backgroundColor: "#34495e",
-									color: "#ffffff",
-									fontSize: "14px",
-									cursor: "pointer",
-								}}
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								gap: "10px",
+								flexWrap: "wrap",
+							}}
+						>
+							<div
+								style={{ display: "flex", alignItems: "center", gap: "10px" }}
 							>
-								<option value="All">All Sites</option>
-								<option value="MHC">MHC</option>
-								<option value="RV">RV</option>
-								<option value="Hybrid">Hybrid</option>
-							</select>
+								<label htmlFor="siteTypeFilter" style={{ fontSize: "14px" }}>
+									Site Type:
+								</label>
+								<select
+									id="siteTypeFilter"
+									value={siteTypeFilter}
+									onChange={(e) => setSiteTypeFilter(e.target.value)}
+									style={{
+										padding: "6px 10px",
+										borderRadius: "4px",
+										border: "1px solid #3498db",
+										backgroundColor: "#34495e",
+										color: "#ffffff",
+										fontSize: "14px",
+										cursor: "pointer",
+									}}
+								>
+									<option value="All">All Sites</option>
+									<option value="MHC">MHC</option>
+									<option value="RV">RV</option>
+									<option value="Hybrid">Hybrid</option>
+								</select>
+							</div>
+							<div
+								style={{ display: "flex", alignItems: "center", gap: "10px" }}
+							>
+								<label htmlFor="statusFilter" style={{ fontSize: "14px" }}>
+									Circuit Status:
+								</label>
+								<select
+									id="statusFilter"
+									value={statusFilter}
+									onChange={(e) => setStatusFilter(e.target.value)}
+									style={{
+										padding: "6px 10px",
+										borderRadius: "4px",
+										border: "1px solid #3498db",
+										backgroundColor: "#34495e",
+										color: "#ffffff",
+										fontSize: "14px",
+										cursor: "pointer",
+									}}
+								>
+									<option value="All">All Statuses</option>
+									<option value="Active">Active</option>
+									<option value="Inactive">Inactive</option>
+									<option value="Pending">Pending</option>
+								</select>
+							</div>
 						</div>
 					</div>
 					<div
@@ -233,11 +371,7 @@ function Reports() {
 											},
 											title: {
 												display: true,
-												text: `Sites per Bandwidth ${
-													siteTypeFilter !== "All"
-														? `(${siteTypeFilter} Sites Only)`
-														: ""
-												}`,
+												text: `Sites per Bandwidth${getFilterSubtitle()}`,
 												font: { size: 14 },
 											},
 											datalabels: {
@@ -286,6 +420,74 @@ function Reports() {
 									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
 								}}
 							>
+								Circuit Status Distribution
+							</h2>
+							<div
+								style={{
+									backgroundColor: "#f8f9fa",
+									padding: "20px",
+									borderRadius: "8px",
+									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+									height: "300px",
+									margin: "0 auto",
+									maxWidth: "800px",
+									width: "100%",
+									"@media (max-width: 768px)": {
+										padding: "10px",
+										height: "250px",
+									},
+								}}
+							>
+								<Bar
+									data={getStatusDistribution()}
+									options={{
+										responsive: true,
+										maintainAspectRatio: false,
+										plugins: {
+											legend: { position: "top" },
+											title: {
+												display: true,
+												text: `Circuit Status Distribution${getFilterSubtitle()}`,
+												font: { size: 14 },
+											},
+											datalabels: {
+												display: true,
+												color: "#2c3e50",
+												anchor: "start",
+												align: "end",
+												offset: -20,
+												font: {
+													size: 12,
+													weight: "bold",
+												},
+												formatter: (value, context) => {
+													return context.dataIndex < context.dataset.data.length
+														? value
+														: "";
+												},
+											},
+										},
+										scales: {
+											y: {
+												beginAtZero: true,
+												ticks: { stepSize: 1 },
+											},
+										},
+									}}
+								/>
+							</div>
+						</div>
+						<div>
+							<h2
+								style={{
+									marginBottom: "20px",
+									color: "#ffffff",
+									backgroundColor: "#2c3e50",
+									padding: "10px 20px",
+									borderRadius: "4px",
+									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+								}}
+							>
 								Provider Distribution
 							</h2>
 							<div
@@ -313,11 +515,7 @@ function Reports() {
 											legend: { position: "top" },
 											title: {
 												display: true,
-												text: `Sites per Provider ${
-													siteTypeFilter !== "All"
-														? `(${siteTypeFilter} Sites Only)`
-														: ""
-												}`,
+												text: `Sites per Provider${getFilterSubtitle()}`,
 												font: { size: 14 },
 											},
 											datalabels: {
