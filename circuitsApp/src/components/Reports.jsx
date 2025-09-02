@@ -26,6 +26,7 @@ function Reports() {
 	const [circuits, setCircuits] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
+	const [siteTypeFilter, setSiteTypeFilter] = useState("All");
 
 	useEffect(() => {
 		if (selectedMenu === "Circuit Analytics") {
@@ -47,8 +48,19 @@ function Reports() {
 		}
 	};
 
+	// Filter circuits based on selected site type
+	const getFilteredCircuits = () => {
+		if (siteTypeFilter === "All") {
+			return circuits;
+		}
+		return circuits.filter(
+			(circuit) => circuit.site && circuit.site.siteType === siteTypeFilter
+		);
+	};
+
 	const getBandwidthDistribution = () => {
-		const distribution = circuits.reduce((acc, circuit) => {
+		const filteredCircuits = getFilteredCircuits();
+		const distribution = filteredCircuits.reduce((acc, circuit) => {
 			acc[circuit.circuitBandwidth] = (acc[circuit.circuitBandwidth] || 0) + 1;
 			return acc;
 		}, {});
@@ -69,7 +81,10 @@ function Reports() {
 			labels: sortedEntries.map(([key]) => key),
 			datasets: [
 				{
-					label: "Number of Sites",
+					label:
+						siteTypeFilter === "All"
+							? "Number of Sites"
+							: `Number of ${siteTypeFilter} Sites`,
 					data: sortedEntries.map(([, value]) => value),
 					backgroundColor: "#3498db",
 					borderColor: "#2980b9",
@@ -80,7 +95,8 @@ function Reports() {
 	};
 
 	const getProviderDistribution = () => {
-		const distribution = circuits.reduce((acc, circuit) => {
+		const filteredCircuits = getFilteredCircuits();
+		const distribution = filteredCircuits.reduce((acc, circuit) => {
 			acc[circuit.provider.name] = (acc[circuit.provider.name] || 0) + 1;
 			return acc;
 		}, {});
@@ -94,7 +110,10 @@ function Reports() {
 			labels: sortedEntries.map(([key]) => key),
 			datasets: [
 				{
-					label: "Sites per Provider",
+					label:
+						siteTypeFilter === "All"
+							? "Sites per Provider"
+							: `${siteTypeFilter} Sites per Provider`,
 					data: sortedEntries.map(([, value]) => value),
 					backgroundColor: "#2ecc71",
 					borderColor: "#27ae60",
@@ -111,6 +130,57 @@ function Reports() {
 		if (selectedMenu === "Circuit Analytics") {
 			return (
 				<div style={{ width: "100%" }}>
+					<div
+						style={{
+							marginBottom: "20px",
+							backgroundColor: "#2c3e50",
+							padding: "15px 20px",
+							borderRadius: "4px",
+							color: "#ffffff",
+							display: "flex",
+							justifyContent: "space-between",
+							alignItems: "center",
+							flexWrap: "wrap",
+							gap: "10px",
+						}}
+					>
+						<div>
+							<h2 style={{ margin: 0, fontSize: "18px" }}>
+								Circuit Analytics Dashboard
+							</h2>
+							<div style={{ fontSize: "14px", marginTop: "5px" }}>
+								{siteTypeFilter === "All"
+									? `Showing all ${getFilteredCircuits().length} circuits`
+									: `Showing ${
+											getFilteredCircuits().length
+									  } circuits for ${siteTypeFilter} sites`}
+							</div>
+						</div>
+						<div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+							<label htmlFor="siteTypeFilter" style={{ fontSize: "14px" }}>
+								Filter by Site Type:
+							</label>
+							<select
+								id="siteTypeFilter"
+								value={siteTypeFilter}
+								onChange={(e) => setSiteTypeFilter(e.target.value)}
+								style={{
+									padding: "6px 10px",
+									borderRadius: "4px",
+									border: "1px solid #3498db",
+									backgroundColor: "#34495e",
+									color: "#ffffff",
+									fontSize: "14px",
+									cursor: "pointer",
+								}}
+							>
+								<option value="All">All Sites</option>
+								<option value="MHC">MHC</option>
+								<option value="RV">RV</option>
+								<option value="Hybrid">Hybrid</option>
+							</select>
+						</div>
+					</div>
 					<div
 						style={{
 							display: "flex",
@@ -163,7 +233,11 @@ function Reports() {
 											},
 											title: {
 												display: true,
-												text: "Sites per Bandwidth",
+												text: `Sites per Bandwidth ${
+													siteTypeFilter !== "All"
+														? `(${siteTypeFilter} Sites Only)`
+														: ""
+												}`,
 												font: { size: 14 },
 											},
 											datalabels: {
@@ -239,7 +313,12 @@ function Reports() {
 											legend: { position: "top" },
 											title: {
 												display: true,
-												text: "Sites per Provider",
+												text: `Sites per Provider ${
+													siteTypeFilter !== "All"
+														? `(${siteTypeFilter} Sites Only)`
+														: ""
+												}`,
+												font: { size: 14 },
 											},
 											datalabels: {
 												display: true,
