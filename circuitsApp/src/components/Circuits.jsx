@@ -338,7 +338,7 @@ function Circuits() {
 						/>
 					</div>
 					<table style={{ width: "100%", borderCollapse: "collapse" }}>
-						<thead>
+						<thead style={{ position: "sticky", top: 0, zIndex: 1 }}>
 							<tr style={{ backgroundColor: "#2c3e50" }}>
 								<th
 									onClick={() => onSort("site.name")}
@@ -452,6 +452,8 @@ function Circuits() {
 	const responsiveTableContainer = {
 		width: "100%",
 		overflowX: "auto",
+		maxHeight: "80vh",
+		position: "relative",
 	};
 
 	const responsiveNavStyle = {
@@ -535,6 +537,8 @@ const headerStyle = {
 	textAlign: "left",
 	color: "white",
 	fontWeight: "600",
+	backgroundColor: "#2c3e50",
+	boxShadow: "0 2px 4px rgba(0,0,0,0.1)", // Add shadow to visually separate fixed header
 };
 
 const cellStyle = {

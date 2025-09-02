@@ -1828,9 +1828,16 @@ function Admin() {
 							Create New Site
 						</button>
 					</div>
-					<div style={{ width: "100%", overflowX: "auto" }}>
+					<div
+						style={{
+							width: "100%",
+							overflowX: "auto",
+							maxHeight: "600px",
+							position: "relative",
+						}}
+					>
 						<table style={{ width: "100%", borderCollapse: "collapse" }}>
-							<thead>
+							<thead style={{ position: "sticky", top: 0, zIndex: 1 }}>
 								<tr style={{ backgroundColor: "#2c3e50" }}>
 									<th
 										onClick={() => onSort("name")}
@@ -1962,9 +1969,16 @@ function Admin() {
 							Create New Provider
 						</button>
 					</div>
-					<div style={{ width: "100%", overflowX: "auto" }}>
+					<div
+						style={{
+							width: "100%",
+							overflowX: "auto",
+							maxHeight: "600px",
+							position: "relative",
+						}}
+					>
 						<table style={{ width: "100%", borderCollapse: "collapse" }}>
-							<thead>
+							<thead style={{ position: "sticky", top: 0, zIndex: 1 }}>
 								<tr style={{ backgroundColor: "#2c3e50" }}>
 									<th
 										onClick={() => onSort("name")}
@@ -2073,9 +2087,16 @@ function Admin() {
 							Create New Circuit
 						</button>
 					</div>
-					<div style={{ width: "100%", overflowX: "auto" }}>
+					<div
+						style={{
+							width: "100%",
+							overflowX: "auto",
+							maxHeight: "600px",
+							position: "relative",
+						}}
+					>
 						<table style={{ width: "100%", borderCollapse: "collapse" }}>
-							<thead>
+							<thead style={{ position: "sticky", top: 0, zIndex: 1 }}>
 								<tr style={{ backgroundColor: "#2c3e50" }}>
 									<th
 										onClick={() => onSort("site.name")}
@@ -2402,6 +2423,7 @@ const headerStyle = {
 	color: "#ffffff", // White text
 	fontWeight: "600", // Semi-bold text
 	fontSize: "14px",
+	boxShadow: "0 2px 4px rgba(0,0,0,0.1)", // Add shadow to visually separate fixed header
 };
 
 const cellStyle = {
