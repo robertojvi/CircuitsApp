@@ -1878,7 +1878,27 @@ function Admin() {
 										style={{ borderBottom: "1px solid #dee2e6" }}
 									>
 										<td style={cellStyle}>{site.name}</td>
-										<td style={cellStyle}>{site.siteType}</td>
+										<td style={cellStyle}>
+											<span
+												style={{
+													padding: "4px 8px",
+													borderRadius: "4px",
+													fontSize: "12px",
+													fontWeight: "bold",
+													backgroundColor:
+														site.siteType === "MHC"
+															? "#3B82F6" // Blue for MHC
+															: site.siteType === "RV"
+															? "#10B981" // Green for RV
+															: site.siteType === "Hybrid"
+															? "#8B5CF6" // Purple for Hybrid
+															: "#94A3B8", // Gray for other types
+													color: "white",
+												}}
+											>
+												{site.siteType || "Unknown"}
+											</span>
+										</td>
 										<td style={cellStyle}>{site.address}</td>
 										<td style={cellStyle}>{site.city}</td>
 										<td style={cellStyle}>{site.state}</td>
