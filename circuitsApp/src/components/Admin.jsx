@@ -1706,7 +1706,10 @@ function Admin() {
 			provider.address.toLowerCase().includes(providerSearch.toLowerCase()) ||
 			provider.city.toLowerCase().includes(providerSearch.toLowerCase()) ||
 			provider.state.toLowerCase().includes(providerSearch.toLowerCase()) ||
-			provider.zipCode.toLowerCase().includes(providerSearch.toLowerCase())
+			provider.zipCode.toLowerCase().includes(providerSearch.toLowerCase()) ||
+			provider.contactNumber
+				.toLowerCase()
+				.includes(providerSearch.toLowerCase())
 	);
 
 	const filteredCircuits = circuits.filter(
@@ -2010,6 +2013,12 @@ function Admin() {
 									>
 										Zip Code
 									</th>
+									<th
+										onClick={() => onSort("contactNumber")}
+										style={getSortableHeaderStyle("contactNumber")}
+									>
+										Contact Number
+									</th>
 									<th style={headerStyle}>Actions</th>
 								</tr>
 							</thead>
@@ -2024,6 +2033,7 @@ function Admin() {
 										<td style={cellStyle}>{provider.city}</td>
 										<td style={cellStyle}>{provider.state}</td>
 										<td style={cellStyle}>{provider.zipCode}</td>
+										<td style={cellStyle}>{provider.contactNumber}</td>
 										<td style={cellStyle}>
 											<button
 												onClick={() => handleEdit(provider.id, "provider")}
