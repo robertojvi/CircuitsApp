@@ -51,7 +51,7 @@ function Reports() {
 
 	// Filter circuits based on selected site type and status
 	const getFilteredCircuits = () => {
-		return circuits.filter((circuit) => {
+		let filtered = circuits.filter((circuit) => {
 			// Site Type filter
 			const siteTypeMatch =
 				siteTypeFilter === "All" ||
@@ -64,6 +64,11 @@ function Reports() {
 			// Both filters must match
 			return siteTypeMatch && statusMatch;
 		});
+
+		// Sort the filtered circuits by site name
+		return filtered.sort((a, b) =>
+			a.site.name.toLowerCase().localeCompare(b.site.name.toLowerCase())
+		);
 	};
 
 	// Helper function to generate filter subtitle text
@@ -546,6 +551,119 @@ function Reports() {
 							</div>
 						</div>
 					</div>
+
+					<div>
+						<h2
+							style={{
+								marginTop: "40px",
+								marginBottom: "20px",
+								color: "#ffffff",
+								backgroundColor: "#2c3e50",
+								padding: "10px 20px",
+								borderRadius: "4px",
+								boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+							}}
+						>
+							Circuit List {getFilterSubtitle()}
+						</h2>
+						<div
+							style={{
+								backgroundColor: "#f0f4f8",
+								padding: "20px",
+								borderRadius: "8px",
+								boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+								margin: "0 auto",
+								maxWidth: "900px",
+								width: "100%",
+								overflowX: "auto",
+							}}
+						>
+							{getFilteredCircuits().length > 0 ? (
+								<table style={{ width: "100%", borderCollapse: "collapse" }}>
+									<thead>
+										<tr style={{ backgroundColor: "#2c3e50", color: "white" }}>
+											<th style={tableHeaderStyle}>Venue Name</th>
+											<th style={tableHeaderStyle}>Site Type</th>
+											<th style={tableHeaderStyle}>Provider</th>
+											<th style={tableHeaderStyle}>Bandwidth</th>
+											<th style={tableHeaderStyle}>Status</th>
+										</tr>
+									</thead>
+									<tbody>
+										{getFilteredCircuits().map((circuit, index) => (
+											<tr
+												key={circuit.id}
+												style={{
+													borderBottom: "1px solid #dee2e6",
+													backgroundColor:
+														index % 2 === 0 ? "#ffffff" : "#eef2f7",
+												}}
+											>
+												<td style={{ ...tableCellStyle, fontWeight: "600" }}>
+													{circuit.site.name}
+												</td>
+												<td style={tableCellStyle}>
+													<span
+														style={{
+															padding: "4px 8px",
+															borderRadius: "4px",
+															fontSize: "12px",
+															fontWeight: "bold",
+															backgroundColor:
+																circuit.site.siteType === "MHC"
+																	? "#3B82F6" // Blue for MHC
+																	: circuit.site.siteType === "RV"
+																	? "#10B981" // Green for RV
+																	: circuit.site.siteType === "Hybrid"
+																	? "#8B5CF6" // Purple for Hybrid
+																	: "#94A3B8", // Gray for other types
+															color: "white",
+														}}
+													>
+														{circuit.site.siteType || "Unknown"}
+													</span>
+												</td>
+												<td style={tableCellStyle}>{circuit.provider.name}</td>
+												<td style={tableCellStyle}>
+													{circuit.circuitBandwidth}
+												</td>
+												<td style={tableCellStyle}>
+													<span
+														style={{
+															padding: "4px 8px",
+															borderRadius: "4px",
+															fontSize: "12px",
+															fontWeight: "bold",
+															backgroundColor:
+																circuit.status === "Active"
+																	? "#10B981" // Green for Active
+																	: circuit.status === "Inactive"
+																	? "#EF4444" // Red for Inactive
+																	: "#F59E0B", // Yellow for Pending or other status
+															color: "white",
+														}}
+													>
+														{circuit.status || "Pending"}
+													</span>
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</table>
+							) : (
+								<div
+									style={{
+										textAlign: "center",
+										padding: "30px",
+										color: "#64748B",
+										fontStyle: "italic",
+									}}
+								>
+									No circuits match the selected filters
+								</div>
+							)}
+						</div>
+					</div>
 				</div>
 			);
 		}
@@ -584,6 +702,21 @@ function Reports() {
 		"@media (max-width: 768px)": {
 			marginLeft: 0,
 		},
+	};
+
+	const tableHeaderStyle = {
+		padding: "12px",
+		textAlign: "left",
+		borderBottom: "2px solid #dee2e6",
+		fontWeight: "600",
+		fontSize: "14px",
+	};
+
+	const tableCellStyle = {
+		padding: "12px",
+		textAlign: "left",
+		fontSize: "14px",
+		color: "#2c3e50", // Dark blue text for better readability
 	};
 
 	return (
