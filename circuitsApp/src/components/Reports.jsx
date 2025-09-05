@@ -28,6 +28,7 @@ function Reports() {
 	const [error, setError] = useState(null);
 	const [siteTypeFilter, setSiteTypeFilter] = useState("All");
 	const [statusFilter, setStatusFilter] = useState("All");
+	const [circuitTypeFilter, setCircuitTypeFilter] = useState("All");
 
 	useEffect(() => {
 		if (selectedMenu === "Circuit Analytics") {
@@ -49,7 +50,7 @@ function Reports() {
 		}
 	};
 
-	// Filter circuits based on selected site type and status
+	// Filter circuits based on selected site type, status, and circuit type
 	const getFilteredCircuits = () => {
 		let filtered = circuits.filter((circuit) => {
 			// Site Type filter
@@ -61,8 +62,13 @@ function Reports() {
 			const statusMatch =
 				statusFilter === "All" || circuit.status === statusFilter;
 
-			// Both filters must match
-			return siteTypeMatch && statusMatch;
+			// Circuit Type filter
+			const circuitTypeMatch =
+				circuitTypeFilter === "All" ||
+				circuit.circuitType === circuitTypeFilter;
+
+			// All filters must match
+			return siteTypeMatch && statusMatch && circuitTypeMatch;
 		});
 
 		// Sort the filtered circuits by site name
@@ -81,6 +87,10 @@ function Reports() {
 
 		if (statusFilter !== "All") {
 			parts.push(`${statusFilter} Status`);
+		}
+
+		if (circuitTypeFilter !== "All") {
+			parts.push(`${circuitTypeFilter} Circuits`);
 		}
 
 		return parts.length > 0 ? ` (${parts.join(", ")})` : "";
@@ -106,6 +116,11 @@ function Reports() {
 		// Add status if filtered (but not for the status chart itself)
 		if (statusFilter !== "All" && chartType !== "Status") {
 			label += `${statusFilter} `;
+		}
+
+		// Add circuit type if filtered
+		if (circuitTypeFilter !== "All") {
+			label += `${circuitTypeFilter} `;
 		}
 
 		// Add the main label
@@ -260,6 +275,9 @@ function Reports() {
 								Showing {getFilteredCircuits().length} circuits
 								{siteTypeFilter !== "All" ? ` for ${siteTypeFilter} sites` : ""}
 								{statusFilter !== "All" ? ` with ${statusFilter} status` : ""}
+								{circuitTypeFilter !== "All"
+									? ` of type ${circuitTypeFilter}`
+									: ""}
 							</div>
 						</div>
 						<div
@@ -320,6 +338,31 @@ function Reports() {
 									<option value="Active">Active</option>
 									<option value="Inactive">Inactive</option>
 									<option value="Pending">Pending</option>
+								</select>
+							</div>
+							<div
+								style={{ display: "flex", alignItems: "center", gap: "10px" }}
+							>
+								<label htmlFor="circuitTypeFilter" style={{ fontSize: "14px" }}>
+									Circuit Type:
+								</label>
+								<select
+									id="circuitTypeFilter"
+									value={circuitTypeFilter}
+									onChange={(e) => setCircuitTypeFilter(e.target.value)}
+									style={{
+										padding: "6px 10px",
+										borderRadius: "4px",
+										border: "1px solid #3498db",
+										backgroundColor: "#34495e",
+										color: "#ffffff",
+										fontSize: "14px",
+										cursor: "pointer",
+									}}
+								>
+									<option value="All">All Types</option>
+									<option value="Fiber">Fiber</option>
+									<option value="Tower">Tower</option>
 								</select>
 							</div>
 						</div>
@@ -586,6 +629,7 @@ function Reports() {
 											<th style={tableHeaderStyle}>Site Type</th>
 											<th style={tableHeaderStyle}>Provider</th>
 											<th style={tableHeaderStyle}>Bandwidth</th>
+											<th style={tableHeaderStyle}>Circuit Type</th>
 											<th style={tableHeaderStyle}>Status</th>
 										</tr>
 									</thead>
@@ -626,6 +670,25 @@ function Reports() {
 												<td style={tableCellStyle}>{circuit.provider.name}</td>
 												<td style={tableCellStyle}>
 													{circuit.circuitBandwidth}
+												</td>
+												<td style={tableCellStyle}>
+													<span
+														style={{
+															padding: "4px 8px",
+															borderRadius: "4px",
+															fontSize: "12px",
+															fontWeight: "bold",
+															backgroundColor:
+																circuit.circuitType === "Fiber"
+																	? "#3B82F6" // Blue for Fiber Circuit
+																	: circuit.circuitType === "Tower"
+																	? "#8B5CF6" // Purple for Tower
+																	: "#94A3B8", // Gray for other types
+															color: "white",
+														}}
+													>
+														{circuit.circuitType || "Unknown"}
+													</span>
 												</td>
 												<td style={tableCellStyle}>
 													<span
