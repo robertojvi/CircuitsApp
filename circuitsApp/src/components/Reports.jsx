@@ -301,6 +301,34 @@ function Reports() {
 		return diffDays;
 	};
 
+	// Helper function to calculate months until expiration
+	const getMonthsUntilExpiration = (dateString) => {
+		if (!dateString) return "N/A";
+
+		const today = new Date();
+		const expirationDate = new Date(dateString);
+
+		// Calculate months between today and expiration date
+		const monthsUntilExpiration =
+			(expirationDate.getFullYear() - today.getFullYear()) * 12 +
+			(expirationDate.getMonth() - today.getMonth());
+
+		// Add fractional month based on day difference
+		const dayOfMonth = today.getDate();
+		const daysInMonth = new Date(
+			today.getFullYear(),
+			today.getMonth() + 1,
+			0
+		).getDate();
+		const fractionalMonth = (daysInMonth - dayOfMonth) / daysInMonth;
+
+		// Round to 1 decimal place
+		return Math.max(
+			0,
+			Math.round((monthsUntilExpiration + fractionalMonth) * 10) / 10
+		);
+	};
+
 	const renderContent = () => {
 		if (loading) return <div>Loading...</div>;
 		if (error) return <div style={{ color: "red" }}>{error}</div>;
@@ -862,25 +890,28 @@ function Reports() {
 										<th style={tableHeaderStyle}>Circuit Type</th>
 										<th style={tableHeaderStyle}>Bandwidth</th>
 										<th style={tableHeaderStyle}>Expiration Date</th>
-										<th style={tableHeaderStyle}>Days Remaining</th>
+										<th style={tableHeaderStyle}>Months Remaining</th>
 										<th style={tableHeaderStyle}>Status</th>
 									</tr>
 								</thead>
 								<tbody>
 									{expiringCircuits.map((circuit, index) => {
-										const daysRemaining = getDaysUntilExpiration(
+										const monthsUntilExpiration = getMonthsUntilExpiration(
 											circuit.expirationDate
 										);
 
-										// Determine urgency based on days remaining
-										let urgencyColor = "#10B981"; // Default green (> 90 days)
-										if (daysRemaining <= 30) {
-											urgencyColor = "#EF4444"; // Red for <= 30 days
-										} else if (daysRemaining <= 60) {
-											urgencyColor = "#F59E0B"; // Orange for <= 60 days
-										} else if (daysRemaining <= 90) {
-											urgencyColor = "#FBBF24"; // Yellow for <= 90 days
+										// Determine urgency based on time range
+										let urgencyColor = "#10B981"; // Default green (12 months)
+
+										// Assign colors based on time range
+										if (monthsUntilExpiration <= 1) {
+											urgencyColor = "#EF4444"; // Red for 1 month
+										} else if (monthsUntilExpiration <= 3) {
+											urgencyColor = "#F59E0B"; // Orange for 3 months
+										} else if (monthsUntilExpiration <= 6) {
+											urgencyColor = "#FBBF24"; // Yellow for 6 months
 										}
+										// else keep default green for > 6 months (up to 12 months)
 
 										return (
 											<tr
@@ -952,7 +983,11 @@ function Reports() {
 															color: "white",
 														}}
 													>
-														{daysRemaining} days
+														{monthsUntilExpiration <= 0
+															? "Less than 1 month"
+															: monthsUntilExpiration === 1
+															? "1 month"
+															: `${monthsUntilExpiration} months`}
 													</span>
 												</td>
 												<td style={tableCellStyle}>
@@ -988,7 +1023,8 @@ function Reports() {
 									fontStyle: "italic",
 								}}
 							>
-								No circuits are expiring within the next 6 months
+								No circuits are expiring within the next {selectedTimeRange}{" "}
+								{selectedTimeRange === "1" ? "month" : "months"}
 							</div>
 						)}
 					</div>
@@ -1019,7 +1055,7 @@ function Reports() {
 										borderRadius: "4px",
 									}}
 								></div>
-								<span>Less than 30 days</span>
+								<span>1 Month</span>
 							</div>
 							<div
 								style={{ display: "flex", alignItems: "center", gap: "8px" }}
@@ -1032,7 +1068,7 @@ function Reports() {
 										borderRadius: "4px",
 									}}
 								></div>
-								<span>31-60 days</span>
+								<span>3 Months</span>
 							</div>
 							<div
 								style={{ display: "flex", alignItems: "center", gap: "8px" }}
@@ -1045,7 +1081,7 @@ function Reports() {
 										borderRadius: "4px",
 									}}
 								></div>
-								<span>61-90 days</span>
+								<span>6 Months</span>
 							</div>
 							<div
 								style={{ display: "flex", alignItems: "center", gap: "8px" }}
@@ -1058,7 +1094,7 @@ function Reports() {
 										borderRadius: "4px",
 									}}
 								></div>
-								<span>More than 90 days</span>
+								<span>12 Months</span>
 							</div>
 						</div>
 						<div
@@ -1069,7 +1105,7 @@ function Reports() {
 								color: "#64748B",
 							}}
 						>
-							Note: Showing circuits expiring within the next{" "}
+							Note: Currently showing circuits expiring within the next{" "}
 							{expirationTimeRange}{" "}
 							{expirationTimeRange === 1 ? "month" : "months"}
 						</div>
