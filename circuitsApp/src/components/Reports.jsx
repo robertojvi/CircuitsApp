@@ -29,6 +29,7 @@ function Reports() {
 	const [siteTypeFilter, setSiteTypeFilter] = useState("All");
 	const [statusFilter, setStatusFilter] = useState("All");
 	const [circuitTypeFilter, setCircuitTypeFilter] = useState("All");
+	const [expirationTimeRange, setExpirationTimeRange] = useState(6); // Default to 6 months
 
 	useEffect(() => {
 		if (
@@ -252,8 +253,8 @@ function Reports() {
 	// Function to get circuits that expire within the next 6 months
 	const getExpiringCircuits = () => {
 		const today = new Date();
-		const sixMonthsFromNow = new Date();
-		sixMonthsFromNow.setMonth(today.getMonth() + 6);
+		const futureDate = new Date();
+		futureDate.setMonth(today.getMonth() + expirationTimeRange);
 
 		return circuits
 			.filter((circuit) => {
@@ -263,8 +264,8 @@ function Reports() {
 				// Convert expiration date string to Date object
 				const expirationDate = new Date(circuit.expirationDate);
 
-				// Check if expiration date is within the next 6 months
-				return expirationDate >= today && expirationDate <= sixMonthsFromNow;
+				// Check if expiration date is within the selected time range
+				return expirationDate >= today && expirationDate <= futureDate;
 			})
 			.sort((a, b) => {
 				// Sort by expiration date (ascending)
@@ -809,8 +810,33 @@ function Reports() {
 							</h2>
 							<div style={{ fontSize: "14px", marginTop: "5px" }}>
 								Showing {expiringCircuits.length} circuits expiring within the
-								next 6 months
+								next {expirationTimeRange}{" "}
+								{expirationTimeRange === 1 ? "month" : "months"}
 							</div>
+						</div>
+						<div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+							<label htmlFor="timeRangeFilter" style={{ fontSize: "14px" }}>
+								Time Range:
+							</label>
+							<select
+								id="timeRangeFilter"
+								value={expirationTimeRange}
+								onChange={(e) => setExpirationTimeRange(Number(e.target.value))}
+								style={{
+									padding: "6px 10px",
+									borderRadius: "4px",
+									border: "1px solid #3498db",
+									backgroundColor: "#34495e",
+									color: "#ffffff",
+									fontSize: "14px",
+									cursor: "pointer",
+								}}
+							>
+								<option value={1}>1 Month</option>
+								<option value={3}>3 Months</option>
+								<option value={6}>6 Months</option>
+								<option value={12}>12 Months</option>
+							</select>
 						</div>
 					</div>
 
@@ -1034,6 +1060,18 @@ function Reports() {
 								></div>
 								<span>More than 90 days</span>
 							</div>
+						</div>
+						<div
+							style={{
+								marginTop: "10px",
+								fontSize: "14px",
+								fontStyle: "italic",
+								color: "#64748B",
+							}}
+						>
+							Note: Showing circuits expiring within the next{" "}
+							{expirationTimeRange}{" "}
+							{expirationTimeRange === 1 ? "month" : "months"}
 						</div>
 					</div>
 				</div>
