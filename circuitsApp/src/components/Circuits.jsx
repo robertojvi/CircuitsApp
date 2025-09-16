@@ -107,6 +107,21 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 					</span>
 				</p>
 				<p style={detailRowStyle}>
+					<strong>Has Tower:</strong>{" "}
+					<span
+						style={{
+							padding: "4px 8px",
+							borderRadius: "4px",
+							fontSize: "12px",
+							fontWeight: "bold",
+							backgroundColor: circuit.hasTower ? "#10B981" : "#EF4444", // Green for Yes, Red for No
+							color: "white",
+						}}
+					>
+						{circuit.hasTower ? "Yes" : "No"}
+					</span>
+				</p>
+				<p style={detailRowStyle}>
 					<strong>Status:</strong>{" "}
 					<span
 						style={{
