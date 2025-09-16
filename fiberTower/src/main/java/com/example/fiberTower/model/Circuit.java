@@ -24,6 +24,15 @@ public class Circuit {
     private String installationDate;
     private String expirationDate;
     private String circuitType;
+    private Boolean hasTower;
+
+    public Boolean getHasTower() {
+        return hasTower;
+    }
+
+    public void setHasTower(Boolean hasTower) {
+        this.hasTower = hasTower;
+    }
 
     public String getCircuitType() {
         return circuitType;
