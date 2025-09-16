@@ -606,8 +606,37 @@ const CreateCircuitModal = ({
 						>
 							<option value="">Select Circuit Type</option>
 							<option value="Fiber">Fiber Circuit</option>
-							<option value="Tower">Tower</option>
+							<option value="Wireless">Wireless</option>
 						</select>
+					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<label
+							style={{
+								display: "flex",
+								alignItems: "center",
+								fontSize: "14px",
+								fontWeight: "500",
+								color: "#3498db",
+								backgroundColor: "#f8f9fa",
+								padding: "10px",
+								borderRadius: "4px",
+								cursor: "pointer",
+							}}
+						>
+							<input
+								type="checkbox"
+								checked={newCircuit.hasTower || false}
+								onChange={(e) =>
+									setNewCircuit({ ...newCircuit, hasTower: e.target.checked })
+								}
+								style={{
+									marginRight: "8px",
+									transform: "scale(1.2)",
+									cursor: "pointer",
+								}}
+							/>
+							Has Tower
+						</label>
 					</div>
 					<div
 						style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
@@ -1284,8 +1313,37 @@ const EditCircuitModal = ({
 					>
 						<option value="">Select Circuit Type</option>
 						<option value="Fiber">Fiber Circuit</option>
-						<option value="Tower">Tower</option>
+						<option value="Wireless">Wireless</option>
 					</select>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "flex",
+							alignItems: "center",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
+							backgroundColor: "#f8f9fa",
+							padding: "10px",
+							borderRadius: "4px",
+							cursor: "pointer",
+						}}
+					>
+						<input
+							type="checkbox"
+							checked={circuit.hasTower || false}
+							onChange={(e) =>
+								setCircuit({ ...circuit, hasTower: e.target.checked })
+							}
+							style={{
+								marginRight: "8px",
+								transform: "scale(1.2)",
+								cursor: "pointer",
+							}}
+						/>
+						Has Tower
+					</label>
 				</div>
 				<div
 					style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
@@ -1352,6 +1410,7 @@ function Admin() {
 		expirationDate: "",
 		status: "",
 		circuitType: "",
+		hasTower: false,
 	});
 	const [showEditSiteModal, setShowEditSiteModal] = useState(false);
 	const [selectedSite, setSelectedSite] = useState(null);
@@ -1544,6 +1603,7 @@ function Admin() {
 				expirationDate: "",
 				status: "",
 				circuitType: "",
+				hasTower: false,
 			});
 		} catch (error) {
 			console.error("Error creating circuit:", error);
