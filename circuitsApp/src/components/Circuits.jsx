@@ -335,6 +335,36 @@ function Circuits() {
 			const sortedCircuits = getSortedCircuits(filteredCircuits);
 			return (
 				<div>
+					<div
+						style={{
+							marginBottom: "20px",
+							display: "flex",
+							gap: "15px",
+							alignItems: "center",
+						}}
+					>
+						<button
+							onClick={() =>
+								window.open(
+									"https://app.asana.com/1/943649575918213/project/1209991618007270/board/1209993686905714",
+									"_blank"
+								)
+							}
+							style={{
+								...buttonStyle,
+								backgroundColor: "#FFD700",
+								color: "black",
+								padding: "10px 20px",
+								fontSize: "14px",
+								fontWeight: "bold",
+								display: "flex",
+								alignItems: "center",
+								gap: "8px",
+							}}
+						>
+							📋 AccessParks Circuits
+						</button>
+					</div>
 					<div style={{ marginBottom: "20px" }}>
 						<input
 							type="text"
