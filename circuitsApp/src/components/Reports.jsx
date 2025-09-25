@@ -339,6 +339,38 @@ function Reports() {
 					<div
 						style={{
 							marginBottom: "20px",
+							display: "flex",
+							gap: "15px",
+							alignItems: "center",
+						}}
+					>
+						<button
+							onClick={() =>
+								window.open(
+									"https://app.asana.com/1/943649575918213/project/1209991618007270/board/1209993686905714",
+									"_blank"
+								)
+							}
+							style={{
+								padding: "10px 20px",
+								border: "none",
+								borderRadius: "4px",
+								backgroundColor: "#FFD700",
+								color: "black",
+								fontSize: "14px",
+								fontWeight: "bold",
+								cursor: "pointer",
+								display: "flex",
+								alignItems: "center",
+								gap: "8px",
+							}}
+						>
+							📋 AccessParks Circuits
+						</button>
+					</div>
+					<div
+						style={{
+							marginBottom: "20px",
 							backgroundColor: "#2c3e50",
 							padding: "15px 20px",
 							borderRadius: "4px",
@@ -818,6 +850,38 @@ function Reports() {
 
 			return (
 				<div style={{ width: "100%" }}>
+					<div
+						style={{
+							marginBottom: "20px",
+							display: "flex",
+							gap: "15px",
+							alignItems: "center",
+						}}
+					>
+						<button
+							onClick={() =>
+								window.open(
+									"https://app.asana.com/1/943649575918213/project/1209991618007270/board/1209993686905714",
+									"_blank"
+								)
+							}
+							style={{
+								padding: "10px 20px",
+								border: "none",
+								borderRadius: "4px",
+								backgroundColor: "#FFD700",
+								color: "black",
+								fontSize: "14px",
+								fontWeight: "bold",
+								cursor: "pointer",
+								display: "flex",
+								alignItems: "center",
+								gap: "8px",
+							}}
+						>
+							📋 AccessParks Circuits
+						</button>
+					</div>
 					<div
 						style={{
 							marginBottom: "20px",
