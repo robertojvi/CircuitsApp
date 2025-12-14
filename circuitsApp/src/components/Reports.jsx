@@ -34,7 +34,8 @@ function Reports() {
 	useEffect(() => {
 		if (
 			selectedMenu === "Circuit Analytics" ||
-			selectedMenu === "Circuit Expiration Report"
+			selectedMenu === "Circuit Expiration Report" ||
+			selectedMenu === "Expired Circuits"
 		) {
 			fetchCircuits();
 		}
@@ -270,6 +271,29 @@ function Reports() {
 			.sort((a, b) => {
 				// Sort by expiration date (ascending)
 				return new Date(a.expirationDate) - new Date(b.expirationDate);
+			});
+	};
+
+	// Function to get circuits that have already expired (expiration date is equal to or before today)
+	const getExpiredCircuits = () => {
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		return circuits
+			.filter((circuit) => {
+				// Skip circuits without expiration dates
+				if (!circuit.expirationDate) return false;
+
+				// Convert expiration date string to Date object
+				const expirationDate = new Date(circuit.expirationDate);
+				expirationDate.setHours(0, 0, 0, 0);
+
+				// Check if expiration date is equal to or before today
+				return expirationDate <= today;
+			})
+			.sort((a, b) => {
+				// Sort by expiration date (descending - most recent first)
+				return new Date(b.expirationDate) - new Date(a.expirationDate);
 			});
 	};
 
@@ -1176,6 +1200,189 @@ function Reports() {
 					</div>
 				</div>
 			);
+		} else if (selectedMenu === "Expired Circuits") {
+			const expiredCircuits = getExpiredCircuits();
+			const today = new Date();
+
+			return (
+				<div style={{ width: "100%" }}>
+					<div
+						style={{
+							marginBottom: "20px",
+							display: "flex",
+							gap: "15px",
+							alignItems: "center",
+						}}
+					>
+						<button
+							onClick={() =>
+								window.open(
+									"https://app.asana.com/1/943649575918213/project/1209991618007270/board/1209993686905714",
+									"_blank"
+								)
+							}
+							style={{
+								padding: "10px 20px",
+								border: "none",
+								borderRadius: "4px",
+								backgroundColor: "#FFD700",
+								color: "black",
+								fontSize: "14px",
+								fontWeight: "bold",
+								cursor: "pointer",
+								display: "flex",
+								alignItems: "center",
+								gap: "8px",
+							}}
+						>
+							📋 AccessParks Circuits
+						</button>
+					</div>
+					<div
+						style={{
+							marginBottom: "20px",
+							backgroundColor: "#2c3e50",
+							padding: "15px 20px",
+							borderRadius: "4px",
+							color: "#ffffff",
+							display: "flex",
+							justifyContent: "space-between",
+							alignItems: "center",
+							flexWrap: "wrap",
+							gap: "10px",
+						}}
+					>
+						<div>
+							<h2 style={{ margin: 0, fontSize: "18px" }}>Expired Circuits</h2>
+							<div style={{ fontSize: "14px", marginTop: "5px" }}>
+								Showing {expiredCircuits.length} circuits with expiration dates
+								equal to or before today
+							</div>
+						</div>
+					</div>
+
+					<div
+						style={{
+							backgroundColor: "#f0f4f8",
+							padding: "20px",
+							borderRadius: "8px",
+							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+							margin: "0 auto",
+							maxWidth: "1000px",
+							width: "100%",
+							overflowX: "auto",
+						}}
+					>
+						{expiredCircuits.length > 0 ? (
+							<table style={{ width: "100%", borderCollapse: "collapse" }}>
+								<thead>
+									<tr style={{ backgroundColor: "#2c3e50", color: "white" }}>
+										<th style={tableHeaderStyle}>Venue Name</th>
+										<th style={tableHeaderStyle}>Site Type</th>
+										<th style={tableHeaderStyle}>Provider</th>
+										<th style={tableHeaderStyle}>Circuit Type</th>
+										<th style={tableHeaderStyle}>Bandwidth</th>
+										<th style={tableHeaderStyle}>Expiration Date</th>
+										<th style={tableHeaderStyle}>Days Expired</th>
+										<th style={tableHeaderStyle}>Status</th>
+									</tr>
+								</thead>
+								<tbody>
+									{expiredCircuits.map((circuit, index) => {
+										const daysUntilExpiration = getDaysUntilExpiration(
+											circuit.expirationDate
+										);
+										const daysExpired = Math.abs(daysUntilExpiration);
+
+										return (
+											<tr
+												key={circuit.id}
+												style={{
+													borderBottom: "1px solid #dee2e6",
+													backgroundColor:
+														index % 2 === 0 ? "#ffffff" : "#eef2f7",
+												}}
+											>
+												<td style={{ ...tableCellStyle, fontWeight: "600" }}>
+													{circuit.site.name}
+												</td>
+												<td style={tableCellStyle}>
+													<span
+														style={{
+															padding: "4px 8px",
+															borderRadius: "4px",
+															fontSize: "12px",
+															fontWeight: "bold",
+															backgroundColor:
+																circuit.site.siteType === "MHC"
+																	? "#3498db"
+																	: circuit.site.siteType === "DHC"
+																	? "#9b59b6"
+																	: "#95a5a6",
+															color: "white",
+														}}
+													>
+														{circuit.site.siteType}
+													</span>
+												</td>
+												<td style={tableCellStyle}>
+													{circuit.provider?.name || "N/A"}
+												</td>
+												<td style={tableCellStyle}>{circuit.circuitType}</td>
+												<td style={tableCellStyle}>{circuit.bandwidth} Mbps</td>
+												<td style={tableCellStyle}>
+													{formatDate(circuit.expirationDate)}
+												</td>
+												<td
+													style={{
+														...tableCellStyle,
+														color: "#EF4444",
+														fontWeight: "bold",
+													}}
+												>
+													{daysExpired} {daysExpired === 1 ? "day" : "days"}
+												</td>
+												<td style={tableCellStyle}>
+													<span
+														style={{
+															padding: "4px 8px",
+															borderRadius: "4px",
+															fontSize: "12px",
+															fontWeight: "bold",
+															backgroundColor:
+																circuit.status === "Active"
+																	? "#2ecc71"
+																	: circuit.status === "Pending"
+																	? "#f39c12"
+																	: circuit.status === "Inactive"
+																	? "#e74c3c"
+																	: "#95a5a6",
+															color: "white",
+														}}
+													>
+														{circuit.status}
+													</span>
+												</td>
+											</tr>
+										);
+									})}
+								</tbody>
+							</table>
+						) : (
+							<div
+								style={{
+									textAlign: "center",
+									padding: "40px 20px",
+									color: "#7f8c8d",
+									fontSize: "16px",
+								}}
+							>
+								Great news! No circuits have expired yet.
+							</div>
+						)}
+					</div>
+				</div>
+			);
 		}
 
 		return <h1>{selectedMenu}</h1>;
@@ -1247,7 +1454,11 @@ function Reports() {
 						fontSize: "16px",
 					}}
 				>
-					{["Circuit Analytics", "Circuit Expiration Report"].map((item) => (
+					{[
+						"Circuit Analytics",
+						"Circuit Expiration Report",
+						"Expired Circuits",
+					].map((item) => (
 						<li
 							key={item}
 							style={{
