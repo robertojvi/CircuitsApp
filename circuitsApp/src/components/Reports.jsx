@@ -30,6 +30,10 @@ function Reports() {
 	const [statusFilter, setStatusFilter] = useState("All");
 	const [circuitTypeFilter, setCircuitTypeFilter] = useState("All");
 	const [expirationTimeRange, setExpirationTimeRange] = useState(6); // Default to 6 months
+	const [expiredCircuitsSortConfig, setExpiredCircuitsSortConfig] = useState({
+		key: "expirationDate",
+		direction: "ascending",
+	});
 
 	useEffect(() => {
 		if (
@@ -295,6 +299,81 @@ function Reports() {
 				// Sort by expiration date (descending - most recent first)
 				return new Date(b.expirationDate) - new Date(a.expirationDate);
 			});
+	};
+
+	// Function to sort expired circuits based on selected column
+	const getSortedExpiredCircuits = (circuitsToSort) => {
+		let sorted = [...circuitsToSort];
+
+		sorted.sort((a, b) => {
+			let aValue, bValue;
+
+			switch (expiredCircuitsSortConfig.key) {
+				case "venueName":
+					aValue = a.site.name.toLowerCase();
+					bValue = b.site.name.toLowerCase();
+					break;
+				case "siteType":
+					aValue = a.site.siteType;
+					bValue = b.site.siteType;
+					break;
+				case "provider":
+					aValue = (a.provider?.name || "").toLowerCase();
+					bValue = (b.provider?.name || "").toLowerCase();
+					break;
+				case "circuitType":
+					aValue = a.circuitType;
+					bValue = b.circuitType;
+					break;
+				case "bandwidth":
+					aValue = parseInt(a.bandwidth) || 0;
+					bValue = parseInt(b.bandwidth) || 0;
+					break;
+				case "expirationDate":
+					aValue = new Date(a.expirationDate);
+					bValue = new Date(b.expirationDate);
+					break;
+				case "daysExpired":
+					aValue = getDaysUntilExpiration(a.expirationDate);
+					bValue = getDaysUntilExpiration(b.expirationDate);
+					break;
+				case "status":
+					aValue = a.status;
+					bValue = b.status;
+					break;
+				default:
+					return 0;
+			}
+
+			if (typeof aValue === "string") {
+				aValue = aValue.toLowerCase();
+				bValue = bValue.toLowerCase();
+				return expiredCircuitsSortConfig.direction === "ascending"
+					? aValue.localeCompare(bValue)
+					: bValue.localeCompare(aValue);
+			} else {
+				return expiredCircuitsSortConfig.direction === "ascending"
+					? aValue - bValue
+					: bValue - aValue;
+			}
+		});
+
+		return sorted;
+	};
+
+	// Function to handle sorting column click
+	const handleExpiredCircuitsSortClick = (columnKey) => {
+		let newDirection = "ascending";
+		if (
+			expiredCircuitsSortConfig.key === columnKey &&
+			expiredCircuitsSortConfig.direction === "ascending"
+		) {
+			newDirection = "descending";
+		}
+		setExpiredCircuitsSortConfig({
+			key: columnKey,
+			direction: newDirection,
+		});
 	};
 
 	// Helper function to format dates for display
@@ -1277,95 +1356,253 @@ function Reports() {
 							<table style={{ width: "100%", borderCollapse: "collapse" }}>
 								<thead>
 									<tr style={{ backgroundColor: "#2c3e50", color: "white" }}>
-										<th style={tableHeaderStyle}>Venue Name</th>
-										<th style={tableHeaderStyle}>Site Type</th>
-										<th style={tableHeaderStyle}>Provider</th>
-										<th style={tableHeaderStyle}>Circuit Type</th>
-										<th style={tableHeaderStyle}>Bandwidth</th>
-										<th style={tableHeaderStyle}>Expiration Date</th>
-										<th style={tableHeaderStyle}>Days Expired</th>
-										<th style={tableHeaderStyle}>Status</th>
+										<th
+											style={{
+												...tableHeaderStyle,
+												cursor: "pointer",
+												userSelect: "none",
+												backgroundColor:
+													expiredCircuitsSortConfig.key === "venueName"
+														? "#34495e"
+														: "#2c3e50",
+											}}
+											onClick={() =>
+												handleExpiredCircuitsSortClick("venueName")
+											}
+											title="Click to sort"
+										>
+											Venue Name{" "}
+											{expiredCircuitsSortConfig.key === "venueName" &&
+												(expiredCircuitsSortConfig.direction === "ascending"
+													? "↑"
+													: "↓")}
+										</th>
+										<th
+											style={{
+												...tableHeaderStyle,
+												cursor: "pointer",
+												userSelect: "none",
+												backgroundColor:
+													expiredCircuitsSortConfig.key === "siteType"
+														? "#34495e"
+														: "#2c3e50",
+											}}
+											onClick={() => handleExpiredCircuitsSortClick("siteType")}
+											title="Click to sort"
+										>
+											Site Type{" "}
+											{expiredCircuitsSortConfig.key === "siteType" &&
+												(expiredCircuitsSortConfig.direction === "ascending"
+													? "↑"
+													: "↓")}
+										</th>
+										<th
+											style={{
+												...tableHeaderStyle,
+												cursor: "pointer",
+												userSelect: "none",
+												backgroundColor:
+													expiredCircuitsSortConfig.key === "provider"
+														? "#34495e"
+														: "#2c3e50",
+											}}
+											onClick={() => handleExpiredCircuitsSortClick("provider")}
+											title="Click to sort"
+										>
+											Provider{" "}
+											{expiredCircuitsSortConfig.key === "provider" &&
+												(expiredCircuitsSortConfig.direction === "ascending"
+													? "↑"
+													: "↓")}
+										</th>
+										<th
+											style={{
+												...tableHeaderStyle,
+												cursor: "pointer",
+												userSelect: "none",
+												backgroundColor:
+													expiredCircuitsSortConfig.key === "circuitType"
+														? "#34495e"
+														: "#2c3e50",
+											}}
+											onClick={() =>
+												handleExpiredCircuitsSortClick("circuitType")
+											}
+											title="Click to sort"
+										>
+											Circuit Type{" "}
+											{expiredCircuitsSortConfig.key === "circuitType" &&
+												(expiredCircuitsSortConfig.direction === "ascending"
+													? "↑"
+													: "↓")}
+										</th>
+										<th
+											style={{
+												...tableHeaderStyle,
+												cursor: "pointer",
+												userSelect: "none",
+												backgroundColor:
+													expiredCircuitsSortConfig.key === "bandwidth"
+														? "#34495e"
+														: "#2c3e50",
+											}}
+											onClick={() =>
+												handleExpiredCircuitsSortClick("bandwidth")
+											}
+											title="Click to sort"
+										>
+											Bandwidth{" "}
+											{expiredCircuitsSortConfig.key === "bandwidth" &&
+												(expiredCircuitsSortConfig.direction === "ascending"
+													? "↑"
+													: "↓")}
+										</th>
+										<th
+											style={{
+												...tableHeaderStyle,
+												cursor: "pointer",
+												userSelect: "none",
+												backgroundColor:
+													expiredCircuitsSortConfig.key === "expirationDate"
+														? "#34495e"
+														: "#2c3e50",
+											}}
+											onClick={() =>
+												handleExpiredCircuitsSortClick("expirationDate")
+											}
+											title="Click to sort"
+										>
+											Expiration Date{" "}
+											{expiredCircuitsSortConfig.key === "expirationDate" &&
+												(expiredCircuitsSortConfig.direction === "ascending"
+													? "↑"
+													: "↓")}
+										</th>
+										<th
+											style={{
+												...tableHeaderStyle,
+												cursor: "pointer",
+												userSelect: "none",
+												backgroundColor:
+													expiredCircuitsSortConfig.key === "daysExpired"
+														? "#34495e"
+														: "#2c3e50",
+											}}
+											onClick={() =>
+												handleExpiredCircuitsSortClick("daysExpired")
+											}
+											title="Click to sort"
+										>
+											Days Expired{" "}
+											{expiredCircuitsSortConfig.key === "daysExpired" &&
+												(expiredCircuitsSortConfig.direction === "ascending"
+													? "↑"
+													: "↓")}
+										</th>
+										<th
+											style={{
+												...tableHeaderStyle,
+												cursor: "pointer",
+												userSelect: "none",
+												backgroundColor:
+													expiredCircuitsSortConfig.key === "status"
+														? "#34495e"
+														: "#2c3e50",
+											}}
+											onClick={() => handleExpiredCircuitsSortClick("status")}
+											title="Click to sort"
+										>
+											Status{" "}
+											{expiredCircuitsSortConfig.key === "status" &&
+												(expiredCircuitsSortConfig.direction === "ascending"
+													? "↑"
+													: "↓")}
+										</th>
 									</tr>
 								</thead>
 								<tbody>
-									{expiredCircuits.map((circuit, index) => {
-										const daysUntilExpiration = getDaysUntilExpiration(
-											circuit.expirationDate
-										);
-										const daysExpired = Math.abs(daysUntilExpiration);
+									{getSortedExpiredCircuits(expiredCircuits).map(
+										(circuit, index) => {
+											const daysUntilExpiration = getDaysUntilExpiration(
+												circuit.expirationDate
+											);
+											const daysExpired = Math.abs(daysUntilExpiration);
 
-										return (
-											<tr
-												key={circuit.id}
-												style={{
-													borderBottom: "1px solid #dee2e6",
-													backgroundColor:
-														index % 2 === 0 ? "#ffffff" : "#eef2f7",
-												}}
-											>
-												<td style={{ ...tableCellStyle, fontWeight: "600" }}>
-													{circuit.site.name}
-												</td>
-												<td style={tableCellStyle}>
-													<span
-														style={{
-															padding: "4px 8px",
-															borderRadius: "4px",
-															fontSize: "12px",
-															fontWeight: "bold",
-															backgroundColor:
-																circuit.site.siteType === "MHC"
-																	? "#3498db"
-																	: circuit.site.siteType === "DHC"
-																	? "#9b59b6"
-																	: "#95a5a6",
-															color: "white",
-														}}
-													>
-														{circuit.site.siteType}
-													</span>
-												</td>
-												<td style={tableCellStyle}>
-													{circuit.provider?.name || "N/A"}
-												</td>
-												<td style={tableCellStyle}>{circuit.circuitType}</td>
-												<td style={tableCellStyle}>{circuit.bandwidth} Mbps</td>
-												<td style={tableCellStyle}>
-													{formatDate(circuit.expirationDate)}
-												</td>
-												<td
+											return (
+												<tr
+													key={circuit.id}
 													style={{
-														...tableCellStyle,
-														color: "#EF4444",
-														fontWeight: "bold",
+														borderBottom: "1px solid #dee2e6",
+														backgroundColor:
+															index % 2 === 0 ? "#ffffff" : "#eef2f7",
 													}}
 												>
-													{daysExpired} {daysExpired === 1 ? "day" : "days"}
-												</td>
-												<td style={tableCellStyle}>
-													<span
+													<td style={{ ...tableCellStyle, fontWeight: "600" }}>
+														{circuit.site.name}
+													</td>
+													<td style={tableCellStyle}>
+														<span
+															style={{
+																padding: "4px 8px",
+																borderRadius: "4px",
+																fontSize: "12px",
+																fontWeight: "bold",
+																backgroundColor:
+																	circuit.site.siteType === "MHC"
+																		? "#3498db"
+																		: circuit.site.siteType === "DHC"
+																		? "#9b59b6"
+																		: "#95a5a6",
+																color: "white",
+															}}
+														>
+															{circuit.site.siteType}
+														</span>
+													</td>
+													<td style={tableCellStyle}>
+														{circuit.provider?.name || "N/A"}
+													</td>
+													<td style={tableCellStyle}>{circuit.circuitType}</td>
+													<td style={tableCellStyle}>
+														{circuit.bandwidth} Mbps
+													</td>
+													<td style={tableCellStyle}>
+														{formatDate(circuit.expirationDate)}
+													</td>
+													<td
 														style={{
-															padding: "4px 8px",
-															borderRadius: "4px",
-															fontSize: "12px",
+															...tableCellStyle,
+															color: "#EF4444",
 															fontWeight: "bold",
-															backgroundColor:
-																circuit.status === "Active"
-																	? "#2ecc71"
-																	: circuit.status === "Pending"
-																	? "#f39c12"
-																	: circuit.status === "Inactive"
-																	? "#e74c3c"
-																	: "#95a5a6",
-															color: "white",
 														}}
 													>
-														{circuit.status}
-													</span>
-												</td>
-											</tr>
-										);
-									})}
+														{daysExpired} {daysExpired === 1 ? "day" : "days"}
+													</td>
+													<td style={tableCellStyle}>
+														<span
+															style={{
+																padding: "4px 8px",
+																borderRadius: "4px",
+																fontSize: "12px",
+																fontWeight: "bold",
+																backgroundColor:
+																	circuit.status === "Active"
+																		? "#2ecc71"
+																		: circuit.status === "Pending"
+																		? "#f39c12"
+																		: circuit.status === "Inactive"
+																		? "#e74c3c"
+																		: "#95a5a6",
+																color: "white",
+															}}
+														>
+															{circuit.status}
+														</span>
+													</td>
+												</tr>
+											);
+										}
+									)}
 								</tbody>
 							</table>
 						) : (
