@@ -326,8 +326,8 @@ function Reports() {
 					bValue = b.circuitType;
 					break;
 				case "bandwidth":
-					aValue = parseInt(a.bandwidth) || 0;
-					bValue = parseInt(b.bandwidth) || 0;
+					aValue = parseInt(a.circuitBandwidth) || 0;
+					bValue = parseInt(b.circuitBandwidth) || 0;
 					break;
 				case "expirationDate":
 					aValue = new Date(a.expirationDate);
@@ -1564,7 +1564,7 @@ function Reports() {
 													</td>
 													<td style={tableCellStyle}>{circuit.circuitType}</td>
 													<td style={tableCellStyle}>
-														{circuit.bandwidth} Mbps
+														{circuit.circuitBandwidth} Mbps
 													</td>
 													<td style={tableCellStyle}>
 														{formatDate(circuit.expirationDate)}
