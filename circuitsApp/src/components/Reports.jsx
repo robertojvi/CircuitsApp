@@ -581,6 +581,7 @@ function Reports() {
 									<option value="All">All Types</option>
 									<option value="Fiber">Fiber</option>
 									<option value="Tower">Tower</option>
+									<option value="Wireless">Wireless</option>
 								</select>
 							</div>
 						</div>
