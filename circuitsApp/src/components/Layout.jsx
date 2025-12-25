@@ -67,6 +67,17 @@ function Layout() {
 						Reports
 					</Link>
 				</div>
+				<p
+					style={{
+						color: "#999",
+						backgroundColor: "#f5f5f5",
+						padding: "8px 12px",
+						borderRadius: "4px",
+						margin: 0,
+					}}
+				>
+					Dev. By RVI
+				</p>
 			</nav>
 			<Outlet />
 		</div>
