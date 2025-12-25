@@ -29,6 +29,7 @@ function Reports() {
 	const [siteTypeFilter, setSiteTypeFilter] = useState("All");
 	const [statusFilter, setStatusFilter] = useState("All");
 	const [circuitTypeFilter, setCircuitTypeFilter] = useState("All");
+	const [providerFilter, setProviderFilter] = useState("All");
 	const [expirationTimeRange, setExpirationTimeRange] = useState(6); // Default to 6 months
 	const [expiredCircuitsSortConfig, setExpiredCircuitsSortConfig] = useState({
 		key: "expirationDate",
@@ -59,7 +60,7 @@ function Reports() {
 		}
 	};
 
-	// Filter circuits based on selected site type, status, and circuit type
+	// Filter circuits based on selected site type, status, circuit type, and provider
 	const getFilteredCircuits = () => {
 		let filtered = circuits.filter((circuit) => {
 			// Site Type filter
@@ -76,8 +77,13 @@ function Reports() {
 				circuitTypeFilter === "All" ||
 				circuit.circuitType === circuitTypeFilter;
 
+			// Provider filter
+			const providerMatch =
+				providerFilter === "All" ||
+				(circuit.provider && circuit.provider.name === providerFilter);
+
 			// All filters must match
-			return siteTypeMatch && statusMatch && circuitTypeMatch;
+			return siteTypeMatch && statusMatch && circuitTypeMatch && providerMatch;
 		});
 
 		// Sort the filtered circuits by site name
@@ -100,6 +106,10 @@ function Reports() {
 
 		if (circuitTypeFilter !== "All") {
 			parts.push(`${circuitTypeFilter} Circuits`);
+		}
+
+		if (providerFilter !== "All") {
+			parts.push(`${providerFilter}`);
 		}
 
 		return parts.length > 0 ? ` (${parts.join(", ")})` : "";
@@ -132,6 +142,11 @@ function Reports() {
 			label += `${circuitTypeFilter} `;
 		}
 
+		// Add provider if filtered
+		if (providerFilter !== "All") {
+			label += `(${providerFilter}) `;
+		}
+
 		// Add the main label
 		if (chartType === "Bandwidth") {
 			label += "Sites";
@@ -143,6 +158,20 @@ function Reports() {
 
 		return label;
 	};
+
+	// Helper function to get unique providers
+	const getUniqueProviders = () => {
+		const providers = new Set();
+		circuits.forEach((circuit) => {
+			if (circuit.provider && circuit.provider.name) {
+				providers.add(circuit.provider.name);
+			}
+		});
+		return Array.from(providers).sort((a, b) =>
+			a.toLowerCase().localeCompare(b.toLowerCase())
+		);
+	};
+
 	const getBandwidthDistribution = () => {
 		const filteredCircuits = getFilteredCircuits();
 		const distribution = filteredCircuits.reduce((acc, circuit) => {
@@ -582,6 +611,34 @@ function Reports() {
 									<option value="Fiber">Fiber</option>
 									<option value="Tower">Tower</option>
 									<option value="Wireless">Wireless</option>
+								</select>
+							</div>
+							<div
+								style={{ display: "flex", alignItems: "center", gap: "10px" }}
+							>
+								<label htmlFor="providerFilter" style={{ fontSize: "14px" }}>
+									Provider:
+								</label>
+								<select
+									id="providerFilter"
+									value={providerFilter}
+									onChange={(e) => setProviderFilter(e.target.value)}
+									style={{
+										padding: "6px 10px",
+										borderRadius: "4px",
+										border: "1px solid #3498db",
+										backgroundColor: "#34495e",
+										color: "#ffffff",
+										fontSize: "14px",
+										cursor: "pointer",
+									}}
+								>
+									<option value="All">All Providers</option>
+									{getUniqueProviders().map((provider) => (
+										<option key={provider} value={provider}>
+											{provider}
+										</option>
+									))}
 								</select>
 							</div>
 						</div>
