@@ -21,10 +21,19 @@ public class Circuit {
     private String circuitBandwidth;
     private Double monthlyCost;
     private String status;
+    private String circuitContractDate;
     private String installationDate;
     private String expirationDate;
     private String circuitType;
     private Boolean hasTower;
+
+    public String getCircuitContractDate() {
+        return circuitContractDate;
+    }
+
+    public void setCircuitContractDate(String circuitContractDate) {
+        this.circuitContractDate = circuitContractDate;
+    }
 
     public Boolean getHasTower() {
         return hasTower;

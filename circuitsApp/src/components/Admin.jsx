@@ -386,11 +386,11 @@ const CreateCircuitModal = ({
 	providers,
 }) => {
 	const sortedSites = [...sites].sort((a, b) =>
-		a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+		a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
 	);
 
 	const sortedProviders = [...providers].sort((a, b) =>
-		a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+		a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
 	);
 
 	return (
@@ -575,6 +575,35 @@ const CreateCircuitModal = ({
 							value={newCircuit.expirationDate || ""}
 							onChange={(e) =>
 								setNewCircuit({ ...newCircuit, expirationDate: e.target.value })
+							}
+							style={inputStyle}
+							required
+						/>
+					</div>
+					<div style={{ marginBottom: "15px" }}>
+						<label
+							style={{
+								display: "block",
+								marginBottom: "5px",
+								fontSize: "14px",
+								fontWeight: "500",
+								color: "#3498db", // Added blue color for better visibility
+								backgroundColor: "#f8f9fa", // Added light background
+								padding: "3px 5px",
+								borderRadius: "3px",
+							}}
+						>
+							Contract Date
+						</label>
+						<input
+							type="date"
+							placeholder="Contract Date"
+							value={newCircuit.circuitContractDate || ""}
+							onChange={(e) =>
+								setNewCircuit({
+									...newCircuit,
+									circuitContractDate: e.target.value,
+								})
 							}
 							style={inputStyle}
 							required
@@ -1290,6 +1319,32 @@ const EditCircuitModal = ({
 					/>
 				</div>
 				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "block",
+							marginBottom: "5px",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db", // Added blue color for better visibility
+							backgroundColor: "#f8f9fa", // Added light background
+							padding: "3px 5px",
+							borderRadius: "3px",
+						}}
+					>
+						Contract Date
+					</label>
+					<input
+						type="date"
+						placeholder="Contract Date"
+						value={circuit.circuitContractDate || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, circuitContractDate: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
 					<select
 						value={circuit.status || ""}
 						onChange={(e) => setCircuit({ ...circuit, status: e.target.value })}
@@ -1408,6 +1463,7 @@ function Admin() {
 		monthlyCost: "",
 		installationDate: "",
 		expirationDate: "",
+		circuitContractDate: "",
 		status: "",
 		circuitType: "",
 		hasTower: false,
@@ -1490,7 +1546,7 @@ function Admin() {
 
 		// Check for duplicate site name
 		const isDuplicate = sites.some(
-			(site) => site.name.toLowerCase() === newSite.name.toLowerCase()
+			(site) => site.name.toLowerCase() === newSite.name.toLowerCase(),
 		);
 
 		if (isDuplicate) {
@@ -1540,7 +1596,7 @@ function Admin() {
 		// Check for duplicate provider name
 		const isDuplicate = providers.some(
 			(provider) =>
-				provider.name.toLowerCase() === newProvider.name.toLowerCase()
+				provider.name.toLowerCase() === newProvider.name.toLowerCase(),
 		);
 
 		if (isDuplicate) {
@@ -1601,6 +1657,7 @@ function Admin() {
 				monthlyCost: "",
 				installationDate: "",
 				expirationDate: "",
+				circuitContractDate: "",
 				status: "",
 				circuitType: "",
 				hasTower: false,
@@ -1712,7 +1769,7 @@ function Admin() {
 
 			if (isUsed) {
 				alert(
-					`This ${type} cannot be deleted because it is being used in one or more circuits.`
+					`This ${type} cannot be deleted because it is being used in one or more circuits.`,
 				);
 				return;
 			}
@@ -1757,7 +1814,7 @@ function Admin() {
 			site.address.toLowerCase().includes(siteSearch.toLowerCase()) ||
 			site.city.toLowerCase().includes(siteSearch.toLowerCase()) ||
 			site.state.toLowerCase().includes(siteSearch.toLowerCase()) ||
-			site.zipCode.toLowerCase().includes(siteSearch.toLowerCase())
+			site.zipCode.toLowerCase().includes(siteSearch.toLowerCase()),
 	);
 
 	const filteredProviders = providers.filter(
@@ -1769,7 +1826,7 @@ function Admin() {
 			provider.zipCode.toLowerCase().includes(providerSearch.toLowerCase()) ||
 			provider.contactNumber
 				.toLowerCase()
-				.includes(providerSearch.toLowerCase())
+				.includes(providerSearch.toLowerCase()),
 	);
 
 	const filteredCircuits = circuits.filter(
@@ -1784,7 +1841,7 @@ function Admin() {
 			circuit.circuitId.toLowerCase().includes(circuitSearch.toLowerCase()) ||
 			circuit.circuitBandwidth
 				.toLowerCase()
-				.includes(circuitSearch.toLowerCase())
+				.includes(circuitSearch.toLowerCase()),
 	);
 
 	const searchInputStyle = {
@@ -1959,10 +2016,10 @@ function Admin() {
 														site.siteType === "MHC"
 															? "#3B82F6" // Blue for MHC
 															: site.siteType === "RV"
-															? "#10B981" // Green for RV
-															: site.siteType === "Hybrid"
-															? "#8B5CF6" // Purple for Hybrid
-															: "#94A3B8", // Gray for other types
+																? "#10B981" // Green for RV
+																: site.siteType === "Hybrid"
+																	? "#8B5CF6" // Purple for Hybrid
+																	: "#94A3B8", // Gray for other types
 													color: "white",
 												}}
 											>
@@ -2216,6 +2273,12 @@ function Admin() {
 									>
 										Status
 									</th>
+									<th
+										onClick={() => onSort("circuitContractDate")}
+										style={getSortableHeaderStyle("circuitContractDate")}
+									>
+										Contract Date
+									</th>
 									<th style={headerStyle}>Actions</th>
 								</tr>
 							</thead>
@@ -2240,8 +2303,8 @@ function Admin() {
 														circuit.circuitType === "Fiber"
 															? "#3B82F6" // Blue for Fiber Circuit
 															: circuit.circuitType === "Tower"
-															? "#8B5CF6" // Purple for Tower
-															: "#94A3B8", // Gray for other types
+																? "#8B5CF6" // Purple for Tower
+																: "#94A3B8", // Gray for other types
 													color: "white",
 												}}
 											>
@@ -2261,14 +2324,15 @@ function Admin() {
 														circuit.status === "Active"
 															? "#10B981" // Green for Active
 															: circuit.status === "Inactive"
-															? "#EF4444" // Red for Inactive
-															: "#F59E0B", // Yellow for Pending or other status
+																? "#EF4444" // Red for Inactive
+																: "#F59E0B", // Yellow for Pending or other status
 													color: "white",
 												}}
 											>
 												{circuit.status || "Pending"}
 											</span>
 										</td>
+										<td style={cellStyle}>{circuit.circuitContractDate}</td>
 										<td style={cellStyle}>
 											<button
 												onClick={() => handleEdit(circuit.id, "circuit")}
