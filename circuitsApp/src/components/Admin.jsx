@@ -2238,18 +2238,6 @@ function Admin() {
 										Provider
 									</th>
 									<th
-										onClick={() => onSort("accountNumber")}
-										style={getSortableHeaderStyle("accountNumber")}
-									>
-										Account Number
-									</th>
-									<th
-										onClick={() => onSort("circuitId")}
-										style={getSortableHeaderStyle("circuitId")}
-									>
-										Circuit ID
-									</th>
-									<th
 										onClick={() => onSort("circuitType")}
 										style={getSortableHeaderStyle("circuitType")}
 									>
@@ -2290,8 +2278,6 @@ function Admin() {
 									>
 										<td style={cellStyle}>{circuit.site.name}</td>
 										<td style={cellStyle}>{circuit.provider.name}</td>
-										<td style={cellStyle}>{circuit.accountNumber}</td>
-										<td style={cellStyle}>{circuit.circuitId}</td>
 										<td style={cellStyle}>
 											<span
 												style={{
@@ -2400,7 +2386,7 @@ function Admin() {
 		>
 			<nav
 				style={{
-					width: "150px",
+					width: "120px",
 					minHeight: "calc(100vh - 50px)",
 					backgroundColor: "#2c3e50",
 					padding: "20px",
@@ -2472,7 +2458,7 @@ function Admin() {
 			</nav>
 			<div
 				style={{
-					marginLeft: "150px",
+					marginLeft: "120px",
 					padding: "20px",
 					flex: 1,
 					"@media (max-width: 768px)": {
