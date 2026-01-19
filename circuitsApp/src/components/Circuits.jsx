@@ -98,8 +98,8 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 								circuit.circuitType === "Fiber"
 									? "#3B82F6" // Blue for Fiber Circuit
 									: circuit.circuitType === "Tower"
-									? "#8B5CF6" // Purple for Tower
-									: "#94A3B8", // Gray for other types
+										? "#8B5CF6" // Purple for Tower
+										: "#94A3B8", // Gray for other types
 							color: "white",
 						}}
 					>
@@ -133,8 +133,8 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 								circuit.status === "Active"
 									? "#10B981" // Green for Active
 									: circuit.status === "Inactive"
-									? "#EF4444" // Red for Inactive
-									: "#F59E0B", // Yellow for Pending or other status
+										? "#EF4444" // Red for Inactive
+										: "#F59E0B", // Yellow for Pending or other status
 							color: "white",
 						}}
 					>
@@ -163,8 +163,8 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 						backgroundColor: isExpired(circuit.expirationDate)
 							? "#FEE2E2" // Light red for expired
 							: isExpirationSoon(circuit.expirationDate)
-							? "#FEF3C7" // Yellow for expiring soon
-							: "transparent",
+								? "#FEF3C7" // Yellow for expiring soon
+								: "transparent",
 						padding:
 							isExpired(circuit.expirationDate) ||
 							isExpirationSoon(circuit.expirationDate)
@@ -182,8 +182,8 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 							color: isExpired(circuit.expirationDate)
 								? "#B91C1C" // Dark red for expired
 								: isExpirationSoon(circuit.expirationDate)
-								? "#B45309" // Amber for expiring soon
-								: "inherit",
+									? "#B45309" // Amber for expiring soon
+									: "inherit",
 						}}
 					>
 						Expiration Date:
@@ -193,8 +193,8 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 							color: isExpired(circuit.expirationDate)
 								? "#B91C1C" // Dark red for expired
 								: isExpirationSoon(circuit.expirationDate)
-								? "#B45309" // Amber for expiring soon
-								: "inherit",
+									? "#B45309" // Amber for expiring soon
+									: "inherit",
 							fontWeight:
 								isExpired(circuit.expirationDate) ||
 								isExpirationSoon(circuit.expirationDate)
@@ -223,6 +223,9 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 								(Expires soon)
 							</span>
 						)}
+				</p>
+				<p style={detailRowStyle}>
+					<strong>Contract Date:</strong> {circuit.circuitContractDate || "N/A"}
 				</p>
 			</div>
 			<div style={{ display: "flex", justifyContent: "flex-end" }}>
@@ -282,7 +285,11 @@ function Circuits() {
 				.toLowerCase()
 				.includes(searchTerm.toLowerCase()) ||
 			circuit.accountNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			circuit.circuitId.toLowerCase().includes(searchTerm.toLowerCase())
+			circuit.circuitId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			(circuit.circuitContractDate &&
+				circuit.circuitContractDate
+					.toLowerCase()
+					.includes(searchTerm.toLowerCase())),
 	);
 
 	const onSort = (key) => {
@@ -347,7 +354,7 @@ function Circuits() {
 							onClick={() =>
 								window.open(
 									"https://app.asana.com/1/943649575918213/project/1209991618007270/board/1209993686905714",
-									"_blank"
+									"_blank",
 								)
 							}
 							style={{
@@ -431,6 +438,12 @@ function Circuits() {
 								>
 									Monthly Cost
 								</th>
+								<th
+									onClick={() => onSort("circuitContractDate")}
+									style={getSortableHeaderStyle("circuitContractDate")}
+								>
+									Contract Date
+								</th>
 								<th style={headerStyle}>Details</th>
 							</tr>
 						</thead>
@@ -452,10 +465,10 @@ function Circuits() {
 													circuit.site.siteType === "MHC"
 														? "#3B82F6" // Blue for MHC
 														: circuit.site.siteType === "RV"
-														? "#10B981" // Green for RV
-														: circuit.site.siteType === "Hybrid"
-														? "#8B5CF6" // Purple for Hybrid
-														: "#94A3B8", // Gray for other types
+															? "#10B981" // Green for RV
+															: circuit.site.siteType === "Hybrid"
+																? "#8B5CF6" // Purple for Hybrid
+																: "#94A3B8", // Gray for other types
 												color: "white",
 											}}
 										>
@@ -474,8 +487,8 @@ function Circuits() {
 													circuit.circuitType === "Fiber"
 														? "#3B82F6" // Blue for Fiber Circuit
 														: circuit.circuitType === "Tower"
-														? "#8B5CF6" // Purple for Tower
-														: "#94A3B8", // Gray for other types
+															? "#8B5CF6" // Purple for Tower
+															: "#94A3B8", // Gray for other types
 												color: "white",
 											}}
 										>
@@ -494,8 +507,8 @@ function Circuits() {
 													circuit.status === "Active"
 														? "#10B981" // Green for Active
 														: circuit.status === "Inactive"
-														? "#EF4444" // Red for Inactive
-														: "#F59E0B", // Yellow for Pending or other status
+															? "#EF4444" // Red for Inactive
+															: "#F59E0B", // Yellow for Pending or other status
 												color: "white",
 											}}
 										>
@@ -503,6 +516,9 @@ function Circuits() {
 										</span>
 									</td>
 									<td style={cellStyle}>${circuit.monthlyCost}</td>
+									<td style={cellStyle}>
+										{circuit.circuitContractDate || "N/A"}
+									</td>
 									<td style={cellStyle}>
 										<button
 											onClick={() => {
