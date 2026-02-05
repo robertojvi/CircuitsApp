@@ -416,6 +416,8 @@ const CreateCircuitModal = ({
 					width: "90%",
 					maxWidth: "400px",
 					margin: "20px",
+					maxHeight: "90vh",
+					overflowY: "auto",
 				}}
 			>
 				<h2
@@ -667,6 +669,165 @@ const CreateCircuitModal = ({
 							Has Tower
 						</label>
 					</div>
+					{newCircuit.hasTower && (
+						<div
+							style={{
+								marginBottom: "20px",
+								borderTop: "2px solid #3498db",
+								paddingTop: "15px",
+								backgroundColor: "#f8f9fa",
+								padding: "15px",
+								borderRadius: "4px",
+							}}
+						>
+							<h3
+								style={{
+									marginBottom: "15px",
+									color: "#2c3e50",
+									fontSize: "16px",
+									marginTop: 0,
+								}}
+							>
+								Tower Information
+							</h3>
+							<div style={{ marginBottom: "15px" }}>
+								<label
+									style={{
+										display: "block",
+										marginBottom: "5px",
+										fontSize: "14px",
+										fontWeight: "500",
+										color: "#3498db",
+									}}
+								>
+									Number of Towers
+								</label>
+								<input
+									type="number"
+									placeholder="Number of Towers"
+									value={newCircuit.numberOfTowers || ""}
+									onChange={(e) =>
+										setNewCircuit({
+											...newCircuit,
+											numberOfTowers: e.target.value,
+										})
+									}
+									style={inputStyle}
+									required
+								/>
+							</div>
+							<div style={{ marginBottom: "15px" }}>
+								<label
+									style={{
+										display: "block",
+										marginBottom: "5px",
+										fontSize: "14px",
+										fontWeight: "500",
+										color: "#3498db",
+									}}
+								>
+									Tower Provider
+								</label>
+								<input
+									type="text"
+									placeholder="Tower Provider"
+									value={newCircuit.towerProvider || ""}
+									onChange={(e) =>
+										setNewCircuit({
+											...newCircuit,
+											towerProvider: e.target.value,
+										})
+									}
+									style={inputStyle}
+									required
+								/>
+							</div>
+							<div style={{ marginBottom: "15px" }}>
+								<label
+									style={{
+										display: "block",
+										marginBottom: "5px",
+										fontSize: "14px",
+										fontWeight: "500",
+										color: "#3498db",
+										backgroundColor: "#f8f9fa",
+										padding: "3px 5px",
+										borderRadius: "3px",
+									}}
+								>
+									Tower Installation Date
+								</label>
+								<input
+									type="date"
+									placeholder="Tower Installation Date"
+									value={newCircuit.towerInstallDate || ""}
+									onChange={(e) =>
+										setNewCircuit({
+											...newCircuit,
+											towerInstallDate: e.target.value,
+										})
+									}
+									style={inputStyle}
+									required
+								/>
+							</div>
+							<div style={{ marginBottom: "15px" }}>
+								<label
+									style={{
+										display: "block",
+										marginBottom: "5px",
+										fontSize: "14px",
+										fontWeight: "500",
+										color: "#3498db",
+										backgroundColor: "#f8f9fa",
+										padding: "3px 5px",
+										borderRadius: "3px",
+									}}
+								>
+									Tower Expiration Date
+								</label>
+								<input
+									type="date"
+									placeholder="Tower Expiration Date"
+									value={newCircuit.towerExpirationDate || ""}
+									onChange={(e) =>
+										setNewCircuit({
+											...newCircuit,
+											towerExpirationDate: e.target.value,
+										})
+									}
+									style={inputStyle}
+									required
+								/>
+							</div>
+							<div style={{ marginBottom: "15px" }}>
+								<label
+									style={{
+										display: "block",
+										marginBottom: "5px",
+										fontSize: "14px",
+										fontWeight: "500",
+										color: "#3498db",
+									}}
+								>
+									Tower Monthly Cost
+								</label>
+								<input
+									type="number"
+									placeholder="Tower Monthly Cost"
+									value={newCircuit.towerMonthlyCost || ""}
+									onChange={(e) =>
+										setNewCircuit({
+											...newCircuit,
+											towerMonthlyCost: Number(e.target.value),
+										})
+									}
+									style={inputStyle}
+									required
+								/>
+							</div>
+						</div>
+					)}
 					<div
 						style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
 					>
@@ -1166,6 +1327,8 @@ const EditCircuitModal = ({
 				width: "90%",
 				maxWidth: "400px",
 				margin: "20px",
+				maxHeight: "90vh",
+				overflowY: "auto",
 			}}
 		>
 			<h2
@@ -1400,6 +1563,165 @@ const EditCircuitModal = ({
 						Has Tower
 					</label>
 				</div>
+				{circuit.hasTower && (
+					<div
+						style={{
+							marginBottom: "20px",
+							borderTop: "2px solid #3498db",
+							paddingTop: "15px",
+							backgroundColor: "#f8f9fa",
+							padding: "15px",
+							borderRadius: "4px",
+						}}
+					>
+						<h3
+							style={{
+								marginBottom: "15px",
+								color: "#2c3e50",
+								fontSize: "16px",
+								marginTop: 0,
+							}}
+						>
+							Tower Information
+						</h3>
+						<div style={{ marginBottom: "15px" }}>
+							<label
+								style={{
+									display: "block",
+									marginBottom: "5px",
+									fontSize: "14px",
+									fontWeight: "500",
+									color: "#3498db",
+								}}
+							>
+								Number of Towers
+							</label>
+							<input
+								type="number"
+								placeholder="Number of Towers"
+								value={circuit.numberOfTowers || ""}
+								onChange={(e) =>
+									setCircuit({
+										...circuit,
+										numberOfTowers: e.target.value,
+									})
+								}
+								style={inputStyle}
+								required
+							/>
+						</div>
+						<div style={{ marginBottom: "15px" }}>
+							<label
+								style={{
+									display: "block",
+									marginBottom: "5px",
+									fontSize: "14px",
+									fontWeight: "500",
+									color: "#3498db",
+								}}
+							>
+								Tower Provider
+							</label>
+							<input
+								type="text"
+								placeholder="Tower Provider"
+								value={circuit.towerProvider || ""}
+								onChange={(e) =>
+									setCircuit({
+										...circuit,
+										towerProvider: e.target.value,
+									})
+								}
+								style={inputStyle}
+								required
+							/>
+						</div>
+						<div style={{ marginBottom: "15px" }}>
+							<label
+								style={{
+									display: "block",
+									marginBottom: "5px",
+									fontSize: "14px",
+									fontWeight: "500",
+									color: "#3498db",
+									backgroundColor: "#f8f9fa",
+									padding: "3px 5px",
+									borderRadius: "3px",
+								}}
+							>
+								Tower Installation Date
+							</label>
+							<input
+								type="date"
+								placeholder="Tower Installation Date"
+								value={circuit.towerInstallDate || ""}
+								onChange={(e) =>
+									setCircuit({
+										...circuit,
+										towerInstallDate: e.target.value,
+									})
+								}
+								style={inputStyle}
+								required
+							/>
+						</div>
+						<div style={{ marginBottom: "15px" }}>
+							<label
+								style={{
+									display: "block",
+									marginBottom: "5px",
+									fontSize: "14px",
+									fontWeight: "500",
+									color: "#3498db",
+									backgroundColor: "#f8f9fa",
+									padding: "3px 5px",
+									borderRadius: "3px",
+								}}
+							>
+								Tower Expiration Date
+							</label>
+							<input
+								type="date"
+								placeholder="Tower Expiration Date"
+								value={circuit.towerExpirationDate || ""}
+								onChange={(e) =>
+									setCircuit({
+										...circuit,
+										towerExpirationDate: e.target.value,
+									})
+								}
+								style={inputStyle}
+								required
+							/>
+						</div>
+						<div style={{ marginBottom: "15px" }}>
+							<label
+								style={{
+									display: "block",
+									marginBottom: "5px",
+									fontSize: "14px",
+									fontWeight: "500",
+									color: "#3498db",
+								}}
+							>
+								Tower Monthly Cost
+							</label>
+							<input
+								type="number"
+								placeholder="Tower Monthly Cost"
+								value={circuit.towerMonthlyCost || ""}
+								onChange={(e) =>
+									setCircuit({
+										...circuit,
+										towerMonthlyCost: Number(e.target.value),
+									})
+								}
+								style={inputStyle}
+								required
+							/>
+						</div>
+					</div>
+				)}
 				<div
 					style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
 				>
@@ -1467,6 +1789,11 @@ function Admin() {
 		status: "",
 		circuitType: "",
 		hasTower: false,
+		numberOfTowers: "",
+		towerProvider: "",
+		towerInstallDate: "",
+		towerExpirationDate: "",
+		towerMonthlyCost: "",
 	});
 	const [showEditSiteModal, setShowEditSiteModal] = useState(false);
 	const [selectedSite, setSelectedSite] = useState(null);
@@ -1661,6 +1988,11 @@ function Admin() {
 				status: "",
 				circuitType: "",
 				hasTower: false,
+				numberOfTowers: "",
+				towerProvider: "",
+				towerInstallDate: "",
+				towerExpirationDate: "",
+				towerMonthlyCost: "",
 			});
 		} catch (error) {
 			console.error("Error creating circuit:", error);
@@ -2539,11 +2871,11 @@ const headerStyle = {
 	padding: "12px",
 	textAlign: "center",
 	borderBottom: "2px solid #dee2e6",
-	backgroundColor: "#2c3e50", // Dark blue background
-	color: "#ffffff", // White text
-	fontWeight: "600", // Semi-bold text
+	backgroundColor: "#2c3e50",
+	color: "#ffffff",
+	fontWeight: "600",
 	fontSize: "14px",
-	boxShadow: "0 2px 4px rgba(0,0,0,0.1)", // Add shadow to visually separate fixed header
+	boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
 };
 
 const cellStyle = {

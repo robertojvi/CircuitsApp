@@ -26,6 +26,51 @@ public class Circuit {
     private String expirationDate;
     private String circuitType;
     private Boolean hasTower;
+    private Integer numberOfTowers;
+    private String towerProvider;
+    private String towerInstallDate;
+    private String towerExpirationDate;
+    private Double towerMonthlyCost;
+
+    public Double getTowerMonthlyCost() {
+        return towerMonthlyCost;
+    }
+
+    public void setTowerMonthlyCost(Double towerMonthlyCost) {
+        this.towerMonthlyCost = towerMonthlyCost;
+    }
+
+    public Integer getNumberOfTowers() {
+        return numberOfTowers;
+    }
+
+    public void setNumberOfTowers(Integer numberOfTowers) {
+        this.numberOfTowers = numberOfTowers;
+    }
+
+    public String getTowerProvider() {
+        return towerProvider;
+    }
+
+    public void setTowerProvider(String towerProvider) {
+        this.towerProvider = towerProvider;
+    }
+
+    public String getTowerInstallDate() {
+        return towerInstallDate;
+    }
+
+    public void setTowerInstallDate(String towerInstallDate) {
+        this.towerInstallDate = towerInstallDate;
+    }
+
+    public String getTowerExpirationDate() {
+        return towerExpirationDate;
+    }
+
+    public void setTowerExpirationDate(String towerExpirationDate) {
+        this.towerExpirationDate = towerExpirationDate;
+    }
 
     public String getCircuitContractDate() {
         return circuitContractDate;
