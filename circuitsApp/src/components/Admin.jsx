@@ -828,6 +828,87 @@ const CreateCircuitModal = ({
 							</div>
 						</div>
 					)}
+					<div style={{ marginBottom: "15px" }}>
+						<label
+							style={{
+								display: "flex",
+								alignItems: "center",
+								fontSize: "14px",
+								fontWeight: "500",
+								color: "#3498db",
+								backgroundColor: "#f8f9fa",
+								padding: "10px",
+								borderRadius: "4px",
+								cursor: "pointer",
+							}}
+						>
+							<input
+								type="checkbox"
+								checked={newCircuit.hasAggregator || false}
+								onChange={(e) =>
+									setNewCircuit({
+										...newCircuit,
+										hasAggregator: e.target.checked,
+									})
+								}
+								style={{
+									marginRight: "8px",
+									transform: "scale(1.2)",
+									cursor: "pointer",
+								}}
+							/>
+							Has Aggregator
+						</label>
+					</div>
+					{newCircuit.hasAggregator && (
+						<div
+							style={{
+								marginBottom: "20px",
+								borderTop: "2px solid #3498db",
+								paddingTop: "15px",
+								backgroundColor: "#f8f9fa",
+								padding: "15px",
+								borderRadius: "4px",
+							}}
+						>
+							<h3
+								style={{
+									marginBottom: "15px",
+									color: "#2c3e50",
+									fontSize: "16px",
+									marginTop: 0,
+								}}
+							>
+								Aggregator Information
+							</h3>
+							<div style={{ marginBottom: "15px" }}>
+								<label
+									style={{
+										display: "block",
+										marginBottom: "5px",
+										fontSize: "14px",
+										fontWeight: "500",
+										color: "#3498db",
+									}}
+								>
+									Aggregator Name
+								</label>
+								<input
+									type="text"
+									placeholder="Aggregator Name"
+									value={newCircuit.aggregatorName || ""}
+									onChange={(e) =>
+										setNewCircuit({
+											...newCircuit,
+											aggregatorName: e.target.value,
+										})
+									}
+									style={inputStyle}
+									required
+								/>
+							</div>
+						</div>
+					)}
 					<div
 						style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
 					>
@@ -1722,6 +1803,84 @@ const EditCircuitModal = ({
 						</div>
 					</div>
 				)}
+				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "flex",
+							alignItems: "center",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
+							backgroundColor: "#f8f9fa",
+							padding: "10px",
+							borderRadius: "4px",
+							cursor: "pointer",
+						}}
+					>
+						<input
+							type="checkbox"
+							checked={circuit.hasAggregator || false}
+							onChange={(e) =>
+								setCircuit({ ...circuit, hasAggregator: e.target.checked })
+							}
+							style={{
+								marginRight: "8px",
+								transform: "scale(1.2)",
+								cursor: "pointer",
+							}}
+						/>
+						Has Aggregator
+					</label>
+				</div>
+				{circuit.hasAggregator && (
+					<div
+						style={{
+							marginBottom: "20px",
+							borderTop: "2px solid #3498db",
+							paddingTop: "15px",
+							backgroundColor: "#f8f9fa",
+							padding: "15px",
+							borderRadius: "4px",
+						}}
+					>
+						<h3
+							style={{
+								marginBottom: "15px",
+								color: "#2c3e50",
+								fontSize: "16px",
+								marginTop: 0,
+							}}
+						>
+							Aggregator Information
+						</h3>
+						<div style={{ marginBottom: "15px" }}>
+							<label
+								style={{
+									display: "block",
+									marginBottom: "5px",
+									fontSize: "14px",
+									fontWeight: "500",
+									color: "#3498db",
+								}}
+							>
+								Aggregator Name
+							</label>
+							<input
+								type="text"
+								placeholder="Aggregator Name"
+								value={circuit.aggregatorName || ""}
+								onChange={(e) =>
+									setCircuit({
+										...circuit,
+										aggregatorName: e.target.value,
+									})
+								}
+								style={inputStyle}
+								required
+							/>
+						</div>
+					</div>
+				)}
 				<div
 					style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
 				>
@@ -1794,6 +1953,8 @@ function Admin() {
 		towerInstallDate: "",
 		towerExpirationDate: "",
 		towerMonthlyCost: "",
+		hasAggregator: false,
+		aggregatorName: "",
 	});
 	const [showEditSiteModal, setShowEditSiteModal] = useState(false);
 	const [selectedSite, setSelectedSite] = useState(null);
@@ -1993,6 +2154,8 @@ function Admin() {
 				towerInstallDate: "",
 				towerExpirationDate: "",
 				towerMonthlyCost: "",
+				hasAggregator: false,
+				aggregatorName: "",
 			});
 		} catch (error) {
 			console.error("Error creating circuit:", error);

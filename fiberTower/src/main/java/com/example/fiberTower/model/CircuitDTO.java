@@ -5,6 +5,8 @@ public class CircuitDTO {
     private Long id;
     private Site site;
     private Provider provider;
+    private Boolean hasAggregator;
+    private String aggregatorName;
     private String accountNumber;
     private String circuitId;
     private String circuitBandwidth;
@@ -20,6 +22,23 @@ public class CircuitDTO {
     private String towerInstallDate;
     private String towerExpirationDate;
     private Double towerMonthlyCost;
+
+
+    public Boolean getHasAggregator() {
+        return hasAggregator;
+    }
+
+    public void setHasAggregator(Boolean hasAggregator) {
+        this.hasAggregator = hasAggregator;
+    }
+
+    public String getAggregatorName() {
+        return aggregatorName;
+    }
+
+    public void setAggregatorName(String aggregatorName) {
+        this.aggregatorName = aggregatorName;
+    }
 
     public Double getTowerMonthlyCost() {
         return towerMonthlyCost;
