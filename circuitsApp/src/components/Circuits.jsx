@@ -151,7 +151,7 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 					<strong>Bandwidth:</strong> {circuit.circuitBandwidth || "N/A"}
 				</p>
 				<p style={detailRowStyle}>
-					<strong>Monthly Cost:</strong> ${circuit.monthlyCost || "0.00"}
+					<strong>Monthly Cost:</strong> {"$" + (circuit.monthlyCost || "0.00")}
 				</p>
 				<p style={detailRowStyle}>
 					<strong>Installation Date:</strong>{" "}
@@ -224,9 +224,47 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 							</span>
 						)}
 				</p>
-				<p style={detailRowStyle}>
-					<strong>Contract Date:</strong> {circuit.circuitContractDate || "N/A"}
-				</p>
+				{circuit.hasAggregator ? (
+					<p style={detailRowStyle}>
+						<strong>Aggregator:</strong> {circuit.aggregatorName || "N/A"}
+					</p>
+				) : (
+					<p style={detailRowStyle}>
+						<strong>Aggregator:</strong> No
+					</p>
+				)}
+
+				{circuit.hasTower && (
+					<div
+						style={{
+							marginTop: "10px",
+							backgroundColor: "#22303a",
+							padding: "10px",
+							borderRadius: "6px",
+							border: "1px solid #3b82f6",
+						}}
+					>
+						<p style={detailRowStyle}>
+							<strong>Number of Towers:</strong>{" "}
+							{circuit.numberOfTowers || "N/A"}
+						</p>
+						<p style={detailRowStyle}>
+							<strong>Tower Provider:</strong> {circuit.towerProvider || "N/A"}
+						</p>
+						<p style={detailRowStyle}>
+							<strong>Tower Installation Date:</strong>{" "}
+							{circuit.towerInstallDate || "N/A"}
+						</p>
+						<p style={detailRowStyle}>
+							<strong>Tower Expiration Date:</strong>{" "}
+							{circuit.towerExpirationDate || "N/A"}
+						</p>
+						<p style={detailRowStyle}>
+							<strong>Tower Monthly Cost:</strong>{" "}
+							{"$" + (circuit.towerMonthlyCost || "0.00")}
+						</p>
+					</div>
+				)}
 			</div>
 			<div style={{ display: "flex", justifyContent: "flex-end" }}>
 				<button
@@ -273,24 +311,18 @@ function Circuits() {
 		}
 	};
 
-	const filteredCircuits = circuits.filter(
-		(circuit) =>
-			circuit.site.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			(circuit.site.siteType &&
-				circuit.site.siteType
-					.toLowerCase()
-					.includes(searchTerm.toLowerCase())) ||
-			circuit.provider.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			circuit.circuitBandwidth
-				.toLowerCase()
-				.includes(searchTerm.toLowerCase()) ||
-			circuit.accountNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			circuit.circuitId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			(circuit.circuitContractDate &&
-				circuit.circuitContractDate
-					.toLowerCase()
-					.includes(searchTerm.toLowerCase())),
-	);
+	const filteredCircuits = circuits.filter((circuit) => {
+		const term = searchTerm.toLowerCase();
+		return (
+			(circuit.site.name || "").toLowerCase().includes(term) ||
+			(circuit.site.siteType || "").toLowerCase().includes(term) ||
+			(circuit.provider.name || "").toLowerCase().includes(term) ||
+			(circuit.circuitBandwidth || "").toLowerCase().includes(term) ||
+			(circuit.accountNumber || "").toLowerCase().includes(term) ||
+			(circuit.circuitId || "").toLowerCase().includes(term) ||
+			(circuit.aggregatorName || "").toLowerCase().includes(term)
+		);
+	});
 
 	const onSort = (key) => {
 		let direction = "ascending";
@@ -439,10 +471,10 @@ function Circuits() {
 									Monthly Cost
 								</th>
 								<th
-									onClick={() => onSort("circuitContractDate")}
-									style={getSortableHeaderStyle("circuitContractDate")}
+									onClick={() => onSort("aggregatorName")}
+									style={getSortableHeaderStyle("aggregatorName")}
 								>
-									Contract Date
+									Aggregator
 								</th>
 								<th style={headerStyle}>Details</th>
 							</tr>
@@ -516,9 +548,7 @@ function Circuits() {
 										</span>
 									</td>
 									<td style={cellStyle}>${circuit.monthlyCost}</td>
-									<td style={cellStyle}>
-										{circuit.circuitContractDate || "N/A"}
-									</td>
+									<td style={cellStyle}>{circuit.aggregatorName || "N/A"}</td>
 									<td style={cellStyle}>
 										<button
 											onClick={() => {
