@@ -18,7 +18,7 @@ ChartJS.register(
 	Title,
 	Tooltip,
 	Legend,
-	ChartDataLabels
+	ChartDataLabels,
 );
 
 function Reports() {
@@ -40,7 +40,8 @@ function Reports() {
 		if (
 			selectedMenu === "Circuit Analytics" ||
 			selectedMenu === "Circuit Expiration Report" ||
-			selectedMenu === "Expired Circuits"
+			selectedMenu === "Expired Circuits" ||
+			selectedMenu === "Tower Report"
 		) {
 			fetchCircuits();
 		}
@@ -88,7 +89,7 @@ function Reports() {
 
 		// Sort the filtered circuits by site name
 		return filtered.sort((a, b) =>
-			a.site.name.toLowerCase().localeCompare(b.site.name.toLowerCase())
+			a.site.name.toLowerCase().localeCompare(b.site.name.toLowerCase()),
 		);
 	};
 
@@ -168,7 +169,7 @@ function Reports() {
 			}
 		});
 		return Array.from(providers).sort((a, b) =>
-			a.toLowerCase().localeCompare(b.toLowerCase())
+			a.toLowerCase().localeCompare(b.toLowerCase()),
 		);
 	};
 
@@ -214,7 +215,7 @@ function Reports() {
 
 		// Sort providers alphabetically
 		const sortedEntries = Object.entries(distribution).sort((a, b) =>
-			a[0].toLowerCase().localeCompare(b[0].toLowerCase())
+			a[0].toLowerCase().localeCompare(b[0].toLowerCase()),
 		);
 
 		return {
@@ -450,14 +451,14 @@ function Reports() {
 		const daysInMonth = new Date(
 			today.getFullYear(),
 			today.getMonth() + 1,
-			0
+			0,
 		).getDate();
 		const fractionalMonth = (daysInMonth - dayOfMonth) / daysInMonth;
 
 		// Round to 1 decimal place
 		return Math.max(
 			0,
-			Math.round((monthsUntilExpiration + fractionalMonth) * 10) / 10
+			Math.round((monthsUntilExpiration + fractionalMonth) * 10) / 10,
 		);
 	};
 
@@ -480,7 +481,7 @@ function Reports() {
 							onClick={() =>
 								window.open(
 									"https://app.asana.com/1/943649575918213/project/1209991618007270/board/1209993686905714",
-									"_blank"
+									"_blank",
 								)
 							}
 							style={{
@@ -933,10 +934,10 @@ function Reports() {
 																circuit.site.siteType === "MHC"
 																	? "#3B82F6" // Blue for MHC
 																	: circuit.site.siteType === "RV"
-																	? "#10B981" // Green for RV
-																	: circuit.site.siteType === "Hybrid"
-																	? "#8B5CF6" // Purple for Hybrid
-																	: "#94A3B8", // Gray for other types
+																		? "#10B981" // Green for RV
+																		: circuit.site.siteType === "Hybrid"
+																			? "#8B5CF6" // Purple for Hybrid
+																			: "#94A3B8", // Gray for other types
 															color: "white",
 														}}
 													>
@@ -958,8 +959,8 @@ function Reports() {
 																circuit.circuitType === "Fiber"
 																	? "#3B82F6" // Blue for Fiber Circuit
 																	: circuit.circuitType === "Tower"
-																	? "#8B5CF6" // Purple for Tower
-																	: "#94A3B8", // Gray for other types
+																		? "#8B5CF6" // Purple for Tower
+																		: "#94A3B8", // Gray for other types
 															color: "white",
 														}}
 													>
@@ -977,8 +978,8 @@ function Reports() {
 																circuit.status === "Active"
 																	? "#10B981" // Green for Active
 																	: circuit.status === "Inactive"
-																	? "#EF4444" // Red for Inactive
-																	: "#F59E0B", // Yellow for Pending or other status
+																		? "#EF4444" // Red for Inactive
+																		: "#F59E0B", // Yellow for Pending or other status
 															color: "white",
 														}}
 													>
@@ -1023,7 +1024,7 @@ function Reports() {
 							onClick={() =>
 								window.open(
 									"https://app.asana.com/1/943649575918213/project/1209991618007270/board/1209993686905714",
-									"_blank"
+									"_blank",
 								)
 							}
 							style={{
@@ -1122,7 +1123,7 @@ function Reports() {
 								<tbody>
 									{expiringCircuits.map((circuit, index) => {
 										const monthsUntilExpiration = getMonthsUntilExpiration(
-											circuit.expirationDate
+											circuit.expirationDate,
 										);
 
 										// Determine urgency based on time range
@@ -1161,10 +1162,10 @@ function Reports() {
 																circuit.site.siteType === "MHC"
 																	? "#3B82F6" // Blue for MHC
 																	: circuit.site.siteType === "RV"
-																	? "#10B981" // Green for RV
-																	: circuit.site.siteType === "Hybrid"
-																	? "#8B5CF6" // Purple for Hybrid
-																	: "#94A3B8", // Gray for other types
+																		? "#10B981" // Green for RV
+																		: circuit.site.siteType === "Hybrid"
+																			? "#8B5CF6" // Purple for Hybrid
+																			: "#94A3B8", // Gray for other types
 															color: "white",
 														}}
 													>
@@ -1183,8 +1184,8 @@ function Reports() {
 																circuit.circuitType === "Fiber"
 																	? "#3B82F6" // Blue for Fiber
 																	: circuit.circuitType === "Tower"
-																	? "#8B5CF6" // Purple for Tower
-																	: "#94A3B8", // Gray for other types
+																		? "#8B5CF6" // Purple for Tower
+																		: "#94A3B8", // Gray for other types
 															color: "white",
 														}}
 													>
@@ -1211,8 +1212,8 @@ function Reports() {
 														{monthsUntilExpiration <= 0
 															? "Less than 1 month"
 															: monthsUntilExpiration === 1
-															? "1 month"
-															: `${monthsUntilExpiration} months`}
+																? "1 month"
+																: `${monthsUntilExpiration} months`}
 													</span>
 												</td>
 												<td style={tableCellStyle}>
@@ -1226,8 +1227,8 @@ function Reports() {
 																circuit.status === "Active"
 																	? "#10B981" // Green for Active
 																	: circuit.status === "Inactive"
-																	? "#EF4444" // Red for Inactive
-																	: "#F59E0B", // Yellow for Pending
+																		? "#EF4444" // Red for Inactive
+																		: "#F59E0B", // Yellow for Pending
 															color: "white",
 														}}
 													>
@@ -1337,6 +1338,124 @@ function Reports() {
 					</div>
 				</div>
 			);
+		} else if (selectedMenu === "Tower Report") {
+			const towerCircuits = circuits.filter((c) => c.hasTower);
+
+			return (
+				<div style={{ width: "100%" }}>
+					<div
+						style={{
+							marginBottom: "20px",
+							display: "flex",
+							gap: "15px",
+							alignItems: "center",
+						}}
+					>
+						<button
+							onClick={() =>
+								window.open(
+									"https://app.asana.com/1/943649575918213/project/1209991618007270/board/1209993686905714",
+									"_blank",
+								)
+							}
+							style={{
+								padding: "10px 20px",
+								border: "none",
+								borderRadius: "4px",
+								backgroundColor: "#FFD700",
+								color: "black",
+								fontSize: "14px",
+								fontWeight: "bold",
+								cursor: "pointer",
+								display: "flex",
+								alignItems: "center",
+								gap: "8px",
+							}}
+						>
+							📋 AccessParks Circuits
+						</button>
+					</div>
+					<div
+						style={{
+							backgroundColor: "#f0f4f8",
+							padding: "20px",
+							borderRadius: "8px",
+							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+							margin: "0 auto",
+							maxWidth: "1200px",
+							width: "100%",
+							overflowX: "auto",
+						}}
+					>
+						<h2 style={{ marginTop: 0 }}>Tower Report</h2>
+						<div style={{ marginBottom: "10px", color: "#64748B" }}>
+							Showing {towerCircuits.length} sites with towers
+						</div>
+						{towerCircuits.length > 0 ? (
+							<table style={{ width: "100%", borderCollapse: "collapse" }}>
+								<thead>
+									<tr style={{ backgroundColor: "#2c3e50", color: "white" }}>
+										<th style={tableHeaderStyle}>Site</th>
+										<th style={tableHeaderStyle}>Site Address</th>
+										<th style={tableHeaderStyle}>Provider</th>
+										<th style={tableHeaderStyle}># Towers</th>
+										<th style={tableHeaderStyle}>Tower Provider</th>
+										<th style={tableHeaderStyle}>Installation Date</th>
+										<th style={tableHeaderStyle}>Expiration Date</th>
+										<th style={tableHeaderStyle}>Monthly Cost</th>
+										<th style={tableHeaderStyle}>Status</th>
+									</tr>
+								</thead>
+								<tbody>
+									{towerCircuits.map((circuit) => (
+										<tr
+											key={circuit.id}
+											style={{ borderBottom: "1px solid #dee2e6" }}
+										>
+											<td style={tableCellStyle}>
+												{circuit.site?.name || "N/A"}
+											</td>
+											<td style={tableCellStyle}>
+												{circuit.site?.address || "N/A"}
+											</td>
+											<td style={tableCellStyle}>
+												{circuit.provider?.name || "N/A"}
+											</td>
+											<td style={tableCellStyle}>
+												{circuit.numberOfTowers || "N/A"}
+											</td>
+											<td style={tableCellStyle}>
+												{circuit.towerProvider || "N/A"}
+											</td>
+											<td style={tableCellStyle}>
+												{circuit.towerInstallDate || "N/A"}
+											</td>
+											<td style={tableCellStyle}>
+												{circuit.towerExpirationDate || "N/A"}
+											</td>
+											<td style={tableCellStyle}>
+												{"$" + (circuit.towerMonthlyCost || "0.00")}
+											</td>
+											<td style={tableCellStyle}>{circuit.status || "N/A"}</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						) : (
+							<div
+								style={{
+									textAlign: "center",
+									padding: "30px",
+									color: "#64748B",
+									fontStyle: "italic",
+								}}
+							>
+								No sites with towers found
+							</div>
+						)}
+					</div>
+				</div>
+			);
 		} else if (selectedMenu === "Expired Circuits") {
 			const expiredCircuits = getExpiredCircuits();
 			const today = new Date();
@@ -1355,7 +1474,7 @@ function Reports() {
 							onClick={() =>
 								window.open(
 									"https://app.asana.com/1/943649575918213/project/1209991618007270/board/1209993686905714",
-									"_blank"
+									"_blank",
 								)
 							}
 							style={{
@@ -1582,7 +1701,7 @@ function Reports() {
 									{getSortedExpiredCircuits(expiredCircuits).map(
 										(circuit, index) => {
 											const daysUntilExpiration = getDaysUntilExpiration(
-												circuit.expirationDate
+												circuit.expirationDate,
 											);
 											const daysExpired = Math.abs(daysUntilExpiration);
 
@@ -1609,8 +1728,8 @@ function Reports() {
 																	circuit.site.siteType === "MHC"
 																		? "#3498db"
 																		: circuit.site.siteType === "DHC"
-																		? "#9b59b6"
-																		: "#95a5a6",
+																			? "#9b59b6"
+																			: "#95a5a6",
 																color: "white",
 															}}
 														>
@@ -1647,10 +1766,10 @@ function Reports() {
 																	circuit.status === "Active"
 																		? "#2ecc71"
 																		: circuit.status === "Pending"
-																		? "#f39c12"
-																		: circuit.status === "Inactive"
-																		? "#e74c3c"
-																		: "#95a5a6",
+																			? "#f39c12"
+																			: circuit.status === "Inactive"
+																				? "#e74c3c"
+																				: "#95a5a6",
 																color: "white",
 															}}
 														>
@@ -1659,7 +1778,7 @@ function Reports() {
 													</td>
 												</tr>
 											);
-										}
+										},
 									)}
 								</tbody>
 							</table>
@@ -1753,6 +1872,7 @@ function Reports() {
 						"Circuit Analytics",
 						"Circuit Expiration Report",
 						"Expired Circuits",
+						"Tower Report",
 					].map((item) => (
 						<li
 							key={item}
