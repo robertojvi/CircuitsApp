@@ -5,7 +5,192 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7da67a3a-6e17-4887-bb2b-2f4f70caefbe" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/circuitsApp/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/eslint.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/eslint.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/public/vite.svg" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/public/vite.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/src/assets/react.svg" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/assets/react.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/src/components/Admin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/components/Admin.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/src/components/Circuits.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/components/Circuits.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/src/components/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/components/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/src/components/Layout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/components/Layout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/src/components/Reports.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/components/Reports.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/src/images/Access.png" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/images/Access.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/main.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/vite.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower.zip" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/.gitattributes" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/.gitattributes" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/mvnw" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/mvnw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/FiberTowerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/FiberTowerApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/controller/CircuitController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/controller/CircuitController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/controller/ProviderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/controller/ProviderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/controller/SiteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/controller/SiteController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/Circuit.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/Circuit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/CircuitDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/CircuitDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/Provider.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/Provider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/ProviderDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/ProviderDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/Site.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/Site.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/SiteDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/SiteDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/repository/ICircuitRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/repository/ICircuitRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/repository/IProviderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/repository/IProviderRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/repository/ISiteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/repository/ISiteRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/service/CircuitService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/service/CircuitService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/service/ICircuitService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/service/ICircuitService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/service/IProviderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/service/IProviderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/service/ISiteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/service/ISiteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/service/ProviderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/service/ProviderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/service/SiteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/service/SiteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/test/java/com/example/fiberTower/FiberTowerApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/test/java/com/example/fiberTower/FiberTowerApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@kurkle/color/LICENSE.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@kurkle/color/LICENSE.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@kurkle/color/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@kurkle/color/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@kurkle/color/dist/color.cjs" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@kurkle/color/dist/color.cjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@kurkle/color/dist/color.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@kurkle/color/dist/color.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@kurkle/color/dist/color.esm.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@kurkle/color/dist/color.esm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@kurkle/color/dist/color.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@kurkle/color/dist/color.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@kurkle/color/dist/color.min.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@kurkle/color/dist/color.min.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@kurkle/color/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@kurkle/color/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/LICENSE.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/LICENSE.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/auto/auto.cjs" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/auto/auto.cjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/auto/auto.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/auto/auto.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/auto/auto.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/auto/auto.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/auto/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/auto/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/chart.cjs" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/chart.cjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/chart.cjs.map" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/chart.cjs.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/chart.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/chart.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/chart.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/chart.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/chart.umd.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/chart.umd.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/chart.umd.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/chart.umd.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/chart.umd.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/chart.umd.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/chart.umd.min.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/chart.umd.min.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/chunks/helpers.dataset.cjs" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/chunks/helpers.dataset.cjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/chunks/helpers.dataset.cjs.map" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/chunks/helpers.dataset.cjs.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/chunks/helpers.dataset.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/chunks/helpers.dataset.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/chunks/helpers.dataset.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/chunks/helpers.dataset.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/controllers/controller.bar.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/controllers/controller.bar.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/controllers/controller.bubble.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/controllers/controller.bubble.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/controllers/controller.doughnut.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/controllers/controller.doughnut.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/controllers/controller.line.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/controllers/controller.line.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/controllers/controller.pie.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/controllers/controller.pie.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/controllers/controller.polarArea.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/controllers/controller.polarArea.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/controllers/controller.radar.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/controllers/controller.radar.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/controllers/controller.scatter.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/controllers/controller.scatter.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/controllers/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/controllers/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.adapters.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.adapters.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.animation.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.animation.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.animations.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.animations.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.animations.defaults.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.animations.defaults.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.animator.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.animator.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.config.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.config.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.controller.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.controller.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.datasetController.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.datasetController.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.defaults.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.defaults.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.element.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.element.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.interaction.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.interaction.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.layouts.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.layouts.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.layouts.defaults.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.layouts.defaults.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.plugins.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.plugins.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.registry.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.registry.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.scale.autoskip.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.scale.autoskip.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.scale.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.scale.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.scale.defaults.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.scale.defaults.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.ticks.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.ticks.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.typedRegistry.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/core.typedRegistry.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/core/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/core/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/elements/element.arc.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/elements/element.arc.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/elements/element.bar.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/elements/element.bar.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/elements/element.line.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/elements/element.line.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/elements/element.point.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/elements/element.point.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/elements/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/elements/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers.cjs" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers.cjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers.cjs.map" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers.cjs.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.canvas.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.canvas.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.collection.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.collection.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.color.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.color.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.config.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.config.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.config.types.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.config.types.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.core.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.core.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.curve.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.curve.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.dataset.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.dataset.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.dom.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.dom.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.easing.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.easing.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.extras.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.extras.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.interpolation.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.interpolation.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.intl.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.intl.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.math.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.math.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.options.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.options.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.rtl.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.rtl.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.segment.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/helpers.segment.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/helpers/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/index.umd.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/index.umd.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/platform/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/platform/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/platform/platform.base.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/platform/platform.base.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/platform/platform.basic.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/platform/platform.basic.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/platform/platform.dom.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/platform/platform.dom.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.colors.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.colors.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.decimation.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.decimation.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.filler/filler.drawing.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.filler/filler.drawing.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.filler/filler.helper.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.filler/filler.helper.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.filler/filler.options.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.filler/filler.options.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.filler/filler.segment.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.filler/filler.segment.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.filler/filler.target.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.filler/filler.target.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.filler/filler.target.stack.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.filler/filler.target.stack.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.filler/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.filler/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.filler/simpleArc.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.filler/simpleArc.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.legend.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.legend.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.subtitle.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.subtitle.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.title.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.title.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.tooltip.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/plugins/plugin.tooltip.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/scales/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/scales/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/scales/scale.category.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/scales/scale.category.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/scales/scale.linear.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/scales/scale.linear.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/scales/scale.linearbase.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/scales/scale.linearbase.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/scales/scale.logarithmic.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/scales/scale.logarithmic.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/scales/scale.radialLinear.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/scales/scale.radialLinear.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/scales/scale.time.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/scales/scale.time.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/scales/scale.timeseries.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/scales/scale.timeseries.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/types.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/types.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/types/animation.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/types/animation.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/types/basic.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/types/basic.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/types/color.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/types/color.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/types/geometric.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/types/geometric.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/types/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/types/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/types/layout.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/types/layout.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/dist/types/utils.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/dist/types/utils.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/helpers/helpers.cjs" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/helpers/helpers.cjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/helpers/helpers.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/helpers/helpers.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/helpers/helpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/helpers/helpers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/helpers/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/helpers/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chart.js/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chart.js/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/LICENSE.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/LICENSE.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/bower.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/bower.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.esm.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.esm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/types/context.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/types/context.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/types/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/types/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/types/options.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/chartjs-plugin-datalabels/types/options.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,31 +207,25 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="38AdiJSvC6v2DflGYFmE565pQT0" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/robertojvi/Library/CloudStorage/OneDrive-AccessParks/AccessParks/ROAN_Apps copy"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.FiberTowerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/robertojvi/Library/CloudStorage/OneDrive-AccessParks/AccessParks/ROAN_Apps_08Feb26&quot;
   }
-}]]></component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-30f59d01ecdd-26cb7f24e5b0-intellij.indexing.shared.core-IU-253.29346.240" />
-      </set>
-    </attachedChunks>
-  </component>
+}</component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="7da67a3a-6e17-4887-bb2b-2f4f70caefbe" name="Changes" comment="" />

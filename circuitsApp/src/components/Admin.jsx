@@ -1455,11 +1455,15 @@ const EditCircuitModal = ({
 						required
 					>
 						<option value="">Select Provider</option>
-						{providers.map((provider) => (
-							<option key={provider.id} value={provider.id}>
-								{provider.name}
-							</option>
-						))}
+						{[...providers]
+							.sort((a, b) =>
+								a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+							)
+							.map((provider) => (
+								<option key={provider.id} value={provider.id}>
+									{provider.name}
+								</option>
+							))}
 					</select>
 				</div>
 				<div style={{ marginBottom: "15px" }}>

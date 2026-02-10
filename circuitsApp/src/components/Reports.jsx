@@ -438,7 +438,11 @@ function Reports() {
 	// Helper function to format dates for display
 	const formatDate = (dateString) => {
 		if (!dateString) return "N/A";
-		const date = new Date(dateString);
+		// Extract date components from ISO format (YYYY-MM-DD)
+		const datePart = dateString.split("T")[0];
+		const [year, month, day] = datePart.split("-");
+		// Create date in local timezone to avoid UTC conversion issues
+		const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
 		return date.toLocaleDateString("en-US", {
 			year: "numeric",
 			month: "short",
