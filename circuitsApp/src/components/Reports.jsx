@@ -1178,6 +1178,7 @@ function Reports() {
 										<th style={tableHeaderStyle}>Venue Name</th>
 										<th style={tableHeaderStyle}>Site Type</th>
 										<th style={tableHeaderStyle}>Provider</th>
+										<th style={tableHeaderStyle}>Aggregator</th>
 										<th style={tableHeaderStyle}>Circuit Type</th>
 										<th style={tableHeaderStyle}>Bandwidth</th>
 										<th style={tableHeaderStyle}>Expiration Date</th>
@@ -1238,6 +1239,11 @@ function Reports() {
 													</span>
 												</td>
 												<td style={tableCellStyle}>{circuit.provider.name}</td>
+												<td style={tableCellStyle}>
+													{circuit.hasAggregator && circuit.aggregatorName
+														? circuit.aggregatorName
+														: "N/A"}
+												</td>
 												<td style={tableCellStyle}>
 													<span
 														style={{
