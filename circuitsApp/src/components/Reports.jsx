@@ -380,6 +380,10 @@ function Reports() {
 					aValue = (a.provider?.name || "").toLowerCase();
 					bValue = (b.provider?.name || "").toLowerCase();
 					break;
+				case "aggregator":
+					aValue = (a.aggregatorName || "").toLowerCase();
+					bValue = (b.aggregatorName || "").toLowerCase();
+					break;
 				case "circuitType":
 					aValue = a.circuitType;
 					bValue = b.circuitType;
@@ -1659,6 +1663,27 @@ function Reports() {
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
+													expiredCircuitsSortConfig.key === "aggregator"
+														? "#34495e"
+														: "#2c3e50",
+											}}
+											onClick={() =>
+												handleExpiredCircuitsSortClick("aggregator")
+											}
+											title="Click to sort"
+										>
+											Aggregator{" "}
+											{expiredCircuitsSortConfig.key === "aggregator" &&
+												(expiredCircuitsSortConfig.direction === "ascending"
+													? "↑"
+													: "↓")}
+										</th>
+										<th
+											style={{
+												...tableHeaderStyle,
+												cursor: "pointer",
+												userSelect: "none",
+												backgroundColor:
 													expiredCircuitsSortConfig.key === "circuitType"
 														? "#34495e"
 														: "#2c3e50",
@@ -1799,6 +1824,11 @@ function Reports() {
 													</td>
 													<td style={tableCellStyle}>
 														{circuit.provider?.name || "N/A"}
+													</td>
+													<td style={tableCellStyle}>
+														{circuit.hasAggregator && circuit.aggregatorName
+															? circuit.aggregatorName
+															: "N/A"}
 													</td>
 													<td style={tableCellStyle}>{circuit.circuitType}</td>
 													<td style={tableCellStyle}>
