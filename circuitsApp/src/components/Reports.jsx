@@ -1447,8 +1447,14 @@ function Reports() {
 							}}
 						>
 							Note: Currently showing circuits expiring within the next{" "}
-							{expirationTimeRange}{" "}
-							{expirationTimeRange === 1 ? "month" : "months"}
+							{customExpirationMonths
+								? customExpirationMonths
+								: expirationTimeRange}{" "}
+							{(customExpirationMonths
+								? customExpirationMonths
+								: expirationTimeRange) === 1
+								? "month"
+								: "months"}
 						</div>
 					</div>
 				</div>
