@@ -32,6 +32,7 @@ function Reports() {
 	const [providerFilter, setProviderFilter] = useState("All");
 	const [aggregatorFilter, setAggregatorFilter] = useState("All");
 	const [expirationTimeRange, setExpirationTimeRange] = useState(6); // Default to 6 months
+	const [customExpirationMonths, setCustomExpirationMonths] = useState(""); // For custom month input
 	const [expiredCircuitsSortConfig, setExpiredCircuitsSortConfig] = useState({
 		key: "expirationDate",
 		direction: "ascending",
@@ -318,7 +319,11 @@ function Reports() {
 	const getExpiringCircuits = () => {
 		const today = new Date();
 		const futureDate = new Date();
-		futureDate.setMonth(today.getMonth() + expirationTimeRange);
+		// Use custom months if provided, otherwise use the preset time range
+		const monthsToCheck = customExpirationMonths
+			? parseInt(customExpirationMonths)
+			: expirationTimeRange;
+		futureDate.setMonth(today.getMonth() + monthsToCheck);
 
 		return circuits
 			.filter((circuit) => {
@@ -1129,18 +1134,35 @@ function Reports() {
 							</h2>
 							<div style={{ fontSize: "14px", marginTop: "5px" }}>
 								Showing {expiringCircuits.length} circuits expiring within the
-								next {expirationTimeRange}{" "}
-								{expirationTimeRange === 1 ? "month" : "months"}
+								next{" "}
+								{customExpirationMonths
+									? customExpirationMonths
+									: expirationTimeRange}{" "}
+								{(customExpirationMonths
+									? customExpirationMonths
+									: expirationTimeRange) === 1
+									? "month"
+									: "months"}
 							</div>
 						</div>
-						<div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								gap: "10px",
+								flexWrap: "wrap",
+							}}
+						>
 							<label htmlFor="timeRangeFilter" style={{ fontSize: "14px" }}>
 								Time Range:
 							</label>
 							<select
 								id="timeRangeFilter"
 								value={expirationTimeRange}
-								onChange={(e) => setExpirationTimeRange(Number(e.target.value))}
+								onChange={(e) => {
+									setExpirationTimeRange(Number(e.target.value));
+									setCustomExpirationMonths(""); // Clear custom when selecting preset
+								}}
 								style={{
 									padding: "6px 10px",
 									borderRadius: "4px",
@@ -1156,6 +1178,28 @@ function Reports() {
 								<option value={6}>6 Months</option>
 								<option value={12}>12 Months</option>
 							</select>
+							<span style={{ fontSize: "14px", color: "#ffffff" }}>or</span>
+							<label htmlFor="customTimeRange" style={{ fontSize: "14px" }}>
+								Custom (months):
+							</label>
+							<input
+								id="customTimeRange"
+								type="number"
+								min="1"
+								max="120"
+								value={customExpirationMonths}
+								onChange={(e) => setCustomExpirationMonths(e.target.value)}
+								placeholder="Enter months"
+								style={{
+									padding: "6px 10px",
+									borderRadius: "4px",
+									border: "1px solid #3498db",
+									backgroundColor: "#34495e",
+									color: "#ffffff",
+									fontSize: "14px",
+									width: "80px",
+								}}
+							/>
 						</div>
 					</div>
 
