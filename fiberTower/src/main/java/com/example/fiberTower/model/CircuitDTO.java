@@ -22,7 +22,15 @@ public class CircuitDTO {
     private String towerInstallDate;
     private String towerExpirationDate;
     private Double towerMonthlyCost;
+    private String notes;
 
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
     public Boolean getHasAggregator() {
         return hasAggregator;

@@ -909,6 +909,27 @@ const CreateCircuitModal = ({
 							</div>
 						</div>
 					)}
+					<div style={{ marginBottom: "15px" }}>
+						<label
+							style={{
+								display: "block",
+								marginBottom: "5px",
+								fontSize: "14px",
+								fontWeight: "500",
+								color: "#3498db",
+							}}
+						>
+							Notes
+						</label>
+						<textarea
+							placeholder="Notes (optional)"
+							value={newCircuit.notes || ""}
+							onChange={(e) =>
+								setNewCircuit({ ...newCircuit, notes: e.target.value })
+							}
+							style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }}
+						/>
+					</div>
 					<div
 						style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
 					>
@@ -1889,6 +1910,25 @@ const EditCircuitModal = ({
 						</div>
 					</div>
 				)}
+				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "block",
+							marginBottom: "5px",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
+						}}
+					>
+						Notes
+					</label>
+					<textarea
+						placeholder="Notes (optional)"
+						value={circuit.notes || ""}
+						onChange={(e) => setCircuit({ ...circuit, notes: e.target.value })}
+						style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }}
+					/>
+				</div>
 				<div
 					style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
 				>
@@ -1963,6 +2003,7 @@ function Admin() {
 		towerMonthlyCost: "",
 		hasAggregator: false,
 		aggregatorName: "",
+		notes: "",
 	});
 	const [showEditSiteModal, setShowEditSiteModal] = useState(false);
 	const [selectedSite, setSelectedSite] = useState(null);
@@ -2164,6 +2205,7 @@ function Admin() {
 				towerMonthlyCost: "",
 				hasAggregator: false,
 				aggregatorName: "",
+				notes: "",
 			});
 		} catch (error) {
 			console.error("Error creating circuit:", error);
