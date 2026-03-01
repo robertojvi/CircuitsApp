@@ -2014,6 +2014,8 @@ function Admin() {
 	const [siteSearch, setSiteSearch] = useState("");
 	const [providerSearch, setProviderSearch] = useState("");
 	const [circuitSearch, setCircuitSearch] = useState("");
+	const [noteModalOpen, setNoteModalOpen] = useState(false);
+	const [noteToShow, setNoteToShow] = useState("");
 	// Add sort state
 	const [sortConfig, setSortConfig] = useState({
 		key: "name", // Default sort key for Sites and Providers
@@ -2783,12 +2785,6 @@ function Admin() {
 										Provider
 									</th>
 									<th
-										onClick={() => onSort("circuitType")}
-										style={getSortableHeaderStyle("circuitType")}
-									>
-										Circuit Type
-									</th>
-									<th
 										onClick={() => onSort("circuitBandwidth")}
 										style={getSortableHeaderStyle("circuitBandwidth")}
 									>
@@ -2807,10 +2803,10 @@ function Admin() {
 										Status
 									</th>
 									<th
-										onClick={() => onSort("circuitContractDate")}
-										style={getSortableHeaderStyle("circuitContractDate")}
+										onClick={() => onSort("notes")}
+										style={getSortableHeaderStyle("notes")}
 									>
-										Contract Date
+										Notes
 									</th>
 									<th style={headerStyle}>Actions</th>
 								</tr>
@@ -2823,25 +2819,7 @@ function Admin() {
 									>
 										<td style={cellStyle}>{circuit.site.name}</td>
 										<td style={cellStyle}>{circuit.provider.name}</td>
-										<td style={cellStyle}>
-											<span
-												style={{
-													padding: "4px 8px",
-													borderRadius: "4px",
-													fontSize: "12px",
-													fontWeight: "bold",
-													backgroundColor:
-														circuit.circuitType === "Fiber"
-															? "#3B82F6" // Blue for Fiber Circuit
-															: circuit.circuitType === "Tower"
-																? "#8B5CF6" // Purple for Tower
-																: "#94A3B8", // Gray for other types
-													color: "white",
-												}}
-											>
-												{circuit.circuitType || "Unknown"}
-											</span>
-										</td>
+
 										<td style={cellStyle}>{circuit.circuitBandwidth}</td>
 										<td style={cellStyle}>${circuit.monthlyCost}</td>
 										<td style={cellStyle}>
@@ -2863,7 +2841,27 @@ function Admin() {
 												{circuit.status || "Pending"}
 											</span>
 										</td>
-										<td style={cellStyle}>{circuit.circuitContractDate}</td>
+										<td
+											style={{
+												...cellStyle,
+												cursor: circuit.notes ? "pointer" : "default",
+												maxWidth: "260px",
+												overflow: "hidden",
+												textOverflow: "ellipsis",
+												whiteSpace: "nowrap",
+											}}
+											title={circuit.notes || ""}
+											onClick={() => {
+												if (circuit.notes) {
+													setNoteToShow(circuit.notes);
+													setNoteModalOpen(true);
+												}
+											}}
+										>
+											{(circuit.notes || "").length > 60
+												? (circuit.notes || "").slice(0, 60) + "..."
+												: circuit.notes || ""}
+										</td>
 										<td style={cellStyle}>
 											<button
 												onClick={() => handleEdit(circuit.id, "circuit")}
@@ -2882,6 +2880,12 @@ function Admin() {
 								))}
 							</tbody>
 						</table>
+						{noteModalOpen && (
+							<NoteModal
+								note={noteToShow}
+								onClose={() => setNoteModalOpen(false)}
+							/>
+						)}
 					</div>
 				</div>
 			);
@@ -3075,6 +3079,41 @@ function Admin() {
 						providers={providers}
 					/>
 				)}
+			</div>
+		</div>
+	);
+}
+
+function NoteModal({ note, onClose }) {
+	return (
+		<div
+			style={{
+				position: "fixed",
+				top: 0,
+				left: 0,
+				right: 0,
+				bottom: 0,
+				backgroundColor: "rgba(0,0,0,0.5)",
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "center",
+				zIndex: 1001,
+			}}
+		>
+			<div
+				style={{
+					backgroundColor: "white",
+					padding: "20px",
+					borderRadius: "8px",
+					maxWidth: "500px",
+					width: "90%",
+				}}
+			>
+				<h3>Notes</h3>
+				<p>{note}</p>
+				<button onClick={onClose} style={buttonStyle}>
+					Close
+				</button>
 			</div>
 		</div>
 	);
