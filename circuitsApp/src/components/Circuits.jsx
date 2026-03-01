@@ -233,7 +233,9 @@ const CircuitDetailModal = ({ circuit, onClose }) => (
 						<strong>Aggregator:</strong> No
 					</p>
 				)}
-
+				<p style={detailRowStyle}>
+					<strong>Notes:</strong> {circuit.notes || "N/A"}
+				</p>
 				{circuit.hasTower && (
 					<div
 						style={{
