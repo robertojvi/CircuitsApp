@@ -5,24 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7da67a3a-6e17-4887-bb2b-2f4f70caefbe" name="Changes" comment="">
-<<<<<<< HEAD
-      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/circuitsApp/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/circuitsApp/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/circuitsApp/eslint.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/eslint.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/circuitsApp/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/circuitsApp/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/circuitsApp/public/vite.svg" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/public/vite.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/circuitsApp/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/circuitsApp/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/circuitsApp/src/assets/react.svg" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/assets/react.svg" afterDir="false" />
-=======
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/circuitsApp/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/package-lock.json" afterDir="false" />
->>>>>>> 100c02682cecf146979cfd7fc7e5496472218c99
-      <change beforePath="$PROJECT_DIR$/circuitsApp/src/components/Admin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/components/Admin.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/Circuit.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/Circuit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/CircuitDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/CircuitDTO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
