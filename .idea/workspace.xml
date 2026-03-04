@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="7da67a3a-6e17-4887-bb2b-2f4f70caefbe" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/circuitsApp/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/circuitsApp/src/components/Admin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/components/Admin.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/Circuit.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/Circuit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/CircuitDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/CircuitDTO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
