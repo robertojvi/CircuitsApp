@@ -26,259 +26,275 @@ const isExpired = (dateString) => {
 	return expirationDate < today;
 };
 
-const CircuitDetailModal = ({ circuit, onClose }) => (
-	<div
-		style={{
-			position: "fixed",
-			top: 0,
-			left: 0,
-			right: 0,
-			bottom: 0,
-			backgroundColor: "rgba(0,0,0,0.5)",
-			display: "flex",
-			justifyContent: "center",
-			alignItems: "center",
-			zIndex: 1000,
-			overflow: "auto",
-		}}
-	>
+const CircuitDetailModal = ({ circuit, onClose }) => {
+	const site = circuit?.site || {};
+	const parts = [];
+	if (site.address) parts.push(site.address);
+	const cityState = [site.city, site.state].filter(Boolean).join(", ");
+	if (cityState)
+		parts.push(cityState + (site.zipCode ? ` ${site.zipCode}` : ""));
+	const siteAddress = parts.length ? parts.join(", ") : "N/A";
+
+	return (
 		<div
 			style={{
-				backgroundColor: "#2c3e50",
-				padding: "20px",
-				borderRadius: "8px",
-				width: "500px",
-				maxWidth: "90%",
-				maxHeight: "90vh",
-				overflowY: "auto",
-				boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-				color: "#ffffff",
+				position: "fixed",
+				top: 0,
+				left: 0,
+				right: 0,
+				bottom: 0,
+				backgroundColor: "rgba(0,0,0,0.5)",
+				display: "flex",
+				justifyContent: "center",
+				alignItems: "center",
+				zIndex: 1000,
+				overflow: "auto",
 			}}
 		>
-			<h2
-				style={{
-					marginBottom: "20px",
-					color: "#fff",
-					borderBottom: "2px solid #3498db",
-				}}
-			>
-				Circuit Details
-			</h2>
 			<div
 				style={{
-					marginBottom: "15px",
-					backgroundColor: "#34495e",
-					padding: "15px",
-					borderRadius: "6px",
-					border: "1px solid #3498db",
+					backgroundColor: "#2c3e50",
+					padding: "20px",
+					borderRadius: "8px",
+					width: "500px",
+					maxWidth: "90%",
+					maxHeight: "90vh",
+					overflowY: "auto",
+					boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+					color: "#ffffff",
 				}}
 			>
-				<p style={detailRowStyle}>
-					<strong>Site:</strong> {circuit.site.name}
-				</p>
-				<p style={detailRowStyle}>
-					<strong>Site Address:</strong> {circuit.site.address || "N/A"}
-				</p>
-				<p style={detailRowStyle}>
-					<strong>Provider:</strong> {circuit.provider.name}
-				</p>
-				<p style={detailRowStyle}>
-					<strong>Contact Number:</strong>{" "}
-					{circuit.provider.contactNumber || "N/A"}
-				</p>
-				<p style={detailRowStyle}>
-					<strong>Circuit Type:</strong>{" "}
-					<span
-						style={{
-							padding: "4px 8px",
-							borderRadius: "4px",
-							fontSize: "12px",
-							fontWeight: "bold",
-							backgroundColor:
-								circuit.circuitType === "Fiber"
-									? "#3B82F6" // Blue for Fiber Circuit
-									: circuit.circuitType === "Tower"
-										? "#8B5CF6" // Purple for Tower
-										: "#94A3B8", // Gray for other types
-							color: "white",
-						}}
-					>
-						{circuit.circuitType || "Unknown"}
-					</span>
-				</p>
-				<p style={detailRowStyle}>
-					<strong>Has Tower:</strong>{" "}
-					<span
-						style={{
-							padding: "4px 8px",
-							borderRadius: "4px",
-							fontSize: "12px",
-							fontWeight: "bold",
-							backgroundColor: circuit.hasTower ? "#10B981" : "#EF4444", // Green for Yes, Red for No
-							color: "white",
-						}}
-					>
-						{circuit.hasTower ? "Yes" : "No"}
-					</span>
-				</p>
-				<p style={detailRowStyle}>
-					<strong>Status:</strong>{" "}
-					<span
-						style={{
-							padding: "4px 8px",
-							borderRadius: "4px",
-							fontSize: "12px",
-							fontWeight: "bold",
-							backgroundColor:
-								circuit.status === "Active"
-									? "#10B981" // Green for Active
-									: circuit.status === "Inactive"
-										? "#EF4444" // Red for Inactive
-										: "#F59E0B", // Yellow for Pending or other status
-							color: "white",
-						}}
-					>
-						{circuit.status || "Pending"}
-					</span>
-				</p>
-				<p style={detailRowStyle}>
-					<strong>Account Number:</strong> {circuit.accountNumber || "N/A"}
-				</p>
-				<p style={detailRowStyle}>
-					<strong>Circuit ID:</strong> {circuit.circuitId || "N/A"}
-				</p>
-				<p style={detailRowStyle}>
-					<strong>Bandwidth:</strong> {circuit.circuitBandwidth || "N/A"}
-				</p>
-				<p style={detailRowStyle}>
-					<strong>Monthly Cost:</strong> {"$" + (circuit.monthlyCost || "0.00")}
-				</p>
-				<p style={detailRowStyle}>
-					<strong>Installation Date:</strong>{" "}
-					{circuit.installationDate || "N/A"}
-				</p>
-				<p
+				<h2
 					style={{
-						...detailRowStyle,
-						backgroundColor: isExpired(circuit.expirationDate)
-							? "#FEE2E2" // Light red for expired
-							: isExpirationSoon(circuit.expirationDate)
-								? "#FEF3C7" // Yellow for expiring soon
-								: "transparent",
-						padding:
-							isExpired(circuit.expirationDate) ||
-							isExpirationSoon(circuit.expirationDate)
-								? "8px 5px"
-								: "8px 0",
-						borderRadius:
-							isExpired(circuit.expirationDate) ||
-							isExpirationSoon(circuit.expirationDate)
-								? "4px"
-								: "0",
+						marginBottom: "20px",
+						color: "#fff",
+						borderBottom: "2px solid #3498db",
 					}}
 				>
-					<strong
+					Circuit Details
+				</h2>
+				<div
+					style={{
+						marginBottom: "15px",
+						backgroundColor: "#34495e",
+						padding: "15px",
+						borderRadius: "6px",
+						border: "1px solid #3498db",
+					}}
+				>
+					<p style={detailRowStyle}>
+						<strong>Site:</strong> {circuit.site.name}
+					</p>
+					<p style={detailRowStyle}>
+						<strong>Site Address:</strong> {siteAddress}
+					</p>
+					<p style={detailRowStyle}>
+						<strong>Provider:</strong> {circuit.provider.name}
+					</p>
+					<p style={detailRowStyle}>
+						<strong>Contact Number:</strong>{" "}
+						{circuit.provider.contactNumber || "N/A"}
+					</p>
+					<p style={detailRowStyle}>
+						<strong>Circuit Type:</strong>{" "}
+						<span
+							style={{
+								padding: "4px 8px",
+								borderRadius: "4px",
+								fontSize: "12px",
+								fontWeight: "bold",
+								backgroundColor:
+									circuit.circuitType === "Fiber"
+										? "#3B82F6" // Blue for Fiber Circuit
+										: circuit.circuitType === "Tower"
+											? "#8B5CF6" // Purple for Tower
+											: "#94A3B8", // Gray for other types
+								color: "white",
+							}}
+						>
+							{circuit.circuitType || "Unknown"}
+						</span>
+					</p>
+					<p style={detailRowStyle}>
+						<strong>Has Tower:</strong>{" "}
+						<span
+							style={{
+								padding: "4px 8px",
+								borderRadius: "4px",
+								fontSize: "12px",
+								fontWeight: "bold",
+								backgroundColor: circuit.hasTower ? "#10B981" : "#EF4444", // Green for Yes, Red for No
+								color: "white",
+							}}
+						>
+							{circuit.hasTower ? "Yes" : "No"}
+						</span>
+					</p>
+					<p style={detailRowStyle}>
+						<strong>Status:</strong>{" "}
+						<span
+							style={{
+								padding: "4px 8px",
+								borderRadius: "4px",
+								fontSize: "12px",
+								fontWeight: "bold",
+								backgroundColor:
+									circuit.status === "Active"
+										? "#10B981" // Green for Active
+										: circuit.status === "Inactive"
+											? "#EF4444" // Red for Inactive
+											: "#F59E0B", // Yellow for Pending or other status
+								color: "white",
+							}}
+						>
+							{circuit.status || "Pending"}
+						</span>
+					</p>
+					<p style={detailRowStyle}>
+						<strong>Account Number:</strong> {circuit.accountNumber || "N/A"}
+					</p>
+					<p style={detailRowStyle}>
+						<strong>Circuit ID:</strong> {circuit.circuitId || "N/A"}
+					</p>
+					<p style={detailRowStyle}>
+						<strong>Bandwidth:</strong> {circuit.circuitBandwidth || "N/A"}
+					</p>
+					<p style={detailRowStyle}>
+						<strong>Monthly Cost:</strong>{" "}
+						{"$" + (circuit.monthlyCost || "0.00")}
+					</p>
+					<p style={detailRowStyle}>
+						<strong>Installation Date:</strong>{" "}
+						{circuit.installationDate || "N/A"}
+					</p>
+					<p
 						style={{
-							color: isExpired(circuit.expirationDate)
-								? "#B91C1C" // Dark red for expired
+							...detailRowStyle,
+							backgroundColor: isExpired(circuit.expirationDate)
+								? "#FEE2E2" // Light red for expired
 								: isExpirationSoon(circuit.expirationDate)
-									? "#B45309" // Amber for expiring soon
-									: "inherit",
-						}}
-					>
-						Expiration Date:
-					</strong>{" "}
-					<span
-						style={{
-							color: isExpired(circuit.expirationDate)
-								? "#B91C1C" // Dark red for expired
-								: isExpirationSoon(circuit.expirationDate)
-									? "#B45309" // Amber for expiring soon
-									: "inherit",
-							fontWeight:
+									? "#FEF3C7" // Yellow for expiring soon
+									: "transparent",
+							padding:
 								isExpired(circuit.expirationDate) ||
 								isExpirationSoon(circuit.expirationDate)
-									? "bold"
-									: "normal",
+									? "8px 5px"
+									: "8px 0",
+							borderRadius:
+								isExpired(circuit.expirationDate) ||
+								isExpirationSoon(circuit.expirationDate)
+									? "4px"
+									: "0",
 						}}
 					>
-						{circuit.expirationDate || "N/A"}
-					</span>
-					{isExpired(circuit.expirationDate) && (
-						<span
-							style={{ marginLeft: "5px", fontSize: "12px", color: "#B91C1C" }}
+						<strong
+							style={{
+								color: isExpired(circuit.expirationDate)
+									? "#B91C1C" // Dark red for expired
+									: isExpirationSoon(circuit.expirationDate)
+										? "#B45309" // Amber for expiring soon
+										: "inherit",
+							}}
 						>
-							(Expired)
+							Expiration Date:
+						</strong>{" "}
+						<span
+							style={{
+								color: isExpired(circuit.expirationDate)
+									? "#B91C1C" // Dark red for expired
+									: isExpirationSoon(circuit.expirationDate)
+										? "#B45309" // Amber for expiring soon
+										: "inherit",
+								fontWeight:
+									isExpired(circuit.expirationDate) ||
+									isExpirationSoon(circuit.expirationDate)
+										? "bold"
+										: "normal",
+							}}
+						>
+							{circuit.expirationDate || "N/A"}
 						</span>
-					)}
-					{!isExpired(circuit.expirationDate) &&
-						isExpirationSoon(circuit.expirationDate) && (
+						{isExpired(circuit.expirationDate) && (
 							<span
 								style={{
 									marginLeft: "5px",
 									fontSize: "12px",
-									color: "#B45309",
+									color: "#B91C1C",
 								}}
 							>
-								(Expires soon)
+								(Expired)
 							</span>
 						)}
-				</p>
-				{circuit.hasAggregator ? (
-					<p style={detailRowStyle}>
-						<strong>Aggregator:</strong> {circuit.aggregatorName || "N/A"}
+						{!isExpired(circuit.expirationDate) &&
+							isExpirationSoon(circuit.expirationDate) && (
+								<span
+									style={{
+										marginLeft: "5px",
+										fontSize: "12px",
+										color: "#B45309",
+									}}
+								>
+									(Expires soon)
+								</span>
+							)}
 					</p>
-				) : (
+					{circuit.hasAggregator ? (
+						<p style={detailRowStyle}>
+							<strong>Aggregator:</strong> {circuit.aggregatorName || "N/A"}
+						</p>
+					) : (
+						<p style={detailRowStyle}>
+							<strong>Aggregator:</strong> No
+						</p>
+					)}
 					<p style={detailRowStyle}>
-						<strong>Aggregator:</strong> No
+						<strong>Notes:</strong> {circuit.notes || "N/A"}
 					</p>
-				)}
-				<p style={detailRowStyle}>
-					<strong>Notes:</strong> {circuit.notes || "N/A"}
-				</p>
-				{circuit.hasTower && (
-					<div
-						style={{
-							marginTop: "10px",
-							backgroundColor: "#22303a",
-							padding: "10px",
-							borderRadius: "6px",
-							border: "1px solid #3b82f6",
-						}}
+					{circuit.hasTower && (
+						<div
+							style={{
+								marginTop: "10px",
+								backgroundColor: "#22303a",
+								padding: "10px",
+								borderRadius: "6px",
+								border: "1px solid #3b82f6",
+							}}
+						>
+							<p style={detailRowStyle}>
+								<strong>Number of Towers:</strong>{" "}
+								{circuit.numberOfTowers || "N/A"}
+							</p>
+							<p style={detailRowStyle}>
+								<strong>Tower Provider:</strong>{" "}
+								{circuit.towerProvider || "N/A"}
+							</p>
+							<p style={detailRowStyle}>
+								<strong>Tower Installation Date:</strong>{" "}
+								{circuit.towerInstallDate || "N/A"}
+							</p>
+							<p style={detailRowStyle}>
+								<strong>Tower Expiration Date:</strong>{" "}
+								{circuit.towerExpirationDate || "N/A"}
+							</p>
+							<p style={detailRowStyle}>
+								<strong>Tower Monthly Cost:</strong>{" "}
+								{"$" + (circuit.towerMonthlyCost || "0.00")}
+							</p>
+						</div>
+					)}
+				</div>
+				<div style={{ display: "flex", justifyContent: "flex-end" }}>
+					<button
+						onClick={onClose}
+						style={{ ...buttonStyle, backgroundColor: "#3498db" }}
 					>
-						<p style={detailRowStyle}>
-							<strong>Number of Towers:</strong>{" "}
-							{circuit.numberOfTowers || "N/A"}
-						</p>
-						<p style={detailRowStyle}>
-							<strong>Tower Provider:</strong> {circuit.towerProvider || "N/A"}
-						</p>
-						<p style={detailRowStyle}>
-							<strong>Tower Installation Date:</strong>{" "}
-							{circuit.towerInstallDate || "N/A"}
-						</p>
-						<p style={detailRowStyle}>
-							<strong>Tower Expiration Date:</strong>{" "}
-							{circuit.towerExpirationDate || "N/A"}
-						</p>
-						<p style={detailRowStyle}>
-							<strong>Tower Monthly Cost:</strong>{" "}
-							{"$" + (circuit.towerMonthlyCost || "0.00")}
-						</p>
-					</div>
-				)}
-			</div>
-			<div style={{ display: "flex", justifyContent: "flex-end" }}>
-				<button
-					onClick={onClose}
-					style={{ ...buttonStyle, backgroundColor: "#3498db" }}
-				>
-					Close
-				</button>
+						Close
+					</button>
+				</div>
 			</div>
 		</div>
-	</div>
-);
+	);
+};
 
 function Circuits() {
 	const [selectedMenu, setSelectedMenu] = useState("Circuit Information");
