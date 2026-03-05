@@ -2388,6 +2388,9 @@ function Admin() {
 			circuit.circuitId.toLowerCase().includes(circuitSearch.toLowerCase()) ||
 			circuit.circuitBandwidth
 				.toLowerCase()
+				.includes(circuitSearch.toLowerCase()) ||
+			(circuit.aggregatorName || "")
+				.toLowerCase()
 				.includes(circuitSearch.toLowerCase()),
 	);
 
@@ -2794,6 +2797,12 @@ function Admin() {
 										Provider
 									</th>
 									<th
+										onClick={() => onSort("aggregatorName")}
+										style={getSortableHeaderStyle("aggregatorName")}
+									>
+										Aggregator
+									</th>
+									<th
 										onClick={() => onSort("circuitBandwidth")}
 										style={getSortableHeaderStyle("circuitBandwidth")}
 									>
@@ -2828,7 +2837,7 @@ function Admin() {
 									>
 										<td style={cellStyle}>{circuit.site.name}</td>
 										<td style={cellStyle}>{circuit.provider.name}</td>
-
+										<td style={cellStyle}>{circuit.aggregatorName || "N/A"}</td>
 										<td style={cellStyle}>{circuit.circuitBandwidth}</td>
 										<td style={cellStyle}>${circuit.monthlyCost}</td>
 										<td style={cellStyle}>
