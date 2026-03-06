@@ -3129,7 +3129,10 @@ function NoteModal({ note, onClose }) {
 			>
 				<h3>Notes</h3>
 				<p>{note}</p>
-				<button onClick={onClose} style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}>
+				<button
+					onClick={onClose}
+					style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}
+				>
 					Close
 				</button>
 			</div>
