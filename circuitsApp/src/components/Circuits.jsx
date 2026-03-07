@@ -354,8 +354,17 @@ function Circuits() {
 		if (!sortConfig.key) return circuits;
 
 		return [...circuits].sort((a, b) => {
-			let aValue = sortConfig.key.split(".").reduce((obj, key) => obj[key], a);
-			let bValue = sortConfig.key.split(".").reduce((obj, key) => obj[key], b);
+			let aValue = sortConfig.key
+				.split(".")
+				.reduce((obj, key) => obj?.[key], a);
+			let bValue = sortConfig.key
+				.split(".")
+				.reduce((obj, key) => obj?.[key], b);
+
+			// Handle undefined/null values - treat them as coming after non-null values
+			if (aValue == null && bValue == null) return 0;
+			if (aValue == null) return sortConfig.direction === "ascending" ? 1 : -1;
+			if (bValue == null) return sortConfig.direction === "ascending" ? -1 : 1;
 
 			if (typeof aValue === "string") {
 				aValue = aValue.toLowerCase();
