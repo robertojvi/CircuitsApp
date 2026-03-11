@@ -296,6 +296,562 @@ const CircuitDetailModal = ({ circuit, onClose }) => {
 	);
 };
 
+const EditCircuitModal = ({
+	onClose,
+	onSubmit,
+	circuit,
+	setCircuit,
+	sites,
+	providers,
+}) => (
+	<div
+		style={{
+			position: "fixed",
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0,
+			backgroundColor: "rgba(0,0,0,0.5)",
+			display: "flex",
+			justifyContent: "center",
+			alignItems: "center",
+			zIndex: 1000,
+		}}
+	>
+		<div
+			style={{
+				backgroundColor: "white",
+				padding: "20px",
+				borderRadius: "8px",
+				width: "90%",
+				maxWidth: "400px",
+				margin: "20px",
+				maxHeight: "90vh",
+				overflowY: "auto",
+			}}
+		>
+			<h2
+				style={{
+					marginBottom: "20px",
+					backgroundColor: "#2c3e50",
+					color: "white",
+					padding: "10px 20px",
+					borderRadius: "4px",
+					textAlign: "center",
+				}}
+			>
+				Edit Circuit
+			</h2>
+			<form onSubmit={onSubmit}>
+				<div style={{ marginBottom: "15px" }}>
+					<select
+						value={circuit.site?.id || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, site: { id: Number(e.target.value) } })
+						}
+						style={inputStyle}
+						required
+					>
+						<option value="">Select Site</option>
+						{[...sites]
+							.sort((a, b) =>
+								a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+							)
+							.map((site) => (
+								<option key={site.id} value={site.id}>
+									{site.name}
+								</option>
+							))}
+					</select>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<select
+						value={circuit.provider?.id || ""}
+						onChange={(e) =>
+							setCircuit({
+								...circuit,
+								provider: { id: Number(e.target.value) },
+							})
+						}
+						style={inputStyle}
+						required
+					>
+						<option value="">Select Provider</option>
+						{[...providers]
+							.sort((a, b) =>
+								a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+							)
+							.map((provider) => (
+								<option key={provider.id} value={provider.id}>
+									{provider.name}
+								</option>
+							))}
+					</select>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Account Number"
+						value={circuit.accountNumber || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, accountNumber: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Circuit ID"
+						value={circuit.circuitId || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, circuitId: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Bandwidth"
+						value={circuit.circuitBandwidth || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, circuitBandwidth: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="number"
+						placeholder="Monthly Cost"
+						value={circuit.monthlyCost || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, monthlyCost: Number(e.target.value) })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "block",
+							marginBottom: "5px",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
+							backgroundColor: "#f8f9fa",
+							padding: "3px 5px",
+							borderRadius: "3px",
+						}}
+					>
+						Installation Date
+					</label>
+					<input
+						type="date"
+						placeholder="Installation Date"
+						value={circuit.installationDate || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, installationDate: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "block",
+							marginBottom: "5px",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
+							backgroundColor: "#f8f9fa",
+							padding: "3px 5px",
+							borderRadius: "3px",
+						}}
+					>
+						Expiration Date
+					</label>
+					<input
+						type="date"
+						placeholder="Expiration Date"
+						value={circuit.expirationDate || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, expirationDate: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "block",
+							marginBottom: "5px",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
+							backgroundColor: "#f8f9fa",
+							padding: "3px 5px",
+							borderRadius: "3px",
+						}}
+					>
+						Contract Date
+					</label>
+					<input
+						type="date"
+						placeholder="Contract Date"
+						value={circuit.circuitContractDate || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, circuitContractDate: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<select
+						value={circuit.status || ""}
+						onChange={(e) => setCircuit({ ...circuit, status: e.target.value })}
+						style={inputStyle}
+						required
+					>
+						<option value="">Select Status</option>
+						<option value="Active">Active</option>
+						<option value="Inactive">Inactive</option>
+						<option value="Pending">Pending</option>
+					</select>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<select
+						value={circuit.circuitType || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, circuitType: e.target.value })
+						}
+						style={inputStyle}
+						required
+					>
+						<option value="">Select Circuit Type</option>
+						<option value="Fiber">Fiber Circuit</option>
+						<option value="Wireless">Wireless</option>
+					</select>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "flex",
+							alignItems: "center",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
+							backgroundColor: "#f8f9fa",
+							padding: "10px",
+							borderRadius: "4px",
+							cursor: "pointer",
+						}}
+					>
+						<input
+							type="checkbox"
+							checked={circuit.hasTower || false}
+							onChange={(e) =>
+								setCircuit({ ...circuit, hasTower: e.target.checked })
+							}
+							style={{
+								marginRight: "8px",
+								transform: "scale(1.2)",
+								cursor: "pointer",
+							}}
+						/>
+						Has Tower
+					</label>
+				</div>
+				{circuit.hasTower && (
+					<div
+						style={{
+							marginBottom: "20px",
+							borderTop: "2px solid #3498db",
+							paddingTop: "15px",
+							backgroundColor: "#f8f9fa",
+							padding: "15px",
+							borderRadius: "4px",
+						}}
+					>
+						<h3
+							style={{
+								marginBottom: "15px",
+								color: "#2c3e50",
+								fontSize: "16px",
+								marginTop: 0,
+							}}
+						>
+							Tower Information
+						</h3>
+						<div style={{ marginBottom: "15px" }}>
+							<label
+								style={{
+									display: "block",
+									marginBottom: "5px",
+									fontSize: "14px",
+									fontWeight: "500",
+									color: "#3498db",
+								}}
+							>
+								Number of Towers
+							</label>
+							<input
+								type="number"
+								placeholder="Number of Towers"
+								value={circuit.numberOfTowers || ""}
+								onChange={(e) =>
+									setCircuit({
+										...circuit,
+										numberOfTowers: e.target.value,
+									})
+								}
+								style={inputStyle}
+								required
+							/>
+						</div>
+						<div style={{ marginBottom: "15px" }}>
+							<label
+								style={{
+									display: "block",
+									marginBottom: "5px",
+									fontSize: "14px",
+									fontWeight: "500",
+									color: "#3498db",
+								}}
+							>
+								Tower Provider
+							</label>
+							<input
+								type="text"
+								placeholder="Tower Provider"
+								value={circuit.towerProvider || ""}
+								onChange={(e) =>
+									setCircuit({
+										...circuit,
+										towerProvider: e.target.value,
+									})
+								}
+								style={inputStyle}
+								required
+							/>
+						</div>
+						<div style={{ marginBottom: "15px" }}>
+							<label
+								style={{
+									display: "block",
+									marginBottom: "5px",
+									fontSize: "14px",
+									fontWeight: "500",
+									color: "#3498db",
+									backgroundColor: "#f8f9fa",
+									padding: "3px 5px",
+									borderRadius: "3px",
+								}}
+							>
+								Tower Installation Date
+							</label>
+							<input
+								type="date"
+								placeholder="Tower Installation Date"
+								value={circuit.towerInstallDate || ""}
+								onChange={(e) =>
+									setCircuit({
+										...circuit,
+										towerInstallDate: e.target.value,
+									})
+								}
+								style={inputStyle}
+								required
+							/>
+						</div>
+						<div style={{ marginBottom: "15px" }}>
+							<label
+								style={{
+									display: "block",
+									marginBottom: "5px",
+									fontSize: "14px",
+									fontWeight: "500",
+									color: "#3498db",
+									backgroundColor: "#f8f9fa",
+									padding: "3px 5px",
+									borderRadius: "3px",
+								}}
+							>
+								Tower Expiration Date
+							</label>
+							<input
+								type="date"
+								placeholder="Tower Expiration Date"
+								value={circuit.towerExpirationDate || ""}
+								onChange={(e) =>
+									setCircuit({
+										...circuit,
+										towerExpirationDate: e.target.value,
+									})
+								}
+								style={inputStyle}
+								required
+							/>
+						</div>
+						<div style={{ marginBottom: "15px" }}>
+							<label
+								style={{
+									display: "block",
+									marginBottom: "5px",
+									fontSize: "14px",
+									fontWeight: "500",
+									color: "#3498db",
+								}}
+							>
+								Tower Monthly Cost
+							</label>
+							<input
+								type="number"
+								placeholder="Tower Monthly Cost"
+								value={circuit.towerMonthlyCost || ""}
+								onChange={(e) =>
+									setCircuit({
+										...circuit,
+										towerMonthlyCost: Number(e.target.value),
+									})
+								}
+								style={inputStyle}
+								required
+							/>
+						</div>
+					</div>
+				)}
+				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "flex",
+							alignItems: "center",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
+							backgroundColor: "#f8f9fa",
+							padding: "10px",
+							borderRadius: "4px",
+							cursor: "pointer",
+						}}
+					>
+						<input
+							type="checkbox"
+							checked={circuit.hasAggregator || false}
+							onChange={(e) =>
+								setCircuit({ ...circuit, hasAggregator: e.target.checked })
+							}
+							style={{
+								marginRight: "8px",
+								transform: "scale(1.2)",
+								cursor: "pointer",
+							}}
+						/>
+						Has Aggregator
+					</label>
+				</div>
+				{circuit.hasAggregator && (
+					<div
+						style={{
+							marginBottom: "20px",
+							borderTop: "2px solid #3498db",
+							paddingTop: "15px",
+							backgroundColor: "#f8f9fa",
+							padding: "15px",
+							borderRadius: "4px",
+						}}
+					>
+						<h3
+							style={{
+								marginBottom: "15px",
+								color: "#2c3e50",
+								fontSize: "16px",
+								marginTop: 0,
+							}}
+						>
+							Aggregator Information
+						</h3>
+						<div style={{ marginBottom: "15px" }}>
+							<label
+								style={{
+									display: "block",
+									marginBottom: "5px",
+									fontSize: "14px",
+									fontWeight: "500",
+									color: "#3498db",
+								}}
+							>
+								Aggregator Name
+							</label>
+							<input
+								type="text"
+								placeholder="Aggregator Name"
+								value={circuit.aggregatorName || ""}
+								onChange={(e) =>
+									setCircuit({
+										...circuit,
+										aggregatorName: e.target.value,
+									})
+								}
+								style={inputStyle}
+								required
+							/>
+						</div>
+					</div>
+				)}
+				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "block",
+							marginBottom: "5px",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
+						}}
+					>
+						Notes
+					</label>
+					<textarea
+						placeholder="Notes (optional)"
+						value={circuit.notes || ""}
+						onChange={(e) => setCircuit({ ...circuit, notes: e.target.value })}
+						style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }}
+					/>
+				</div>
+				<div
+					style={{
+						display: "flex",
+						justifyContent: "flex-end",
+						gap: "10px",
+					}}
+				>
+					<button
+						type="button"
+						onClick={onClose}
+						style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}
+					>
+						Cancel
+					</button>
+					<button
+						type="submit"
+						style={{ ...buttonStyle, backgroundColor: "#4299E1" }}
+					>
+						Save
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+);
+
 function Circuits() {
 	const [selectedMenu, setSelectedMenu] = useState("Circuit Information");
 	const [circuits, setCircuits] = useState([]);
@@ -308,6 +864,9 @@ function Circuits() {
 		key: null,
 		direction: "ascending",
 	});
+	const [showEditCircuitModal, setShowEditCircuitModal] = useState(false);
+	const [sites, setSites] = useState([]);
+	const [providers, setProviders] = useState([]);
 
 	useEffect(() => {
 		if (selectedMenu === "Circuit Information") {
@@ -324,6 +883,58 @@ function Circuits() {
 		} catch (error) {
 			console.error("Error:", error);
 			setError("Failed to load circuits");
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const fetchSites = async () => {
+		try {
+			const response = await fetch("/api/sites");
+			const data = await response.json();
+			setSites(data);
+		} catch (error) {
+			console.error("Error fetching sites:", error);
+		}
+	};
+
+	const fetchProviders = async () => {
+		try {
+			const response = await fetch("/api/providers");
+			const data = await response.json();
+			setProviders(data);
+		} catch (error) {
+			console.error("Error fetching providers:", error);
+		}
+	};
+
+	const handleEdit = (id) => {
+		const circuit = circuits.find((c) => c.id === id);
+		setSelectedCircuit(circuit);
+		fetchSites();
+		fetchProviders();
+		setShowEditCircuitModal(true);
+	};
+
+	const editCircuit = async (e) => {
+		e.preventDefault();
+		setLoading(true);
+		try {
+			const response = await fetch("/api/circuits", {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(selectedCircuit),
+			});
+			if (!response.ok) throw new Error("Failed to update circuit");
+
+			fetchCircuits();
+			setShowEditCircuitModal(false);
+			setSelectedCircuit(null);
+		} catch (error) {
+			console.error("Error updating circuit:", error);
+			setError("Failed to update circuit");
 		} finally {
 			setLoading(false);
 		}
@@ -504,6 +1115,7 @@ function Circuits() {
 									Aggregator
 								</th>
 								<th style={headerStyle}>Details</th>
+								<th style={headerStyle}>Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -585,6 +1197,14 @@ function Circuits() {
 											style={iconButtonStyle}
 										>
 											ℹ️
+										</button>
+									</td>
+									<td style={cellStyle}>
+										<button
+											onClick={() => handleEdit(circuit.id)}
+											style={iconButtonStyle}
+										>
+											✏️
 										</button>
 									</td>
 								</tr>
@@ -676,6 +1296,19 @@ function Circuits() {
 						}}
 					/>
 				)}
+				{showEditCircuitModal && selectedCircuit && (
+					<EditCircuitModal
+						circuit={selectedCircuit}
+						setCircuit={setSelectedCircuit}
+						sites={sites}
+						providers={providers}
+						onClose={() => {
+							setShowEditCircuitModal(false);
+							setSelectedCircuit(null);
+						}}
+						onSubmit={editCircuit}
+					/>
+				)}
 			</div>
 		</div>
 	);
@@ -717,6 +1350,14 @@ const detailRowStyle = {
 	borderBottom: "1px solid #edf2f7",
 	fontSize: "14px",
 	lineHeight: "1.5",
+};
+
+const inputStyle = {
+	width: "100%",
+	padding: "8px",
+	border: "1px solid #D1D5DB",
+	borderRadius: "4px",
+	fontSize: "12px",
 };
 
 export default Circuits;
