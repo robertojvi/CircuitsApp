@@ -18,6 +18,15 @@ public class Provider {
     private String state;
     private String zipCode;
     private String contactNumber;
+    private String providerEscalationList;
+
+    public String getProviderEscalationList() {
+        return providerEscalationList;
+    }
+
+    public void setProviderEscalationList(String providerEscalationList) {
+        this.providerEscalationList = providerEscalationList;
+    }
 
     public String getContactNumber() {
         return contactNumber;
