@@ -351,6 +351,20 @@ const CreateProviderModal = ({
 						required
 					/>
 				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Provider Escalation List"
+						value={newProvider.providerEscalationList || ""}
+						onChange={(e) =>
+							setNewProvider({
+								...newProvider,
+								providerEscalationList: e.target.value,
+							})
+						}
+						style={inputStyle}
+					/>
+				</div>
 				<div
 					style={{
 						display: "flex",
@@ -1371,6 +1385,34 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 						}
 						style={inputStyle}
 						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "block",
+							marginBottom: "5px",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
+							backgroundColor: "#f8f9fa",
+							padding: "3px 5px",
+							borderRadius: "3px",
+						}}
+					>
+						Provider Escalation List
+					</label>
+					<input
+						type="text"
+						placeholder="Provider Escalation List"
+						value={provider.providerEscalationList || ""}
+						onChange={(e) =>
+							setProvider({
+								...provider,
+								providerEscalationList: e.target.value,
+							})
+						}
+						style={inputStyle}
 					/>
 				</div>
 				<div
