@@ -4,7 +4,7 @@ public class CircuitDTO {
 
     private Long id;
     private Site site;
-    private Provider provider;
+    private ProviderDTO provider;
     private Boolean hasAggregator;
     private String aggregatorName;
     private String accountNumber;
@@ -152,11 +152,11 @@ public class CircuitDTO {
         this.site = site;
     }
 
-    public Provider getProvider() {
+    public ProviderDTO getProvider() {
         return provider;
     }
 
-    public void setProvider(Provider provider) {
+    public void setProvider(ProviderDTO provider) {
         this.provider = provider;
     }
 

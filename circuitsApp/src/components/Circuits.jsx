@@ -95,6 +95,19 @@ const CircuitDetailModal = ({ circuit, onClose }) => {
 						<strong>Contact Number:</strong>{" "}
 						{circuit.provider.contactNumber || "N/A"}
 					</p>
+					{circuit.provider.providerEscalationList && (
+						<p style={detailRowStyle}>
+							<strong>Provider Escalation List:</strong>{" "}
+							<a
+								href={circuit.provider.providerEscalationList}
+								target="_blank"
+								rel="noopener noreferrer"
+								style={{ color: "#3B82F6", textDecoration: "underline" }}
+							>
+								Open Escalation List
+							</a>
+						</p>
+					)}
 					<p style={detailRowStyle}>
 						<strong>Circuit Type:</strong>{" "}
 						<span
