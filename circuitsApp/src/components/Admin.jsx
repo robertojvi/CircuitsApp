@@ -2294,14 +2294,20 @@ function Admin() {
 				},
 				body: JSON.stringify(selectedProvider),
 			});
-			if (!response.ok) throw new Error("Failed to update provider");
+			if (!response.ok) {
+				const errorText = await response.text();
+				console.error("Backend error response:", errorText);
+				throw new Error(
+					`Failed to update provider: ${response.status} ${errorText}`,
+				);
+			}
 
 			fetchProviders();
 			setShowEditProviderModal(false);
 			setSelectedProvider(null);
 		} catch (error) {
 			console.error("Error updating provider:", error);
-			setError("Failed to update provider");
+			setError("Failed to update provider - check console for details");
 		} finally {
 			setLoading(false);
 		}
