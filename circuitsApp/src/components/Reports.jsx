@@ -31,6 +31,7 @@ function Reports() {
 	const [circuitTypeFilter, setCircuitTypeFilter] = useState("All");
 	const [providerFilter, setProviderFilter] = useState("All");
 	const [aggregatorFilter, setAggregatorFilter] = useState("All");
+	const [siteStateFilter, setSiteStateFilter] = useState("All");
 	const [expirationTimeRange, setExpirationTimeRange] = useState(6); // Default to 6 months
 	const [customExpirationMonths, setCustomExpirationMonths] = useState(""); // For custom month input
 	const [expiredCircuitsSortConfig, setExpiredCircuitsSortConfig] = useState({
@@ -63,7 +64,7 @@ function Reports() {
 		}
 	};
 
-	// Filter circuits based on selected site type, status, circuit type, provider, and aggregator
+	// Filter circuits based on selected site type, status, circuit type, provider, aggregator, and site state
 	const getFilteredCircuits = () => {
 		let filtered = circuits.filter((circuit) => {
 			// Site Type filter
@@ -90,13 +91,19 @@ function Reports() {
 				aggregatorFilter === "All" ||
 				(circuit.hasAggregator && circuit.aggregatorName === aggregatorFilter);
 
+			// Site State filter
+			const siteStateMatch =
+				siteStateFilter === "All" ||
+				(circuit.site && circuit.site.state === siteStateFilter);
+
 			// All filters must match
 			return (
 				siteTypeMatch &&
 				statusMatch &&
 				circuitTypeMatch &&
 				providerMatch &&
-				aggregatorMatch
+				aggregatorMatch &&
+				siteStateMatch
 			);
 		});
 
@@ -128,6 +135,10 @@ function Reports() {
 
 		if (aggregatorFilter !== "All") {
 			parts.push(`${aggregatorFilter} Aggregator`);
+		}
+
+		if (siteStateFilter !== "All") {
+			parts.push(`${siteStateFilter}`);
 		}
 
 		return parts.length > 0 ? ` (${parts.join(", ")})` : "";
@@ -199,6 +210,19 @@ function Reports() {
 			}
 		});
 		return Array.from(aggregators).sort((a, b) =>
+			a.toLowerCase().localeCompare(b.toLowerCase()),
+		);
+	};
+
+	// Helper function to get unique site states
+	const getUniqueSiteStates = () => {
+		const states = new Set();
+		circuits.forEach((circuit) => {
+			if (circuit.site && circuit.site.state) {
+				states.add(circuit.site.state);
+			}
+		});
+		return Array.from(states).sort((a, b) =>
 			a.toLowerCase().localeCompare(b.toLowerCase()),
 		);
 	};
@@ -708,6 +732,34 @@ function Reports() {
 									{getUniqueAggregators().map((aggregator) => (
 										<option key={aggregator} value={aggregator}>
 											{aggregator}
+										</option>
+									))}
+								</select>
+							</div>
+							<div
+								style={{ display: "flex", alignItems: "center", gap: "10px" }}
+							>
+								<label htmlFor="siteStateFilter" style={{ fontSize: "14px" }}>
+									Site State:
+								</label>
+								<select
+									id="siteStateFilter"
+									value={siteStateFilter}
+									onChange={(e) => setSiteStateFilter(e.target.value)}
+									style={{
+										padding: "6px 10px",
+										borderRadius: "4px",
+										border: "1px solid #3498db",
+										backgroundColor: "#34495e",
+										color: "#ffffff",
+										fontSize: "14px",
+										cursor: "pointer",
+									}}
+								>
+									<option value="All">All States</option>
+									{getUniqueSiteStates().map((state) => (
+										<option key={state} value={state}>
+											{state}
 										</option>
 									))}
 								</select>
