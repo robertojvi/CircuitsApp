@@ -740,7 +740,7 @@ function Reports() {
 								style={{ display: "flex", alignItems: "center", gap: "10px" }}
 							>
 								<label htmlFor="siteStateFilter" style={{ fontSize: "14px" }}>
-									Site State:
+									State:
 								</label>
 								<select
 									id="siteStateFilter"
