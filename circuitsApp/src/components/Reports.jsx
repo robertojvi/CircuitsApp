@@ -10,6 +10,7 @@ import {
 	Legend,
 } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import * as XLSX from "xlsx";
 
 ChartJS.register(
 	CategoryScale,
@@ -526,6 +527,61 @@ function Reports() {
 			0,
 			Math.round((monthsUntilExpiration + fractionalMonth) * 10) / 10,
 		);
+	};
+
+	// Function to download expiring circuits as Excel file
+	const downloadExpiringCircuitsAsExcel = () => {
+		const expiringCircuits = getExpiringCircuits();
+
+		if (expiringCircuits.length === 0) {
+			alert("No circuits to export");
+			return;
+		}
+
+		// Prepare data for Excel
+		const excelData = expiringCircuits.map((circuit) => ({
+			"Venue Name": circuit.site.name,
+			"Site Type": circuit.site.siteType,
+			Provider: circuit.provider.name,
+			Aggregator:
+				circuit.hasAggregator && circuit.aggregatorName
+					? circuit.aggregatorName
+					: "N/A",
+			"Circuit Type": circuit.circuitType,
+			Bandwidth: circuit.circuitBandwidth,
+			"Expiration Date": formatDate(circuit.expirationDate),
+			"Months Remaining": getMonthsUntilExpiration(circuit.expirationDate),
+			Status: circuit.status,
+		}));
+
+		// Create workbook and worksheet
+		const workbook = XLSX.utils.book_new();
+		const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+		// Set column widths
+		const maxWidth = 20;
+		const columnWidths = [
+			{ wch: 20 }, // Venue Name
+			{ wch: 12 }, // Site Type
+			{ wch: 15 }, // Provider
+			{ wch: 15 }, // Aggregator
+			{ wch: 15 }, // Circuit Type
+			{ wch: 12 }, // Bandwidth
+			{ wch: 15 }, // Expiration Date
+			{ wch: 16 }, // Months Remaining
+			{ wch: 12 }, // Status
+		];
+		worksheet["!cols"] = columnWidths;
+
+		// Add worksheet to workbook
+		XLSX.utils.book_append_sheet(workbook, worksheet, "Expiring Circuits");
+
+		// Generate filename with timestamp
+		const timestamp = new Date().toISOString().split("T")[0];
+		const filename = `Circuit_Expiration_Report_${timestamp}.xlsx`;
+
+		// Write file
+		XLSX.writeFile(workbook, filename);
 	};
 
 	const renderContent = () => {
@@ -1252,6 +1308,31 @@ function Reports() {
 									width: "80px",
 								}}
 							/>
+							<button
+								onClick={downloadExpiringCircuitsAsExcel}
+								style={{
+									padding: "8px 16px",
+									border: "none",
+									borderRadius: "4px",
+									backgroundColor: "#27ae60",
+									color: "white",
+									fontSize: "14px",
+									fontWeight: "bold",
+									cursor: "pointer",
+									display: "flex",
+									alignItems: "center",
+									gap: "6px",
+									transition: "background-color 0.3s",
+								}}
+								onMouseEnter={(e) => {
+									e.target.style.backgroundColor = "#229954";
+								}}
+								onMouseLeave={(e) => {
+									e.target.style.backgroundColor = "#27ae60";
+								}}
+							>
+								📥 Download Excel
+							</button>
 						</div>
 					</div>
 
