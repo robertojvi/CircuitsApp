@@ -541,7 +541,14 @@ function Reports() {
 		// Prepare data for Excel
 		const excelData = expiringCircuits.map((circuit) => ({
 			"Venue Name": circuit.site.name,
-			"Site Type": circuit.site.siteType,
+			Address: [
+				circuit.site.address,
+				circuit.site.city,
+				circuit.site.state,
+				circuit.site.zipCode,
+			]
+				.filter(Boolean)
+				.join(", "),
 			Provider: circuit.provider.name,
 			Aggregator:
 				circuit.hasAggregator && circuit.aggregatorName
@@ -562,7 +569,7 @@ function Reports() {
 		const maxWidth = 20;
 		const columnWidths = [
 			{ wch: 20 }, // Venue Name
-			{ wch: 12 }, // Site Type
+			{ wch: 40 }, // Address
 			{ wch: 15 }, // Provider
 			{ wch: 15 }, // Aggregator
 			{ wch: 15 }, // Circuit Type
@@ -1353,7 +1360,7 @@ function Reports() {
 								<thead>
 									<tr style={{ backgroundColor: "#2c3e50", color: "white" }}>
 										<th style={tableHeaderStyle}>Venue Name</th>
-										<th style={tableHeaderStyle}>Site Type</th>
+										<th style={tableHeaderStyle}>Address</th>
 										<th style={tableHeaderStyle}>Provider</th>
 										<th style={tableHeaderStyle}>Aggregator</th>
 										<th style={tableHeaderStyle}>Circuit Type</th>
@@ -1395,25 +1402,14 @@ function Reports() {
 													{circuit.site.name}
 												</td>
 												<td style={tableCellStyle}>
-													<span
-														style={{
-															padding: "4px 8px",
-															borderRadius: "4px",
-															fontSize: "12px",
-															fontWeight: "bold",
-															backgroundColor:
-																circuit.site.siteType === "MHC"
-																	? "#3B82F6" // Blue for MHC
-																	: circuit.site.siteType === "RV"
-																		? "#10B981" // Green for RV
-																		: circuit.site.siteType === "Hybrid"
-																			? "#8B5CF6" // Purple for Hybrid
-																			: "#94A3B8", // Gray for other types
-															color: "white",
-														}}
-													>
-														{circuit.site.siteType || "Unknown"}
-													</span>
+													{[
+														circuit.site.address,
+														circuit.site.city,
+														circuit.site.state,
+														circuit.site.zipCode,
+													]
+														.filter(Boolean)
+														.join(", ")}
 												</td>
 												<td style={tableCellStyle}>{circuit.provider.name}</td>
 												<td style={tableCellStyle}>
