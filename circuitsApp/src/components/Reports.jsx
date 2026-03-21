@@ -554,8 +554,10 @@ function Reports() {
 				circuit.hasAggregator && circuit.aggregatorName
 					? circuit.aggregatorName
 					: "N/A",
-			"Circuit Type": circuit.circuitType,
 			Bandwidth: circuit.circuitBandwidth,
+			"Monthly Cost": circuit.monthlyCost
+				? `$${circuit.monthlyCost.toFixed(2)}`
+				: "N/A",
 			"Expiration Date": formatDate(circuit.expirationDate),
 			"Months Remaining": getMonthsUntilExpiration(circuit.expirationDate),
 			Status: circuit.status,
@@ -572,8 +574,8 @@ function Reports() {
 			{ wch: 40 }, // Address
 			{ wch: 15 }, // Provider
 			{ wch: 15 }, // Aggregator
-			{ wch: 15 }, // Circuit Type
 			{ wch: 12 }, // Bandwidth
+			{ wch: 14 }, // Monthly Cost
 			{ wch: 15 }, // Expiration Date
 			{ wch: 16 }, // Months Remaining
 			{ wch: 12 }, // Status
@@ -1363,8 +1365,8 @@ function Reports() {
 										<th style={tableHeaderStyle}>Address</th>
 										<th style={tableHeaderStyle}>Provider</th>
 										<th style={tableHeaderStyle}>Aggregator</th>
-										<th style={tableHeaderStyle}>Circuit Type</th>
 										<th style={tableHeaderStyle}>Bandwidth</th>
+										<th style={tableHeaderStyle}>Monthly Cost</th>
 										<th style={tableHeaderStyle}>Expiration Date</th>
 										<th style={tableHeaderStyle}>Months Remaining</th>
 										<th style={tableHeaderStyle}>Status</th>
@@ -1418,26 +1420,13 @@ function Reports() {
 														: "N/A"}
 												</td>
 												<td style={tableCellStyle}>
-													<span
-														style={{
-															padding: "4px 8px",
-															borderRadius: "4px",
-															fontSize: "12px",
-															fontWeight: "bold",
-															backgroundColor:
-																circuit.circuitType === "Fiber"
-																	? "#3B82F6" // Blue for Fiber
-																	: circuit.circuitType === "Tower"
-																		? "#8B5CF6" // Purple for Tower
-																		: "#94A3B8", // Gray for other types
-															color: "white",
-														}}
-													>
-														{circuit.circuitType || "Unknown"}
-													</span>
+													{circuit.circuitBandwidth}
 												</td>
 												<td style={tableCellStyle}>
-													{circuit.circuitBandwidth}
+													$
+													{circuit.monthlyCost
+														? circuit.monthlyCost.toFixed(2)
+														: "N/A"}
 												</td>
 												<td style={{ ...tableCellStyle, fontWeight: "500" }}>
 													{formatDate(circuit.expirationDate)}
