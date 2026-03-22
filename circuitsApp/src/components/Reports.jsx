@@ -529,6 +529,32 @@ function Reports() {
 		);
 	};
 
+	// Helper function to check if a date is within the next 6 months
+	const isExpirationSoon = (dateString) => {
+		if (!dateString) return false;
+
+		const expirationDate = new Date(dateString);
+		const today = new Date();
+
+		// Add 6 months to today's date
+		const sixMonthsLater = new Date(today);
+		sixMonthsLater.setMonth(today.getMonth() + 6);
+
+		// Check if the expiration date is between today and 6 months from today
+		return expirationDate >= today && expirationDate <= sixMonthsLater;
+	};
+
+	// Helper function to check if a date is in the past (expired)
+	const isExpired = (dateString) => {
+		if (!dateString) return false;
+
+		const expirationDate = new Date(dateString);
+		const today = new Date();
+
+		// Check if the expiration date is before today
+		return expirationDate < today;
+	};
+
 	// Function to download expiring circuits as Excel file
 	const downloadExpiringCircuitsAsExcel = () => {
 		const expiringCircuits = getExpiringCircuits();
@@ -1580,6 +1606,35 @@ function Reports() {
 		} else if (selectedMenu === "Tower Report") {
 			const towerCircuits = circuits.filter((c) => c.hasTower);
 
+			// Flatten towers: create one row per tower per circuit
+			const towerRows = [];
+			towerCircuits.forEach((circuit) => {
+				const numTowers = parseInt(circuit.numberOfTowers) || 0;
+				if (numTowers > 0) {
+					for (let i = 1; i <= numTowers; i++) {
+						towerRows.push({
+							circuit,
+							towerNumber: i,
+							towerProvider: circuit[`towerProvider${i}`] || "N/A",
+							towerInstallDate: circuit[`towerInstallDate${i}`] || "N/A",
+							towerExpirationDate: circuit[`towerExpirationDate${i}`] || "N/A",
+							towerMonthlyCost: circuit[`towerMonthlyCost${i}`] || "0.00",
+						});
+					}
+				}
+			});
+
+			// Format site address
+			const formatSiteAddress = (site) => {
+				if (!site) return "N/A";
+				const parts = [];
+				if (site.address) parts.push(site.address);
+				const cityState = [site.city, site.state].filter(Boolean).join(", ");
+				if (cityState)
+					parts.push(cityState + (site.zipCode ? ` ${site.zipCode}` : ""));
+				return parts.length ? parts.join(", ") : "N/A";
+			};
+
 			return (
 				<div style={{ width: "100%" }}>
 					<div
@@ -1621,23 +1676,25 @@ function Reports() {
 							borderRadius: "8px",
 							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
 							margin: "0 auto",
-							maxWidth: "1200px",
+							maxWidth: "1400px",
 							width: "100%",
 							overflowX: "auto",
 						}}
 					>
 						<h2 style={{ marginTop: 0 }}>Tower Report</h2>
 						<div style={{ marginBottom: "10px", color: "#64748B" }}>
-							Showing {towerCircuits.length} sites with towers
+							Showing {towerRows.length} towers from {towerCircuits.length}{" "}
+							sites
 						</div>
-						{towerCircuits.length > 0 ? (
+						{towerRows.length > 0 ? (
 							<table style={{ width: "100%", borderCollapse: "collapse" }}>
 								<thead>
 									<tr style={{ backgroundColor: "#2c3e50", color: "white" }}>
 										<th style={tableHeaderStyle}>Site</th>
 										<th style={tableHeaderStyle}>Site Address</th>
 										<th style={tableHeaderStyle}>Provider</th>
-										<th style={tableHeaderStyle}># Towers</th>
+										<th style={tableHeaderStyle}>Total Towers</th>
+										<th style={tableHeaderStyle}>Tower #</th>
 										<th style={tableHeaderStyle}>Tower Provider</th>
 										<th style={tableHeaderStyle}>Installation Date</th>
 										<th style={tableHeaderStyle}>Expiration Date</th>
@@ -1646,36 +1703,62 @@ function Reports() {
 									</tr>
 								</thead>
 								<tbody>
-									{towerCircuits.map((circuit) => (
+									{towerRows.map((row, index) => (
 										<tr
-											key={circuit.id}
-											style={{ borderBottom: "1px solid #dee2e6" }}
+											key={`${row.circuit.id}-${row.towerNumber}`}
+											style={{
+												borderBottom: "1px solid #dee2e6",
+												backgroundColor:
+													index % 2 === 0 ? "#ffffff" : "#eef2f7",
+											}}
 										>
 											<td style={tableCellStyle}>
-												{circuit.site?.name || "N/A"}
+												{row.circuit.site?.name || "N/A"}
 											</td>
 											<td style={tableCellStyle}>
-												{circuit.site?.address || "N/A"}
+												{formatSiteAddress(row.circuit.site)}
 											</td>
 											<td style={tableCellStyle}>
-												{circuit.provider?.name || "N/A"}
+												{row.circuit.provider?.name || "N/A"}
 											</td>
 											<td style={tableCellStyle}>
-												{circuit.numberOfTowers || "N/A"}
+												{row.circuit.numberOfTowers || "N/A"}
+											</td>
+											<td
+												style={{
+													...tableCellStyle,
+													fontWeight: "600",
+													color: "#3498db",
+												}}
+											>
+												{row.towerNumber}
+											</td>
+											<td style={tableCellStyle}>{row.towerProvider}</td>
+											<td style={tableCellStyle}>{row.towerInstallDate}</td>
+											<td
+												style={{
+													...tableCellStyle,
+													color: isExpired(row.towerExpirationDate)
+														? "#e74c3c"
+														: isExpirationSoon(row.towerExpirationDate)
+															? "#f39c12"
+															: "inherit",
+													fontWeight: isExpired(row.towerExpirationDate)
+														? "600"
+														: "normal",
+												}}
+											>
+												{row.towerExpirationDate}
 											</td>
 											<td style={tableCellStyle}>
-												{circuit.towerProvider || "N/A"}
+												{typeof row.towerMonthlyCost === "number" ||
+												!isNaN(parseFloat(row.towerMonthlyCost))
+													? "$" + parseFloat(row.towerMonthlyCost).toFixed(2)
+													: "$0.00"}
 											</td>
 											<td style={tableCellStyle}>
-												{circuit.towerInstallDate || "N/A"}
+												{row.circuit.status || "N/A"}
 											</td>
-											<td style={tableCellStyle}>
-												{circuit.towerExpirationDate || "N/A"}
-											</td>
-											<td style={tableCellStyle}>
-												{"$" + (circuit.towerMonthlyCost || "0.00")}
-											</td>
-											<td style={tableCellStyle}>{circuit.status || "N/A"}</td>
 										</tr>
 									))}
 								</tbody>
@@ -1689,7 +1772,7 @@ function Reports() {
 									fontStyle: "italic",
 								}}
 							>
-								No sites with towers found
+								No towers found
 							</div>
 						)}
 					</div>
