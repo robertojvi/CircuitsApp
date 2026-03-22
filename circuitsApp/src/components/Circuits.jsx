@@ -277,22 +277,54 @@ const CircuitDetailModal = ({ circuit, onClose }) => {
 								<strong>Number of Towers:</strong>{" "}
 								{circuit.numberOfTowers || "N/A"}
 							</p>
-							<p style={detailRowStyle}>
-								<strong>Tower Provider:</strong>{" "}
-								{circuit.towerProvider || "N/A"}
-							</p>
-							<p style={detailRowStyle}>
-								<strong>Tower Installation Date:</strong>{" "}
-								{circuit.towerInstallDate || "N/A"}
-							</p>
-							<p style={detailRowStyle}>
-								<strong>Tower Expiration Date:</strong>{" "}
-								{circuit.towerExpirationDate || "N/A"}
-							</p>
-							<p style={detailRowStyle}>
-								<strong>Tower Monthly Cost:</strong>{" "}
-								{"$" + (circuit.towerMonthlyCost || "0.00")}
-							</p>
+							{circuit.numberOfTowers &&
+								parseInt(circuit.numberOfTowers) > 0 &&
+								Array.from(
+									{ length: parseInt(circuit.numberOfTowers) },
+									(_, i) => i + 1,
+								).map((towerNum) => (
+									<div
+										key={towerNum}
+										style={{
+											marginTop: "12px",
+											paddingTop: "12px",
+											borderTop: "1px solid #3b82f6",
+										}}
+									>
+										<h4
+											style={{
+												marginTop: 0,
+												marginBottom: "8px",
+												color: "#3B82F6",
+												fontSize: "13px",
+												fontWeight: "600",
+											}}
+										>
+											Tower {towerNum}
+										</h4>
+										<p style={detailRowStyle}>
+											<strong>Provider:</strong>{" "}
+											{circuit[`towerProvider${towerNum}`] || "N/A"}
+										</p>
+										<p style={detailRowStyle}>
+											<strong>Installation Date:</strong>{" "}
+											{circuit[`towerInstallDate${towerNum}`] || "N/A"}
+										</p>
+										<p style={detailRowStyle}>
+											<strong>Expiration Date:</strong>{" "}
+											{circuit[`towerExpirationDate${towerNum}`] || "N/A"}
+										</p>
+										<p style={detailRowStyle}>
+											<strong>Monthly Cost:</strong>{" "}
+											{circuit[`towerMonthlyCost${towerNum}`]
+												? "$" +
+													parseFloat(
+														circuit[`towerMonthlyCost${towerNum}`],
+													).toFixed(2)
+												: "N/A"}
+										</p>
+									</div>
+								))}
 						</div>
 					)}
 				</div>
