@@ -1624,6 +1624,27 @@ function Reports() {
 				}
 			});
 
+			// Group towerRows by circuit ID and add row index information
+			const groupedTowerRows = {};
+			towerRows.forEach((row) => {
+				if (!groupedTowerRows[row.circuit.id]) {
+					groupedTowerRows[row.circuit.id] = [];
+				}
+				groupedTowerRows[row.circuit.id].push(row);
+			});
+
+			// Flatten back with row index within group
+			const flattenedRows = [];
+			Object.values(groupedTowerRows).forEach((group) => {
+				group.forEach((row, index) => {
+					flattenedRows.push({
+						...row,
+						rowIndexInGroup: index,
+						groupSize: group.length,
+					});
+				});
+			});
+
 			// Format site address
 			const formatSiteAddress = (site) => {
 				if (!site) return "N/A";
@@ -1699,11 +1720,10 @@ function Reports() {
 										<th style={tableHeaderStyle}>Installation Date</th>
 										<th style={tableHeaderStyle}>Expiration Date</th>
 										<th style={tableHeaderStyle}>Monthly Cost</th>
-										<th style={tableHeaderStyle}>Status</th>
 									</tr>
 								</thead>
 								<tbody>
-									{towerRows.map((row, index) => (
+									{flattenedRows.map((row, index) => (
 										<tr
 											key={`${row.circuit.id}-${row.towerNumber}`}
 											style={{
@@ -1712,18 +1732,22 @@ function Reports() {
 													index % 2 === 0 ? "#ffffff" : "#eef2f7",
 											}}
 										>
-											<td style={tableCellStyle}>
-												{row.circuit.site?.name || "N/A"}
-											</td>
-											<td style={tableCellStyle}>
-												{formatSiteAddress(row.circuit.site)}
-											</td>
-											<td style={tableCellStyle}>
-												{row.circuit.provider?.name || "N/A"}
-											</td>
-											<td style={tableCellStyle}>
-												{row.circuit.numberOfTowers || "N/A"}
-											</td>
+											{row.rowIndexInGroup === 0 && (
+												<>
+													<td style={tableCellStyle} rowSpan={row.groupSize}>
+														{row.circuit.site?.name || "N/A"}
+													</td>
+													<td style={tableCellStyle} rowSpan={row.groupSize}>
+														{formatSiteAddress(row.circuit.site)}
+													</td>
+													<td style={tableCellStyle} rowSpan={row.groupSize}>
+														{row.circuit.provider?.name || "N/A"}
+													</td>
+													<td style={tableCellStyle} rowSpan={row.groupSize}>
+														{row.circuit.numberOfTowers || "N/A"}
+													</td>
+												</>
+											)}
 											<td
 												style={{
 													...tableCellStyle,
@@ -1755,9 +1779,6 @@ function Reports() {
 												!isNaN(parseFloat(row.towerMonthlyCost))
 													? "$" + parseFloat(row.towerMonthlyCost).toFixed(2)
 													: "$0.00"}
-											</td>
-											<td style={tableCellStyle}>
-												{row.circuit.status || "N/A"}
 											</td>
 										</tr>
 									))}
