@@ -955,6 +955,9 @@ function Circuits() {
 					Authorization: `Bearer ${token}`,
 				},
 			});
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
 			const data = await response.json();
 			setCircuits(data);
 		} catch (error) {
@@ -972,6 +975,9 @@ function Circuits() {
 					Authorization: `Bearer ${token}`,
 				},
 			});
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
 			const data = await response.json();
 			setSites(data);
 		} catch (error) {
@@ -986,6 +992,9 @@ function Circuits() {
 					Authorization: `Bearer ${token}`,
 				},
 			});
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
 			const data = await response.json();
 			setProviders(data);
 		} catch (error) {
