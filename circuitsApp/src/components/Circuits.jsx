@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 
 // Helper function to check if a date is within the next 6 months
 const isExpirationSoon = (dateString) => {
@@ -938,6 +939,7 @@ function Circuits() {
 	const [showEditCircuitModal, setShowEditCircuitModal] = useState(false);
 	const [sites, setSites] = useState([]);
 	const [providers, setProviders] = useState([]);
+	const { token } = useAuth();
 
 	useEffect(() => {
 		if (selectedMenu === "Circuit Information") {
@@ -948,7 +950,11 @@ function Circuits() {
 	const fetchCircuits = async () => {
 		setLoading(true);
 		try {
-			const response = await fetch("/api/circuits");
+			const response = await fetch("http://localhost:8080/api/circuits", {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
 			const data = await response.json();
 			setCircuits(data);
 		} catch (error) {
@@ -961,7 +967,11 @@ function Circuits() {
 
 	const fetchSites = async () => {
 		try {
-			const response = await fetch("/api/sites");
+			const response = await fetch("http://localhost:8080/api/sites", {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
 			const data = await response.json();
 			setSites(data);
 		} catch (error) {
@@ -971,7 +981,11 @@ function Circuits() {
 
 	const fetchProviders = async () => {
 		try {
-			const response = await fetch("/api/providers");
+			const response = await fetch("http://localhost:8080/api/providers", {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
 			const data = await response.json();
 			setProviders(data);
 		} catch (error) {
@@ -991,10 +1005,11 @@ function Circuits() {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			const response = await fetch("/api/circuits", {
+			const response = await fetch("http://localhost:8080/api/circuits", {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
 				},
 				body: JSON.stringify(selectedCircuit),
 			});

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 	<div
@@ -2054,6 +2055,7 @@ function Admin() {
 	const [circuits, setCircuits] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
+	const { token } = useAuth();
 	const [showCreateSiteModal, setShowCreateSiteModal] = useState(false);
 	const [newSite, setNewSite] = useState({
 		name: "",
@@ -2121,7 +2123,11 @@ function Admin() {
 	const fetchSites = async () => {
 		setLoading(true);
 		try {
-			const response = await fetch("/api/sites");
+			const response = await fetch("http://localhost:8080/api/sites", {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
 			const data = await response.json();
 			setSites(data);
 			// Set default sort for Sites
@@ -2140,7 +2146,11 @@ function Admin() {
 	const fetchProviders = async () => {
 		setLoading(true);
 		try {
-			const response = await fetch("/api/providers");
+			const response = await fetch("http://localhost:8080/api/providers", {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
 			const data = await response.json();
 			setProviders(data);
 			// Set default sort for Providers
@@ -2159,7 +2169,11 @@ function Admin() {
 	const fetchCircuits = async () => {
 		setLoading(true);
 		try {
-			const response = await fetch("/api/circuits");
+			const response = await fetch("http://localhost:8080/api/circuits", {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
 			const data = await response.json();
 			setCircuits(data);
 			// Set default sort for Circuits
@@ -2191,10 +2205,11 @@ function Admin() {
 		}
 
 		try {
-			const response = await fetch("/api/sites", {
+			const response = await fetch("http://localhost:8080/api/sites", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
 				},
 				body: JSON.stringify(newSite),
 			});
@@ -2241,10 +2256,11 @@ function Admin() {
 		}
 
 		try {
-			const response = await fetch("/api/providers", {
+			const response = await fetch("http://localhost:8080/api/providers", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
 				},
 				body: JSON.stringify(newProvider),
 			});
@@ -2272,10 +2288,11 @@ function Admin() {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			const response = await fetch("/api/circuits", {
+			const response = await fetch("http://localhost:8080/api/circuits", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
 				},
 				body: JSON.stringify(newCircuit),
 			});
@@ -2317,10 +2334,11 @@ function Admin() {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			const response = await fetch(`/api/sites`, {
+			const response = await fetch(`http://localhost:8080/api/sites`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
 				},
 				body: JSON.stringify(selectedSite),
 			});
@@ -2341,10 +2359,11 @@ function Admin() {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			const response = await fetch(`/api/providers`, {
+			const response = await fetch(`http://localhost:8080/api/providers`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
 				},
 				body: JSON.stringify(selectedProvider),
 			});
@@ -2371,10 +2390,11 @@ function Admin() {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			const response = await fetch(`/api/circuits`, {
+			const response = await fetch(`http://localhost:8080/api/circuits`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
 				},
 				body: JSON.stringify(selectedCircuit),
 			});
@@ -2427,9 +2447,15 @@ function Admin() {
 		if (window.confirm(`Are you sure you want to delete this ${type}?`)) {
 			setLoading(true);
 			try {
-				const response = await fetch(`/api/${type}s/${id}`, {
-					method: "DELETE",
-				});
+				const response = await fetch(
+					`http://localhost:8080/api/${type}s/${id}`,
+					{
+						method: "DELETE",
+						headers: {
+							Authorization: `Bearer ${token}`,
+						},
+					},
+				);
 
 				if (!response.ok) {
 					throw new Error(`Failed to delete ${type}`);

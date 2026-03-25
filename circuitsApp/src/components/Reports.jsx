@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 import { Bar } from "react-chartjs-2";
 import {
 	Chart as ChartJS,
@@ -27,6 +28,7 @@ function Reports() {
 	const [circuits, setCircuits] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
+	const { token } = useAuth();
 	const [siteTypeFilter, setSiteTypeFilter] = useState("All");
 	const [statusFilter, setStatusFilter] = useState("All");
 	const [circuitTypeFilter, setCircuitTypeFilter] = useState("All");
@@ -54,7 +56,11 @@ function Reports() {
 	const fetchCircuits = async () => {
 		setLoading(true);
 		try {
-			const response = await fetch("/api/circuits");
+			const response = await fetch("http://localhost:8080/api/circuits", {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
 			const data = await response.json();
 			setCircuits(data);
 		} catch (error) {
