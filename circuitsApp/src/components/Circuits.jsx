@@ -939,7 +939,7 @@ function Circuits() {
 	const [showEditCircuitModal, setShowEditCircuitModal] = useState(false);
 	const [sites, setSites] = useState([]);
 	const [providers, setProviders] = useState([]);
-	const { token } = useAuth();
+	const { token, user } = useAuth();
 
 	useEffect(() => {
 		if (selectedMenu === "Circuit Information") {
@@ -1210,7 +1210,7 @@ function Circuits() {
 									Aggregator
 								</th>
 								<th style={headerStyle}>Details</th>
-								<th style={headerStyle}>Actions</th>
+								{user?.role !== "USER" && <th style={headerStyle}>Actions</th>}
 							</tr>
 						</thead>
 						<tbody>
@@ -1294,14 +1294,16 @@ function Circuits() {
 											ℹ️
 										</button>
 									</td>
-									<td style={cellStyle}>
-										<button
-											onClick={() => handleEdit(circuit.id)}
-											style={iconButtonStyle}
-										>
-											✏️
-										</button>
-									</td>
+									{user?.role !== "USER" && (
+										<td style={cellStyle}>
+											<button
+												onClick={() => handleEdit(circuit.id)}
+												style={iconButtonStyle}
+											>
+												✏️
+											</button>
+										</td>
+									)}
 								</tr>
 							))}
 						</tbody>
