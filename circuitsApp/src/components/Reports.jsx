@@ -1720,10 +1720,24 @@ function Reports() {
 							overflowX: "auto",
 						}}
 					>
-						<h2 style={{ marginTop: 0 }}>Tower Report</h2>
-						<div style={{ marginBottom: "20px", color: "#64748B" }}>
-							Showing {towerRows.length} towers from {towerCircuits.length} site
-							{towerCircuits.length !== 1 ? "s" : ""}
+						<div
+							style={{
+								backgroundColor: "#2c3e50",
+								color: "#ffffff",
+								padding: "15px 20px",
+								borderRadius: "4px",
+								marginBottom: "20px",
+								boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+							}}
+						>
+							<h2 style={{ margin: 0, fontSize: "18px" }}>📊 Tower Report</h2>
+							<div
+								style={{ fontSize: "14px", marginTop: "8px", color: "#ecf0f1" }}
+							>
+								Showing {towerRows.length} towers from {towerCircuits.length}{" "}
+								site
+								{towerCircuits.length !== 1 ? "s" : ""}
+							</div>
 						</div>
 						{towerRows.length > 0 ? (
 							<div>
