@@ -1907,13 +1907,32 @@ function Reports() {
 															style={{
 																...tableCellStyle,
 																color: isExpired(row.towerExpirationDate)
+																	? "#ffffff"
+																	: isExpirationSoon(row.towerExpirationDate)
+																		? "#ffffff"
+																		: "#2c3e50",
+																backgroundColor: isExpired(
+																	row.towerExpirationDate,
+																)
 																	? "#e74c3c"
 																	: isExpirationSoon(row.towerExpirationDate)
 																		? "#f39c12"
-																		: "inherit",
+																		: "transparent",
 																fontWeight: isExpired(row.towerExpirationDate)
 																	? "700"
-																	: "normal",
+																	: isExpirationSoon(row.towerExpirationDate)
+																		? "600"
+																		: "500",
+																padding:
+																	isExpired(row.towerExpirationDate) ||
+																	isExpirationSoon(row.towerExpirationDate)
+																		? "6px 8px"
+																		: "12px",
+																borderRadius:
+																	isExpired(row.towerExpirationDate) ||
+																	isExpirationSoon(row.towerExpirationDate)
+																		? "4px"
+																		: "0px",
 															}}
 														>
 															{row.towerExpirationDate}
