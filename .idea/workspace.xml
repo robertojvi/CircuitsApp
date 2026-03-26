@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7da67a3a-6e17-4887-bb2b-2f4f70caefbe" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/circuitsApp/.env" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/circuitsApp/vite.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/vite.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/security/SecurityConfig.java" afterDir="false" />
-    </list>
+    <list default="true" id="7da67a3a-6e17-4887-bb2b-2f4f70caefbe" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

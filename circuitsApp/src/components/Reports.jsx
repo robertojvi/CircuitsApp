@@ -1630,25 +1630,17 @@ function Reports() {
 				}
 			});
 
-			// Group towerRows by circuit ID and add row index information
-			const groupedTowerRows = {};
+			// Group by circuit for better organization
+			const siteGroups = {};
 			towerRows.forEach((row) => {
-				if (!groupedTowerRows[row.circuit.id]) {
-					groupedTowerRows[row.circuit.id] = [];
+				const circuitId = row.circuit.id;
+				if (!siteGroups[circuitId]) {
+					siteGroups[circuitId] = {
+						circuit: row.circuit,
+						towers: [],
+					};
 				}
-				groupedTowerRows[row.circuit.id].push(row);
-			});
-
-			// Flatten back with row index within group
-			const flattenedRows = [];
-			Object.values(groupedTowerRows).forEach((group) => {
-				group.forEach((row, index) => {
-					flattenedRows.push({
-						...row,
-						rowIndexInGroup: index,
-						groupSize: group.length,
-					});
-				});
+				siteGroups[circuitId].towers.push(row);
 			});
 
 			// Format site address
@@ -1660,6 +1652,26 @@ function Reports() {
 				if (cityState)
 					parts.push(cityState + (site.zipCode ? ` ${site.zipCode}` : ""));
 				return parts.length ? parts.join(", ") : "N/A";
+			};
+
+			const siteHeaderStyle = {
+				backgroundColor: "#2c3e50",
+				color: "white",
+				padding: "14px 12px",
+				fontWeight: "700",
+				fontSize: "15px",
+				textAlign: "left",
+				borderBottom: "3px solid #3498db",
+			};
+
+			const towerSectionHeaderStyle = {
+				backgroundColor: "#34495e",
+				color: "#ecf0f1",
+				padding: "10px 12px",
+				fontWeight: "600",
+				fontSize: "13px",
+				textAlign: "left",
+				borderLeft: "4px solid #3498db",
 			};
 
 			return (
@@ -1709,87 +1721,223 @@ function Reports() {
 						}}
 					>
 						<h2 style={{ marginTop: 0 }}>Tower Report</h2>
-						<div style={{ marginBottom: "10px", color: "#64748B" }}>
-							Showing {towerRows.length} towers from {towerCircuits.length}{" "}
-							sites
+						<div style={{ marginBottom: "20px", color: "#64748B" }}>
+							Showing {towerRows.length} towers from {towerCircuits.length} site
+							{towerCircuits.length !== 1 ? "s" : ""}
 						</div>
 						{towerRows.length > 0 ? (
-							<table style={{ width: "100%", borderCollapse: "collapse" }}>
-								<thead>
-									<tr style={{ backgroundColor: "#2c3e50", color: "white" }}>
-										<th style={tableHeaderStyle}>Site</th>
-										<th style={tableHeaderStyle}>Site Address</th>
-										<th style={tableHeaderStyle}>Provider</th>
-										<th style={tableHeaderStyle}>Total Towers</th>
-										<th style={tableHeaderStyle}>Tower #</th>
-										<th style={tableHeaderStyle}>Tower Provider</th>
-										<th style={tableHeaderStyle}>Installation Date</th>
-										<th style={tableHeaderStyle}>Expiration Date</th>
-										<th style={tableHeaderStyle}>Monthly Cost</th>
-									</tr>
-								</thead>
-								<tbody>
-									{flattenedRows.map((row, index) => (
-										<tr
-											key={`${row.circuit.id}-${row.towerNumber}`}
+							<div>
+								{Object.values(siteGroups).map((siteGroup, siteIndex) => (
+									<div
+										key={siteGroup.circuit.id}
+										style={{
+											marginBottom: "24px",
+											borderRadius: "6px",
+											overflow: "hidden",
+											border: "2px solid #3498db",
+											boxShadow:
+												siteIndex % 2 === 0
+													? "0 2px 6px rgba(52, 152, 219, 0.15)"
+													: "0 2px 6px rgba(52, 73, 94, 0.1)",
+										}}
+									>
+										{/* Site Header */}
+										<div style={siteHeaderStyle}>
+											📍 {siteGroup.circuit.site?.name || "N/A"}
+										</div>
+
+										{/* Site Details */}
+										<div
 											style={{
-												borderBottom: "1px solid #dee2e6",
-												backgroundColor:
-													index % 2 === 0 ? "#ffffff" : "#eef2f7",
+												backgroundColor: "#ecf0f1",
+												padding: "12px 14px",
+												display: "grid",
+												gridTemplateColumns:
+													"repeat(auto-fit, minmax(200px, 1fr))",
+												gap: "12px",
+												fontSize: "13px",
+												color: "#2c3e50",
 											}}
 										>
-											{row.rowIndexInGroup === 0 && (
-												<>
-													<td style={tableCellStyle} rowSpan={row.groupSize}>
-														{row.circuit.site?.name || "N/A"}
+											<div>
+												<span
+													style={{
+														fontWeight: "600",
+														color: "#34495e",
+													}}
+												>
+													Address:{" "}
+												</span>
+												<span>{formatSiteAddress(siteGroup.circuit.site)}</span>
+											</div>
+											<div>
+												<span
+													style={{
+														fontWeight: "600",
+														color: "#34495e",
+													}}
+												>
+													Provider:{" "}
+												</span>
+												<span>{siteGroup.circuit.provider?.name || "N/A"}</span>
+											</div>
+											<div>
+												<span
+													style={{
+														fontWeight: "600",
+														color: "#34495e",
+													}}
+												>
+													Total Towers:{" "}
+												</span>
+												<span
+													style={{
+														backgroundColor: "#3498db",
+														color: "white",
+														padding: "2px 8px",
+														borderRadius: "4px",
+														fontWeight: "bold",
+														display: "inline-block",
+													}}
+												>
+													{siteGroup.circuit.numberOfTowers || "N/A"}
+												</span>
+											</div>
+										</div>
+
+										{/* Tower Details Table */}
+										<table
+											style={{
+												width: "100%",
+												borderCollapse: "collapse",
+											}}
+										>
+											<thead>
+												<tr style={towerSectionHeaderStyle}>
+													<td
+														style={{
+															...towerSectionHeaderStyle,
+															flex: 1,
+															minWidth: "80px",
+														}}
+													>
+														Tower #
 													</td>
-													<td style={tableCellStyle} rowSpan={row.groupSize}>
-														{formatSiteAddress(row.circuit.site)}
+													<td
+														style={{
+															...towerSectionHeaderStyle,
+															flex: 1,
+															minWidth: "120px",
+														}}
+													>
+														Tower Provider
 													</td>
-													<td style={tableCellStyle} rowSpan={row.groupSize}>
-														{row.circuit.provider?.name || "N/A"}
+													<td
+														style={{
+															...towerSectionHeaderStyle,
+															flex: 1,
+															minWidth: "130px",
+														}}
+													>
+														Installation Date
 													</td>
-													<td style={tableCellStyle} rowSpan={row.groupSize}>
-														{row.circuit.numberOfTowers || "N/A"}
+													<td
+														style={{
+															...towerSectionHeaderStyle,
+															flex: 1,
+															minWidth: "130px",
+														}}
+													>
+														Expiration Date
 													</td>
-												</>
-											)}
-											<td
-												style={{
-													...tableCellStyle,
-													fontWeight: "600",
-													color: "#3498db",
-												}}
-											>
-												{row.towerNumber}
-											</td>
-											<td style={tableCellStyle}>{row.towerProvider}</td>
-											<td style={tableCellStyle}>{row.towerInstallDate}</td>
-											<td
-												style={{
-													...tableCellStyle,
-													color: isExpired(row.towerExpirationDate)
-														? "#e74c3c"
-														: isExpirationSoon(row.towerExpirationDate)
-															? "#f39c12"
-															: "inherit",
-													fontWeight: isExpired(row.towerExpirationDate)
-														? "600"
-														: "normal",
-												}}
-											>
-												{row.towerExpirationDate}
-											</td>
-											<td style={tableCellStyle}>
-												{typeof row.towerMonthlyCost === "number" ||
-												!isNaN(parseFloat(row.towerMonthlyCost))
-													? "$" + parseFloat(row.towerMonthlyCost).toFixed(2)
-													: "$0.00"}
-											</td>
-										</tr>
-									))}
-								</tbody>
-							</table>
+													<td
+														style={{
+															...towerSectionHeaderStyle,
+															flex: 1,
+															minWidth: "100px",
+														}}
+													>
+														Monthly Cost
+													</td>
+												</tr>
+											</thead>
+											<tbody>
+												{siteGroup.towers.map((row, towerIndex) => (
+													<tr
+														key={`${row.circuit.id}-${row.towerNumber}`}
+														style={{
+															borderBottom:
+																towerIndex < siteGroup.towers.length - 1
+																	? "1px solid #dee2e6"
+																	: "none",
+															backgroundColor:
+																towerIndex % 2 === 0 ? "#ffffff" : "#f8f9fa",
+															transition: "background-color 0.2s ease",
+														}}
+														onMouseEnter={(e) => {
+															e.currentTarget.style.backgroundColor = "#e8f4f8";
+														}}
+														onMouseLeave={(e) => {
+															e.currentTarget.style.backgroundColor =
+																towerIndex % 2 === 0 ? "#ffffff" : "#f8f9fa";
+														}}
+													>
+														<td
+															style={{
+																...tableCellStyle,
+																fontWeight: "700",
+																color: "#3498db",
+																fontSize: "15px",
+															}}
+														>
+															Tower {row.towerNumber}
+														</td>
+														<td
+															style={{
+																...tableCellStyle,
+																fontWeight: "500",
+															}}
+														>
+															{row.towerProvider}
+														</td>
+														<td style={tableCellStyle}>
+															{row.towerInstallDate}
+														</td>
+														<td
+															style={{
+																...tableCellStyle,
+																color: isExpired(row.towerExpirationDate)
+																	? "#e74c3c"
+																	: isExpirationSoon(row.towerExpirationDate)
+																		? "#f39c12"
+																		: "inherit",
+																fontWeight: isExpired(row.towerExpirationDate)
+																	? "700"
+																	: "normal",
+															}}
+														>
+															{row.towerExpirationDate}
+														</td>
+														<td
+															style={{
+																...tableCellStyle,
+																fontWeight: "600",
+																color: "#27ae60",
+															}}
+														>
+															{typeof row.towerMonthlyCost === "number" ||
+															!isNaN(parseFloat(row.towerMonthlyCost))
+																? "$" +
+																	parseFloat(row.towerMonthlyCost).toFixed(2)
+																: "$0.00"}
+														</td>
+													</tr>
+												))}
+											</tbody>
+										</table>
+									</div>
+								))}
+							</div>
 						) : (
 							<div
 								style={{
