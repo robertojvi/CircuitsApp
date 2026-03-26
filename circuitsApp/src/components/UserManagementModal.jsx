@@ -156,10 +156,12 @@ function UserManagementModal({ onClose }) {
 		width: "100%",
 		padding: "12px",
 		marginBottom: "15px",
-		border: "1px solid #ddd",
+		border: "1px solid #ccc",
 		borderRadius: "4px",
 		fontSize: "14px",
 		boxSizing: "border-box",
+		backgroundColor: "#f9f9f9",
+		color: "#1a1a1a",
 	};
 
 	const buttonStyle = {
@@ -191,7 +193,8 @@ function UserManagementModal({ onClose }) {
 		>
 			<div
 				style={{
-					backgroundColor: "white",
+					backgroundColor: "#ffffff",
+					color: "#1a1a1a",
 					borderRadius: "8px",
 					width: "90%",
 					maxWidth: "900px",
@@ -226,7 +229,13 @@ function UserManagementModal({ onClose }) {
 					</button>
 				</div>
 
-				<div style={{ padding: "20px" }}>
+				<div
+					style={{
+						padding: "20px",
+						backgroundColor: "#ffffff",
+						color: "#1a1a1a",
+					}}
+				>
 					{error && (
 						<div
 							style={{
@@ -257,18 +266,18 @@ function UserManagementModal({ onClose }) {
 					) : (
 						<div
 							style={{
-								backgroundColor: "#f9f9f9",
+								backgroundColor: "#f0f0f0",
 								padding: "20px",
 								borderRadius: "8px",
 								marginBottom: "20px",
-								border: "1px solid #eee",
+								border: "1px solid #ddd",
 							}}
 						>
 							<h3
 								style={{
 									marginTop: 0,
 									marginBottom: "15px",
-									color: "#2c3e50",
+									color: "#1a1a1a",
 								}}
 							>
 								Create New User
@@ -399,7 +408,7 @@ function UserManagementModal({ onClose }) {
 					)}
 
 					{loading ? (
-						<p style={{ textAlign: "center", color: "#666" }}>
+						<p style={{ textAlign: "center", color: "#333" }}>
 							Loading users...
 						</p>
 					) : (
@@ -409,13 +418,15 @@ function UserManagementModal({ onClose }) {
 									width: "100%",
 									borderCollapse: "collapse",
 									fontSize: "14px",
+									color: "#1a1a1a",
 								}}
 							>
 								<thead>
 									<tr
 										style={{
-											backgroundColor: "#f5f5f5",
-											borderBottom: "2px solid #ddd",
+											backgroundColor: "#e8e8e8",
+											borderBottom: "2px solid #ccc",
+											color: "#1a1a1a",
 										}}
 									>
 										<th
@@ -423,6 +434,7 @@ function UserManagementModal({ onClose }) {
 												padding: "12px",
 												textAlign: "left",
 												fontWeight: "600",
+												color: "#1a1a1a",
 											}}
 										>
 											Email
@@ -432,6 +444,7 @@ function UserManagementModal({ onClose }) {
 												padding: "12px",
 												textAlign: "left",
 												fontWeight: "600",
+												color: "#1a1a1a",
 											}}
 										>
 											Name
@@ -441,6 +454,7 @@ function UserManagementModal({ onClose }) {
 												padding: "12px",
 												textAlign: "left",
 												fontWeight: "600",
+												color: "#1a1a1a",
 											}}
 										>
 											Role
@@ -450,6 +464,7 @@ function UserManagementModal({ onClose }) {
 												padding: "12px",
 												textAlign: "left",
 												fontWeight: "600",
+												color: "#1a1a1a",
 											}}
 										>
 											Status
@@ -459,6 +474,7 @@ function UserManagementModal({ onClose }) {
 												padding: "12px",
 												textAlign: "left",
 												fontWeight: "600",
+												color: "#1a1a1a",
 											}}
 										>
 											Actions
@@ -471,9 +487,8 @@ function UserManagementModal({ onClose }) {
 											key={user.id}
 											style={{
 												borderBottom: "1px solid #eee",
-												backgroundColor: user.enabled
-													? "transparent"
-													: "#f9f9f9",
+												backgroundColor: user.enabled ? "#ffffff" : "#f0f0f0",
+												color: "#1a1a1a",
 											}}
 										>
 											<td style={{ padding: "12px" }}>{user.email}</td>
@@ -489,8 +504,10 @@ function UserManagementModal({ onClose }) {
 													style={{
 														padding: "4px 8px",
 														borderRadius: "4px",
-														border: "1px solid #ddd",
+														border: "1px solid #ccc",
 														fontSize: "12px",
+														backgroundColor: "#f9f9f9",
+														color: "#1a1a1a",
 													}}
 												>
 													<option value="USER">USER</option>
@@ -564,7 +581,7 @@ function UserManagementModal({ onClose }) {
 								<p
 									style={{
 										textAlign: "center",
-										color: "#666",
+										color: "#333",
 										padding: "20px",
 									}}
 								>

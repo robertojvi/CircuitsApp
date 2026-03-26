@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import AccessLogo from "../images/Access.png";
 
 function Login() {
 	const [email, setEmail] = useState("");
@@ -29,10 +30,12 @@ function Login() {
 		width: "100%",
 		padding: "12px",
 		marginBottom: "15px",
-		border: "1px solid #ddd",
+		border: "1px solid #ccc",
 		borderRadius: "4px",
 		fontSize: "14px",
 		boxSizing: "border-box",
+		backgroundColor: "#f9f9f9",
+		color: "#1a1a1a",
 	};
 
 	const buttonStyle = {
@@ -55,20 +58,41 @@ function Login() {
 				justifyContent: "center",
 				alignItems: "center",
 				minHeight: "100vh",
-				backgroundColor: "#f5f5f5",
+				backgroundColor: "#1a1a1a",
+				backgroundImage: "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)",
 				padding: "20px",
 			}}
 		>
 			<div
 				style={{
-					backgroundColor: "white",
+					backgroundColor: "#ffffff",
+					color: "#1a1a1a",
 					padding: "40px",
 					borderRadius: "8px",
-					boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+					boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
 					width: "100%",
 					maxWidth: "400px",
+					border: "1px solid rgba(255,255,255,0.1)",
 				}}
 			>
+				<div
+					style={{
+						display: "flex",
+						justifyContent: "center",
+						marginBottom: "20px",
+					}}
+				>
+					<img
+						src={AccessLogo}
+						alt="AccessParks Logo"
+						style={{
+							height: "80px",
+							width: "auto",
+							objectFit: "contain",
+						}}
+					/>
+				</div>
+
 				<h1
 					style={{
 						textAlign: "center",
