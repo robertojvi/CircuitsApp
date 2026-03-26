@@ -5,11 +5,11 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: true,        // o '0.0.0.0' → acepta conexiones remotas
-    port: 5173,       // opcional, usa el que quieras
+    host: '0.0.0.0',        // Accept connections from any network address
+    port: 5173,
     proxy: {
       '/api': {
-        target: process.env.VITE_API_URL || 'http://localhost:8080', // backend en el mismo equipo
+        target: process.env.VITE_API_URL || 'http://localhost:8080',
         changeOrigin: true
       }
     }
