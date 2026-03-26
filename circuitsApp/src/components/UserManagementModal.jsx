@@ -25,7 +25,7 @@ function UserManagementModal({ onClose }) {
 		setLoading(true);
 		setError("");
 		try {
-			const response = await fetch("http://localhost:8080/api/users", {
+			const response = await fetch("/api/users", {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
@@ -50,7 +50,7 @@ function UserManagementModal({ onClose }) {
 		setCreateSuccess("");
 
 		try {
-			const response = await fetch("http://localhost:8080/api/users", {
+			const response = await fetch("/api/users", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -91,15 +91,12 @@ function UserManagementModal({ onClose }) {
 		}
 
 		try {
-			const response = await fetch(
-				`http://localhost:8080/api/users/${userId}`,
-				{
-					method: "DELETE",
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
+			const response = await fetch(`/api/users/${userId}`, {
+				method: "DELETE",
+				headers: {
+					Authorization: `Bearer ${token}`,
 				},
-			);
+			});
 
 			if (!response.ok) {
 				const error = await response.json();
@@ -114,17 +111,14 @@ function UserManagementModal({ onClose }) {
 
 	const handleUpdateRole = async (userId, newRole) => {
 		try {
-			const response = await fetch(
-				`http://localhost:8080/api/users/${userId}/role`,
-				{
-					method: "PUT",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${token}`,
-					},
-					body: JSON.stringify({ role: newRole }),
+			const response = await fetch(`/api/users/${userId}/role`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
 				},
-			);
+				body: JSON.stringify({ role: newRole }),
+			});
 
 			if (!response.ok) {
 				const error = await response.json();
@@ -140,15 +134,12 @@ function UserManagementModal({ onClose }) {
 	const handleToggleUserStatus = async (userId, shouldDisable) => {
 		try {
 			const endpoint = shouldDisable ? "disable" : "enable";
-			const response = await fetch(
-				`http://localhost:8080/api/users/${userId}/${endpoint}`,
-				{
-					method: "PUT",
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
+			const response = await fetch(`/api/users/${userId}/${endpoint}`, {
+				method: "PUT",
+				headers: {
+					Authorization: `Bearer ${token}`,
 				},
-			);
+			});
 
 			if (!response.ok) {
 				const error = await response.json();

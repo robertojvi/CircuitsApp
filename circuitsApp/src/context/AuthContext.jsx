@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
 
 	const validateToken = async () => {
 		try {
-			const response = await fetch("http://localhost:8080/api/auth/validate", {
+			const response = await fetch("/api/auth/validate", {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
 
 	const login = async (email, password) => {
 		try {
-			const response = await fetch("http://localhost:8080/api/auth/login", {
+			const response = await fetch("/api/auth/login", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -82,20 +82,17 @@ export const AuthProvider = ({ children }) => {
 
 	const changePassword = async (currentPassword, newPassword) => {
 		try {
-			const response = await fetch(
-				"http://localhost:8080/api/auth/change-password",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${token}`,
-					},
-					body: JSON.stringify({
-						currentPassword,
-						newPassword,
-					}),
+			const response = await fetch("/api/auth/change-password", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
 				},
-			);
+				body: JSON.stringify({
+					currentPassword,
+					newPassword,
+				}),
+			});
 
 			if (!response.ok) {
 				const error = await response.json();

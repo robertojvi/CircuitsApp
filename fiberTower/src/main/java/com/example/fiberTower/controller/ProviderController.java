@@ -11,6 +11,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/providers")
+@CrossOrigin(origins = {"http://localhost:5173", "http://192.168.68.111:5173"})
 public class ProviderController {
     @Autowired
     IProviderService providerService;

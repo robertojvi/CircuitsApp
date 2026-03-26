@@ -950,7 +950,7 @@ function Circuits() {
 	const fetchCircuits = async () => {
 		setLoading(true);
 		try {
-			const response = await fetch("http://localhost:8080/api/circuits", {
+			const response = await fetch("/api/circuits", {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
@@ -970,7 +970,7 @@ function Circuits() {
 
 	const fetchSites = async () => {
 		try {
-			const response = await fetch("http://localhost:8080/api/sites", {
+			const response = await fetch("/api/sites", {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
@@ -987,7 +987,7 @@ function Circuits() {
 
 	const fetchProviders = async () => {
 		try {
-			const response = await fetch("http://localhost:8080/api/providers", {
+			const response = await fetch("/api/providers", {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
@@ -1014,7 +1014,7 @@ function Circuits() {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			const response = await fetch("http://localhost:8080/api/circuits", {
+			const response = await fetch("/api/circuits", {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",

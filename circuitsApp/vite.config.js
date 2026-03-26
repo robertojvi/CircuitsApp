@@ -9,7 +9,7 @@ export default defineConfig({
     port: 5173,       // opcional, usa el que quieras
     proxy: {
       '/api': {
-        target: 'http://localhost:8080', // backend en el mismo equipo
+        target: process.env.VITE_API_URL || 'http://localhost:8080', // backend en el mismo equipo
         changeOrigin: true
       }
     }

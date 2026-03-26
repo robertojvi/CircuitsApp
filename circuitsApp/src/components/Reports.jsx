@@ -56,7 +56,7 @@ function Reports() {
 	const fetchCircuits = async () => {
 		setLoading(true);
 		try {
-			const response = await fetch("http://localhost:8080/api/circuits", {
+			const response = await fetch("/api/circuits", {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},

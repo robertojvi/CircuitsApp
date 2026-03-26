@@ -2123,7 +2123,7 @@ function Admin() {
 	const fetchSites = async () => {
 		setLoading(true);
 		try {
-			const response = await fetch("http://localhost:8080/api/sites", {
+			const response = await fetch("/api/sites", {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
@@ -2146,7 +2146,7 @@ function Admin() {
 	const fetchProviders = async () => {
 		setLoading(true);
 		try {
-			const response = await fetch("http://localhost:8080/api/providers", {
+			const response = await fetch("/api/providers", {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
@@ -2169,7 +2169,7 @@ function Admin() {
 	const fetchCircuits = async () => {
 		setLoading(true);
 		try {
-			const response = await fetch("http://localhost:8080/api/circuits", {
+			const response = await fetch("/api/circuits", {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
@@ -2205,7 +2205,7 @@ function Admin() {
 		}
 
 		try {
-			const response = await fetch("http://localhost:8080/api/sites", {
+			const response = await fetch("/api/sites", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -2256,7 +2256,7 @@ function Admin() {
 		}
 
 		try {
-			const response = await fetch("http://localhost:8080/api/providers", {
+			const response = await fetch("/api/providers", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -2288,7 +2288,7 @@ function Admin() {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			const response = await fetch("http://localhost:8080/api/circuits", {
+			const response = await fetch("/api/circuits", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -2334,7 +2334,7 @@ function Admin() {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			const response = await fetch(`http://localhost:8080/api/sites`, {
+			const response = await fetch(`/api/sites`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
@@ -2359,7 +2359,7 @@ function Admin() {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			const response = await fetch(`http://localhost:8080/api/providers`, {
+			const response = await fetch(`/api/providers`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
@@ -2390,7 +2390,7 @@ function Admin() {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			const response = await fetch(`http://localhost:8080/api/circuits`, {
+			const response = await fetch(`/api/circuits`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
@@ -2447,15 +2447,12 @@ function Admin() {
 		if (window.confirm(`Are you sure you want to delete this ${type}?`)) {
 			setLoading(true);
 			try {
-				const response = await fetch(
-					`http://localhost:8080/api/${type}s/${id}`,
-					{
-						method: "DELETE",
-						headers: {
-							Authorization: `Bearer ${token}`,
-						},
+				const response = await fetch(`/api/${type}s/${id}`, {
+					method: "DELETE",
+					headers: {
+						Authorization: `Bearer ${token}`,
 					},
-				);
+				});
 
 				if (!response.ok) {
 					throw new Error(`Failed to delete ${type}`);
