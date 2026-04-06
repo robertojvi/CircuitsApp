@@ -27,7 +27,7 @@ const isExpired = (dateString) => {
 	return expirationDate < today;
 };
 
-const CircuitDetailModal = ({ circuit, onClose }) => {
+const CircuitDetailModal = ({ circuit, onClose, user }) => {
 	const site = circuit?.site || {};
 	const parts = [];
 	if (site.address) parts.push(site.address);
@@ -173,10 +173,12 @@ const CircuitDetailModal = ({ circuit, onClose }) => {
 					<p style={detailRowStyle}>
 						<strong>Bandwidth:</strong> {circuit.circuitBandwidth || "N/A"}
 					</p>
-					<p style={detailRowStyle}>
-						<strong>Monthly Cost:</strong>{" "}
-						{"$" + (circuit.monthlyCost || "0.00")}
-					</p>
+					{user?.role !== "NOC" && (
+						<p style={detailRowStyle}>
+							<strong>Monthly Cost:</strong>{" "}
+							{"$" + (circuit.monthlyCost || "0.00")}
+						</p>
+					)}
 					<p style={detailRowStyle}>
 						<strong>Installation Date:</strong>{" "}
 						{circuit.installationDate || "N/A"}
@@ -315,15 +317,17 @@ const CircuitDetailModal = ({ circuit, onClose }) => {
 											<strong>Expiration Date:</strong>{" "}
 											{circuit[`towerExpirationDate${towerNum}`] || "N/A"}
 										</p>
-										<p style={detailRowStyle}>
-											<strong>Monthly Cost:</strong>{" "}
-											{circuit[`towerMonthlyCost${towerNum}`]
-												? "$" +
-													parseFloat(
-														circuit[`towerMonthlyCost${towerNum}`],
-													).toFixed(2)
-												: "N/A"}
-										</p>
+										{user?.role !== "NOC" && (
+											<p style={detailRowStyle}>
+												<strong>Monthly Cost:</strong>{" "}
+												{circuit[`towerMonthlyCost${towerNum}`]
+													? "$" +
+														parseFloat(
+															circuit[`towerMonthlyCost${towerNum}`],
+														).toFixed(2)
+													: "N/A"}
+											</p>
+										)}
 									</div>
 								))}
 						</div>
@@ -1197,12 +1201,14 @@ function Circuits() {
 								>
 									Status
 								</th>
-								<th
-									onClick={() => onSort("monthlyCost")}
-									style={getSortableHeaderStyle("monthlyCost")}
-								>
-									Monthly Cost
-								</th>
+								{user?.role !== "NOC" && (
+									<th
+										onClick={() => onSort("monthlyCost")}
+										style={getSortableHeaderStyle("monthlyCost")}
+									>
+										Monthly Cost
+									</th>
+								)}
 								<th
 									onClick={() => onSort("aggregatorName")}
 									style={getSortableHeaderStyle("aggregatorName")}
@@ -1281,7 +1287,9 @@ function Circuits() {
 											{circuit.status || "Pending"}
 										</span>
 									</td>
-									<td style={cellStyle}>${circuit.monthlyCost}</td>
+									{user?.role !== "NOC" && (
+										<td style={cellStyle}>${circuit.monthlyCost}</td>
+									)}
 									<td style={cellStyle}>{circuit.aggregatorName || "N/A"}</td>
 									<td style={cellStyle}>
 										<button
@@ -1387,6 +1395,7 @@ function Circuits() {
 				{showCircuitDetail && selectedCircuit && (
 					<CircuitDetailModal
 						circuit={selectedCircuit}
+						user={user}
 						onClose={() => {
 							setShowCircuitDetail(false);
 							setSelectedCircuit(null);

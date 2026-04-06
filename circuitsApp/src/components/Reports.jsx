@@ -28,7 +28,7 @@ function Reports() {
 	const [circuits, setCircuits] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
-	const { token } = useAuth();
+	const { token, user } = useAuth();
 	const [siteTypeFilter, setSiteTypeFilter] = useState("All");
 	const [statusFilter, setStatusFilter] = useState("All");
 	const [circuitTypeFilter, setCircuitTypeFilter] = useState("All");
@@ -571,29 +571,40 @@ function Reports() {
 		}
 
 		// Prepare data for Excel
-		const excelData = expiringCircuits.map((circuit) => ({
-			"Venue Name": circuit.site.name,
-			Address: [
-				circuit.site.address,
-				circuit.site.city,
-				circuit.site.state,
-				circuit.site.zipCode,
-			]
-				.filter(Boolean)
-				.join(", "),
-			Provider: circuit.provider.name,
-			Aggregator:
-				circuit.hasAggregator && circuit.aggregatorName
-					? circuit.aggregatorName
-					: "N/A",
-			Bandwidth: circuit.circuitBandwidth,
-			"Monthly Cost": circuit.monthlyCost
-				? `$${circuit.monthlyCost.toFixed(2)}`
-				: "N/A",
-			"Expiration Date": formatDate(circuit.expirationDate),
-			"Months Remaining": getMonthsUntilExpiration(circuit.expirationDate),
-			Status: circuit.status,
-		}));
+		const excelData = expiringCircuits.map((circuit) => {
+			const row = {
+				"Venue Name": circuit.site.name,
+				Address: [
+					circuit.site.address,
+					circuit.site.city,
+					circuit.site.state,
+					circuit.site.zipCode,
+				]
+					.filter(Boolean)
+					.join(", "),
+				Provider: circuit.provider.name,
+				Aggregator:
+					circuit.hasAggregator && circuit.aggregatorName
+						? circuit.aggregatorName
+						: "N/A",
+				Bandwidth: circuit.circuitBandwidth,
+			};
+
+			// Only add Monthly Cost if user is not NOC
+			if (user?.role !== "NOC") {
+				row["Monthly Cost"] = circuit.monthlyCost
+					? `$${circuit.monthlyCost.toFixed(2)}`
+					: "N/A";
+			}
+
+			row["Expiration Date"] = formatDate(circuit.expirationDate);
+			row["Months Remaining"] = getMonthsUntilExpiration(
+				circuit.expirationDate,
+			);
+			row["Status"] = circuit.status;
+
+			return row;
+		});
 
 		// Create workbook and worksheet
 		const workbook = XLSX.utils.book_new();
@@ -1398,7 +1409,9 @@ function Reports() {
 										<th style={tableHeaderStyle}>Provider</th>
 										<th style={tableHeaderStyle}>Aggregator</th>
 										<th style={tableHeaderStyle}>Bandwidth</th>
-										<th style={tableHeaderStyle}>Monthly Cost</th>
+										{user?.role !== "NOC" && (
+											<th style={tableHeaderStyle}>Monthly Cost</th>
+										)}
 										<th style={tableHeaderStyle}>Expiration Date</th>
 										<th style={tableHeaderStyle}>Months Remaining</th>
 										<th style={tableHeaderStyle}>Status</th>
@@ -1454,12 +1467,14 @@ function Reports() {
 												<td style={tableCellStyle}>
 													{circuit.circuitBandwidth}
 												</td>
-												<td style={tableCellStyle}>
-													$
-													{circuit.monthlyCost
-														? circuit.monthlyCost.toFixed(2)
-														: "N/A"}
-												</td>
+												{user?.role !== "NOC" && (
+													<td style={tableCellStyle}>
+														$
+														{circuit.monthlyCost
+															? circuit.monthlyCost.toFixed(2)
+															: "N/A"}
+													</td>
+												)}
 												<td style={{ ...tableCellStyle, fontWeight: "500" }}>
 													{formatDate(circuit.expirationDate)}
 												</td>
@@ -1864,15 +1879,17 @@ function Reports() {
 													>
 														Expiration Date
 													</td>
-													<td
-														style={{
-															...towerSectionHeaderStyle,
-															flex: 1,
-															minWidth: "100px",
-														}}
-													>
-														Monthly Cost
-													</td>
+													{user?.role !== "NOC" && (
+														<td
+															style={{
+																...towerSectionHeaderStyle,
+																flex: 1,
+																minWidth: "100px",
+															}}
+														>
+															Monthly Cost
+														</td>
+													)}
 												</tr>
 											</thead>
 											<tbody>
@@ -1951,19 +1968,21 @@ function Reports() {
 														>
 															{row.towerExpirationDate}
 														</td>
-														<td
-															style={{
-																...tableCellStyle,
-																fontWeight: "600",
-																color: "#27ae60",
-															}}
-														>
-															{typeof row.towerMonthlyCost === "number" ||
-															!isNaN(parseFloat(row.towerMonthlyCost))
-																? "$" +
-																	parseFloat(row.towerMonthlyCost).toFixed(2)
-																: "$0.00"}
-														</td>
+														{user?.role !== "NOC" && (
+															<td
+																style={{
+																	...tableCellStyle,
+																	fontWeight: "600",
+																	color: "#27ae60",
+																}}
+															>
+																{typeof row.towerMonthlyCost === "number" ||
+																!isNaN(parseFloat(row.towerMonthlyCost))
+																	? "$" +
+																		parseFloat(row.towerMonthlyCost).toFixed(2)
+																	: "$0.00"}
+															</td>
+														)}
 													</tr>
 												))}
 											</tbody>

@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7da67a3a-6e17-4887-bb2b-2f4f70caefbe" name="Changes" comment="" />
+    <list default="true" id="7da67a3a-6e17-4887-bb2b-2f4f70caefbe" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/src/components/Circuits.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/components/Circuits.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/src/components/Reports.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/components/Reports.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/circuitsApp/src/components/UserManagementModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/circuitsApp/src/components/UserManagementModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/fiberTower/src/main/java/com/example/fiberTower/model/Role.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -36,10 +42,17 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
     &quot;Spring Boot.FiberTowerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/robertojvi/Documents/AccessParksApp/CircuitsApp&quot;
+    &quot;last_opened_file_path&quot;: &quot;/Users/robertojvi/Documents/AccessParksApp/CircuitsApp&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
 }</component>
   <component name="SharedIndexes">
@@ -58,5 +71,8 @@
       <updated>1768246434929</updated>
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>

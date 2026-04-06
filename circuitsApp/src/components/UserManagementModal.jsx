@@ -339,6 +339,7 @@ function UserManagementModal({ onClose }) {
 										style={inputStyle}
 									>
 										<option value="USER">USER</option>
+										<option value="NOC">NOC</option>
 										<option value="ADMIN">ADMIN</option>
 										<option value="SUPER">SUPER</option>
 									</select>
@@ -511,6 +512,7 @@ function UserManagementModal({ onClose }) {
 													}}
 												>
 													<option value="USER">USER</option>
+													<option value="NOC">NOC</option>
 													<option value="ADMIN">ADMIN</option>
 													<option value="SUPER">SUPER</option>
 												</select>
