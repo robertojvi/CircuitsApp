@@ -1216,7 +1216,9 @@ function Circuits() {
 									Aggregator
 								</th>
 								<th style={headerStyle}>Details</th>
-								{user?.role !== "USER" && <th style={headerStyle}>Actions</th>}
+								{(user?.role === "ADMIN" || user?.role === "SUPER") && (
+									<th style={headerStyle}>Actions</th>
+								)}
 							</tr>
 						</thead>
 						<tbody>
@@ -1302,7 +1304,7 @@ function Circuits() {
 											ℹ️
 										</button>
 									</td>
-									{user?.role !== "USER" && (
+									{(user?.role === "ADMIN" || user?.role === "SUPER") && (
 										<td style={cellStyle}>
 											<button
 												onClick={() => handleEdit(circuit.id)}
