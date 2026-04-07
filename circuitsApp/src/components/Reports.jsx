@@ -561,6 +561,51 @@ function Reports() {
 		return expirationDate < today;
 	};
 
+	// Function to download circuit analytics filtered circuits as Excel file
+	const downloadCircuitAnalyticsAsExcel = () => {
+		const filteredCircuits = getFilteredCircuits();
+
+		if (filteredCircuits.length === 0) {
+			alert("No circuits to export");
+			return;
+		}
+
+		// Prepare data for Excel
+		const excelData = filteredCircuits.map((circuit) => ({
+			"Venue Name": circuit.site.name,
+			"Site Type": circuit.site.siteType || "Unknown",
+			Provider: circuit.provider.name,
+			Bandwidth: circuit.circuitBandwidth,
+			"Circuit Type": circuit.circuitType || "Unknown",
+			Status: circuit.status || "Pending",
+		}));
+
+		// Create workbook and worksheet
+		const workbook = XLSX.utils.book_new();
+		const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+		// Set column widths
+		const columnWidths = [
+			{ wch: 25 }, // Venue Name
+			{ wch: 15 }, // Site Type
+			{ wch: 15 }, // Provider
+			{ wch: 15 }, // Bandwidth
+			{ wch: 15 }, // Circuit Type
+			{ wch: 12 }, // Status
+		];
+		worksheet["!cols"] = columnWidths;
+
+		// Add worksheet to workbook
+		XLSX.utils.book_append_sheet(workbook, worksheet, "Circuit Analytics");
+
+		// Generate filename with timestamp
+		const timestamp = new Date().toISOString().split("T")[0];
+		const filename = `Circuit_Analytics_${timestamp}.xlsx`;
+
+		// Write file
+		XLSX.writeFile(workbook, filename);
+	};
+
 	// Function to download expiring circuits as Excel file
 	const downloadExpiringCircuitsAsExcel = () => {
 		const expiringCircuits = getExpiringCircuits();
@@ -1103,19 +1148,58 @@ function Reports() {
 					</div>
 
 					<div>
-						<h2
+						<div
 							style={{
 								marginTop: "40px",
 								marginBottom: "20px",
-								color: "#ffffff",
-								backgroundColor: "#2c3e50",
-								padding: "10px 20px",
-								borderRadius: "4px",
-								boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+								display: "flex",
+								justifyContent: "space-between",
+								alignItems: "center",
+								flexWrap: "wrap",
+								gap: "15px",
 							}}
 						>
-							Circuit List {getFilterSubtitle()}
-						</h2>
+							<h2
+								style={{
+									margin: 0,
+									color: "#ffffff",
+									backgroundColor: "#2c3e50",
+									padding: "10px 20px",
+									borderRadius: "4px",
+									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+									flex: 1,
+									minWidth: "200px",
+								}}
+							>
+								Circuit List {getFilterSubtitle()}
+							</h2>
+							<button
+								onClick={downloadCircuitAnalyticsAsExcel}
+								style={{
+									padding: "10px 16px",
+									border: "none",
+									borderRadius: "4px",
+									backgroundColor: "#27ae60",
+									color: "white",
+									fontSize: "14px",
+									fontWeight: "bold",
+									cursor: "pointer",
+									display: "flex",
+									alignItems: "center",
+									gap: "6px",
+									transition: "background-color 0.3s",
+									whiteSpace: "nowrap",
+								}}
+								onMouseEnter={(e) => {
+									e.target.style.backgroundColor = "#229954";
+								}}
+								onMouseLeave={(e) => {
+									e.target.style.backgroundColor = "#27ae60";
+								}}
+							>
+								📥 Export to Excel
+							</button>
+						</div>
 						<div
 							style={{
 								backgroundColor: "#f0f4f8",
