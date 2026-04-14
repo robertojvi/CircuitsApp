@@ -263,9 +263,12 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 							<strong>Aggregator:</strong> No
 						</p>
 					)}
-					<p style={detailRowStyle}>
-						<strong>Notes:</strong> {circuit.notes || "N/A"}
-					</p>
+					<div style={detailRowStyle}>
+						<strong>Notes:</strong>
+						<div style={{ marginTop: "4px", whiteSpace: "pre-wrap" }}>
+							{circuit.notes || "N/A"}
+						</div>
+					</div>
 					{circuit.hasTower && (
 						<div
 							style={{

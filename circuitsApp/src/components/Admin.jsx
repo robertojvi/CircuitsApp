@@ -970,7 +970,8 @@ const CreateCircuitModal = ({
 							onChange={(e) =>
 								setNewCircuit({ ...newCircuit, notes: e.target.value })
 							}
-							style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }}
+							rows={8}
+							style={{ ...inputStyle, minHeight: "180px", resize: "vertical" }}
 						/>
 					</div>
 					<div
@@ -2023,7 +2024,8 @@ const EditCircuitModal = ({
 						placeholder="Notes (optional)"
 						value={circuit.notes || ""}
 						onChange={(e) => setCircuit({ ...circuit, notes: e.target.value })}
-						style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }}
+						rows={8}
+						style={{ ...inputStyle, minHeight: "180px", resize: "vertical" }}
 					/>
 				</div>
 				<div
