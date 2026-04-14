@@ -53,6 +53,8 @@ public class Circuit {
     private String towerInstallDate5;
     private String towerExpirationDate5;
     private Double towerMonthlyCost5;
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String notes;
 
     public String getTowerProvider1() {

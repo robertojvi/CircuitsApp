@@ -1,0 +1,4 @@
+USE circuits;
+
+ALTER TABLE circuits
+MODIFY COLUMN notes LONGTEXT NULL;

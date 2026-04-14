@@ -1,6 +1,34 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 
+const getApiErrorMessage = async (response, fallbackMessage) => {
+	try {
+		const contentType = response.headers.get("content-type") || "";
+
+		if (contentType.includes("application/json")) {
+			const data = await response.json();
+			const message =
+				data?.message ||
+				data?.error ||
+				data?.details ||
+				(Array.isArray(data?.errors) ? data.errors.join(", ") : null);
+
+			if (message) {
+				return `${fallbackMessage}: ${message}`;
+			}
+		} else {
+			const message = (await response.text()).trim();
+			if (message) {
+				return `${fallbackMessage}: ${message}`;
+			}
+		}
+	} catch (error) {
+		console.error("Error parsing API error response:", error);
+	}
+
+	return fallbackMessage;
+};
+
 const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 	<div
 		style={{
@@ -2298,7 +2326,11 @@ function Admin() {
 				},
 				body: JSON.stringify(newCircuit),
 			});
-			if (!response.ok) throw new Error("Failed to create circuit");
+			if (!response.ok) {
+				throw new Error(
+					await getApiErrorMessage(response, "Failed to create circuit"),
+				);
+			}
 
 			fetchCircuits();
 			setShowCreateCircuitModal(false);
@@ -2326,7 +2358,7 @@ function Admin() {
 			});
 		} catch (error) {
 			console.error("Error creating circuit:", error);
-			setError("Failed to create circuit");
+			setError(error.message || "Failed to create circuit");
 		} finally {
 			setLoading(false);
 		}
@@ -2400,14 +2432,18 @@ function Admin() {
 				},
 				body: JSON.stringify(selectedCircuit),
 			});
-			if (!response.ok) throw new Error("Failed to update circuit");
+			if (!response.ok) {
+				throw new Error(
+					await getApiErrorMessage(response, "Failed to update circuit"),
+				);
+			}
 
 			fetchCircuits();
 			setShowEditCircuitModal(false);
 			setSelectedCircuit(null);
 		} catch (error) {
 			console.error("Error updating circuit:", error);
-			setError("Failed to update circuit");
+			setError(error.message || "Failed to update circuit");
 		} finally {
 			setLoading(false);
 		}
