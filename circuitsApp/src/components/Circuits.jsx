@@ -541,8 +541,18 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 								</span>
 							)}
 					</p>
-					<p style={detailRowStyle}>
-						<strong>Renewal Term:</strong> {circuit.renewalTerm || "N/A"}
+					<p
+						style={{
+							...detailRowStyle,
+							backgroundColor: "#DBEAFE",
+							color: "#1D4ED8",
+							padding: "8px 10px",
+							borderRadius: "4px",
+							fontWeight: "600",
+						}}
+					>
+						<strong style={{ color: "#1E3A8A" }}>Renewal Term:</strong>{" "}
+						{circuit.renewalTerm || "N/A"}
 					</p>
 					<p
 						style={{
