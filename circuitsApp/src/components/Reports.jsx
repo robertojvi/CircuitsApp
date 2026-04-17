@@ -734,6 +734,7 @@ function Reports() {
 		}
 
 		const excelData = renewalNoticeCircuits.map((circuit) => {
+			const daysRemaining = getDaysUntilExpiration(circuit.renewalNoticeDate);
 			const row = {
 				"Venue Name": circuit.site?.name || "N/A",
 				Address: formatSiteAddress(circuit.site),
@@ -754,6 +755,8 @@ function Reports() {
 
 			row["Expiration Date"] = formatDate(circuit.expirationDate);
 			row["Renewal Notification Date"] = formatDate(circuit.renewalNoticeDate);
+			row["Days Remaining"] =
+				typeof daysRemaining === "number" ? daysRemaining : "N/A";
 
 			return row;
 		});
@@ -770,6 +773,7 @@ function Reports() {
 			...(user?.role !== "NOC" ? [{ wch: 14 }] : []),
 			{ wch: 18 },
 			{ wch: 22 },
+			{ wch: 16 },
 		];
 
 		XLSX.utils.book_append_sheet(workbook, worksheet, "Renewal Notice Report");
@@ -1872,7 +1876,7 @@ function Reports() {
 								Renewal Notice Report
 							</h2>
 							<div style={{ fontSize: "14px", marginTop: "5px" }}>
-								Showing {renewalNoticeCircuits.length} circuits for {" "}
+								Showing {renewalNoticeCircuits.length} circuits for{" "}
 								{renewalNoticeRangeLabel}
 							</div>
 						</div>
@@ -1884,7 +1888,10 @@ function Reports() {
 								flexWrap: "wrap",
 							}}
 						>
-							<label htmlFor="renewalNoticeTimeRange" style={{ fontSize: "14px" }}>
+							<label
+								htmlFor="renewalNoticeTimeRange"
+								style={{ fontSize: "14px" }}
+							>
 								Date Range:
 							</label>
 							<select
@@ -1911,7 +1918,10 @@ function Reports() {
 								<option value="180">180 Days</option>
 							</select>
 							<span style={{ fontSize: "14px", color: "#ffffff" }}>or</span>
-							<label htmlFor="customRenewalNoticeDays" style={{ fontSize: "14px" }}>
+							<label
+								htmlFor="customRenewalNoticeDays"
+								style={{ fontSize: "14px" }}
+							>
 								Custom (days):
 							</label>
 							<input
@@ -1979,56 +1989,78 @@ function Reports() {
 										)}
 										<th style={tableHeaderStyle}>Expiration Date</th>
 										<th style={tableHeaderStyle}>Renewal Notification Date</th>
+										<th style={tableHeaderStyle}>Days Remaining</th>
 									</tr>
 								</thead>
 								<tbody>
-									{renewalNoticeCircuits.map((circuit, index) => (
-										<tr
-											key={circuit.id}
-											style={{
-												borderBottom: "1px solid #dee2e6",
-												backgroundColor:
-													index % 2 === 0 ? "#ffffff" : "#eef2f7",
-											}}
-										>
-											<td style={{ ...tableCellStyle, fontWeight: "600" }}>
-												{circuit.site?.name || "N/A"}
-											</td>
-											<td style={tableCellStyle}>
-												{formatSiteAddress(circuit.site)}
-											</td>
-											<td style={tableCellStyle}>
-												{circuit.provider?.name || "N/A"}
-											</td>
-											<td style={tableCellStyle}>
-												{circuit.hasAggregator && circuit.aggregatorName
-													? circuit.aggregatorName
-													: "N/A"}
-											</td>
-											<td style={tableCellStyle}>
-												{circuit.circuitBandwidth || "N/A"}
-											</td>
-											{user?.role !== "NOC" && (
-												<td style={tableCellStyle}>
-													{typeof circuit.monthlyCost === "number"
-														? `$${circuit.monthlyCost.toFixed(2)}`
-														: "N/A"}
-												</td>
-											)}
-											<td style={tableCellStyle}>
-												{formatDate(circuit.expirationDate)}
-											</td>
-											<td
+									{renewalNoticeCircuits.map((circuit, index) => {
+										const daysRemaining = getDaysUntilExpiration(
+											circuit.renewalNoticeDate,
+										);
+
+										return (
+											<tr
+												key={circuit.id}
 												style={{
-													...tableCellStyle,
-													fontWeight: "600",
-													color: "#1d4ed8",
+													borderBottom: "1px solid #dee2e6",
+													backgroundColor:
+														index % 2 === 0 ? "#ffffff" : "#eef2f7",
 												}}
 											>
-												{formatDate(circuit.renewalNoticeDate)}
-											</td>
-										</tr>
-									))}
+												<td style={{ ...tableCellStyle, fontWeight: "600" }}>
+													{circuit.site?.name || "N/A"}
+												</td>
+												<td style={tableCellStyle}>
+													{formatSiteAddress(circuit.site)}
+												</td>
+												<td style={tableCellStyle}>
+													{circuit.provider?.name || "N/A"}
+												</td>
+												<td style={tableCellStyle}>
+													{circuit.hasAggregator && circuit.aggregatorName
+														? circuit.aggregatorName
+														: "N/A"}
+												</td>
+												<td style={tableCellStyle}>
+													{circuit.circuitBandwidth || "N/A"}
+												</td>
+												{user?.role !== "NOC" && (
+													<td style={tableCellStyle}>
+														{typeof circuit.monthlyCost === "number"
+															? `$${circuit.monthlyCost.toFixed(2)}`
+															: "N/A"}
+													</td>
+												)}
+												<td style={tableCellStyle}>
+													{formatDate(circuit.expirationDate)}
+												</td>
+												<td
+													style={{
+														...tableCellStyle,
+														fontWeight: "600",
+														color: "#1d4ed8",
+													}}
+												>
+													{formatDate(circuit.renewalNoticeDate)}
+												</td>
+												<td
+													style={{
+														...tableCellStyle,
+														fontWeight: "600",
+														color:
+															typeof daysRemaining === "number" &&
+															daysRemaining < 0
+																? "#dc2626"
+																: "#2c3e50",
+													}}
+												>
+													{typeof daysRemaining === "number"
+														? daysRemaining
+														: "N/A"}
+												</td>
+											</tr>
+										);
+									})}
 								</tbody>
 							</table>
 						) : (
@@ -2058,8 +2090,9 @@ function Reports() {
 							color: "#64748B",
 						}}
 					>
-						Note: The filter shows renewal notification dates from today through the
-						selected number of days, or all renewal notification dates when set to All.
+						Note: The filter shows renewal notification dates from today through
+						the selected number of days, or all renewal notification dates when
+						set to All.
 					</div>
 				</div>
 			);
