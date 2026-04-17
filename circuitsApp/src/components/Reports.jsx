@@ -37,6 +37,8 @@ function Reports() {
 	const [siteStateFilter, setSiteStateFilter] = useState("All");
 	const [expirationTimeRange, setExpirationTimeRange] = useState(6); // Default to 6 months
 	const [customExpirationMonths, setCustomExpirationMonths] = useState(""); // For custom month input
+	const [renewalNoticeTimeRange, setRenewalNoticeTimeRange] = useState("All");
+	const [customRenewalNoticeDays, setCustomRenewalNoticeDays] = useState("");
 	const [expiredCircuitsSortConfig, setExpiredCircuitsSortConfig] = useState({
 		key: "expirationDate",
 		direction: "ascending",
@@ -408,8 +410,31 @@ function Reports() {
 	};
 
 	const getRenewalNoticeCircuits = () => {
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		const daysToCheck = customRenewalNoticeDays
+			? parseInt(customRenewalNoticeDays, 10)
+			: renewalNoticeTimeRange === "All"
+				? null
+				: parseInt(renewalNoticeTimeRange, 10);
+
+		const endDate = daysToCheck !== null ? new Date(today) : null;
+		if (endDate) {
+			endDate.setDate(today.getDate() + daysToCheck);
+		}
+
 		return circuits
-			.filter((circuit) => circuit.renewalNoticeDate)
+			.filter((circuit) => {
+				if (!circuit.renewalNoticeDate) return false;
+
+				if (daysToCheck === null) return true;
+
+				const renewalNoticeDate = new Date(circuit.renewalNoticeDate);
+				renewalNoticeDate.setHours(0, 0, 0, 0);
+
+				return renewalNoticeDate >= today && renewalNoticeDate <= endDate;
+			})
 			.sort(
 				(a, b) => new Date(a.renewalNoticeDate) - new Date(b.renewalNoticeDate),
 			);
@@ -1784,6 +1809,15 @@ function Reports() {
 			);
 		} else if (selectedMenu === "Renewal Notice Report") {
 			const renewalNoticeCircuits = getRenewalNoticeCircuits();
+			const renewalNoticeRangeLabel = customRenewalNoticeDays
+				? `next ${customRenewalNoticeDays} day${
+						customRenewalNoticeDays === "1" ? "" : "s"
+					}`
+				: renewalNoticeTimeRange === "All"
+					? "all renewal notification dates"
+					: `next ${renewalNoticeTimeRange} day${
+							renewalNoticeTimeRange === "1" ? "" : "s"
+						}`;
 
 			return (
 				<div style={{ width: "100%" }}>
@@ -1838,28 +1872,85 @@ function Reports() {
 								Renewal Notice Report
 							</h2>
 							<div style={{ fontSize: "14px", marginTop: "5px" }}>
-								Showing {renewalNoticeCircuits.length} circuits with renewal
-								notification dates
+								Showing {renewalNoticeCircuits.length} circuits for {" "}
+								{renewalNoticeRangeLabel}
 							</div>
 						</div>
-						<button
-							onClick={downloadRenewalNoticeCircuitsAsExcel}
+						<div
 							style={{
-								padding: "8px 16px",
-								border: "none",
-								borderRadius: "4px",
-								backgroundColor: "#27ae60",
-								color: "white",
-								fontSize: "14px",
-								fontWeight: "bold",
-								cursor: "pointer",
 								display: "flex",
 								alignItems: "center",
-								gap: "6px",
+								gap: "10px",
+								flexWrap: "wrap",
 							}}
 						>
-							📥 Download Excel
-						</button>
+							<label htmlFor="renewalNoticeTimeRange" style={{ fontSize: "14px" }}>
+								Date Range:
+							</label>
+							<select
+								id="renewalNoticeTimeRange"
+								value={renewalNoticeTimeRange}
+								onChange={(e) => {
+									setRenewalNoticeTimeRange(e.target.value);
+									setCustomRenewalNoticeDays("");
+								}}
+								style={{
+									padding: "6px 10px",
+									borderRadius: "4px",
+									border: "1px solid #3498db",
+									backgroundColor: "#34495e",
+									color: "#ffffff",
+									fontSize: "14px",
+									cursor: "pointer",
+								}}
+							>
+								<option value="All">All</option>
+								<option value="30">30 Days</option>
+								<option value="60">60 Days</option>
+								<option value="90">90 Days</option>
+								<option value="180">180 Days</option>
+							</select>
+							<span style={{ fontSize: "14px", color: "#ffffff" }}>or</span>
+							<label htmlFor="customRenewalNoticeDays" style={{ fontSize: "14px" }}>
+								Custom (days):
+							</label>
+							<input
+								id="customRenewalNoticeDays"
+								type="number"
+								min="1"
+								max="3650"
+								value={customRenewalNoticeDays}
+								onChange={(e) => setCustomRenewalNoticeDays(e.target.value)}
+								placeholder="Enter days"
+								style={{
+									padding: "6px 10px",
+									borderRadius: "4px",
+									border: "1px solid #3498db",
+									backgroundColor: "#34495e",
+									color: "#ffffff",
+									fontSize: "14px",
+									width: "100px",
+								}}
+							/>
+							<button
+								onClick={downloadRenewalNoticeCircuitsAsExcel}
+								style={{
+									padding: "8px 16px",
+									border: "none",
+									borderRadius: "4px",
+									backgroundColor: "#27ae60",
+									color: "white",
+									fontSize: "14px",
+									fontWeight: "bold",
+									cursor: "pointer",
+									display: "flex",
+									alignItems: "center",
+									gap: "6px",
+								}}
+							>
+								📥 Download Excel
+							</button>
+						</div>
 					</div>
 
 					<div
@@ -1949,9 +2040,26 @@ function Reports() {
 									fontStyle: "italic",
 								}}
 							>
-								No circuits have a renewal notification date configured
+								No circuits match the selected renewal notice date range
 							</div>
 						)}
+					</div>
+
+					<div
+						style={{
+							marginTop: "20px",
+							padding: "15px",
+							backgroundColor: "#f0f4f8",
+							borderRadius: "8px",
+							maxWidth: "1200px",
+							margin: "20px auto 0",
+							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+							fontSize: "14px",
+							color: "#64748B",
+						}}
+					>
+						Note: The filter shows renewal notification dates from today through the
+						selected number of days, or all renewal notification dates when set to All.
 					</div>
 				</div>
 			);
