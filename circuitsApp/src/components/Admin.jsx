@@ -29,6 +29,265 @@ const getApiErrorMessage = async (response, fallbackMessage) => {
 	return fallbackMessage;
 };
 
+const RENEWAL_TERM_PRESET_OPTIONS = [
+	"Month to Month",
+	"1 Year",
+	"Same as Original Term",
+];
+
+const parseDateInputValue = (value) => {
+	if (!value) return null;
+
+	const [year, month, day] = value.split("-").map(Number);
+
+	if ([year, month, day].some(Number.isNaN)) {
+		return null;
+	}
+
+	return new Date(Date.UTC(year, month - 1, day));
+};
+
+const formatDateInputValue = (date) => {
+	if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
+		return "";
+	}
+
+	return date.toISOString().slice(0, 10);
+};
+
+const calculateRenewalNoticeDate = (expirationDate, noticeDays) => {
+	const parsedExpirationDate = parseDateInputValue(expirationDate);
+	const parsedNoticeDays = Number(noticeDays);
+
+	if (
+		!parsedExpirationDate ||
+		!Number.isFinite(parsedNoticeDays) ||
+		parsedNoticeDays < 0
+	) {
+		return "";
+	}
+
+	parsedExpirationDate.setUTCDate(
+		parsedExpirationDate.getUTCDate() - parsedNoticeDays,
+	);
+
+	return formatDateInputValue(parsedExpirationDate);
+};
+
+const getRenewalNoticeDays = (expirationDate, renewalNoticeDate) => {
+	const parsedExpirationDate = parseDateInputValue(expirationDate);
+	const parsedRenewalNoticeDate = parseDateInputValue(renewalNoticeDate);
+
+	if (!parsedExpirationDate || !parsedRenewalNoticeDate) {
+		return null;
+	}
+
+	const dayDifference = Math.round(
+		(parsedExpirationDate.getTime() - parsedRenewalNoticeDate.getTime()) /
+			(1000 * 60 * 60 * 24),
+	);
+
+	return dayDifference >= 0 ? dayDifference : null;
+};
+
+const CircuitRenewalFields = ({ circuit, setCircuit }) => {
+	const [renewalTermOption, setRenewalTermOption] = useState("");
+	const [renewalTermOther, setRenewalTermOther] = useState("");
+	const [renewalNoticeOption, setRenewalNoticeOption] = useState("");
+	const [renewalNoticeOtherDays, setRenewalNoticeOtherDays] = useState("");
+
+	useEffect(() => {
+		const currentRenewalTerm = circuit.renewalTerm || "";
+
+		if (!currentRenewalTerm) {
+			setRenewalTermOption("");
+			setRenewalTermOther("");
+		} else if (RENEWAL_TERM_PRESET_OPTIONS.includes(currentRenewalTerm)) {
+			setRenewalTermOption(currentRenewalTerm);
+			setRenewalTermOther("");
+		} else {
+			setRenewalTermOption("Other");
+			setRenewalTermOther(currentRenewalTerm);
+		}
+
+		const renewalNoticeDays = getRenewalNoticeDays(
+			circuit.expirationDate,
+			circuit.renewalNoticeDate,
+		);
+
+		if (renewalNoticeDays == null) {
+			setRenewalNoticeOption("");
+			setRenewalNoticeOtherDays("");
+		} else if ([30, 60, 90].includes(renewalNoticeDays)) {
+			setRenewalNoticeOption(String(renewalNoticeDays));
+			setRenewalNoticeOtherDays("");
+		} else {
+			setRenewalNoticeOption("Other");
+			setRenewalNoticeOtherDays(String(renewalNoticeDays));
+		}
+	}, [circuit.expirationDate, circuit.renewalNoticeDate, circuit.renewalTerm]);
+
+	const labelStyle = {
+		display: "block",
+		marginBottom: "5px",
+		fontSize: "14px",
+		fontWeight: "500",
+		color: "#3498db",
+		backgroundColor: "#f8f9fa",
+		padding: "3px 5px",
+		borderRadius: "3px",
+	};
+
+	const handleExpirationDateChange = (event) => {
+		const expirationDate = event.target.value;
+		const noticeDays =
+			renewalNoticeOption === "Other"
+				? renewalNoticeOtherDays
+				: renewalNoticeOption;
+
+		setCircuit({
+			...circuit,
+			expirationDate,
+			renewalNoticeDate: noticeDays
+				? calculateRenewalNoticeDate(expirationDate, noticeDays)
+				: "",
+		});
+	};
+
+	const handleRenewalTermOptionChange = (event) => {
+		const option = event.target.value;
+		setRenewalTermOption(option);
+
+		if (option === "Other") {
+			setCircuit({
+				...circuit,
+				renewalTerm: renewalTermOther || "",
+			});
+			return;
+		}
+
+		setRenewalTermOther("");
+		setCircuit({
+			...circuit,
+			renewalTerm: option,
+		});
+	};
+
+	const handleRenewalNoticeOptionChange = (event) => {
+		const option = event.target.value;
+		setRenewalNoticeOption(option);
+
+		setCircuit({
+			...circuit,
+			renewalNoticeDate: option
+				? calculateRenewalNoticeDate(
+						circuit.expirationDate,
+						option === "Other" ? renewalNoticeOtherDays : option,
+					)
+				: "",
+		});
+	};
+
+	return (
+		<>
+			<div style={{ marginBottom: "15px" }}>
+				<label style={labelStyle}>Expiration Date</label>
+				<input
+					type="date"
+					placeholder="Expiration Date"
+					value={circuit.expirationDate || ""}
+					onChange={handleExpirationDateChange}
+					style={inputStyle}
+					required
+				/>
+			</div>
+			<div style={{ marginBottom: "15px" }}>
+				<label style={labelStyle}>Renewal Term</label>
+				<select
+					value={renewalTermOption}
+					onChange={handleRenewalTermOptionChange}
+					style={inputStyle}
+				>
+					<option value="">Select Renewal Term</option>
+					<option value="Month to Month">Month to Month</option>
+					<option value="1 Year">1 Year</option>
+					<option value="Same as Original Term">Same as Original Term</option>
+					<option value="Other">Other</option>
+				</select>
+			</div>
+			{renewalTermOption === "Other" && (
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Enter Renewal Term"
+						value={renewalTermOther}
+						onChange={(event) => {
+							const value = event.target.value;
+							setRenewalTermOther(value);
+							setCircuit({
+								...circuit,
+								renewalTerm: value,
+							});
+						}}
+						style={inputStyle}
+						required
+					/>
+				</div>
+			)}
+			<div style={{ marginBottom: "15px" }}>
+				<label style={labelStyle}>Renewal Notice</label>
+				<select
+					value={renewalNoticeOption}
+					onChange={handleRenewalNoticeOptionChange}
+					style={inputStyle}
+				>
+					<option value="">Select Notice Period</option>
+					<option value="30">30 days</option>
+					<option value="60">60 days</option>
+					<option value="90">90 days</option>
+					<option value="Other">Other</option>
+				</select>
+			</div>
+			{renewalNoticeOption === "Other" && (
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="number"
+						placeholder="Enter notice days"
+						value={renewalNoticeOtherDays}
+						onChange={(event) => {
+							const value = event.target.value;
+							setRenewalNoticeOtherDays(value);
+							setCircuit({
+								...circuit,
+								renewalNoticeDate: value
+									? calculateRenewalNoticeDate(circuit.expirationDate, value)
+									: "",
+							});
+						}}
+						style={inputStyle}
+						min="0"
+						step="1"
+						required
+					/>
+				</div>
+			)}
+			<div style={{ marginBottom: "15px" }}>
+				<label style={labelStyle}>Renewal Notice Date</label>
+				<input
+					type="date"
+					value={circuit.renewalNoticeDate || ""}
+					readOnly
+					style={{
+						...inputStyle,
+						backgroundColor: "#f8f9fa",
+						cursor: "not-allowed",
+					}}
+				/>
+			</div>
+		</>
+	);
+};
+
 const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 	<div
 		style={{
@@ -599,32 +858,10 @@ const CreateCircuitModal = ({
 							required
 						/>
 					</div>
-					<div style={{ marginBottom: "15px" }}>
-						<label
-							style={{
-								display: "block",
-								marginBottom: "5px",
-								fontSize: "14px",
-								fontWeight: "500",
-								color: "#3498db", // Added blue color for better visibility
-								backgroundColor: "#f8f9fa", // Added light background
-								padding: "3px 5px",
-								borderRadius: "3px",
-							}}
-						>
-							Expiration Date
-						</label>
-						<input
-							type="date"
-							placeholder="Expiration Date"
-							value={newCircuit.expirationDate || ""}
-							onChange={(e) =>
-								setNewCircuit({ ...newCircuit, expirationDate: e.target.value })
-							}
-							style={inputStyle}
-							required
-						/>
-					</div>
+					<CircuitRenewalFields
+						circuit={newCircuit}
+						setCircuit={setNewCircuit}
+					/>
 					<div style={{ marginBottom: "15px" }}>
 						<label
 							style={{
@@ -1665,32 +1902,7 @@ const EditCircuitModal = ({
 						required
 					/>
 				</div>
-				<div style={{ marginBottom: "15px" }}>
-					<label
-						style={{
-							display: "block",
-							marginBottom: "5px",
-							fontSize: "14px",
-							fontWeight: "500",
-							color: "#3498db", // Added blue color for better visibility
-							backgroundColor: "#f8f9fa", // Added light background
-							padding: "3px 5px",
-							borderRadius: "3px",
-						}}
-					>
-						Expiration Date
-					</label>
-					<input
-						type="date"
-						placeholder="Expiration Date"
-						value={circuit.expirationDate || ""}
-						onChange={(e) =>
-							setCircuit({ ...circuit, expirationDate: e.target.value })
-						}
-						style={inputStyle}
-						required
-					/>
-				</div>
+				<CircuitRenewalFields circuit={circuit} setCircuit={setCircuit} />
 				<div style={{ marginBottom: "15px" }}>
 					<label
 						style={{
@@ -2120,6 +2332,8 @@ function Admin() {
 		monthlyCost: "",
 		installationDate: "",
 		expirationDate: "",
+		renewalTerm: "",
+		renewalNoticeDate: "",
 		circuitContractDate: "",
 		status: "",
 		circuitType: "",
@@ -2343,6 +2557,8 @@ function Admin() {
 				monthlyCost: "",
 				installationDate: "",
 				expirationDate: "",
+				renewalTerm: "",
+				renewalNoticeDate: "",
 				circuitContractDate: "",
 				status: "",
 				circuitType: "",

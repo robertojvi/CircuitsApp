@@ -26,6 +26,8 @@ public class Circuit {
     private String circuitContractDate;
     private String installationDate;
     private String expirationDate;
+    private String renewalTerm;
+    private String renewalNoticeDate;
     private String circuitType;
     private Boolean hasTower;
     private Integer numberOfTowers;
@@ -56,6 +58,22 @@ public class Circuit {
     @Lob
     @Column(columnDefinition = "LONGTEXT")
     private String notes;
+
+    public String getRenewalTerm() {
+        return renewalTerm;
+    }
+
+    public void setRenewalTerm(String renewalTerm) {
+        this.renewalTerm = renewalTerm;
+    }
+
+    public String getRenewalNoticeDate() {
+        return renewalNoticeDate;
+    }
+
+    public void setRenewalNoticeDate(String renewalNoticeDate) {
+        this.renewalNoticeDate = renewalNoticeDate;
+    }
 
     public String getTowerProvider1() {
         return towerProvider1;
