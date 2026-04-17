@@ -46,6 +46,7 @@ function Reports() {
 		if (
 			selectedMenu === "Circuit Analytics" ||
 			selectedMenu === "Circuit Expiration Report" ||
+			selectedMenu === "Renewal Notice Report" ||
 			selectedMenu === "Expired Circuits" ||
 			selectedMenu === "Tower Report"
 		) {
@@ -234,6 +235,16 @@ function Reports() {
 		);
 	};
 
+	const formatSiteAddress = (site) => {
+		if (!site) return "N/A";
+
+		const address = [site.address, site.city, site.state, site.zipCode]
+			.filter(Boolean)
+			.join(", ");
+
+		return address || "N/A";
+	};
+
 	const getBandwidthDistribution = () => {
 		const filteredCircuits = getFilteredCircuits();
 		const distribution = filteredCircuits.reduce((acc, circuit) => {
@@ -394,6 +405,14 @@ function Reports() {
 				// Sort by expiration date (descending - most recent first)
 				return new Date(b.expirationDate) - new Date(a.expirationDate);
 			});
+	};
+
+	const getRenewalNoticeCircuits = () => {
+		return circuits
+			.filter((circuit) => circuit.renewalNoticeDate)
+			.sort(
+				(a, b) => new Date(a.renewalNoticeDate) - new Date(b.renewalNoticeDate),
+			);
 	};
 
 	// Function to sort expired circuits based on selected column
@@ -678,6 +697,61 @@ function Reports() {
 		const filename = `Circuit_Expiration_Report_${timestamp}.xlsx`;
 
 		// Write file
+		XLSX.writeFile(workbook, filename);
+	};
+
+	const downloadRenewalNoticeCircuitsAsExcel = () => {
+		const renewalNoticeCircuits = getRenewalNoticeCircuits();
+
+		if (renewalNoticeCircuits.length === 0) {
+			alert("No circuits to export");
+			return;
+		}
+
+		const excelData = renewalNoticeCircuits.map((circuit) => {
+			const row = {
+				"Venue Name": circuit.site?.name || "N/A",
+				Address: formatSiteAddress(circuit.site),
+				Provider: circuit.provider?.name || "N/A",
+				Aggregator:
+					circuit.hasAggregator && circuit.aggregatorName
+						? circuit.aggregatorName
+						: "N/A",
+				Bandwidth: circuit.circuitBandwidth || "N/A",
+			};
+
+			if (user?.role !== "NOC") {
+				row["Monthly Cost"] =
+					typeof circuit.monthlyCost === "number"
+						? `$${circuit.monthlyCost.toFixed(2)}`
+						: "N/A";
+			}
+
+			row["Expiration Date"] = formatDate(circuit.expirationDate);
+			row["Renewal Notification Date"] = formatDate(circuit.renewalNoticeDate);
+
+			return row;
+		});
+
+		const workbook = XLSX.utils.book_new();
+		const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+		worksheet["!cols"] = [
+			{ wch: 24 },
+			{ wch: 40 },
+			{ wch: 18 },
+			{ wch: 18 },
+			{ wch: 14 },
+			...(user?.role !== "NOC" ? [{ wch: 14 }] : []),
+			{ wch: 18 },
+			{ wch: 22 },
+		];
+
+		XLSX.utils.book_append_sheet(workbook, worksheet, "Renewal Notice Report");
+
+		const timestamp = new Date().toISOString().split("T")[0];
+		const filename = `Renewal_Notice_Report_${timestamp}.xlsx`;
+
 		XLSX.writeFile(workbook, filename);
 	};
 
@@ -1708,6 +1782,179 @@ function Reports() {
 					</div>
 				</div>
 			);
+		} else if (selectedMenu === "Renewal Notice Report") {
+			const renewalNoticeCircuits = getRenewalNoticeCircuits();
+
+			return (
+				<div style={{ width: "100%" }}>
+					<div
+						style={{
+							marginBottom: "20px",
+							display: "flex",
+							gap: "15px",
+							alignItems: "center",
+						}}
+					>
+						<button
+							onClick={() =>
+								window.open(
+									"https://app.asana.com/1/943649575918213/project/1209991618007270/board/1209993686905714",
+									"_blank",
+								)
+							}
+							style={{
+								padding: "10px 20px",
+								border: "none",
+								borderRadius: "4px",
+								backgroundColor: "#FFD700",
+								color: "black",
+								fontSize: "14px",
+								fontWeight: "bold",
+								cursor: "pointer",
+								display: "flex",
+								alignItems: "center",
+								gap: "8px",
+							}}
+						>
+							📋 AccessParks Circuits
+						</button>
+					</div>
+					<div
+						style={{
+							marginBottom: "20px",
+							backgroundColor: "#2c3e50",
+							padding: "15px 20px",
+							borderRadius: "4px",
+							color: "#ffffff",
+							display: "flex",
+							justifyContent: "space-between",
+							alignItems: "center",
+							flexWrap: "wrap",
+							gap: "10px",
+						}}
+					>
+						<div>
+							<h2 style={{ margin: 0, fontSize: "18px" }}>
+								Renewal Notice Report
+							</h2>
+							<div style={{ fontSize: "14px", marginTop: "5px" }}>
+								Showing {renewalNoticeCircuits.length} circuits with renewal
+								notification dates
+							</div>
+						</div>
+						<button
+							onClick={downloadRenewalNoticeCircuitsAsExcel}
+							style={{
+								padding: "8px 16px",
+								border: "none",
+								borderRadius: "4px",
+								backgroundColor: "#27ae60",
+								color: "white",
+								fontSize: "14px",
+								fontWeight: "bold",
+								cursor: "pointer",
+								display: "flex",
+								alignItems: "center",
+								gap: "6px",
+							}}
+						>
+							📥 Download Excel
+						</button>
+					</div>
+
+					<div
+						style={{
+							backgroundColor: "#f0f4f8",
+							padding: "20px",
+							borderRadius: "8px",
+							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+							margin: "0 auto",
+							maxWidth: "1200px",
+							width: "100%",
+							overflowX: "auto",
+						}}
+					>
+						{renewalNoticeCircuits.length > 0 ? (
+							<table style={{ width: "100%", borderCollapse: "collapse" }}>
+								<thead>
+									<tr style={{ backgroundColor: "#2c3e50", color: "white" }}>
+										<th style={tableHeaderStyle}>Venue Name</th>
+										<th style={tableHeaderStyle}>Address</th>
+										<th style={tableHeaderStyle}>Provider</th>
+										<th style={tableHeaderStyle}>Aggregator</th>
+										<th style={tableHeaderStyle}>Bandwidth</th>
+										{user?.role !== "NOC" && (
+											<th style={tableHeaderStyle}>Monthly Cost</th>
+										)}
+										<th style={tableHeaderStyle}>Expiration Date</th>
+										<th style={tableHeaderStyle}>Renewal Notification Date</th>
+									</tr>
+								</thead>
+								<tbody>
+									{renewalNoticeCircuits.map((circuit, index) => (
+										<tr
+											key={circuit.id}
+											style={{
+												borderBottom: "1px solid #dee2e6",
+												backgroundColor:
+													index % 2 === 0 ? "#ffffff" : "#eef2f7",
+											}}
+										>
+											<td style={{ ...tableCellStyle, fontWeight: "600" }}>
+												{circuit.site?.name || "N/A"}
+											</td>
+											<td style={tableCellStyle}>
+												{formatSiteAddress(circuit.site)}
+											</td>
+											<td style={tableCellStyle}>
+												{circuit.provider?.name || "N/A"}
+											</td>
+											<td style={tableCellStyle}>
+												{circuit.hasAggregator && circuit.aggregatorName
+													? circuit.aggregatorName
+													: "N/A"}
+											</td>
+											<td style={tableCellStyle}>
+												{circuit.circuitBandwidth || "N/A"}
+											</td>
+											{user?.role !== "NOC" && (
+												<td style={tableCellStyle}>
+													{typeof circuit.monthlyCost === "number"
+														? `$${circuit.monthlyCost.toFixed(2)}`
+														: "N/A"}
+												</td>
+											)}
+											<td style={tableCellStyle}>
+												{formatDate(circuit.expirationDate)}
+											</td>
+											<td
+												style={{
+													...tableCellStyle,
+													fontWeight: "600",
+													color: "#1d4ed8",
+												}}
+											>
+												{formatDate(circuit.renewalNoticeDate)}
+											</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						) : (
+							<div
+								style={{
+									textAlign: "center",
+									padding: "30px",
+									color: "#64748B",
+									fontStyle: "italic",
+								}}
+							>
+								No circuits have a renewal notification date configured
+							</div>
+						)}
+					</div>
+				</div>
+			);
 		} else if (selectedMenu === "Tower Report") {
 			const towerCircuits = circuits.filter((c) => c.hasTower);
 
@@ -2530,6 +2777,7 @@ function Reports() {
 					{[
 						"Circuit Analytics",
 						"Circuit Expiration Report",
+						"Renewal Notice Report",
 						"Expired Circuits",
 						"Tower Report",
 					].map((item) => (
