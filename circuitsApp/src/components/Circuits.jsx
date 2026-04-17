@@ -541,6 +541,22 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 								</span>
 							)}
 					</p>
+					<p style={detailRowStyle}>
+						<strong>Renewal Term:</strong> {circuit.renewalTerm || "N/A"}
+					</p>
+					<p
+						style={{
+							...detailRowStyle,
+							backgroundColor: "#FEF3C7",
+							color: "#92400E",
+							padding: "8px 10px",
+							borderRadius: "4px",
+							fontWeight: "600",
+						}}
+					>
+						<strong style={{ color: "#78350F" }}>Renewal Notice Date:</strong>{" "}
+						{circuit.renewalNoticeDate || "N/A"}
+					</p>
 					{circuit.hasAggregator ? (
 						<p style={detailRowStyle}>
 							<strong>Aggregator:</strong> {circuit.aggregatorName || "N/A"}
