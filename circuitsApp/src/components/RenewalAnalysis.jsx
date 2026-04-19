@@ -151,6 +151,12 @@ const RenewalAnalysisModal = ({
 			? successHighlightStyle
 			: dangerHighlightStyle
 		: readOnlyInputStyle;
+	const comparisonSummary = !isCostComparisonAvailable
+		? "Enter contract expiration and renewal values to compare total savings against the post-contract renewal cost."
+		: preview.costFromCustomerExpirationToRenewalExpiration <
+			  preview.savingsUntilCustomerContractExpiration
+			? "The renewal cost after customer contract expiration is lower than the projected savings before that date."
+			: "The renewal cost after customer contract expiration exceeds or matches the projected savings before that date.";
 
 	const updateSiteField = (field, value) => {
 		onChange({
@@ -166,180 +172,226 @@ const RenewalAnalysisModal = ({
 		<div style={overlayStyle}>
 			<div style={modalStyle}>
 				<div style={modalHeaderStyle}>
-					<h2 style={{ margin: 0 }}>Renewal Analysis</h2>
+					<div>
+						<h2 style={{ margin: 0 }}>Renewal Analysis</h2>
+						<p style={modalHeaderSubtitleStyle}>
+							Review the contract timeline, enter renewal inputs, and compare
+							savings against the future renewal cost.
+						</p>
+					</div>
 					<button type="button" onClick={onClose} style={closeButtonStyle}>
 						Close
 					</button>
 				</div>
-				<div style={modalSectionStyle}>
-					<div style={summaryGridStyle}>
-						<div>
-							<div style={fieldLabelStyle}>Site</div>
-							<div style={fieldValueStyle}>{circuit.site?.name || "N/A"}</div>
-						</div>
-						<div>
-							<div style={fieldLabelStyle}>Provider</div>
-							<div style={fieldValueStyle}>
-								{circuit.provider?.name || "N/A"}
+				<div style={modalBodyStyle}>
+					<div style={sectionCardStyle}>
+						<div style={sectionHeadingStyle}>Circuit Overview</div>
+						<div style={summaryGridStyle}>
+							<div>
+								<div style={fieldLabelStyle}>Site</div>
+								<div style={fieldValueStyle}>{circuit.site?.name || "N/A"}</div>
+							</div>
+							<div>
+								<div style={fieldLabelStyle}>Provider</div>
+								<div style={fieldValueStyle}>
+									{circuit.provider?.name || "N/A"}
+								</div>
+							</div>
+							<div>
+								<div style={fieldLabelStyle}>Bandwidth</div>
+								<div style={fieldValueStyle}>
+									{circuit.circuitBandwidth || "N/A"}
+								</div>
+							</div>
+							<div>
+								<div style={fieldLabelStyle}>Aggregator</div>
+								<div style={fieldValueStyle}>
+									{circuit.aggregatorName || "N/A"}
+								</div>
 							</div>
 						</div>
-						<div>
-							<div style={fieldLabelStyle}>Bandwidth</div>
-							<div style={fieldValueStyle}>
-								{circuit.circuitBandwidth || "N/A"}
+					</div>
+
+					<div style={twoColumnLayoutStyle}>
+						<div style={sectionCardStyle}>
+							<div style={sectionHeadingStyle}>Contract Timeline</div>
+							<div style={sectionDescriptionStyle}>
+								These dates drive the month-based savings and renewal cost
+								calculations.
+							</div>
+							<div style={sectionGridStyle}>
+								<div>
+									<div style={fieldLabelStyle}>Site</div>
+									<label style={inputLabelStyle}>Circuit Expiration Date</label>
+									<input
+										type="date"
+										value={circuit.expirationDate || ""}
+										readOnly
+										style={{ ...inputStyle, ...readOnlyInputStyle }}
+									/>
+								</div>
+								<div>
+									<label style={inputLabelStyle}>Customer Contract Date</label>
+									<input
+										type="date"
+										value={circuit.site?.customerContractDate || ""}
+										onChange={(event) =>
+											updateSiteField(
+												"customerContractDate",
+												event.target.value,
+											)
+										}
+										style={inputStyle}
+									/>
+								</div>
+								<div>
+									<label style={inputLabelStyle}>
+										Customer Contract Expiration Date
+									</label>
+									<input
+										type="date"
+										value={circuit.site?.customerContractExpirationDate || ""}
+										onChange={(event) =>
+											updateSiteField(
+												"customerContractExpirationDate",
+												event.target.value,
+											)
+										}
+										style={inputStyle}
+									/>
+								</div>
+								<div>
+									<label style={inputLabelStyle}>
+										Renewal Circuit Expiration Date
+									</label>
+									<input
+										type="date"
+										value={circuit.renewalCircuitExpirationDate || ""}
+										onChange={(event) =>
+											onChange({
+												...circuit,
+												renewalCircuitExpirationDate: event.target.value,
+											})
+										}
+										style={inputStyle}
+									/>
+								</div>
 							</div>
 						</div>
-						<div>
-							<div style={fieldLabelStyle}>Aggregator</div>
-							<div style={fieldValueStyle}>
-								{circuit.aggregatorName || "N/A"}
+
+						<div style={sectionCardStyle}>
+							<div style={sectionHeadingStyle}>Pricing Inputs</div>
+							<div style={sectionDescriptionStyle}>
+								Use the current monthly recurring cost and proposed renewal cost
+								to calculate projected savings.
+							</div>
+							<div style={sectionGridStyle}>
+								<div>
+									<label style={inputLabelStyle}>Current MRC</label>
+									<input
+										type="text"
+										value={formatCurrency(circuit.monthlyCost)}
+										readOnly
+										style={{ ...inputStyle, ...readOnlyInputStyle }}
+									/>
+								</div>
+								<div>
+									<label style={inputLabelStyle}>Renewal MRC</label>
+									<input
+										type="number"
+										min="0"
+										step="0.01"
+										value={circuit.renewalMonthlyCost ?? ""}
+										onChange={(event) =>
+											onChange({
+												...circuit,
+												renewalMonthlyCost:
+													event.target.value === ""
+														? null
+														: Number(event.target.value),
+											})
+										}
+										style={inputStyle}
+									/>
+								</div>
+								<div>
+									<label style={inputLabelStyle}>Savings Difference</label>
+									<input
+										type="text"
+										value={formatCurrency(preview.savingsDifference)}
+										readOnly
+										style={{ ...inputStyle, ...readOnlyInputStyle }}
+									/>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div style={formGridStyle}>
-					<div>
-						<label style={inputLabelStyle}>Circuit Expiration Date</label>
-						<input
-							type="date"
-							value={circuit.expirationDate || ""}
-							readOnly
-							style={{ ...inputStyle, ...readOnlyInputStyle }}
-						/>
-					</div>
-					<div>
-						<label style={inputLabelStyle}>
-							Renewal Circuit Expiration Date
-						</label>
-						<input
-							type="date"
-							value={circuit.renewalCircuitExpirationDate || ""}
-							onChange={(event) =>
-								onChange({
-									...circuit,
-									renewalCircuitExpirationDate: event.target.value,
-								})
-							}
-							style={inputStyle}
-						/>
-					</div>
-					<div>
-						<label style={inputLabelStyle}>Customer Contract Date</label>
-						<input
-							type="date"
-							value={circuit.site?.customerContractDate || ""}
-							onChange={(event) =>
-								updateSiteField("customerContractDate", event.target.value)
-							}
-							style={inputStyle}
-						/>
-					</div>
-					<div>
-						<label style={inputLabelStyle}>
-							Customer Contract Expiration Date
-						</label>
-						<input
-							type="date"
-							value={circuit.site?.customerContractExpirationDate || ""}
-							onChange={(event) =>
-								updateSiteField(
-									"customerContractExpirationDate",
-									event.target.value,
-								)
-							}
-							style={inputStyle}
-						/>
-					</div>
-					<div>
-						<label style={inputLabelStyle}>Current MRC</label>
-						<input
-							type="text"
-							value={formatCurrency(circuit.monthlyCost)}
-							readOnly
-							style={{ ...inputStyle, ...readOnlyInputStyle }}
-						/>
-					</div>
-					<div>
-						<label style={inputLabelStyle}>Renewal MRC</label>
-						<input
-							type="number"
-							min="0"
-							step="0.01"
-							value={circuit.renewalMonthlyCost ?? ""}
-							onChange={(event) =>
-								onChange({
-									...circuit,
-									renewalMonthlyCost:
-										event.target.value === ""
-											? null
-											: Number(event.target.value),
-								})
-							}
-							style={inputStyle}
-						/>
-					</div>
-					<div>
-						<label style={inputLabelStyle}>Savings Difference</label>
-						<input
-							type="text"
-							value={formatCurrency(preview.savingsDifference)}
-							readOnly
-							style={{ ...inputStyle, ...readOnlyInputStyle }}
-						/>
-					</div>
-					<div>
-						<label style={inputLabelStyle}>
-							Months To Customer Contract Expiration
-						</label>
-						<input
-							type="text"
-							value={
-								preview.monthsToCustomerContractExpiration != null
-									? String(preview.monthsToCustomerContractExpiration)
-									: "N/A"
-							}
-							readOnly
-							style={{ ...inputStyle, ...readOnlyInputStyle }}
-						/>
-					</div>
-					<div>
-						<label style={inputLabelStyle}>
-							Savings To Customer Contract Expiration
-						</label>
-						<input
-							type="text"
-							value={formatCurrency(
-								preview.savingsUntilCustomerContractExpiration,
-							)}
-							readOnly
-							style={{ ...inputStyle, ...readOnlyInputStyle }}
-						/>
-					</div>
-					<div>
-						<label style={inputLabelStyle}>
-							Cost From Customer Expiration To Renewal Circuit Expiration
-						</label>
-						<input
-							type="text"
-							value={formatCurrency(
-								preview.costFromCustomerExpirationToRenewalExpiration,
-							)}
-							readOnly
-							style={{ ...inputStyle, ...costComparisonStyle }}
-						/>
-					</div>
-				</div>
-				<div style={calculationNoteStyle}>
-					<div>
-						Current circuit expiration: {formatDate(circuit.expirationDate)}
-					</div>
-					<div>
-						Customer contract expiration:{" "}
-						{formatDate(circuit.site?.customerContractExpirationDate)}
-					</div>
-					<div>
-						Renewal circuit expiration:{" "}
-						{formatDate(circuit.renewalCircuitExpirationDate)}
+
+					<div style={sectionCardStyle}>
+						<div style={sectionHeadingStyle}>Analysis Results</div>
+						<div style={sectionDescriptionStyle}>
+							These values are calculated from the dates and pricing entered
+							above and saved with the circuit.
+						</div>
+						<div style={resultsGridStyle}>
+							<div style={resultCardStyle}>
+								<div style={fieldLabelStyle}>
+									Months To Customer Contract Expiration
+								</div>
+								<div style={resultValueStyle}>
+									{preview.monthsToCustomerContractExpiration != null
+										? String(preview.monthsToCustomerContractExpiration)
+										: "N/A"}
+								</div>
+							</div>
+							<div style={resultCardStyle}>
+								<div style={fieldLabelStyle}>
+									Savings To Customer Contract Expiration
+								</div>
+								<div style={resultValueStyle}>
+									{formatCurrency(
+										preview.savingsUntilCustomerContractExpiration,
+									)}
+								</div>
+							</div>
+							<div style={{ ...resultCardStyle, ...costComparisonStyle }}>
+								<div style={fieldLabelStyle}>
+									Cost From Customer Expiration To Renewal Circuit Expiration
+								</div>
+								<div style={resultValueStyle}>
+									{formatCurrency(
+										preview.costFromCustomerExpirationToRenewalExpiration,
+									)}
+								</div>
+							</div>
+						</div>
+						<div style={analysisSummaryStyle}>{comparisonSummary}</div>
+						<div style={timelineSummaryGridStyle}>
+							<div style={timelinePillStyle}>
+								<span style={timelinePillLabelStyle}>
+									Current Circuit Expiration
+								</span>
+								<span style={timelinePillValueStyle}>
+									{formatDate(circuit.expirationDate)}
+								</span>
+							</div>
+							<div style={timelinePillStyle}>
+								<span style={timelinePillLabelStyle}>
+									Customer Contract Expiration
+								</span>
+								<span style={timelinePillValueStyle}>
+									{formatDate(circuit.site?.customerContractExpirationDate)}
+								</span>
+							</div>
+							<div style={timelinePillStyle}>
+								<span style={timelinePillLabelStyle}>
+									Renewal Circuit Expiration
+								</span>
+								<span style={timelinePillValueStyle}>
+									{formatDate(circuit.renewalCircuitExpirationDate)}
+								</span>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div style={modalActionsStyle}>
@@ -688,6 +740,15 @@ const modalHeaderStyle = {
 	backgroundColor: "#0f172a",
 };
 
+const modalHeaderSubtitleStyle = {
+	marginTop: "8px",
+	marginBottom: 0,
+	fontSize: "13px",
+	lineHeight: 1.5,
+	color: "#94a3b8",
+	maxWidth: "560px",
+};
+
 const closeButtonStyle = {
 	border: "1px solid #475569",
 	backgroundColor: "#1e293b",
@@ -702,6 +763,40 @@ const modalSectionStyle = {
 	paddingBottom: "12px",
 };
 
+const modalBodyStyle = {
+	padding: "24px",
+	display: "grid",
+	gap: "20px",
+};
+
+const sectionCardStyle = {
+	backgroundColor: "#111c30",
+	border: "1px solid #334155",
+	borderRadius: "14px",
+	padding: "18px",
+	boxShadow: "inset 0 1px 0 rgba(148, 163, 184, 0.06)",
+};
+
+const sectionHeadingStyle = {
+	fontSize: "15px",
+	fontWeight: 700,
+	color: "#f8fafc",
+	marginBottom: "8px",
+};
+
+const sectionDescriptionStyle = {
+	fontSize: "13px",
+	lineHeight: 1.6,
+	color: "#94a3b8",
+	marginBottom: "16px",
+};
+
+const twoColumnLayoutStyle = {
+	display: "grid",
+	gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+	gap: "20px",
+};
+
 const summaryGridStyle = {
 	display: "grid",
 	gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
@@ -713,6 +808,12 @@ const formGridStyle = {
 	gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
 	gap: "16px",
 	padding: "0 24px 16px",
+};
+
+const sectionGridStyle = {
+	display: "grid",
+	gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+	gap: "16px",
 };
 
 const fieldLabelStyle = {
@@ -773,6 +874,72 @@ const calculationNoteStyle = {
 	color: "#cbd5e1",
 	fontSize: "13px",
 	lineHeight: 1.7,
+};
+
+const resultsGridStyle = {
+	display: "grid",
+	gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+	gap: "16px",
+	marginBottom: "16px",
+};
+
+const resultCardStyle = {
+	backgroundColor: "#172033",
+	border: "1px solid #334155",
+	borderRadius: "12px",
+	padding: "16px",
+	minHeight: "110px",
+	display: "flex",
+	flexDirection: "column",
+	justifyContent: "space-between",
+};
+
+const resultValueStyle = {
+	fontSize: "24px",
+	fontWeight: 700,
+	lineHeight: 1.2,
+	color: "inherit",
+};
+
+const analysisSummaryStyle = {
+	padding: "14px 16px",
+	borderRadius: "12px",
+	backgroundColor: "#172033",
+	border: "1px solid #334155",
+	color: "#dbeafe",
+	fontSize: "13px",
+	lineHeight: 1.6,
+	marginBottom: "16px",
+};
+
+const timelineSummaryGridStyle = {
+	display: "grid",
+	gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+	gap: "12px",
+};
+
+const timelinePillStyle = {
+	padding: "14px 16px",
+	borderRadius: "12px",
+	backgroundColor: "#172033",
+	border: "1px solid #334155",
+	display: "flex",
+	flexDirection: "column",
+	gap: "6px",
+};
+
+const timelinePillLabelStyle = {
+	fontSize: "11px",
+	fontWeight: 700,
+	textTransform: "uppercase",
+	letterSpacing: "0.05em",
+	color: "#94a3b8",
+};
+
+const timelinePillValueStyle = {
+	fontSize: "14px",
+	fontWeight: 600,
+	color: "#f8fafc",
 };
 
 const modalActionsStyle = {
