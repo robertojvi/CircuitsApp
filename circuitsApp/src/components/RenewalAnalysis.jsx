@@ -142,6 +142,15 @@ const RenewalAnalysisModal = ({
 	saving,
 }) => {
 	const preview = useMemo(() => buildRenewalPreview(circuit), [circuit]);
+	const isCostComparisonAvailable =
+		preview.costFromCustomerExpirationToRenewalExpiration != null &&
+		preview.savingsUntilCustomerContractExpiration != null;
+	const costComparisonStyle = isCostComparisonAvailable
+		? preview.costFromCustomerExpirationToRenewalExpiration <
+			preview.savingsUntilCustomerContractExpiration
+			? successHighlightStyle
+			: dangerHighlightStyle
+		: readOnlyInputStyle;
 
 	const updateSiteField = (field, value) => {
 		onChange({
@@ -316,7 +325,7 @@ const RenewalAnalysisModal = ({
 								preview.costFromCustomerExpirationToRenewalExpiration,
 							)}
 							readOnly
-							style={{ ...inputStyle, ...readOnlyInputStyle }}
+							style={{ ...inputStyle, ...costComparisonStyle }}
 						/>
 					</div>
 				</div>
@@ -656,8 +665,11 @@ const modalStyle = {
 	maxWidth: "960px",
 	maxHeight: "90vh",
 	overflowY: "auto",
-	backgroundColor: "#ffffff",
+	backgroundColor: "#0f172a",
+	color: "#e5eefc",
 	borderRadius: "16px",
+	border: "1px solid #334155",
+	colorScheme: "dark",
 	boxShadow: "0 30px 80px rgba(15, 23, 42, 0.3)",
 };
 
@@ -666,17 +678,18 @@ const modalHeaderStyle = {
 	justifyContent: "space-between",
 	alignItems: "center",
 	padding: "20px 24px",
-	borderBottom: "1px solid #e5e7eb",
+	borderBottom: "1px solid #334155",
 	position: "sticky",
 	top: 0,
-	backgroundColor: "#ffffff",
+	backgroundColor: "#0f172a",
 };
 
 const closeButtonStyle = {
-	border: "1px solid #d1d5db",
-	backgroundColor: "#f9fafb",
+	border: "1px solid #475569",
+	backgroundColor: "#1e293b",
 	borderRadius: "8px",
 	padding: "8px 12px",
+	color: "#e2e8f0",
 	cursor: "pointer",
 };
 
@@ -703,13 +716,13 @@ const fieldLabelStyle = {
 	fontWeight: 600,
 	textTransform: "uppercase",
 	letterSpacing: "0.04em",
-	color: "#64748b",
+	color: "#94a3b8",
 	marginBottom: "6px",
 };
 
 const fieldValueStyle = {
 	fontSize: "15px",
-	color: "#111827",
+	color: "#f8fafc",
 	fontWeight: 500,
 };
 
@@ -718,26 +731,42 @@ const inputLabelStyle = {
 	marginBottom: "6px",
 	fontSize: "13px",
 	fontWeight: 600,
-	color: "#334155",
+	color: "#cbd5e1",
 };
 
 const inputStyle = {
 	width: "100%",
 	padding: "10px 12px",
-	border: "1px solid #cbd5e1",
+	border: "1px solid #475569",
 	borderRadius: "8px",
 	fontSize: "14px",
+	backgroundColor: "#1e293b",
+	color: "#f8fafc",
 	boxSizing: "border-box",
 };
 
 const readOnlyInputStyle = {
-	backgroundColor: "#f8fafc",
-	color: "#475569",
+	backgroundColor: "#172033",
+	color: "#cbd5e1",
+};
+
+const successHighlightStyle = {
+	backgroundColor: "#14532d",
+	borderColor: "#22c55e",
+	color: "#dcfce7",
+	fontWeight: 600,
+};
+
+const dangerHighlightStyle = {
+	backgroundColor: "#7f1d1d",
+	borderColor: "#ef4444",
+	color: "#fee2e2",
+	fontWeight: 600,
 };
 
 const calculationNoteStyle = {
 	padding: "0 24px 20px",
-	color: "#475569",
+	color: "#cbd5e1",
 	fontSize: "13px",
 	lineHeight: 1.7,
 };
@@ -762,9 +791,9 @@ const primaryButtonStyle = {
 const secondaryButtonStyle = {
 	padding: "10px 16px",
 	borderRadius: "8px",
-	border: "1px solid #d1d5db",
-	backgroundColor: "#ffffff",
-	color: "#1f2937",
+	border: "1px solid #475569",
+	backgroundColor: "#1e293b",
+	color: "#e2e8f0",
 	fontWeight: 600,
 	cursor: "pointer",
 };
