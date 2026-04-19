@@ -28,6 +28,12 @@ public class Circuit {
     private String expirationDate;
     private String renewalTerm;
     private String renewalNoticeDate;
+    private String renewalCircuitExpirationDate;
+    private Double renewalMonthlyCost;
+    private Double savingsDifference;
+    private Integer monthsToCustomerContractExpiration;
+    private Double savingsUntilCustomerContractExpiration;
+    private Double costFromCustomerExpirationToRenewalExpiration;
     private String circuitType;
     private Boolean hasTower;
     private Integer numberOfTowers;
@@ -58,6 +64,54 @@ public class Circuit {
     @Lob
     @Column(columnDefinition = "LONGTEXT")
     private String notes;
+
+    public String getRenewalCircuitExpirationDate() {
+        return renewalCircuitExpirationDate;
+    }
+
+    public void setRenewalCircuitExpirationDate(String renewalCircuitExpirationDate) {
+        this.renewalCircuitExpirationDate = renewalCircuitExpirationDate;
+    }
+
+    public Double getRenewalMonthlyCost() {
+        return renewalMonthlyCost;
+    }
+
+    public void setRenewalMonthlyCost(Double renewalMonthlyCost) {
+        this.renewalMonthlyCost = renewalMonthlyCost;
+    }
+
+    public Double getSavingsDifference() {
+        return savingsDifference;
+    }
+
+    public void setSavingsDifference(Double savingsDifference) {
+        this.savingsDifference = savingsDifference;
+    }
+
+    public Integer getMonthsToCustomerContractExpiration() {
+        return monthsToCustomerContractExpiration;
+    }
+
+    public void setMonthsToCustomerContractExpiration(Integer monthsToCustomerContractExpiration) {
+        this.monthsToCustomerContractExpiration = monthsToCustomerContractExpiration;
+    }
+
+    public Double getSavingsUntilCustomerContractExpiration() {
+        return savingsUntilCustomerContractExpiration;
+    }
+
+    public void setSavingsUntilCustomerContractExpiration(Double savingsUntilCustomerContractExpiration) {
+        this.savingsUntilCustomerContractExpiration = savingsUntilCustomerContractExpiration;
+    }
+
+    public Double getCostFromCustomerExpirationToRenewalExpiration() {
+        return costFromCustomerExpirationToRenewalExpiration;
+    }
+
+    public void setCostFromCustomerExpirationToRenewalExpiration(Double costFromCustomerExpirationToRenewalExpiration) {
+        this.costFromCustomerExpirationToRenewalExpiration = costFromCustomerExpirationToRenewalExpiration;
+    }
 
     public String getRenewalTerm() {
         return renewalTerm;

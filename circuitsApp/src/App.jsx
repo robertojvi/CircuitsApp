@@ -9,6 +9,7 @@ import Home from "./components/Home";
 import Admin from "./components/Admin";
 import Circuits from "./components/Circuits";
 import Reports from "./components/Reports";
+import RenewalAnalysis from "./components/RenewalAnalysis";
 import Login from "./components/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
@@ -50,6 +51,14 @@ function App() {
 							element={
 								<ProtectedRoute>
 									<Reports />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="renewal-analysis"
+							element={
+								<ProtectedRoute>
+									<RenewalAnalysis />
 								</ProtectedRoute>
 							}
 						/>

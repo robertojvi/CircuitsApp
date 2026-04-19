@@ -395,6 +395,36 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 						required
 					/>
 				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<label style={modalLabelStyle}>Customer Contract Date</label>
+					<input
+						type="date"
+						value={newSite.customerContractDate || ""}
+						onChange={(e) =>
+							setNewSite({
+								...newSite,
+								customerContractDate: e.target.value,
+							})
+						}
+						style={inputStyle}
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<label style={modalLabelStyle}>
+						Customer Contract Expiration Date
+					</label>
+					<input
+						type="date"
+						value={newSite.customerContractExpirationDate || ""}
+						onChange={(e) =>
+							setNewSite({
+								...newSite,
+								customerContractExpirationDate: e.target.value,
+							})
+						}
+						style={inputStyle}
+					/>
+				</div>
 				<div
 					style={{
 						marginBottom: "20px",
@@ -1363,6 +1393,33 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 						required
 					/>
 				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<label style={modalLabelStyle}>Customer Contract Date</label>
+					<input
+						type="date"
+						value={site.customerContractDate || ""}
+						onChange={(e) =>
+							setSite({ ...site, customerContractDate: e.target.value })
+						}
+						style={inputStyle}
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<label style={modalLabelStyle}>
+						Customer Contract Expiration Date
+					</label>
+					<input
+						type="date"
+						value={site.customerContractExpirationDate || ""}
+						onChange={(e) =>
+							setSite({
+								...site,
+								customerContractExpirationDate: e.target.value,
+							})
+						}
+						style={inputStyle}
+					/>
+				</div>
 				<div
 					style={{
 						marginBottom: "20px",
@@ -2305,6 +2362,8 @@ function Admin() {
 		city: "",
 		state: "",
 		zipCode: "",
+		customerContractDate: "",
+		customerContractExpirationDate: "",
 		siteType: "",
 		primaryName: "",
 		primaryEmail: "",
@@ -2467,6 +2526,8 @@ function Admin() {
 				city: "",
 				state: "",
 				zipCode: "",
+				customerContractDate: "",
+				customerContractExpirationDate: "",
 				siteType: "",
 				primaryName: "",
 				primaryEmail: "",
@@ -3559,6 +3620,17 @@ const inputStyle = {
 	border: "1px solid #D1D5DB",
 	borderRadius: "4px",
 	fontSize: "12px",
+};
+
+const modalLabelStyle = {
+	display: "block",
+	marginBottom: "5px",
+	fontSize: "14px",
+	fontWeight: "500",
+	color: "#3498db",
+	backgroundColor: "#f8f9fa",
+	padding: "3px 5px",
+	borderRadius: "3px",
 };
 
 export default Admin;

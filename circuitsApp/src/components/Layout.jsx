@@ -80,6 +80,12 @@ function Layout() {
 						<Link to="/circuits" style={getLinkStyle("/circuits")}>
 							Circuits
 						</Link>
+						<Link
+							to="/renewal-analysis"
+							style={getLinkStyle("/renewal-analysis")}
+						>
+							Renewal Analysis
+						</Link>
 						<Link to="/reports" style={getLinkStyle("/reports")}>
 							Reports
 						</Link>

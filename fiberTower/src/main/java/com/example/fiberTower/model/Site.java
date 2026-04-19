@@ -23,6 +23,24 @@ public class Site {
     private String secondaryName;
     private String secondaryPhone;
     private String secondaryEmail;
+    private String customerContractDate;
+    private String customerContractExpirationDate;
+
+    public String getCustomerContractDate() {
+        return customerContractDate;
+    }
+
+    public void setCustomerContractDate(String customerContractDate) {
+        this.customerContractDate = customerContractDate;
+    }
+
+    public String getCustomerContractExpirationDate() {
+        return customerContractExpirationDate;
+    }
+
+    public void setCustomerContractExpirationDate(String customerContractExpirationDate) {
+        this.customerContractExpirationDate = customerContractExpirationDate;
+    }
 
     public String getPrimaryName() {
         return primaryName;
