@@ -485,7 +485,7 @@ function RenewalAnalysis() {
 		>
 			<div style={pageHeaderStyle}>
 				<div>
-					<h1 style={{ margin: 0, color: "#1f2937" }}>Renewal Analysis</h1>
+					<h1 style={{ margin: 0, color: "#f8fafc" }}>Renewal Analysis</h1>
 					<p style={pageSubtitleStyle}>
 						Review current circuit costs, enter renewal terms, and persist
 						savings calculations per circuit.
@@ -581,7 +581,7 @@ const pageHeaderStyle = {
 const pageSubtitleStyle = {
 	marginTop: "8px",
 	marginBottom: 0,
-	color: "#4b5563",
+	color: "#cbd5e1",
 	maxWidth: "720px",
 	lineHeight: 1.5,
 };
@@ -591,17 +591,19 @@ const searchInputStyle = {
 	maxWidth: "420px",
 	width: "100%",
 	padding: "10px 12px",
-	border: "1px solid #cbd5e1",
+	border: "1px solid #475569",
 	borderRadius: "8px",
 	fontSize: "14px",
+	backgroundColor: "#1e293b",
+	color: "#f8fafc",
 };
 
 const tableContainerStyle = {
-	backgroundColor: "#ffffff",
+	backgroundColor: "#0f172a",
 	borderRadius: "12px",
 	boxShadow: "0 10px 30px rgba(15, 23, 42, 0.08)",
 	overflowX: "auto",
-	border: "1px solid #e5e7eb",
+	border: "1px solid #334155",
 };
 
 const tableStyle = {
@@ -622,20 +624,22 @@ const headerCellStyle = {
 };
 
 const tableRowStyle = {
-	borderBottom: "1px solid #e5e7eb",
+	borderBottom: "1px solid #334155",
+	backgroundColor: "#0f172a",
 };
 
 const tableCellStyle = {
 	padding: "14px 16px",
 	fontSize: "14px",
-	color: "#1f2937",
+	color: "#e2e8f0",
 };
 
 const iconButtonStyle = {
 	padding: "8px 10px",
 	borderRadius: "8px",
-	border: "1px solid #bfdbfe",
-	backgroundColor: "#eff6ff",
+	border: "1px solid #60a5fa",
+	backgroundColor: "#1e3a8a",
+	color: "#dbeafe",
 	cursor: "pointer",
 	fontSize: "18px",
 };
@@ -643,7 +647,7 @@ const iconButtonStyle = {
 const emptyStateStyle = {
 	padding: "24px",
 	textAlign: "center",
-	color: "#6b7280",
+	color: "#cbd5e1",
 };
 
 const overlayStyle = {
@@ -802,9 +806,9 @@ const errorStyle = {
 	marginBottom: "16px",
 	padding: "12px 14px",
 	borderRadius: "8px",
-	backgroundColor: "#fef2f2",
-	color: "#b91c1c",
-	border: "1px solid #fecaca",
+	backgroundColor: "#450a0a",
+	color: "#fecaca",
+	border: "1px solid #7f1d1d",
 };
 
 export default RenewalAnalysis;
