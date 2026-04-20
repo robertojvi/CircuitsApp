@@ -2862,24 +2862,13 @@ function Reports() {
 		minHeight: "calc(100vh - 50px)",
 		backgroundColor: "#2c3e50",
 		padding: "20px",
-		position: "fixed",
-		left: 0,
-		top: "50px",
 		zIndex: 999,
-		"@media (max-width: 768px)": {
-			width: "70%",
-			position: "static",
-			minHeight: "auto",
-		},
 	};
 
 	const responsiveContentStyle = {
-		marginLeft: "150px",
 		padding: "20px",
 		flex: 1,
-		"@media (max-width: 768px)": {
-			marginLeft: 0,
-		},
+		minWidth: 0,
 	};
 
 	const tableHeaderStyle = {
@@ -2899,14 +2888,13 @@ function Reports() {
 
 	return (
 		<div
+			className="app-side-page"
 			style={{
 				paddingTop: "50px",
-				display: "flex",
-				width: "94%",
-				flexDirection: "column",
+				width: "100%",
 			}}
 		>
-			<nav style={responsiveNavStyle}>
+			<nav className="app-side-nav" style={responsiveNavStyle}>
 				<ul
 					style={{
 						listStyle: "none",
@@ -2938,7 +2926,7 @@ function Reports() {
 					))}
 				</ul>
 			</nav>
-			<div style={responsiveContentStyle}>
+			<div className="app-side-page-content" style={responsiveContentStyle}>
 				<div style={responsiveChartContainer}>{renderContent()}</div>
 			</div>
 		</div>

@@ -57,7 +57,7 @@ function App() {
 						<Route
 							path="renewal-analysis"
 							element={
-								<ProtectedRoute>
+								<ProtectedRoute requiredRoles={["SUPER", "ADMIN"]}>
 									<RenewalAnalysis />
 								</ProtectedRoute>
 							}

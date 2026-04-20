@@ -1,9 +1,66 @@
 #root {
   width: 100%;
   max-width: none;
+  min-height: 100vh;
   margin: 0;
   padding: 0;
   text-align: initial;
+}
+
+.app-page-container {
+  width: 80%;
+  max-width: 1440px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.app-side-page {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+
+.app-side-nav {
+  flex: 0 0 auto;
+  position: sticky;
+  top: 50px;
+  align-self: flex-start;
+  box-sizing: border-box;
+}
+
+.app-side-page-content {
+  flex: 1;
+  min-width: 0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+  .app-page-container {
+    width: calc(100% - 32px);
+  }
+}
+
+@media (max-width: 768px) {
+  .app-page-container {
+    width: calc(100% - 24px);
+  }
+
+  .app-side-page {
+    flex-direction: column;
+  }
+
+  .app-side-nav {
+    position: static;
+    width: 100% !important;
+    min-height: auto !important;
+  }
+
+  .app-side-page-content {
+    width: 100%;
+    padding: 20px 0;
+  }
 }
 
 .logo {

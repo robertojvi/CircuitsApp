@@ -11,6 +11,9 @@ function Layout() {
 	const navigate = useNavigate();
 	const [showPasswordModal, setShowPasswordModal] = useState(false);
 	const [showUserManagementModal, setShowUserManagementModal] = useState(false);
+	const usesSideNavigationLayout = ["/circuits", "/reports", "/admin"].some(
+		(path) => location.pathname.startsWith(path),
+	);
 
 	const handleLogout = () => {
 		logout();
@@ -80,12 +83,14 @@ function Layout() {
 						<Link to="/circuits" style={getLinkStyle("/circuits")}>
 							Circuits
 						</Link>
-						<Link
-							to="/renewal-analysis"
-							style={getLinkStyle("/renewal-analysis")}
-						>
-							Renewal Analysis
-						</Link>
+						{user && (user.role === "SUPER" || user.role === "ADMIN") && (
+							<Link
+								to="/renewal-analysis"
+								style={getLinkStyle("/renewal-analysis")}
+							>
+								Renewal Analysis
+							</Link>
+						)}
 						<Link to="/reports" style={getLinkStyle("/reports")}>
 							Reports
 						</Link>
@@ -205,7 +210,11 @@ function Layout() {
 				/>
 			)}
 
-			<Outlet />
+			<div
+				className={usesSideNavigationLayout ? undefined : "app-page-container"}
+			>
+				<Outlet />
+			</div>
 		</div>
 	);
 }

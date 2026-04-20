@@ -3384,28 +3384,20 @@ function Admin() {
 
 	return (
 		<div
+			className="app-side-page"
 			style={{
-				paddingTop: "30px",
-				display: "flex",
+				paddingTop: "50px",
 				width: "100%",
-				flexDirection: "column",
 			}}
 		>
 			<nav
+				className="app-side-nav"
 				style={{
 					width: "120px",
 					minHeight: "calc(100vh - 50px)",
 					backgroundColor: "#2c3e50",
 					padding: "20px",
-					position: "fixed",
-					left: 0,
-					top: "50px",
 					zIndex: 999,
-					"@media (max-width: 768px)": {
-						width: "100%",
-						position: "static",
-						minHeight: "auto",
-					},
 				}}
 			>
 				<ul
@@ -3464,13 +3456,11 @@ function Admin() {
 				</ul>
 			</nav>
 			<div
+				className="app-side-page-content"
 				style={{
-					marginLeft: "120px",
 					padding: "20px",
 					flex: 1,
-					"@media (max-width: 768px)": {
-						marginLeft: 0,
-					},
+					minWidth: 0,
 				}}
 			>
 				<div style={{ width: "100%", overflowX: "auto" }}>
