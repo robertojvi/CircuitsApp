@@ -249,20 +249,6 @@ const RenewalAnalysisModal = ({
 									/>
 								</div>
 								<div>
-									<label style={inputLabelStyle}>Customer Contract Date</label>
-									<input
-										type="date"
-										value={circuit.site?.customerContractDate || ""}
-										onChange={(event) =>
-											updateSiteField(
-												"customerContractDate",
-												event.target.value,
-											)
-										}
-										style={inputStyle}
-									/>
-								</div>
-								<div>
 									<label style={inputLabelStyle}>
 										Customer Contract Expiration Date
 									</label>
