@@ -180,12 +180,22 @@ const RenewalAnalysisModal = ({
 		<div style={overlayStyle}>
 			<div style={modalStyle}>
 				<div style={modalHeaderStyle}>
-					<div>
-						<h2 style={{ margin: 0 }}>Renewal Analysis</h2>
-						<p style={modalHeaderSubtitleStyle}>
-							Review the contract timeline, enter renewal inputs, and compare
-							savings against the future renewal cost.
-						</p>
+					<div style={modalHeaderContentStyle}>
+						<div style={modalHeaderBrandStyle}>
+							<img
+								src={AccessLogo}
+								alt="AccessParks logo"
+								style={modalHeaderLogoStyle}
+							/>
+							<span style={modalHeaderBrandLabelStyle}>AccessParks</span>
+						</div>
+						<div style={modalHeaderTextContainerStyle}>
+							<h2 style={{ margin: 0 }}>Renewal Analysis</h2>
+							<p style={modalHeaderSubtitleStyle}>
+								Review the contract timeline, enter renewal inputs, and compare
+								savings against the future renewal cost.
+							</p>
+						</div>
 					</div>
 					<button type="button" onClick={onClose} style={closeButtonStyle}>
 						Close
@@ -554,6 +564,9 @@ function RenewalAnalysis() {
 						savings calculations per circuit.
 					</p>
 				</div>
+			</div>
+
+			<div style={searchPanelRowStyle}>
 				<div style={searchPanelStyle}>
 					<div style={searchPanelLabelStyle}>Find A Circuit</div>
 					<input
@@ -648,26 +661,28 @@ const pageShellStyle = {
 };
 
 const pageHeaderStyle = {
-	display: "flex",
-	justifyContent: "space-between",
-	alignItems: "flex-start",
-	gap: "20px",
+	display: "block",
 	marginBottom: "20px",
-	flexWrap: "wrap",
 };
 
 const headerIntroCardStyle = {
+	display: "flex",
+	flexDirection: "column",
+	alignItems: "center",
 	padding: "16px 18px",
 	borderRadius: "18px",
 	backgroundColor: "#34495e",
 	border: "1px solid #4b6584",
 	boxShadow: "0 8px 24px rgba(0, 0, 0, 0.18)",
-	maxWidth: "760px",
+	width: "100%",
+	maxWidth: "none",
+	boxSizing: "border-box",
 };
 
 const headerBrandRowStyle = {
 	display: "flex",
 	alignItems: "center",
+	justifyContent: "center",
 	gap: "10px",
 	marginBottom: "12px",
 };
@@ -690,6 +705,7 @@ const headerBrandLabelStyle = {
 const titleBadgeStyle = {
 	display: "inline-flex",
 	alignItems: "center",
+	justifyContent: "center",
 	padding: "10px 16px",
 	borderRadius: "14px",
 	backgroundColor: "#2c3e50",
@@ -710,6 +726,11 @@ const pageSubtitleStyle = {
 	color: "#d6e2ea",
 	maxWidth: "720px",
 	lineHeight: 1.5,
+	textAlign: "center",
+};
+
+const searchPanelRowStyle = {
+	marginBottom: "20px",
 };
 
 const searchPanelStyle = {
@@ -835,12 +856,45 @@ const modalStyle = {
 const modalHeaderStyle = {
 	display: "flex",
 	justifyContent: "space-between",
-	alignItems: "center",
+	alignItems: "flex-start",
 	padding: "20px 24px",
 	borderBottom: "1px solid #3498db",
 	position: "sticky",
 	top: 0,
 	backgroundColor: "#2c3e50",
+	gap: "16px",
+};
+
+const modalHeaderContentStyle = {
+	display: "flex",
+	flexDirection: "column",
+	gap: "10px",
+	flex: "1 1 auto",
+};
+
+const modalHeaderBrandStyle = {
+	display: "flex",
+	alignItems: "center",
+	gap: "10px",
+};
+
+const modalHeaderLogoStyle = {
+	height: "34px",
+	width: "auto",
+	objectFit: "contain",
+	filter: "drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2))",
+};
+
+const modalHeaderBrandLabelStyle = {
+	fontSize: "11px",
+	fontWeight: 700,
+	letterSpacing: "0.08em",
+	textTransform: "uppercase",
+	color: "#d6eaf8",
+};
+
+const modalHeaderTextContainerStyle = {
+	maxWidth: "420px",
 };
 
 const modalHeaderSubtitleStyle = {
@@ -849,7 +903,7 @@ const modalHeaderSubtitleStyle = {
 	fontSize: "13px",
 	lineHeight: 1.5,
 	color: "#c7d5df",
-	maxWidth: "560px",
+	maxWidth: "420px",
 };
 
 const closeButtonStyle = {
