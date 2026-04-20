@@ -684,7 +684,6 @@ const headerBrandLabelStyle = {
 	fontSize: "12px",
 	fontWeight: 700,
 	letterSpacing: "0.08em",
-	textTransform: "uppercase",
 	color: "#d6eaf8",
 };
 
@@ -875,7 +874,6 @@ const modalHeaderBrandLabelStyle = {
 	fontSize: "11px",
 	fontWeight: 700,
 	letterSpacing: "0.08em",
-	textTransform: "uppercase",
 	color: "#d6eaf8",
 };
 
