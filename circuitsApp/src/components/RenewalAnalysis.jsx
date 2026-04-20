@@ -527,32 +527,32 @@ function RenewalAnalysis() {
 	};
 
 	return (
-		<div
-			style={{
-				paddingTop: "70px",
-				paddingLeft: "20px",
-				paddingRight: "20px",
-				paddingBottom: "20px",
-			}}
-		>
+		<div style={pageShellStyle}>
 			<div style={pageHeaderStyle}>
-				<div>
-					<h1 style={{ margin: 0, color: "#f8fafc" }}>Renewal Analysis</h1>
+				<div style={headerIntroCardStyle}>
+					<div style={titleBadgeStyle}>
+						<h1 style={titleTextStyle}>Renewal Analysis</h1>
+					</div>
 					<p style={pageSubtitleStyle}>
 						Review current circuit costs, enter renewal terms, and persist
 						savings calculations per circuit.
 					</p>
 				</div>
-				<input
-					type="text"
-					placeholder="Search by site, provider, bandwidth, aggregator, or circuit ID"
-					value={searchTerm}
-					onChange={(event) => setSearchTerm(event.target.value)}
-					style={searchInputStyle}
-				/>
+				<div style={searchPanelStyle}>
+					<div style={searchPanelLabelStyle}>Find A Circuit</div>
+					<input
+						type="text"
+						placeholder="Search by site, provider, bandwidth, aggregator, or circuit ID"
+						value={searchTerm}
+						onChange={(event) => setSearchTerm(event.target.value)}
+						style={searchInputStyle}
+					/>
+				</div>
 			</div>
 
-			{loading && <div>Loading...</div>}
+			{loading && (
+				<div style={statusMessageStyle}>Loading renewal analysis...</div>
+			)}
 			{error && <div style={errorStyle}>{error}</div>}
 
 			{!loading && (
@@ -621,6 +621,17 @@ function RenewalAnalysis() {
 	);
 }
 
+const pageShellStyle = {
+	paddingTop: "70px",
+	paddingLeft: "20px",
+	paddingRight: "20px",
+	paddingBottom: "20px",
+	minHeight: "calc(100vh - 50px)",
+	background:
+		"linear-gradient(180deg, rgba(30, 41, 59, 0.92) 0%, rgba(51, 65, 85, 0.88) 100%)",
+	color: "#e2e8f0",
+};
+
 const pageHeaderStyle = {
 	display: "flex",
 	justifyContent: "space-between",
@@ -630,32 +641,80 @@ const pageHeaderStyle = {
 	flexWrap: "wrap",
 };
 
+const headerIntroCardStyle = {
+	padding: "16px 18px",
+	borderRadius: "18px",
+	backgroundColor: "rgba(30, 41, 59, 0.76)",
+	border: "1px solid rgba(191, 219, 254, 0.16)",
+	boxShadow: "0 14px 34px rgba(2, 6, 23, 0.24)",
+	backdropFilter: "blur(8px)",
+	maxWidth: "760px",
+};
+
+const titleBadgeStyle = {
+	display: "inline-flex",
+	alignItems: "center",
+	padding: "10px 16px",
+	borderRadius: "14px",
+	backgroundColor: "rgba(51, 65, 85, 0.92)",
+	border: "1px solid rgba(191, 219, 254, 0.24)",
+	boxShadow: "0 10px 24px rgba(15, 23, 42, 0.18)",
+	backdropFilter: "blur(6px)",
+};
+
+const titleTextStyle = {
+	margin: 0,
+	color: "#f8fafc",
+	fontSize: "clamp(1.8rem, 2vw, 2.4rem)",
+	lineHeight: 1.1,
+};
+
 const pageSubtitleStyle = {
 	marginTop: "8px",
 	marginBottom: 0,
-	color: "#cbd5e1",
+	color: "#dbe4f3",
 	maxWidth: "720px",
 	lineHeight: 1.5,
 };
 
-const searchInputStyle = {
+const searchPanelStyle = {
 	minWidth: "320px",
 	maxWidth: "420px",
 	width: "100%",
+	padding: "14px",
+	borderRadius: "16px",
+	backgroundColor: "rgba(30, 41, 59, 0.76)",
+	border: "1px solid rgba(191, 219, 254, 0.16)",
+	boxShadow: "0 14px 34px rgba(2, 6, 23, 0.24)",
+	backdropFilter: "blur(8px)",
+};
+
+const searchPanelLabelStyle = {
+	fontSize: "11px",
+	fontWeight: 700,
+	textTransform: "uppercase",
+	letterSpacing: "0.08em",
+	color: "#94a3b8",
+	marginBottom: "8px",
+};
+
+const searchInputStyle = {
+	width: "100%",
 	padding: "10px 12px",
-	border: "1px solid #475569",
+	border: "1px solid #64748b",
 	borderRadius: "8px",
 	fontSize: "14px",
-	backgroundColor: "#1e293b",
+	backgroundColor: "#334155",
 	color: "#f8fafc",
+	boxSizing: "border-box",
 };
 
 const tableContainerStyle = {
-	backgroundColor: "#0f172a",
+	backgroundColor: "rgba(30, 41, 59, 0.84)",
 	borderRadius: "12px",
-	boxShadow: "0 10px 30px rgba(15, 23, 42, 0.08)",
+	boxShadow: "0 18px 40px rgba(2, 6, 23, 0.26)",
 	overflowX: "auto",
-	border: "1px solid #334155",
+	border: "1px solid #475569",
 };
 
 const tableStyle = {
@@ -664,7 +723,7 @@ const tableStyle = {
 };
 
 const tableHeaderRowStyle = {
-	backgroundColor: "#1f2937",
+	backgroundColor: "#334155",
 };
 
 const headerCellStyle = {
@@ -676,8 +735,8 @@ const headerCellStyle = {
 };
 
 const tableRowStyle = {
-	borderBottom: "1px solid #334155",
-	backgroundColor: "#0f172a",
+	borderBottom: "1px solid #475569",
+	backgroundColor: "rgba(30, 41, 59, 0.84)",
 };
 
 const tableCellStyle = {
@@ -702,13 +761,23 @@ const emptyStateStyle = {
 	color: "#cbd5e1",
 };
 
+const statusMessageStyle = {
+	marginBottom: "16px",
+	padding: "12px 14px",
+	borderRadius: "12px",
+	backgroundColor: "rgba(30, 41, 59, 0.76)",
+	border: "1px solid rgba(191, 219, 254, 0.16)",
+	color: "#dbeafe",
+	boxShadow: "0 14px 34px rgba(2, 6, 23, 0.18)",
+};
+
 const overlayStyle = {
 	position: "fixed",
 	top: 0,
 	left: 0,
 	right: 0,
 	bottom: 0,
-	backgroundColor: "rgba(15, 23, 42, 0.55)",
+	backgroundColor: "rgba(30, 41, 59, 0.5)",
 	display: "flex",
 	justifyContent: "center",
 	alignItems: "center",
@@ -721,10 +790,10 @@ const modalStyle = {
 	maxWidth: "960px",
 	maxHeight: "90vh",
 	overflowY: "auto",
-	backgroundColor: "#0f172a",
+	backgroundColor: "#1e293b",
 	color: "#e5eefc",
 	borderRadius: "16px",
-	border: "1px solid #334155",
+	border: "1px solid #475569",
 	colorScheme: "dark",
 	boxShadow: "0 30px 80px rgba(15, 23, 42, 0.3)",
 };
@@ -734,10 +803,10 @@ const modalHeaderStyle = {
 	justifyContent: "space-between",
 	alignItems: "center",
 	padding: "20px 24px",
-	borderBottom: "1px solid #334155",
+	borderBottom: "1px solid #475569",
 	position: "sticky",
 	top: 0,
-	backgroundColor: "#0f172a",
+	backgroundColor: "#1e293b",
 };
 
 const modalHeaderSubtitleStyle = {
@@ -750,8 +819,8 @@ const modalHeaderSubtitleStyle = {
 };
 
 const closeButtonStyle = {
-	border: "1px solid #475569",
-	backgroundColor: "#1e293b",
+	border: "1px solid #64748b",
+	backgroundColor: "#334155",
 	borderRadius: "8px",
 	padding: "8px 12px",
 	color: "#e2e8f0",
@@ -770,8 +839,8 @@ const modalBodyStyle = {
 };
 
 const sectionCardStyle = {
-	backgroundColor: "#111c30",
-	border: "1px solid #334155",
+	backgroundColor: "#243244",
+	border: "1px solid #475569",
 	borderRadius: "14px",
 	padding: "18px",
 	boxShadow: "inset 0 1px 0 rgba(148, 163, 184, 0.06)",
@@ -842,16 +911,16 @@ const inputLabelStyle = {
 const inputStyle = {
 	width: "100%",
 	padding: "10px 12px",
-	border: "1px solid #475569",
+	border: "1px solid #64748b",
 	borderRadius: "8px",
 	fontSize: "14px",
-	backgroundColor: "#1e293b",
+	backgroundColor: "#334155",
 	color: "#f8fafc",
 	boxSizing: "border-box",
 };
 
 const readOnlyInputStyle = {
-	backgroundColor: "#172033",
+	backgroundColor: "#2b3b4f",
 	color: "#cbd5e1",
 };
 
@@ -884,8 +953,8 @@ const resultsGridStyle = {
 };
 
 const resultCardStyle = {
-	backgroundColor: "#172033",
-	border: "1px solid #334155",
+	backgroundColor: "#2b3b4f",
+	border: "1px solid #475569",
 	borderRadius: "12px",
 	padding: "16px",
 	minHeight: "110px",
@@ -904,8 +973,8 @@ const resultValueStyle = {
 const analysisSummaryStyle = {
 	padding: "14px 16px",
 	borderRadius: "12px",
-	backgroundColor: "#172033",
-	border: "1px solid #334155",
+	backgroundColor: "#2b3b4f",
+	border: "1px solid #475569",
 	color: "#dbeafe",
 	fontSize: "13px",
 	lineHeight: 1.6,
@@ -921,8 +990,8 @@ const timelineSummaryGridStyle = {
 const timelinePillStyle = {
 	padding: "14px 16px",
 	borderRadius: "12px",
-	backgroundColor: "#172033",
-	border: "1px solid #334155",
+	backgroundColor: "#2b3b4f",
+	border: "1px solid #475569",
 	display: "flex",
 	flexDirection: "column",
 	gap: "6px",
@@ -962,8 +1031,8 @@ const primaryButtonStyle = {
 const secondaryButtonStyle = {
 	padding: "10px 16px",
 	borderRadius: "8px",
-	border: "1px solid #475569",
-	backgroundColor: "#1e293b",
+	border: "1px solid #64748b",
+	backgroundColor: "#334155",
 	color: "#e2e8f0",
 	fontWeight: 600,
 	cursor: "pointer",
@@ -973,9 +1042,10 @@ const errorStyle = {
 	marginBottom: "16px",
 	padding: "12px 14px",
 	borderRadius: "8px",
-	backgroundColor: "#450a0a",
+	backgroundColor: "rgba(69, 10, 10, 0.92)",
 	color: "#fecaca",
 	border: "1px solid #7f1d1d",
+	boxShadow: "0 14px 34px rgba(2, 6, 23, 0.18)",
 };
 
 export default RenewalAnalysis;
