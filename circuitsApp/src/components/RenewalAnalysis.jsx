@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import AccessLogo from "../images/Access.png";
 
 const getApiErrorMessage = async (response, fallbackMessage) => {
 	try {
@@ -43,6 +44,12 @@ const roundCurrency = (value) => {
 	return Math.round(value * 100) / 100;
 };
 
+const getStartOfNextMonth = (date) => {
+	if (!(date instanceof Date) || Number.isNaN(date.getTime())) return null;
+
+	return new Date(date.getFullYear(), date.getMonth() + 1, 1);
+};
+
 const calculateRoundedUpMonths = (startDate, endDate) => {
 	if (!(startDate instanceof Date) || !(endDate instanceof Date)) return null;
 	if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) {
@@ -75,6 +82,7 @@ const buildRenewalPreview = (circuit) => {
 	);
 	const today = new Date();
 	today.setHours(0, 0, 0, 0);
+	const startOfNextMonth = getStartOfNextMonth(today);
 
 	const savingsDifference =
 		Number.isFinite(currentMrc) && Number.isFinite(renewalMrc)
@@ -82,7 +90,7 @@ const buildRenewalPreview = (circuit) => {
 			: null;
 
 	const monthsToCustomerContractExpiration = customerExpirationDate
-		? calculateRoundedUpMonths(today, customerExpirationDate)
+		? calculateRoundedUpMonths(startOfNextMonth, customerExpirationDate)
 		: null;
 
 	const savingsUntilCustomerContractExpiration =
@@ -530,6 +538,14 @@ function RenewalAnalysis() {
 		<div style={pageShellStyle}>
 			<div style={pageHeaderStyle}>
 				<div style={headerIntroCardStyle}>
+					<div style={headerBrandRowStyle}>
+						<img
+							src={AccessLogo}
+							alt="AccessParks logo"
+							style={headerLogoStyle}
+						/>
+						<span style={headerBrandLabelStyle}>AccessParks</span>
+					</div>
 					<div style={titleBadgeStyle}>
 						<h1 style={titleTextStyle}>Renewal Analysis</h1>
 					</div>
@@ -627,9 +643,8 @@ const pageShellStyle = {
 	paddingRight: "20px",
 	paddingBottom: "20px",
 	minHeight: "calc(100vh - 50px)",
-	background:
-		"linear-gradient(180deg, rgba(30, 41, 59, 0.92) 0%, rgba(51, 65, 85, 0.88) 100%)",
-	color: "#e2e8f0",
+	backgroundColor: "#2c3e50",
+	color: "#ecf0f1",
 };
 
 const pageHeaderStyle = {
@@ -644,11 +659,32 @@ const pageHeaderStyle = {
 const headerIntroCardStyle = {
 	padding: "16px 18px",
 	borderRadius: "18px",
-	backgroundColor: "rgba(30, 41, 59, 0.76)",
-	border: "1px solid rgba(191, 219, 254, 0.16)",
-	boxShadow: "0 14px 34px rgba(2, 6, 23, 0.24)",
-	backdropFilter: "blur(8px)",
+	backgroundColor: "#34495e",
+	border: "1px solid #4b6584",
+	boxShadow: "0 8px 24px rgba(0, 0, 0, 0.18)",
 	maxWidth: "760px",
+};
+
+const headerBrandRowStyle = {
+	display: "flex",
+	alignItems: "center",
+	gap: "10px",
+	marginBottom: "12px",
+};
+
+const headerLogoStyle = {
+	height: "38px",
+	width: "auto",
+	objectFit: "contain",
+	filter: "drop-shadow(0 4px 10px rgba(0, 0, 0, 0.18))",
+};
+
+const headerBrandLabelStyle = {
+	fontSize: "12px",
+	fontWeight: 700,
+	letterSpacing: "0.08em",
+	textTransform: "uppercase",
+	color: "#d6eaf8",
 };
 
 const titleBadgeStyle = {
@@ -656,10 +692,9 @@ const titleBadgeStyle = {
 	alignItems: "center",
 	padding: "10px 16px",
 	borderRadius: "14px",
-	backgroundColor: "rgba(51, 65, 85, 0.92)",
-	border: "1px solid rgba(191, 219, 254, 0.24)",
-	boxShadow: "0 10px 24px rgba(15, 23, 42, 0.18)",
-	backdropFilter: "blur(6px)",
+	backgroundColor: "#2c3e50",
+	border: "1px solid #3498db",
+	boxShadow: "0 6px 18px rgba(0, 0, 0, 0.18)",
 };
 
 const titleTextStyle = {
@@ -672,7 +707,7 @@ const titleTextStyle = {
 const pageSubtitleStyle = {
 	marginTop: "8px",
 	marginBottom: 0,
-	color: "#dbe4f3",
+	color: "#d6e2ea",
 	maxWidth: "720px",
 	lineHeight: 1.5,
 };
@@ -683,10 +718,9 @@ const searchPanelStyle = {
 	width: "100%",
 	padding: "14px",
 	borderRadius: "16px",
-	backgroundColor: "rgba(30, 41, 59, 0.76)",
-	border: "1px solid rgba(191, 219, 254, 0.16)",
-	boxShadow: "0 14px 34px rgba(2, 6, 23, 0.24)",
-	backdropFilter: "blur(8px)",
+	backgroundColor: "#34495e",
+	border: "1px solid #4b6584",
+	boxShadow: "0 8px 24px rgba(0, 0, 0, 0.18)",
 };
 
 const searchPanelLabelStyle = {
@@ -694,27 +728,27 @@ const searchPanelLabelStyle = {
 	fontWeight: 700,
 	textTransform: "uppercase",
 	letterSpacing: "0.08em",
-	color: "#94a3b8",
+	color: "#95a5a6",
 	marginBottom: "8px",
 };
 
 const searchInputStyle = {
 	width: "100%",
 	padding: "10px 12px",
-	border: "1px solid #64748b",
+	border: "1px solid #3498db",
 	borderRadius: "8px",
 	fontSize: "14px",
-	backgroundColor: "#334155",
+	backgroundColor: "#2c3e50",
 	color: "#f8fafc",
 	boxSizing: "border-box",
 };
 
 const tableContainerStyle = {
-	backgroundColor: "rgba(30, 41, 59, 0.84)",
+	backgroundColor: "#34495e",
 	borderRadius: "12px",
-	boxShadow: "0 18px 40px rgba(2, 6, 23, 0.26)",
+	boxShadow: "0 10px 30px rgba(0, 0, 0, 0.16)",
 	overflowX: "auto",
-	border: "1px solid #475569",
+	border: "1px solid #4b6584",
 };
 
 const tableStyle = {
@@ -723,7 +757,7 @@ const tableStyle = {
 };
 
 const tableHeaderRowStyle = {
-	backgroundColor: "#334155",
+	backgroundColor: "#2c3e50",
 };
 
 const headerCellStyle = {
@@ -735,22 +769,22 @@ const headerCellStyle = {
 };
 
 const tableRowStyle = {
-	borderBottom: "1px solid #475569",
-	backgroundColor: "rgba(30, 41, 59, 0.84)",
+	borderBottom: "1px solid #4b6584",
+	backgroundColor: "#34495e",
 };
 
 const tableCellStyle = {
 	padding: "14px 16px",
 	fontSize: "14px",
-	color: "#e2e8f0",
+	color: "#ecf0f1",
 };
 
 const iconButtonStyle = {
 	padding: "8px 10px",
 	borderRadius: "8px",
-	border: "1px solid #60a5fa",
-	backgroundColor: "#1e3a8a",
-	color: "#dbeafe",
+	border: "1px solid #3498db",
+	backgroundColor: "rgba(52, 152, 219, 0.15)",
+	color: "#85c1e9",
 	cursor: "pointer",
 	fontSize: "18px",
 };
@@ -758,17 +792,17 @@ const iconButtonStyle = {
 const emptyStateStyle = {
 	padding: "24px",
 	textAlign: "center",
-	color: "#cbd5e1",
+	color: "#d6e2ea",
 };
 
 const statusMessageStyle = {
 	marginBottom: "16px",
 	padding: "12px 14px",
 	borderRadius: "12px",
-	backgroundColor: "rgba(30, 41, 59, 0.76)",
-	border: "1px solid rgba(191, 219, 254, 0.16)",
-	color: "#dbeafe",
-	boxShadow: "0 14px 34px rgba(2, 6, 23, 0.18)",
+	backgroundColor: "#34495e",
+	border: "1px solid #3498db",
+	color: "#ecf0f1",
+	boxShadow: "0 8px 24px rgba(0, 0, 0, 0.14)",
 };
 
 const overlayStyle = {
@@ -777,7 +811,7 @@ const overlayStyle = {
 	left: 0,
 	right: 0,
 	bottom: 0,
-	backgroundColor: "rgba(30, 41, 59, 0.5)",
+	backgroundColor: "rgba(0, 0, 0, 0.55)",
 	display: "flex",
 	justifyContent: "center",
 	alignItems: "center",
@@ -790,12 +824,12 @@ const modalStyle = {
 	maxWidth: "960px",
 	maxHeight: "90vh",
 	overflowY: "auto",
-	backgroundColor: "#1e293b",
-	color: "#e5eefc",
+	backgroundColor: "#2c3e50",
+	color: "#ecf0f1",
 	borderRadius: "16px",
-	border: "1px solid #475569",
+	border: "1px solid #4b6584",
 	colorScheme: "dark",
-	boxShadow: "0 30px 80px rgba(15, 23, 42, 0.3)",
+	boxShadow: "0 24px 60px rgba(0, 0, 0, 0.24)",
 };
 
 const modalHeaderStyle = {
@@ -803,10 +837,10 @@ const modalHeaderStyle = {
 	justifyContent: "space-between",
 	alignItems: "center",
 	padding: "20px 24px",
-	borderBottom: "1px solid #475569",
+	borderBottom: "1px solid #3498db",
 	position: "sticky",
 	top: 0,
-	backgroundColor: "#1e293b",
+	backgroundColor: "#2c3e50",
 };
 
 const modalHeaderSubtitleStyle = {
@@ -814,16 +848,16 @@ const modalHeaderSubtitleStyle = {
 	marginBottom: 0,
 	fontSize: "13px",
 	lineHeight: 1.5,
-	color: "#94a3b8",
+	color: "#c7d5df",
 	maxWidth: "560px",
 };
 
 const closeButtonStyle = {
-	border: "1px solid #64748b",
-	backgroundColor: "#334155",
+	border: "1px solid #3498db",
+	backgroundColor: "#34495e",
 	borderRadius: "8px",
 	padding: "8px 12px",
-	color: "#e2e8f0",
+	color: "#ecf0f1",
 	cursor: "pointer",
 };
 
@@ -839,24 +873,24 @@ const modalBodyStyle = {
 };
 
 const sectionCardStyle = {
-	backgroundColor: "#243244",
-	border: "1px solid #475569",
+	backgroundColor: "#34495e",
+	border: "1px solid #4b6584",
 	borderRadius: "14px",
 	padding: "18px",
-	boxShadow: "inset 0 1px 0 rgba(148, 163, 184, 0.06)",
+	boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.04)",
 };
 
 const sectionHeadingStyle = {
 	fontSize: "15px",
 	fontWeight: 700,
-	color: "#f8fafc",
+	color: "#ffffff",
 	marginBottom: "8px",
 };
 
 const sectionDescriptionStyle = {
 	fontSize: "13px",
 	lineHeight: 1.6,
-	color: "#94a3b8",
+	color: "#c7d5df",
 	marginBottom: "16px",
 };
 
@@ -890,13 +924,13 @@ const fieldLabelStyle = {
 	fontWeight: 600,
 	textTransform: "uppercase",
 	letterSpacing: "0.04em",
-	color: "#94a3b8",
+	color: "#85c1e9",
 	marginBottom: "6px",
 };
 
 const fieldValueStyle = {
 	fontSize: "15px",
-	color: "#f8fafc",
+	color: "#ffffff",
 	fontWeight: 500,
 };
 
@@ -905,23 +939,23 @@ const inputLabelStyle = {
 	marginBottom: "6px",
 	fontSize: "13px",
 	fontWeight: 600,
-	color: "#cbd5e1",
+	color: "#d6e2ea",
 };
 
 const inputStyle = {
 	width: "100%",
 	padding: "10px 12px",
-	border: "1px solid #64748b",
+	border: "1px solid #5d6d7e",
 	borderRadius: "8px",
 	fontSize: "14px",
-	backgroundColor: "#334155",
+	backgroundColor: "#2c3e50",
 	color: "#f8fafc",
 	boxSizing: "border-box",
 };
 
 const readOnlyInputStyle = {
-	backgroundColor: "#2b3b4f",
-	color: "#cbd5e1",
+	backgroundColor: "#3a5166",
+	color: "#ecf0f1",
 };
 
 const successHighlightStyle = {
@@ -953,8 +987,8 @@ const resultsGridStyle = {
 };
 
 const resultCardStyle = {
-	backgroundColor: "#2b3b4f",
-	border: "1px solid #475569",
+	backgroundColor: "#2c3e50",
+	border: "1px solid #4b6584",
 	borderRadius: "12px",
 	padding: "16px",
 	minHeight: "110px",
@@ -973,9 +1007,9 @@ const resultValueStyle = {
 const analysisSummaryStyle = {
 	padding: "14px 16px",
 	borderRadius: "12px",
-	backgroundColor: "#2b3b4f",
-	border: "1px solid #475569",
-	color: "#dbeafe",
+	backgroundColor: "#2c3e50",
+	border: "1px solid #3498db",
+	color: "#d6eaf8",
 	fontSize: "13px",
 	lineHeight: 1.6,
 	marginBottom: "16px",
@@ -990,8 +1024,8 @@ const timelineSummaryGridStyle = {
 const timelinePillStyle = {
 	padding: "14px 16px",
 	borderRadius: "12px",
-	backgroundColor: "#2b3b4f",
-	border: "1px solid #475569",
+	backgroundColor: "#2c3e50",
+	border: "1px solid #4b6584",
 	display: "flex",
 	flexDirection: "column",
 	gap: "6px",
@@ -1002,13 +1036,13 @@ const timelinePillLabelStyle = {
 	fontWeight: 700,
 	textTransform: "uppercase",
 	letterSpacing: "0.05em",
-	color: "#94a3b8",
+	color: "#85c1e9",
 };
 
 const timelinePillValueStyle = {
 	fontSize: "14px",
 	fontWeight: 600,
-	color: "#f8fafc",
+	color: "#ffffff",
 };
 
 const modalActionsStyle = {
@@ -1031,9 +1065,9 @@ const primaryButtonStyle = {
 const secondaryButtonStyle = {
 	padding: "10px 16px",
 	borderRadius: "8px",
-	border: "1px solid #64748b",
-	backgroundColor: "#334155",
-	color: "#e2e8f0",
+	border: "1px solid #5d6d7e",
+	backgroundColor: "#34495e",
+	color: "#ecf0f1",
 	fontWeight: 600,
 	cursor: "pointer",
 };
@@ -1042,10 +1076,10 @@ const errorStyle = {
 	marginBottom: "16px",
 	padding: "12px 14px",
 	borderRadius: "8px",
-	backgroundColor: "rgba(69, 10, 10, 0.92)",
+	backgroundColor: "#5b2c2c",
 	color: "#fecaca",
-	border: "1px solid #7f1d1d",
-	boxShadow: "0 14px 34px rgba(2, 6, 23, 0.18)",
+	border: "1px solid #c0392b",
+	boxShadow: "0 8px 24px rgba(0, 0, 0, 0.14)",
 };
 
 export default RenewalAnalysis;

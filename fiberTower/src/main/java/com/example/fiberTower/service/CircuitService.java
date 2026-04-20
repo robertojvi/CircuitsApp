@@ -93,9 +93,10 @@ public class CircuitService implements ICircuitService{
         }
 
         LocalDate today = LocalDate.now();
+        LocalDate startOfNextMonth = today.plusMonths(1).withDayOfMonth(1);
         LocalDate customerContractExpirationDate = parseDate(site.getCustomerContractExpirationDate());
         if (customerContractExpirationDate != null && customerContractExpirationDate.isAfter(today)) {
-            monthsToCustomerExpiration = calculateRoundedUpMonths(today, customerContractExpirationDate);
+            monthsToCustomerExpiration = calculateRoundedUpMonths(startOfNextMonth, customerContractExpirationDate);
         } else if (customerContractExpirationDate != null) {
             monthsToCustomerExpiration = 0;
         }
