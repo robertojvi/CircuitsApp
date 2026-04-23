@@ -39,6 +39,7 @@ function Reports() {
 	const [customExpirationMonths, setCustomExpirationMonths] = useState(""); // For custom month input
 	const [renewalNoticeTimeRange, setRenewalNoticeTimeRange] = useState("All");
 	const [customRenewalNoticeDays, setCustomRenewalNoticeDays] = useState("");
+	const [renewalTermFilter, setRenewalTermFilter] = useState("All");
 	const [expiredCircuitsSortConfig, setExpiredCircuitsSortConfig] = useState({
 		key: "expirationDate",
 		direction: "ascending",
@@ -237,6 +238,18 @@ function Reports() {
 		);
 	};
 
+	const getUniqueRenewalTerms = () => {
+		const renewalTerms = new Set();
+		circuits.forEach((circuit) => {
+			if (circuit.renewalTerm) {
+				renewalTerms.add(circuit.renewalTerm);
+			}
+		});
+		return Array.from(renewalTerms).sort((a, b) =>
+			a.toLowerCase().localeCompare(b.toLowerCase()),
+		);
+	};
+
 	const formatSiteAddress = (site) => {
 		if (!site) return "N/A";
 
@@ -427,6 +440,12 @@ function Reports() {
 		return circuits
 			.filter((circuit) => {
 				if (!circuit.renewalNoticeDate) return false;
+
+				const renewalTermMatch =
+					renewalTermFilter === "All" ||
+					circuit.renewalTerm === renewalTermFilter;
+
+				if (!renewalTermMatch) return false;
 
 				if (daysToCheck === null) return true;
 
@@ -1815,6 +1834,7 @@ function Reports() {
 			);
 		} else if (selectedMenu === "Renewal Notice Report") {
 			const renewalNoticeCircuits = getRenewalNoticeCircuits();
+			const renewalTerms = getUniqueRenewalTerms();
 			const renewalNoticeRangeLabel = customRenewalNoticeDays
 				? `next ${customRenewalNoticeDays} day${
 						customRenewalNoticeDays === "1" ? "" : "s"
@@ -1944,6 +1964,30 @@ function Reports() {
 									width: "100px",
 								}}
 							/>
+							<label htmlFor="renewalTermFilter" style={{ fontSize: "14px" }}>
+								Renewal Term:
+							</label>
+							<select
+								id="renewalTermFilter"
+								value={renewalTermFilter}
+								onChange={(e) => setRenewalTermFilter(e.target.value)}
+								style={{
+									padding: "6px 10px",
+									borderRadius: "4px",
+									border: "1px solid #3498db",
+									backgroundColor: "#34495e",
+									color: "#ffffff",
+									fontSize: "14px",
+									cursor: "pointer",
+								}}
+							>
+								<option value="All">All Terms</option>
+								{renewalTerms.map((term) => (
+									<option key={term} value={term}>
+										{term}
+									</option>
+								))}
+							</select>
 							<button
 								onClick={downloadRenewalNoticeCircuitsAsExcel}
 								style={{
