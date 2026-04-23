@@ -744,6 +744,7 @@ function Reports() {
 						? circuit.aggregatorName
 						: "N/A",
 				Bandwidth: circuit.circuitBandwidth || "N/A",
+				"Renewal Term": circuit.renewalTerm || "N/A",
 			};
 
 			if (user?.role !== "NOC") {
@@ -769,6 +770,7 @@ function Reports() {
 			{ wch: 40 },
 			{ wch: 18 },
 			{ wch: 18 },
+			{ wch: 14 },
 			{ wch: 14 },
 			...(user?.role !== "NOC" ? [{ wch: 14 }] : []),
 			{ wch: 18 },
@@ -1984,6 +1986,7 @@ function Reports() {
 										<th style={tableHeaderStyle}>Provider</th>
 										<th style={tableHeaderStyle}>Aggregator</th>
 										<th style={tableHeaderStyle}>Bandwidth</th>
+										<th style={tableHeaderStyle}>Renewal Term</th>
 										{user?.role !== "NOC" && (
 											<th style={tableHeaderStyle}>Monthly Cost</th>
 										)}
@@ -2023,6 +2026,9 @@ function Reports() {
 												</td>
 												<td style={tableCellStyle}>
 													{circuit.circuitBandwidth || "N/A"}
+												</td>
+												<td style={tableCellStyle}>
+													{circuit.renewalTerm || "N/A"}
 												</td>
 												{user?.role !== "NOC" && (
 													<td style={tableCellStyle}>
