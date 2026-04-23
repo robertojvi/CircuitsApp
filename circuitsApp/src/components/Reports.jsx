@@ -423,6 +423,17 @@ function Reports() {
 	};
 
 	const getRenewalNoticeCircuits = () => {
+		const hasMeaningfulRenewalTerm = (renewalTerm) => {
+			if (!renewalTerm) return false;
+
+			const normalizedTerm = renewalTerm.trim().toLowerCase();
+			return (
+				normalizedTerm !== "" &&
+				normalizedTerm !== "na" &&
+				normalizedTerm !== "n/a"
+			);
+		};
+
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);
 
@@ -439,13 +450,20 @@ function Reports() {
 
 		return circuits
 			.filter((circuit) => {
-				if (!circuit.renewalNoticeDate) return false;
+				const hasRenewalNoticeDate = Boolean(circuit.renewalNoticeDate);
+				const meaningfulRenewalTerm = hasMeaningfulRenewalTerm(
+					circuit.renewalTerm,
+				);
+
+				if (!hasRenewalNoticeDate && !meaningfulRenewalTerm) return false;
 
 				const renewalTermMatch =
 					renewalTermFilter === "All" ||
 					circuit.renewalTerm === renewalTermFilter;
 
 				if (!renewalTermMatch) return false;
+
+				if (!hasRenewalNoticeDate) return true;
 
 				if (daysToCheck === null) return true;
 
@@ -454,9 +472,16 @@ function Reports() {
 
 				return renewalNoticeDate >= today && renewalNoticeDate <= endDate;
 			})
-			.sort(
-				(a, b) => new Date(a.renewalNoticeDate) - new Date(b.renewalNoticeDate),
-			);
+			.sort((a, b) => {
+				if (!a.renewalNoticeDate && !b.renewalNoticeDate) {
+					return (a.site?.name || "").localeCompare(b.site?.name || "");
+				}
+
+				if (!a.renewalNoticeDate) return 1;
+				if (!b.renewalNoticeDate) return -1;
+
+				return new Date(a.renewalNoticeDate) - new Date(b.renewalNoticeDate);
+			});
 	};
 
 	// Function to sort expired circuits based on selected column
