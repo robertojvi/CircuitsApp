@@ -111,11 +111,21 @@ const buildRenewalPreview = (circuit) => {
 			? roundCurrency(renewalMrc * monthsBetweenExpirationDates)
 			: null;
 
+	const totalSavings =
+		savingsUntilCustomerContractExpiration != null &&
+		costFromCustomerExpirationToRenewalExpiration != null
+			? roundCurrency(
+					savingsUntilCustomerContractExpiration -
+						costFromCustomerExpirationToRenewalExpiration,
+				)
+			: null;
+
 	return {
 		savingsDifference,
 		monthsToCustomerContractExpiration,
 		savingsUntilCustomerContractExpiration,
 		costFromCustomerExpirationToRenewalExpiration,
+		totalSavings,
 	};
 };
 
@@ -153,12 +163,14 @@ const RenewalAnalysisModal = ({
 	const isCostComparisonAvailable =
 		preview.costFromCustomerExpirationToRenewalExpiration != null &&
 		preview.savingsUntilCustomerContractExpiration != null;
-	const costComparisonStyle = isCostComparisonAvailable
-		? preview.costFromCustomerExpirationToRenewalExpiration <
-			preview.savingsUntilCustomerContractExpiration
-			? successHighlightStyle
-			: dangerHighlightStyle
-		: readOnlyInputStyle;
+	const totalSavingsStyle =
+		preview.totalSavings == null
+			? readOnlyInputStyle
+			: preview.totalSavings > 0
+				? successHighlightStyle
+				: preview.totalSavings < 0
+					? dangerHighlightStyle
+					: warningHighlightStyle;
 	const comparisonSummary = !isCostComparisonAvailable
 		? "Enter contract expiration and renewal values to compare total savings against the post-contract renewal cost."
 		: preview.costFromCustomerExpirationToRenewalExpiration <
@@ -348,7 +360,7 @@ const RenewalAnalysisModal = ({
 										: "N/A"}
 								</div>
 							</div>
-							<div style={resultCardStyle}>
+							<div style={{ ...resultCardStyle, ...infoHighlightStyle }}>
 								<div style={fieldLabelStyle}>
 									Savings To Customer Contract Expiration
 								</div>
@@ -358,14 +370,26 @@ const RenewalAnalysisModal = ({
 									)}
 								</div>
 							</div>
-							<div style={{ ...resultCardStyle, ...costComparisonStyle }}>
-								<div style={fieldLabelStyle}>
+							<div style={{ ...resultCardStyle, ...costHighlightStyle }}>
+								<div style={{ ...fieldLabelStyle, ...costTitleStyle }}>
 									Cost From Customer Expiration To Renewal Circuit Expiration
 								</div>
 								<div style={resultValueStyle}>
 									{formatCurrency(
 										preview.costFromCustomerExpirationToRenewalExpiration,
 									)}
+								</div>
+							</div>
+							<div
+								style={{
+									...resultCardStyle,
+									...totalSavingsCardStyle,
+									...totalSavingsStyle,
+								}}
+							>
+								<div style={fieldLabelStyle}>Total Savings</div>
+								<div style={resultValueStyle}>
+									{formatCurrency(preview.totalSavings)}
 								</div>
 							</div>
 						</div>
@@ -1010,6 +1034,31 @@ const dangerHighlightStyle = {
 	fontWeight: 600,
 };
 
+const warningHighlightStyle = {
+	backgroundColor: "#78350f",
+	borderColor: "#facc15",
+	color: "#fef9c3",
+	fontWeight: 600,
+};
+
+const costHighlightStyle = {
+	backgroundColor: "#facc15",
+	borderColor: "#eab308",
+	color: "#111827",
+	fontWeight: 600,
+};
+
+const costTitleStyle = {
+	color: "#111827",
+};
+
+const infoHighlightStyle = {
+	backgroundColor: "#1e3a8a",
+	borderColor: "#3b82f6",
+	color: "#dbeafe",
+	fontWeight: 600,
+};
+
 const calculationNoteStyle = {
 	padding: "0 24px 20px",
 	color: "#cbd5e1",
@@ -1033,6 +1082,17 @@ const resultCardStyle = {
 	display: "flex",
 	flexDirection: "column",
 	justifyContent: "space-between",
+};
+
+const totalSavingsCardStyle = {
+	gridColumn: "1 / -1",
+	justifySelf: "center",
+	width: "100%",
+	maxWidth: "320px",
+	alignItems: "center",
+	justifyContent: "center",
+	textAlign: "center",
+	gap: "10px",
 };
 
 const resultValueStyle = {
