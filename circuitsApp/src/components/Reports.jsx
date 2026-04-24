@@ -1628,7 +1628,7 @@ function Reports() {
 							borderRadius: "8px",
 							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
 							margin: "0 auto",
-							maxWidth: "1000px",
+							maxWidth: "1400px",
 							width: "100%",
 							overflowX: "auto",
 						}}
@@ -1648,6 +1648,9 @@ function Reports() {
 										<th style={tableHeaderStyle}>Expiration Date</th>
 										<th style={tableHeaderStyle}>Months Remaining</th>
 										<th style={tableHeaderStyle}>Status</th>
+										<th style={{ ...tableHeaderStyle, minWidth: "320px" }}>
+											Notes
+										</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -1747,6 +1750,16 @@ function Reports() {
 													>
 														{circuit.status || "Pending"}
 													</span>
+												</td>
+												<td
+													style={{
+														...tableCellStyle,
+														minWidth: "320px",
+														whiteSpace: "normal",
+														wordBreak: "break-word",
+													}}
+												>
+													{circuit.notes || "N/A"}
 												</td>
 											</tr>
 										);
