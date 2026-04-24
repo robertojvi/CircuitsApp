@@ -1081,7 +1081,10 @@ const resultCardStyle = {
 	minHeight: "110px",
 	display: "flex",
 	flexDirection: "column",
-	justifyContent: "space-between",
+	justifyContent: "center",
+	alignItems: "center",
+	textAlign: "center",
+	gap: "10px",
 };
 
 const totalSavingsCardStyle = {
