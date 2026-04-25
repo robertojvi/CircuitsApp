@@ -40,6 +40,7 @@ function Reports() {
 	const [renewalNoticeTimeRange, setRenewalNoticeTimeRange] = useState("All");
 	const [customRenewalNoticeDays, setCustomRenewalNoticeDays] = useState("");
 	const [renewalTermFilter, setRenewalTermFilter] = useState("All");
+	const AGGREGATOR_NA_FILTER = "__NA__";
 	const [expiredCircuitsSortConfig, setExpiredCircuitsSortConfig] = useState({
 		key: "expirationDate",
 		direction: "ascending",
@@ -99,8 +100,13 @@ function Reports() {
 
 			// Aggregator filter
 			const aggregatorMatch =
-				aggregatorFilter === "All" ||
-				(circuit.hasAggregator && circuit.aggregatorName === aggregatorFilter);
+				aggregatorFilter === "All"
+					? true
+					: aggregatorFilter === AGGREGATOR_NA_FILTER
+						? !circuit.hasAggregator ||
+							!String(circuit.aggregatorName || "").trim()
+						: circuit.hasAggregator &&
+							circuit.aggregatorName === aggregatorFilter;
 
 			// Site State filter
 			const siteStateMatch =
@@ -145,7 +151,11 @@ function Reports() {
 		}
 
 		if (aggregatorFilter !== "All") {
-			parts.push(`${aggregatorFilter} Aggregator`);
+			parts.push(
+				aggregatorFilter === AGGREGATOR_NA_FILTER
+					? "N/A Aggregator"
+					: `${aggregatorFilter} Aggregator`,
+			);
 		}
 
 		if (siteStateFilter !== "All") {
@@ -1031,6 +1041,7 @@ function Reports() {
 									}}
 								>
 									<option value="All">All Aggregators</option>
+									<option value={AGGREGATOR_NA_FILTER}>N/A</option>
 									{getUniqueAggregators().map((aggregator) => (
 										<option key={aggregator} value={aggregator}>
 											{aggregator}
