@@ -296,36 +296,97 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 			left: 0,
 			right: 0,
 			bottom: 0,
-			backgroundColor: "rgba(0,0,0,0.5)",
+			backgroundColor: "rgba(0,0,0,0.6)",
+			backdropFilter: "blur(4px)",
 			display: "flex",
 			justifyContent: "center",
 			alignItems: "center",
 			zIndex: 1000,
+			animation: "fadeIn 0.2s ease-out",
 		}}
 	>
 		<div
 			style={{
 				backgroundColor: "white",
-				padding: "20px",
-				borderRadius: "8px",
+				padding: "0",
+				borderRadius: "12px",
 				width: "90%",
-				maxWidth: "400px",
+				maxWidth: "450px",
 				margin: "20px",
+				boxShadow: "0 20px 60px rgba(0,0,0,0.3), 0 0 1px rgba(0,0,0,0.1)",
+				maxHeight: "90vh",
+				overflowY: "auto",
+				display: "flex",
+				flexDirection: "column",
+				animation: "slideUp 0.3s ease-out",
 			}}
 		>
-			<h2
+			<div
 				style={{
-					marginBottom: "20px",
-					backgroundColor: "#2c3e50",
+					backgroundColor: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
+					backgroundImage: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
 					color: "white",
-					padding: "10px 20px",
-					borderRadius: "4px",
+					padding: "24px 24px",
+					borderRadius: "12px 12px 0 0",
 					textAlign: "center",
+					borderBottom: "3px solid #3498db",
+					display: "flex",
+					justifyContent: "space-between",
+					alignItems: "center",
+					position: "relative",
 				}}
 			>
-				Create New Site
-			</h2>
-			<form onSubmit={onSubmit}>
+				<h2
+					style={{
+						margin: "0",
+						fontSize: "22px",
+						fontWeight: "600",
+						letterSpacing: "0.5px",
+						flex: 1,
+					}}
+				>
+					Create New Site
+				</h2>
+				<button
+					onClick={onClose}
+					style={{
+						background: "none",
+						border: "none",
+						color: "white",
+						fontSize: "28px",
+						cursor: "pointer",
+						padding: "0 4px",
+						lineHeight: "1",
+						opacity: 0.8,
+						transition: "opacity 0.2s",
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+					}}
+					onMouseEnter={(e) => (e.target.style.opacity = "1")}
+					onMouseLeave={(e) => (e.target.style.opacity = "0.8")}
+				>
+					×
+				</button>
+			</div>
+			<form
+				onSubmit={onSubmit}
+				style={{ padding: "24px", flex: 1, overflowY: "auto" }}
+			>
+				<h3
+					style={{
+						margin: "0 0 16px 0",
+						fontSize: "14px",
+						fontWeight: "600",
+						color: "#2c3e50",
+						textTransform: "uppercase",
+						letterSpacing: "1px",
+						borderBottom: "2px solid #3498db",
+						paddingBottom: "8px",
+					}}
+				>
+					Basic Information
+				</h3>
 				<div style={{ marginBottom: "15px" }}>
 					<input
 						type="text"
@@ -395,7 +456,7 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 						required
 					/>
 				</div>
-				<div style={{ marginBottom: "15px" }}>
+				<div style={{ marginBottom: "16px" }}>
 					<label style={modalLabelStyle}>Customer Contract Date</label>
 					<input
 						type="date"
@@ -409,7 +470,7 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 						style={inputStyle}
 					/>
 				</div>
-				<div style={{ marginBottom: "15px" }}>
+				<div style={{ marginBottom: "20px" }}>
 					<label style={modalLabelStyle}>
 						Customer Contract Expiration Date
 					</label>
@@ -425,126 +486,138 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 						style={inputStyle}
 					/>
 				</div>
-				<div
+				<h3
 					style={{
-						marginBottom: "20px",
-						borderTop: "1px solid #eee",
-						paddingTop: "15px",
+						margin: "24px 0 16px 0",
+						fontSize: "14px",
+						fontWeight: "600",
+						color: "#2c3e50",
+						textTransform: "uppercase",
+						letterSpacing: "1px",
+						borderBottom: "2px solid #3498db",
+						paddingBottom: "8px",
 					}}
 				>
-					<h3
-						style={{
-							marginBottom: "15px",
-							color: "#2c3e50",
-							fontSize: "16px",
-						}}
-					>
-						Primary Contact
-					</h3>
-					<div style={{ marginBottom: "15px" }}>
-						<input
-							type="text"
-							placeholder="Primary Contact Name"
-							value={newSite.primaryName}
-							onChange={(e) =>
-								setNewSite({ ...newSite, primaryName: e.target.value })
-							}
-							style={inputStyle}
-							required
-						/>
-					</div>
-					<div style={{ marginBottom: "15px" }}>
-						<input
-							type="email"
-							placeholder="Primary Contact Email"
-							value={newSite.primaryEmail}
-							onChange={(e) =>
-								setNewSite({ ...newSite, primaryEmail: e.target.value })
-							}
-							style={inputStyle}
-							required
-						/>
-					</div>
-					<div style={{ marginBottom: "15px" }}>
-						<input
-							type="tel"
-							placeholder="Primary Contact Phone"
-							value={newSite.primaryPhone}
-							onChange={(e) =>
-								setNewSite({ ...newSite, primaryPhone: e.target.value })
-							}
-							style={inputStyle}
-							required
-						/>
-					</div>
+					Primary Contact
+				</h3>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Primary Contact Name"
+						value={newSite.primaryName}
+						onChange={(e) =>
+							setNewSite({ ...newSite, primaryName: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
 				</div>
-				<div
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="email"
+						placeholder="Primary Contact Email"
+						value={newSite.primaryEmail}
+						onChange={(e) =>
+							setNewSite({ ...newSite, primaryEmail: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "20px" }}>
+					<input
+						type="tel"
+						placeholder="Primary Contact Phone"
+						value={newSite.primaryPhone}
+						onChange={(e) =>
+							setNewSite({ ...newSite, primaryPhone: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<h3
 					style={{
-						marginBottom: "20px",
-						borderTop: "1px solid #eee",
-						paddingTop: "15px",
+						margin: "24px 0 16px 0",
+						fontSize: "14px",
+						fontWeight: "600",
+						color: "#2c3e50",
+						textTransform: "uppercase",
+						letterSpacing: "1px",
+						borderBottom: "2px solid #3498db",
+						paddingBottom: "8px",
 					}}
 				>
-					<h3
-						style={{
-							marginBottom: "15px",
-							color: "#2c3e50",
-							fontSize: "16px",
-						}}
-					>
-						Secondary Contact
-					</h3>
-					<div style={{ marginBottom: "15px" }}>
-						<input
-							type="text"
-							placeholder="Secondary Contact Name"
-							value={newSite.secondaryName}
-							onChange={(e) =>
-								setNewSite({ ...newSite, secondaryName: e.target.value })
-							}
-							style={inputStyle}
-						/>
-					</div>
-					<div style={{ marginBottom: "15px" }}>
-						<input
-							type="email"
-							placeholder="Secondary Contact Email"
-							value={newSite.secondaryEmail}
-							onChange={(e) =>
-								setNewSite({ ...newSite, secondaryEmail: e.target.value })
-							}
-							style={inputStyle}
-						/>
-					</div>
-					<div style={{ marginBottom: "15px" }}>
-						<input
-							type="tel"
-							placeholder="Secondary Contact Phone"
-							value={newSite.secondaryPhone}
-							onChange={(e) =>
-								setNewSite({ ...newSite, secondaryPhone: e.target.value })
-							}
-							style={inputStyle}
-						/>
-					</div>
+					Secondary Contact
+				</h3>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Secondary Contact Name"
+						value={newSite.secondaryName}
+						onChange={(e) =>
+							setNewSite({ ...newSite, secondaryName: e.target.value })
+						}
+						style={inputStyle}
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="email"
+						placeholder="Secondary Contact Email"
+						value={newSite.secondaryEmail}
+						onChange={(e) =>
+							setNewSite({ ...newSite, secondaryEmail: e.target.value })
+						}
+						style={inputStyle}
+					/>
+				</div>
+				<div style={{ marginBottom: "20px" }}>
+					<input
+						type="tel"
+						placeholder="Secondary Contact Phone"
+						value={newSite.secondaryPhone}
+						onChange={(e) =>
+							setNewSite({ ...newSite, secondaryPhone: e.target.value })
+						}
+						style={inputStyle}
+					/>
 				</div>
 				<div
 					style={{
 						display: "flex",
 						justifyContent: "flex-end",
-						gap: "10px",
+						gap: "12px",
+						borderTop: "1px solid #e5e7eb",
+						paddingTop: "20px",
+						marginTop: "20px",
 					}}
 				>
 					<button
 						type="button"
 						onClick={onClose}
-						style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}
+						style={{
+							...buttonStyle,
+							backgroundColor: "#9CA3AF",
+							flex: 1,
+							transition: "all 0.2s",
+						}}
+						onMouseEnter={(e) => (e.target.style.backgroundColor = "#8b92a0")}
+						onMouseLeave={(e) => (e.target.style.backgroundColor = "#9CA3AF")}
 					>
 						Cancel
 					</button>
 					<button
 						type="submit"
-						style={{ ...buttonStyle, backgroundColor: "#4299E1" }}
+						style={{
+							...buttonStyle,
+							backgroundColor: "#3498db",
+							flex: 1,
+							transition: "all 0.2s",
+							fontWeight: "600",
+						}}
+						onMouseEnter={(e) => (e.target.style.backgroundColor = "#2980b9")}
+						onMouseLeave={(e) => (e.target.style.backgroundColor = "#3498db")}
 					>
 						Create
 					</button>
@@ -567,36 +640,91 @@ const CreateProviderModal = ({
 			left: 0,
 			right: 0,
 			bottom: 0,
-			backgroundColor: "rgba(0,0,0,0.5)",
+			backgroundColor: "rgba(0,0,0,0.6)",
+			backdropFilter: "blur(4px)",
 			display: "flex",
 			justifyContent: "center",
 			alignItems: "center",
 			zIndex: 1000,
+			animation: "fadeIn 0.2s ease-out",
 		}}
 	>
 		<div
 			style={{
 				backgroundColor: "white",
-				padding: "20px",
-				borderRadius: "8px",
+				padding: "0",
+				borderRadius: "12px",
 				width: "90%",
-				maxWidth: "400px",
+				maxWidth: "450px",
 				margin: "20px",
+				boxShadow: "0 20px 60px rgba(0,0,0,0.3), 0 0 1px rgba(0,0,0,0.1)",
+				display: "flex",
+				flexDirection: "column",
+				animation: "slideUp 0.3s ease-out",
 			}}
 		>
-			<h2
+			<div
 				style={{
-					marginBottom: "20px",
-					backgroundColor: "#2c3e50",
+					backgroundColor: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
+					backgroundImage: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
 					color: "white",
-					padding: "10px 20px",
-					borderRadius: "4px",
+					padding: "24px 24px",
+					borderRadius: "12px 12px 0 0",
 					textAlign: "center",
+					borderBottom: "3px solid #3498db",
+					display: "flex",
+					justifyContent: "space-between",
+					alignItems: "center",
 				}}
 			>
-				Create New Provider
-			</h2>
-			<form onSubmit={onSubmit}>
+				<h2
+					style={{
+						margin: "0",
+						fontSize: "22px",
+						fontWeight: "600",
+						letterSpacing: "0.5px",
+						flex: 1,
+					}}
+				>
+					Create New Provider
+				</h2>
+				<button
+					onClick={onClose}
+					style={{
+						background: "none",
+						border: "none",
+						color: "white",
+						fontSize: "28px",
+						cursor: "pointer",
+						padding: "0 4px",
+						lineHeight: "1",
+						opacity: 0.8,
+						transition: "opacity 0.2s",
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+					}}
+					onMouseEnter={(e) => (e.target.style.opacity = "1")}
+					onMouseLeave={(e) => (e.target.style.opacity = "0.8")}
+				>
+					×
+				</button>
+			</div>
+			<form onSubmit={onSubmit} style={{ padding: "24px" }}>
+				<h3
+					style={{
+						margin: "0 0 16px 0",
+						fontSize: "14px",
+						fontWeight: "600",
+						color: "#2c3e50",
+						textTransform: "uppercase",
+						letterSpacing: "1px",
+						borderBottom: "2px solid #3498db",
+						paddingBottom: "8px",
+					}}
+				>
+					Provider Details
+				</h3>
 				<div style={{ marginBottom: "15px" }}>
 					<input
 						type="text"
@@ -669,7 +797,7 @@ const CreateProviderModal = ({
 						required
 					/>
 				</div>
-				<div style={{ marginBottom: "15px" }}>
+				<div style={{ marginBottom: "20px" }}>
 					<input
 						type="text"
 						placeholder="Provider Escalation List"
@@ -687,19 +815,36 @@ const CreateProviderModal = ({
 					style={{
 						display: "flex",
 						justifyContent: "flex-end",
-						gap: "10px",
+						gap: "12px",
+						borderTop: "1px solid #e5e7eb",
+						paddingTop: "20px",
 					}}
 				>
 					<button
 						type="button"
 						onClick={onClose}
-						style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}
+						style={{
+							...buttonStyle,
+							backgroundColor: "#9CA3AF",
+							flex: 1,
+							transition: "all 0.2s",
+						}}
+						onMouseEnter={(e) => (e.target.style.backgroundColor = "#8b92a0")}
+						onMouseLeave={(e) => (e.target.style.backgroundColor = "#9CA3AF")}
 					>
 						Cancel
 					</button>
 					<button
 						type="submit"
-						style={{ ...buttonStyle, backgroundColor: "#4299E1" }}
+						style={{
+							...buttonStyle,
+							backgroundColor: "#3498db",
+							flex: 1,
+							transition: "all 0.2s",
+							fontWeight: "600",
+						}}
+						onMouseEnter={(e) => (e.target.style.backgroundColor = "#2980b9")}
+						onMouseLeave={(e) => (e.target.style.backgroundColor = "#3498db")}
 					>
 						Create
 					</button>
@@ -733,38 +878,101 @@ const CreateCircuitModal = ({
 				left: 0,
 				right: 0,
 				bottom: 0,
-				backgroundColor: "rgba(0,0,0,0.5)",
+				backgroundColor: "rgba(0,0,0,0.6)",
+				backdropFilter: "blur(4px)",
 				display: "flex",
 				justifyContent: "center",
 				alignItems: "center",
 				zIndex: 1000,
+				animation: "fadeIn 0.2s ease-out",
 			}}
 		>
 			<div
 				style={{
 					backgroundColor: "white",
-					padding: "20px",
-					borderRadius: "8px",
+					padding: "0",
+					borderRadius: "12px",
 					width: "90%",
-					maxWidth: "400px",
+					maxWidth: "500px",
 					margin: "20px",
+					boxShadow: "0 20px 60px rgba(0,0,0,0.3), 0 0 1px rgba(0,0,0,0.1)",
 					maxHeight: "90vh",
 					overflowY: "auto",
+					display: "flex",
+					flexDirection: "column",
+					animation: "slideUp 0.3s ease-out",
 				}}
 			>
-				<h2
+				<div
 					style={{
-						marginBottom: "20px",
-						backgroundColor: "#2c3e50",
+						backgroundColor:
+							"linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
+						backgroundImage:
+							"linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
 						color: "white",
-						padding: "10px 20px",
-						borderRadius: "4px",
+						padding: "24px 24px",
+						borderRadius: "12px 12px 0 0",
 						textAlign: "center",
+						borderBottom: "3px solid #3498db",
+						display: "flex",
+						justifyContent: "space-between",
+						alignItems: "center",
+						position: "sticky",
+						top: 0,
+						zIndex: 1,
 					}}
 				>
-					Create New Circuit
-				</h2>
-				<form onSubmit={onSubmit}>
+					<h2
+						style={{
+							margin: "0",
+							fontSize: "22px",
+							fontWeight: "600",
+							letterSpacing: "0.5px",
+							flex: 1,
+						}}
+					>
+						Create New Circuit
+					</h2>
+					<button
+						onClick={onClose}
+						style={{
+							background: "none",
+							border: "none",
+							color: "white",
+							fontSize: "28px",
+							cursor: "pointer",
+							padding: "0 4px",
+							lineHeight: "1",
+							opacity: 0.8,
+							transition: "opacity 0.2s",
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center",
+						}}
+						onMouseEnter={(e) => (e.target.style.opacity = "1")}
+						onMouseLeave={(e) => (e.target.style.opacity = "0.8")}
+					>
+						×
+					</button>
+				</div>
+				<form
+					onSubmit={onSubmit}
+					style={{ padding: "24px", flex: 1, overflowY: "auto" }}
+				>
+					<h3
+						style={{
+							margin: "0 0 16px 0",
+							fontSize: "14px",
+							fontWeight: "600",
+							color: "#2c3e50",
+							textTransform: "uppercase",
+							letterSpacing: "1px",
+							borderBottom: "2px solid #3498db",
+							paddingBottom: "8px",
+						}}
+					>
+						Circuit Selection
+					</h3>
 					<div style={{ marginBottom: "15px" }}>
 						<select
 							value={newCircuit.site?.id || ""}
@@ -1247,7 +1455,7 @@ const CreateCircuitModal = ({
 							</div>
 						</div>
 					)}
-					<div style={{ marginBottom: "15px" }}>
+					<div style={{ marginBottom: "20px" }}>
 						<label
 							style={{
 								display: "block",
@@ -1270,18 +1478,40 @@ const CreateCircuitModal = ({
 						/>
 					</div>
 					<div
-						style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
+						style={{
+							display: "flex",
+							justifyContent: "flex-end",
+							gap: "12px",
+							borderTop: "1px solid #e5e7eb",
+							paddingTop: "20px",
+							marginTop: "20px",
+						}}
 					>
 						<button
 							type="button"
 							onClick={onClose}
-							style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}
+							style={{
+								...buttonStyle,
+								backgroundColor: "#9CA3AF",
+								flex: 1,
+								transition: "all 0.2s",
+							}}
+							onMouseEnter={(e) => (e.target.style.backgroundColor = "#8b92a0")}
+							onMouseLeave={(e) => (e.target.style.backgroundColor = "#9CA3AF")}
 						>
 							Cancel
 						</button>
 						<button
 							type="submit"
-							style={{ ...buttonStyle, backgroundColor: "#4299E1" }}
+							style={{
+								...buttonStyle,
+								backgroundColor: "#3498db",
+								flex: 1,
+								transition: "all 0.2s",
+								fontWeight: "600",
+							}}
+							onMouseEnter={(e) => (e.target.style.backgroundColor = "#2980b9")}
+							onMouseLeave={(e) => (e.target.style.backgroundColor = "#3498db")}
 						>
 							Create
 						</button>
@@ -1300,36 +1530,96 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 			left: 0,
 			right: 0,
 			bottom: 0,
-			backgroundColor: "rgba(0,0,0,0.5)",
+			backgroundColor: "rgba(0,0,0,0.6)",
+			backdropFilter: "blur(4px)",
 			display: "flex",
 			justifyContent: "center",
 			alignItems: "center",
 			zIndex: 1000,
+			animation: "fadeIn 0.2s ease-out",
 		}}
 	>
 		<div
 			style={{
 				backgroundColor: "white",
-				padding: "20px",
-				borderRadius: "8px",
+				padding: "0",
+				borderRadius: "12px",
 				width: "90%",
-				maxWidth: "400px",
+				maxWidth: "450px",
 				margin: "20px",
+				boxShadow: "0 20px 60px rgba(0,0,0,0.3), 0 0 1px rgba(0,0,0,0.1)",
+				maxHeight: "90vh",
+				overflowY: "auto",
+				display: "flex",
+				flexDirection: "column",
+				animation: "slideUp 0.3s ease-out",
 			}}
 		>
-			<h2
+			<div
 				style={{
-					marginBottom: "20px",
-					backgroundColor: "#2c3e50",
+					backgroundColor: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
+					backgroundImage: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
 					color: "white",
-					padding: "10px 20px",
-					borderRadius: "4px",
+					padding: "24px 24px",
+					borderRadius: "12px 12px 0 0",
 					textAlign: "center",
+					borderBottom: "3px solid #3498db",
+					display: "flex",
+					justifyContent: "space-between",
+					alignItems: "center",
 				}}
 			>
-				Edit Site
-			</h2>
-			<form onSubmit={onSubmit}>
+				<h2
+					style={{
+						margin: "0",
+						fontSize: "22px",
+						fontWeight: "600",
+						letterSpacing: "0.5px",
+						flex: 1,
+					}}
+				>
+					Edit Site
+				</h2>
+				<button
+					onClick={onClose}
+					style={{
+						background: "none",
+						border: "none",
+						color: "white",
+						fontSize: "28px",
+						cursor: "pointer",
+						padding: "0 4px",
+						lineHeight: "1",
+						opacity: 0.8,
+						transition: "opacity 0.2s",
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+					}}
+					onMouseEnter={(e) => (e.target.style.opacity = "1")}
+					onMouseLeave={(e) => (e.target.style.opacity = "0.8")}
+				>
+					×
+				</button>
+			</div>
+			<form
+				onSubmit={onSubmit}
+				style={{ padding: "24px", flex: 1, overflowY: "auto" }}
+			>
+				<h3
+					style={{
+						margin: "0 0 16px 0",
+						fontSize: "14px",
+						fontWeight: "600",
+						color: "#2c3e50",
+						textTransform: "uppercase",
+						letterSpacing: "1px",
+						borderBottom: "2px solid #3498db",
+						paddingBottom: "8px",
+					}}
+				>
+					Basic Information
+				</h3>
 				<div style={{ marginBottom: "15px" }}>
 					<input
 						type="text"
@@ -1423,15 +1713,19 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 				<div
 					style={{
 						marginBottom: "20px",
-						borderTop: "1px solid #eee",
-						paddingTop: "15px",
+						paddingTop: "0",
 					}}
 				>
 					<h3
 						style={{
-							marginBottom: "15px",
+							margin: "24px 0 16px 0",
+							fontSize: "14px",
+							fontWeight: "600",
 							color: "#2c3e50",
-							fontSize: "16px",
+							textTransform: "uppercase",
+							letterSpacing: "1px",
+							borderBottom: "2px solid #3498db",
+							paddingBottom: "8px",
 						}}
 					>
 						Primary Contact
@@ -1460,7 +1754,7 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 							required
 						/>
 					</div>
-					<div style={{ marginBottom: "15px" }}>
+					<div style={{ marginBottom: "20px" }}>
 						<input
 							type="tel"
 							placeholder="Primary Contact Phone"
@@ -1476,15 +1770,19 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 				<div
 					style={{
 						marginBottom: "20px",
-						borderTop: "1px solid #eee",
-						paddingTop: "15px",
+						paddingTop: "0",
 					}}
 				>
 					<h3
 						style={{
-							marginBottom: "15px",
+							margin: "24px 0 16px 0",
+							fontSize: "14px",
+							fontWeight: "600",
 							color: "#2c3e50",
-							fontSize: "16px",
+							textTransform: "uppercase",
+							letterSpacing: "1px",
+							borderBottom: "2px solid #3498db",
+							paddingBottom: "8px",
 						}}
 					>
 						Secondary Contact
@@ -1511,7 +1809,7 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 							style={inputStyle}
 						/>
 					</div>
-					<div style={{ marginBottom: "15px" }}>
+					<div style={{ marginBottom: "20px" }}>
 						<input
 							type="tel"
 							placeholder="Secondary Contact Phone"
@@ -1527,19 +1825,37 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 					style={{
 						display: "flex",
 						justifyContent: "flex-end",
-						gap: "10px",
+						gap: "12px",
+						borderTop: "1px solid #e5e7eb",
+						paddingTop: "20px",
+						marginTop: "20px",
 					}}
 				>
 					<button
 						type="button"
 						onClick={onClose}
-						style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}
+						style={{
+							...buttonStyle,
+							backgroundColor: "#9CA3AF",
+							flex: 1,
+							transition: "all 0.2s",
+						}}
+						onMouseEnter={(e) => (e.target.style.backgroundColor = "#8b92a0")}
+						onMouseLeave={(e) => (e.target.style.backgroundColor = "#9CA3AF")}
 					>
 						Cancel
 					</button>
 					<button
 						type="submit"
-						style={{ ...buttonStyle, backgroundColor: "#4299E1" }}
+						style={{
+							...buttonStyle,
+							backgroundColor: "#3498db",
+							flex: 1,
+							transition: "all 0.2s",
+							fontWeight: "600",
+						}}
+						onMouseEnter={(e) => (e.target.style.backgroundColor = "#2980b9")}
+						onMouseLeave={(e) => (e.target.style.backgroundColor = "#3498db")}
 					>
 						Save
 					</button>
@@ -1557,51 +1873,92 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 			left: 0,
 			right: 0,
 			bottom: 0,
-			backgroundColor: "rgba(0,0,0,0.5)",
+			backgroundColor: "rgba(0,0,0,0.6)",
+			backdropFilter: "blur(4px)",
 			display: "flex",
 			justifyContent: "center",
 			alignItems: "center",
 			zIndex: 1000,
+			animation: "fadeIn 0.2s ease-out",
 		}}
 	>
 		<div
 			style={{
 				backgroundColor: "white",
-				padding: "20px",
-				borderRadius: "8px",
+				padding: "0",
+				borderRadius: "12px",
 				width: "90%",
-				maxWidth: "400px",
+				maxWidth: "450px",
 				margin: "20px",
+				boxShadow: "0 20px 60px rgba(0,0,0,0.3), 0 0 1px rgba(0,0,0,0.1)",
+				display: "flex",
+				flexDirection: "column",
+				animation: "slideUp 0.3s ease-out",
 			}}
 		>
-			<h2
+			<div
 				style={{
-					marginBottom: "20px",
-					backgroundColor: "#2c3e50",
+					backgroundColor: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
+					backgroundImage: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
 					color: "white",
-					padding: "10px 20px",
-					borderRadius: "4px",
+					padding: "24px 24px",
+					borderRadius: "12px 12px 0 0",
 					textAlign: "center",
+					borderBottom: "3px solid #3498db",
+					display: "flex",
+					justifyContent: "space-between",
+					alignItems: "center",
 				}}
 			>
-				Edit Provider
-			</h2>
-			<form onSubmit={onSubmit}>
+				<h2
+					style={{
+						margin: "0",
+						fontSize: "22px",
+						fontWeight: "600",
+						letterSpacing: "0.5px",
+						flex: 1,
+					}}
+				>
+					Edit Provider
+				</h2>
+				<button
+					onClick={onClose}
+					style={{
+						background: "none",
+						border: "none",
+						color: "white",
+						fontSize: "28px",
+						cursor: "pointer",
+						padding: "0 4px",
+						lineHeight: "1",
+						opacity: 0.8,
+						transition: "opacity 0.2s",
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+					}}
+					onMouseEnter={(e) => (e.target.style.opacity = "1")}
+					onMouseLeave={(e) => (e.target.style.opacity = "0.8")}
+				>
+					×
+				</button>
+			</div>
+			<form onSubmit={onSubmit} style={{ padding: "24px" }}>
+				<h3
+					style={{
+						margin: "0 0 16px 0",
+						fontSize: "14px",
+						fontWeight: "600",
+						color: "#2c3e50",
+						textTransform: "uppercase",
+						letterSpacing: "1px",
+						borderBottom: "2px solid #3498db",
+						paddingBottom: "8px",
+					}}
+				>
+					Provider Details
+				</h3>
 				<div style={{ marginBottom: "15px" }}>
-					<label
-						style={{
-							display: "block",
-							marginBottom: "5px",
-							fontSize: "14px",
-							fontWeight: "500",
-							color: "#3498db",
-							backgroundColor: "#f8f9fa",
-							padding: "3px 5px",
-							borderRadius: "3px",
-						}}
-					>
-						Name
-					</label>
 					<input
 						type="text"
 						placeholder="Name"
@@ -1739,7 +2096,7 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 						required
 					/>
 				</div>
-				<div style={{ marginBottom: "15px" }}>
+				<div style={{ marginBottom: "20px" }}>
 					<label
 						style={{
 							display: "block",
@@ -1771,19 +2128,36 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 					style={{
 						display: "flex",
 						justifyContent: "flex-end",
-						gap: "10px",
+						gap: "12px",
+						borderTop: "1px solid #e5e7eb",
+						paddingTop: "20px",
 					}}
 				>
 					<button
 						type="button"
 						onClick={onClose}
-						style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}
+						style={{
+							...buttonStyle,
+							backgroundColor: "#9CA3AF",
+							flex: 1,
+							transition: "all 0.2s",
+						}}
+						onMouseEnter={(e) => (e.target.style.backgroundColor = "#8b92a0")}
+						onMouseLeave={(e) => (e.target.style.backgroundColor = "#9CA3AF")}
 					>
 						Cancel
 					</button>
 					<button
 						type="submit"
-						style={{ ...buttonStyle, backgroundColor: "#4299E1" }}
+						style={{
+							...buttonStyle,
+							backgroundColor: "#3498db",
+							flex: 1,
+							transition: "all 0.2s",
+							fontWeight: "600",
+						}}
+						onMouseEnter={(e) => (e.target.style.backgroundColor = "#2980b9")}
+						onMouseLeave={(e) => (e.target.style.backgroundColor = "#3498db")}
 					>
 						Save
 					</button>
@@ -1808,38 +2182,99 @@ const EditCircuitModal = ({
 			left: 0,
 			right: 0,
 			bottom: 0,
-			backgroundColor: "rgba(0,0,0,0.5)",
+			backgroundColor: "rgba(0,0,0,0.6)",
+			backdropFilter: "blur(4px)",
 			display: "flex",
 			justifyContent: "center",
 			alignItems: "center",
 			zIndex: 1000,
+			animation: "fadeIn 0.2s ease-out",
 		}}
 	>
 		<div
 			style={{
 				backgroundColor: "white",
-				padding: "20px",
-				borderRadius: "8px",
+				padding: "0",
+				borderRadius: "12px",
 				width: "90%",
-				maxWidth: "400px",
+				maxWidth: "500px",
 				margin: "20px",
+				boxShadow: "0 20px 60px rgba(0,0,0,0.3), 0 0 1px rgba(0,0,0,0.1)",
 				maxHeight: "90vh",
 				overflowY: "auto",
+				display: "flex",
+				flexDirection: "column",
+				animation: "slideUp 0.3s ease-out",
 			}}
 		>
-			<h2
+			<div
 				style={{
-					marginBottom: "20px",
-					backgroundColor: "#2c3e50",
+					backgroundColor: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
+					backgroundImage: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
 					color: "white",
-					padding: "10px 20px",
-					borderRadius: "4px",
+					padding: "24px 24px",
+					borderRadius: "12px 12px 0 0",
 					textAlign: "center",
+					borderBottom: "3px solid #3498db",
+					display: "flex",
+					justifyContent: "space-between",
+					alignItems: "center",
+					position: "sticky",
+					top: 0,
+					zIndex: 1,
 				}}
 			>
-				Edit Circuit
-			</h2>
-			<form onSubmit={onSubmit}>
+				<h2
+					style={{
+						margin: "0",
+						fontSize: "22px",
+						fontWeight: "600",
+						letterSpacing: "0.5px",
+						flex: 1,
+					}}
+				>
+					Edit Circuit
+				</h2>
+				<button
+					onClick={onClose}
+					style={{
+						background: "none",
+						border: "none",
+						color: "white",
+						fontSize: "28px",
+						cursor: "pointer",
+						padding: "0 4px",
+						lineHeight: "1",
+						opacity: 0.8,
+						transition: "opacity 0.2s",
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+					}}
+					onMouseEnter={(e) => (e.target.style.opacity = "1")}
+					onMouseLeave={(e) => (e.target.style.opacity = "0.8")}
+				>
+					×
+				</button>
+			</div>
+			<form
+				onSubmit={onSubmit}
+				style={{ padding: "24px", flex: 1, overflowY: "auto" }}
+			>
+				<h3
+					style={{
+						margin: "0 0 16px 0",
+						fontSize: "14px",
+						fontWeight: "600",
+						color: "#2c3e50",
+						textTransform: "uppercase",
+						letterSpacing: "1px",
+						borderBottom: "2px solid #3498db",
+						paddingBottom: "8px",
+					}}
+				>
+					Circuit Selection
+				</h3>
 				<div style={{ marginBottom: "15px" }}>
 					<select
 						value={circuit.site?.id || ""}
@@ -2305,7 +2740,7 @@ const EditCircuitModal = ({
 						</div>
 					</div>
 				)}
-				<div style={{ marginBottom: "15px" }}>
+				<div style={{ marginBottom: "20px" }}>
 					<label
 						style={{
 							display: "block",
@@ -2326,18 +2761,40 @@ const EditCircuitModal = ({
 					/>
 				</div>
 				<div
-					style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}
+					style={{
+						display: "flex",
+						justifyContent: "flex-end",
+						gap: "12px",
+						borderTop: "1px solid #e5e7eb",
+						paddingTop: "20px",
+						marginTop: "20px",
+					}}
 				>
 					<button
 						type="button"
 						onClick={onClose}
-						style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}
+						style={{
+							...buttonStyle,
+							backgroundColor: "#9CA3AF",
+							flex: 1,
+							transition: "all 0.2s",
+						}}
+						onMouseEnter={(e) => (e.target.style.backgroundColor = "#8b92a0")}
+						onMouseLeave={(e) => (e.target.style.backgroundColor = "#9CA3AF")}
 					>
 						Cancel
 					</button>
 					<button
 						type="submit"
-						style={{ ...buttonStyle, backgroundColor: "#4299E1" }}
+						style={{
+							...buttonStyle,
+							backgroundColor: "#3498db",
+							flex: 1,
+							transition: "all 0.2s",
+							fontWeight: "600",
+						}}
+						onMouseEnter={(e) => (e.target.style.backgroundColor = "#2980b9")}
+						onMouseLeave={(e) => (e.target.style.backgroundColor = "#3498db")}
 					>
 						Save
 					</button>
@@ -3390,6 +3847,26 @@ function Admin() {
 				width: "100%",
 			}}
 		>
+			<style>{`
+				@keyframes fadeIn {
+					from {
+						opacity: 0;
+					}
+					to {
+						opacity: 1;
+					}
+				}
+				@keyframes slideUp {
+					from {
+						transform: translateY(30px);
+						opacity: 0;
+					}
+					to {
+						transform: translateY(0);
+						opacity: 1;
+					}
+				}
+			`}</style>
 			<nav
 				className="app-side-nav"
 				style={{
