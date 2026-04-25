@@ -39,6 +39,34 @@ const parseDateInputValue = (value) => {
 	return new Date(year, month - 1, day);
 };
 
+const formatDateForInput = (date) => {
+	if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "";
+
+	const year = date.getFullYear();
+	const month = String(date.getMonth() + 1).padStart(2, "0");
+	const day = String(date.getDate()).padStart(2, "0");
+
+	return `${year}-${month}-${day}`;
+};
+
+const addYearsFromToday = (years) => {
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+	today.setFullYear(today.getFullYear() + years);
+	return formatDateForInput(today);
+};
+
+const inferRenewalTerm = (renewalCircuitExpirationDate) => {
+	if (!renewalCircuitExpirationDate) return "other";
+
+	const matchingTerm = [1, 2, 3].find(
+		(termYears) =>
+			addYearsFromToday(termYears) === renewalCircuitExpirationDate,
+	);
+
+	return matchingTerm ? String(matchingTerm) : "other";
+};
+
 const roundCurrency = (value) => {
 	if (!Number.isFinite(value)) return null;
 	return Math.round(value * 100) / 100;
@@ -159,6 +187,14 @@ const RenewalAnalysisModal = ({
 	onSave,
 	saving,
 }) => {
+	const [renewalTerm, setRenewalTerm] = useState(() =>
+		inferRenewalTerm(circuit.renewalCircuitExpirationDate),
+	);
+
+	useEffect(() => {
+		setRenewalTerm(inferRenewalTerm(circuit.renewalCircuitExpirationDate));
+	}, [circuit.id, circuit.renewalCircuitExpirationDate]);
+
 	const preview = useMemo(() => buildRenewalPreview(circuit), [circuit]);
 	const isCostComparisonAvailable =
 		preview.costFromCustomerExpirationToRenewalExpiration != null &&
@@ -185,6 +221,20 @@ const RenewalAnalysisModal = ({
 				...circuit.site,
 				[field]: value,
 			},
+		});
+	};
+
+	const handleRenewalTermChange = (event) => {
+		const selectedTerm = event.target.value;
+		setRenewalTerm(selectedTerm);
+
+		if (selectedTerm === "other") {
+			return;
+		}
+
+		onChange({
+			...circuit,
+			renewalCircuitExpirationDate: addYearsFromToday(Number(selectedTerm)),
 		});
 	};
 
@@ -278,18 +328,39 @@ const RenewalAnalysisModal = ({
 								</div>
 								<div>
 									<label style={inputLabelStyle}>
+										Renewal Circuit Expiration Term
+									</label>
+									<select
+										value={renewalTerm}
+										onChange={handleRenewalTermChange}
+										style={inputStyle}
+									>
+										<option value="1">1 Year</option>
+										<option value="2">2 Years</option>
+										<option value="3">3 Years</option>
+										<option value="other">Other</option>
+									</select>
+								</div>
+								<div>
+									<label style={inputLabelStyle}>
 										Renewal Circuit Expiration Date
 									</label>
 									<input
 										type="date"
 										value={circuit.renewalCircuitExpirationDate || ""}
+										readOnly={renewalTerm !== "other"}
+										disabled={renewalTerm !== "other"}
 										onChange={(event) =>
 											onChange({
 												...circuit,
 												renewalCircuitExpirationDate: event.target.value,
 											})
 										}
-										style={inputStyle}
+										style={
+											renewalTerm !== "other"
+												? { ...inputStyle, ...readOnlyInputStyle }
+												: inputStyle
+										}
 									/>
 								</div>
 							</div>
