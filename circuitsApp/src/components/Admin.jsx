@@ -3294,13 +3294,14 @@ function Admin() {
 	const searchInputStyle = {
 		width: "100%",
 		padding: "8px 12px",
-		marginBottom: "20px",
-		fontSize: "16px",
-		border: "1px solid #3498db",
-		borderRadius: "4px",
-		backgroundColor: "#34495e",
-		color: "#ffffff",
+		marginBottom: "var(--spacing-lg)",
+		fontSize: "var(--font-size-base)",
+		border: `1px solid var(--color-primary)`,
+		borderRadius: "var(--radius-md)",
+		backgroundColor: "white",
+		color: "var(--color-text-dark)",
 		outline: "none",
+		transition: `all var(--transition-fast)`,
 	};
 
 	// Add sort function
@@ -3414,7 +3415,7 @@ function Admin() {
 					>
 						<table style={{ width: "100%", borderCollapse: "collapse" }}>
 							<thead style={{ position: "sticky", top: 0, zIndex: 1 }}>
-								<tr style={{ backgroundColor: "#2c3e50" }}>
+								<tr>
 									<th
 										onClick={() => onSort("name")}
 										style={getSortableHeaderStyle("name")}
@@ -3555,7 +3556,7 @@ function Admin() {
 					>
 						<table style={{ width: "100%", borderCollapse: "collapse" }}>
 							<thead style={{ position: "sticky", top: 0, zIndex: 1 }}>
-								<tr style={{ backgroundColor: "#2c3e50" }}>
+								<tr>
 									<th
 										onClick={() => onSort("name")}
 										style={getSortableHeaderStyle("name")}
@@ -3680,7 +3681,7 @@ function Admin() {
 					>
 						<table style={{ width: "100%", borderCollapse: "collapse" }}>
 							<thead style={{ position: "sticky", top: 0, zIndex: 1 }}>
-								<tr style={{ backgroundColor: "#2c3e50" }}>
+								<tr>
 									<th
 										onClick={() => onSort("site.name")}
 										style={getSortableHeaderStyle("site.name")}
@@ -3807,27 +3808,30 @@ function Admin() {
 		}
 
 		return (
-			<div style={{ textAlign: "center", marginTop: "10px" }}>
+			<div style={{ textAlign: "center", marginTop: "var(--spacing-lg)" }}>
 				<div
 					style={{
 						display: "flex",
 						alignItems: "center",
 						justifyContent: "center",
-						gap: "20px",
-						marginBottom: "20px",
+						gap: "var(--spacing-lg)",
+						marginBottom: "var(--spacing-lg)",
 					}}
 				>
-					<span style={{ fontSize: "36px", color: "#3498db" }}>←</span>
+					<span style={{ fontSize: "36px", color: "var(--color-primary)" }}>
+						←
+					</span>
 					<img
 						src="src/images/Access.png"
 						alt="Access Parks Logo"
 						style={{
 							width: "100px",
 							maxWidth: "100%",
+							filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.1))",
 						}}
 					/>
 				</div>
-				<h1 style={{ color: "#2c3e50" }}>
+				<h1 style={{ color: "var(--color-dark-bg)" }}>
 					Please select an option from the menu
 				</h1>
 			</div>
@@ -3843,8 +3847,9 @@ function Admin() {
 		<div
 			className="app-side-page"
 			style={{
-				paddingTop: "50px",
 				width: "100%",
+				backgroundColor: "var(--color-surface)",
+				minHeight: "100vh",
 			}}
 		>
 			<style>{`
@@ -3870,11 +3875,13 @@ function Admin() {
 			<nav
 				className="app-side-nav"
 				style={{
-					width: "120px",
-					minHeight: "calc(100vh - 50px)",
-					backgroundColor: "#2c3e50",
-					padding: "20px",
+					width: "140px",
+					minHeight: "calc(100vh - 70px)",
+					backgroundColor: "var(--color-dark-bg)",
+					padding: "var(--spacing-lg)",
 					zIndex: 999,
+					borderRadius: "var(--radius-lg)",
+					boxShadow: "var(--shadow-md)",
 				}}
 			>
 				<ul
@@ -3935,7 +3942,8 @@ function Admin() {
 			<div
 				className="app-side-page-content"
 				style={{
-					padding: "20px",
+					padding: "var(--spacing-lg)",
+					paddingTop: "60px",
 					flex: 1,
 					minWidth: 0,
 				}}
@@ -4012,13 +4020,14 @@ function Admin() {
 function NoteModal({ note, onClose }) {
 	return (
 		<div
+			className="modal-overlay"
 			style={{
 				position: "fixed",
 				top: 0,
 				left: 0,
 				right: 0,
 				bottom: 0,
-				backgroundColor: "rgba(0,0,0,0.5)",
+				backgroundColor: "rgba(0,0,0,0.6)",
 				display: "flex",
 				alignItems: "center",
 				justifyContent: "center",
@@ -4026,19 +4035,25 @@ function NoteModal({ note, onClose }) {
 			}}
 		>
 			<div
+				className="modal-content"
 				style={{
 					backgroundColor: "white",
-					padding: "20px",
-					borderRadius: "8px",
+					padding: "var(--spacing-lg)",
+					borderRadius: "var(--radius-lg)",
 					maxWidth: "500px",
 					width: "90%",
+					boxShadow: "var(--shadow-xl)",
 				}}
 			>
-				<h3>Notes</h3>
-				<p>{note}</p>
+				<h3 style={{ marginTop: 0, color: "var(--color-dark-bg)" }}>Notes</h3>
+				<p style={{ color: "var(--color-text-light)" }}>{note}</p>
 				<button
 					onClick={onClose}
-					style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}
+					className="btn btn-ghost"
+					style={{
+						...buttonStyle,
+						backgroundColor: "var(--color-text-muted)",
+					}}
 				>
 					Close
 				</button>
@@ -4048,56 +4063,66 @@ function NoteModal({ note, onClose }) {
 }
 
 const headerStyle = {
-	padding: "12px",
+	padding: "var(--spacing-lg)",
 	textAlign: "center",
-	borderBottom: "2px solid #dee2e6",
-	backgroundColor: "#2c3e50",
-	color: "#ffffff",
-	fontWeight: "600",
-	fontSize: "14px",
-	boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+	borderBottom: `2px solid var(--color-border-light)`,
+	backgroundColor: "transparent",
+	color: "white",
+	fontWeight: "700",
+	fontSize: "var(--font-size-sm)",
+	textTransform: "uppercase",
+	letterSpacing: "0.5px",
+	boxShadow: "none",
 };
 
 const cellStyle = {
-	padding: "12px",
-	fontSize: "13px",
+	padding: "var(--spacing-lg)",
+	fontSize: "var(--font-size-base)",
+	color: "var(--color-text-dark)",
+	fontWeight: "500",
+	backgroundColor: "white",
 };
 
 const buttonStyle = {
 	padding: "6px 12px",
 	margin: "0 4px",
 	border: "none",
-	borderRadius: "4px",
+	borderRadius: "var(--radius-md)",
 	color: "white",
 	cursor: "pointer",
+	transition: `all var(--transition-base)`,
 };
 
 const iconButtonStyle = {
 	padding: "4px 8px",
 	border: "none",
-	borderRadius: "4px",
+	borderRadius: "var(--radius-md)",
 	backgroundColor: "transparent",
 	cursor: "pointer",
 	fontSize: "20px",
+	transition: `all var(--transition-fast)`,
 };
 
 const inputStyle = {
 	width: "100%",
 	padding: "8px",
-	border: "1px solid #D1D5DB",
-	borderRadius: "4px",
-	fontSize: "12px",
+	border: `1px solid var(--color-border-light)`,
+	borderRadius: "var(--radius-md)",
+	fontSize: "var(--font-size-sm)",
+	backgroundColor: "white",
+	color: "var(--color-text-dark)",
+	transition: `all var(--transition-fast)`,
 };
 
 const modalLabelStyle = {
 	display: "block",
 	marginBottom: "5px",
-	fontSize: "14px",
+	fontSize: "var(--font-size-base)",
 	fontWeight: "500",
-	color: "#3498db",
-	backgroundColor: "#f8f9fa",
+	color: "var(--color-primary)",
+	backgroundColor: "var(--color-surface-light)",
 	padding: "3px 5px",
-	borderRadius: "3px",
+	borderRadius: "var(--radius-sm)",
 };
 
 export default Admin;

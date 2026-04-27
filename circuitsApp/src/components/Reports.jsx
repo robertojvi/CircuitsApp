@@ -1375,7 +1375,14 @@ function Reports() {
 							{getFilteredCircuits().length > 0 ? (
 								<table style={{ width: "100%", borderCollapse: "collapse" }}>
 									<thead>
-										<tr style={{ backgroundColor: "#2c3e50", color: "white" }}>
+										<tr
+											style={{
+												background:
+													"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
+												borderBottom: "3px solid var(--color-primary)",
+												color: "white",
+											}}
+										>
 											<th style={tableHeaderStyle}>Venue Name</th>
 											<th style={tableHeaderStyle}>Site Type</th>
 											<th style={tableHeaderStyle}>Provider</th>
@@ -1647,7 +1654,14 @@ function Reports() {
 						{expiringCircuits.length > 0 ? (
 							<table style={{ width: "100%", borderCollapse: "collapse" }}>
 								<thead>
-									<tr style={{ backgroundColor: "#2c3e50", color: "white" }}>
+									<tr
+										style={{
+											background:
+												"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
+											borderBottom: "3px solid var(--color-primary)",
+											color: "white",
+										}}
+									>
 										<th style={tableHeaderStyle}>Venue Name</th>
 										<th style={tableHeaderStyle}>Address</th>
 										<th style={tableHeaderStyle}>Provider</th>
@@ -2073,7 +2087,14 @@ function Reports() {
 						{renewalNoticeCircuits.length > 0 ? (
 							<table style={{ width: "100%", borderCollapse: "collapse" }}>
 								<thead>
-									<tr style={{ backgroundColor: "#2c3e50", color: "white" }}>
+									<tr
+										style={{
+											background:
+												"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
+											borderBottom: "3px solid var(--color-primary)",
+											color: "white",
+										}}
+									>
 										<th style={tableHeaderStyle}>Venue Name</th>
 										<th style={tableHeaderStyle}>Address</th>
 										<th style={tableHeaderStyle}>Provider</th>
@@ -2652,7 +2673,14 @@ function Reports() {
 						{expiredCircuits.length > 0 ? (
 							<table style={{ width: "100%", borderCollapse: "collapse" }}>
 								<thead>
-									<tr style={{ backgroundColor: "#2c3e50", color: "white" }}>
+									<tr
+										style={{
+											background:
+												"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
+											borderBottom: "3px solid var(--color-primary)",
+											color: "white",
+										}}
+									>
 										<th
 											style={{
 												...tableHeaderStyle,
@@ -2950,47 +2978,57 @@ function Reports() {
 
 	const responsiveChartContainer = {
 		width: "96%",
-		padding: "15px",
+		padding: "var(--spacing-md)",
 		"@media (max-width: 768px)": {
-			padding: "10px",
+			padding: "var(--spacing-sm)",
 		},
 	};
 
 	const responsiveNavStyle = {
-		width: "150px",
-		minHeight: "calc(100vh - 50px)",
-		backgroundColor: "#2c3e50",
-		padding: "20px",
+		width: "180px",
+		minHeight: "calc(100vh - 70px)",
+		backgroundColor: "var(--color-dark-bg)",
+		padding: "var(--spacing-lg)",
 		zIndex: 999,
+		borderRadius: "var(--radius-lg)",
+		boxShadow: "var(--shadow-md)",
 	};
 
 	const responsiveContentStyle = {
-		padding: "20px",
+		padding: "var(--spacing-lg)",
+		paddingTop: "60px",
 		flex: 1,
 		minWidth: 0,
 	};
 
 	const tableHeaderStyle = {
-		padding: "12px",
+		padding: "var(--spacing-lg)",
 		textAlign: "left",
-		borderBottom: "2px solid #dee2e6",
-		fontWeight: "600",
-		fontSize: "14px",
+		borderBottom: `3px solid var(--color-primary)`,
+		fontWeight: "700",
+		fontSize: "var(--font-size-sm)",
+		backgroundColor: "transparent",
+		color: "white",
+		textTransform: "uppercase",
+		letterSpacing: "0.5px",
 	};
 
 	const tableCellStyle = {
-		padding: "12px",
+		padding: "var(--spacing-lg)",
 		textAlign: "left",
-		fontSize: "14px",
-		color: "#2c3e50", // Dark blue text for better readability
+		fontSize: "var(--font-size-base)",
+		color: "var(--color-text-dark)",
+		fontWeight: "500",
+		backgroundColor: "white",
 	};
 
 	return (
 		<div
 			className="app-side-page"
 			style={{
-				paddingTop: "50px",
 				width: "100%",
+				backgroundColor: "var(--color-surface)",
+				minHeight: "100vh",
 			}}
 		>
 			<nav className="app-side-nav" style={responsiveNavStyle}>

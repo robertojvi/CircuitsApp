@@ -26,31 +26,6 @@ function Login() {
 		}
 	};
 
-	const inputStyle = {
-		width: "100%",
-		padding: "12px",
-		marginBottom: "15px",
-		border: "1px solid #ccc",
-		borderRadius: "4px",
-		fontSize: "14px",
-		boxSizing: "border-box",
-		backgroundColor: "#f9f9f9",
-		color: "#1a1a1a",
-	};
-
-	const buttonStyle = {
-		width: "100%",
-		padding: "12px",
-		backgroundColor: "#4299E1",
-		color: "white",
-		border: "none",
-		borderRadius: "4px",
-		fontSize: "16px",
-		fontWeight: "600",
-		cursor: "pointer",
-		marginTop: "10px",
-	};
-
 	return (
 		<div
 			style={{
@@ -58,28 +33,17 @@ function Login() {
 				justifyContent: "center",
 				alignItems: "center",
 				minHeight: "100vh",
-				backgroundColor: "#1a1a1a",
-				backgroundImage: "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)",
-				padding: "20px",
+				background:
+					"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
+				padding: "var(--spacing-lg)",
 			}}
 		>
-			<div
-				style={{
-					backgroundColor: "#ffffff",
-					color: "#1a1a1a",
-					padding: "40px",
-					borderRadius: "8px",
-					boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
-					width: "100%",
-					maxWidth: "400px",
-					border: "1px solid rgba(255,255,255,0.1)",
-				}}
-			>
+			<div className="card" style={{ maxWidth: "420px" }}>
 				<div
 					style={{
 						display: "flex",
 						justifyContent: "center",
-						marginBottom: "20px",
+						marginBottom: "var(--spacing-xl)",
 					}}
 				>
 					<img
@@ -89,6 +53,7 @@ function Login() {
 							height: "80px",
 							width: "auto",
 							objectFit: "contain",
+							filter: "drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))",
 						}}
 					/>
 				</div>
@@ -96,56 +61,36 @@ function Login() {
 				<h1
 					style={{
 						textAlign: "center",
-						marginBottom: "30px",
-						color: "#2c3e50",
-						fontSize: "28px",
+						marginBottom: "var(--spacing-2xl)",
+						color: "var(--color-dark-bg)",
+						fontSize: "var(--font-size-2xl)",
 					}}
 				>
 					AccessParks Circuits
 				</h1>
 
 				<form onSubmit={handleSubmit}>
-					<div style={{ marginBottom: "15px" }}>
-						<label
-							style={{
-								display: "block",
-								marginBottom: "5px",
-								fontWeight: "500",
-								color: "#333",
-								fontSize: "14px",
-							}}
-						>
-							Email
-						</label>
+					<div className="form-group">
+						<label className="form-label">Email</label>
 						<input
 							type="email"
 							placeholder="Enter your email"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
-							style={inputStyle}
+							className="form-input"
 							required
 							disabled={loading}
 						/>
 					</div>
 
-					<div style={{ marginBottom: "15px" }}>
-						<label
-							style={{
-								display: "block",
-								marginBottom: "5px",
-								fontWeight: "500",
-								color: "#333",
-								fontSize: "14px",
-							}}
-						>
-							Password
-						</label>
+					<div className="form-group">
+						<label className="form-label">Password</label>
 						<input
 							type="password"
 							placeholder="Enter your password"
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
-							style={inputStyle}
+							className="form-input"
 							required
 							disabled={loading}
 						/>
@@ -153,15 +98,8 @@ function Login() {
 
 					{error && (
 						<div
-							style={{
-								backgroundColor: "#fee",
-								color: "#c33",
-								padding: "12px",
-								borderRadius: "4px",
-								marginBottom: "15px",
-								fontSize: "14px",
-								border: "1px solid #fcc",
-							}}
+							className="alert alert-error"
+							style={{ marginBottom: "var(--spacing-lg)" }}
 						>
 							{error}
 						</div>
@@ -169,10 +107,13 @@ function Login() {
 
 					<button
 						type="submit"
+						className="btn btn-primary"
 						style={{
-							...buttonStyle,
-							opacity: loading ? 0.6 : 1,
-							cursor: loading ? "not-allowed" : "pointer",
+							width: "100%",
+							padding: "var(--spacing-md) var(--spacing-lg)",
+							marginTop: "var(--spacing-md)",
+							fontSize: "var(--font-size-base)",
+							fontWeight: "600",
 						}}
 						disabled={loading}
 					>

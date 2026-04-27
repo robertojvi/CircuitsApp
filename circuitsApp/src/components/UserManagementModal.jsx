@@ -152,69 +152,15 @@ function UserManagementModal({ onClose }) {
 		}
 	};
 
-	const inputStyle = {
-		width: "100%",
-		padding: "12px",
-		marginBottom: "15px",
-		border: "1px solid #ccc",
-		borderRadius: "4px",
-		fontSize: "14px",
-		boxSizing: "border-box",
-		backgroundColor: "#f9f9f9",
-		color: "#1a1a1a",
-	};
-
-	const buttonStyle = {
-		padding: "12px 20px",
-		backgroundColor: "#4299E1",
-		color: "white",
-		border: "none",
-		borderRadius: "4px",
-		fontSize: "14px",
-		fontWeight: "600",
-		cursor: "pointer",
-	};
-
 	return (
-		<div
-			style={{
-				position: "fixed",
-				top: 0,
-				left: 0,
-				right: 0,
-				bottom: 0,
-				backgroundColor: "rgba(0,0,0,0.5)",
-				display: "flex",
-				justifyContent: "center",
-				alignItems: "center",
-				zIndex: 1001,
-				padding: "20px",
-			}}
-		>
+		<div className="modal-overlay" onClick={onClose}>
 			<div
-				style={{
-					backgroundColor: "#ffffff",
-					color: "#1a1a1a",
-					borderRadius: "8px",
-					width: "90%",
-					maxWidth: "900px",
-					maxHeight: "90vh",
-					overflow: "auto",
-				}}
+				className="modal-content"
+				style={{ maxWidth: "900px", maxHeight: "90vh" }}
+				onClick={(e) => e.stopPropagation()}
 			>
-				<div
-					style={{
-						backgroundColor: "#2c3e50",
-						color: "white",
-						padding: "20px",
-						display: "flex",
-						justifyContent: "space-between",
-						alignItems: "center",
-						borderTopLeftRadius: "8px",
-						borderTopRightRadius: "8px",
-					}}
-				>
-					<h2 style={{ margin: 0 }}>User Management</h2>
+				<div className="modal-header">
+					<h2>User Management</h2>
 					<button
 						onClick={onClose}
 						style={{
@@ -223,30 +169,18 @@ function UserManagementModal({ onClose }) {
 							color: "white",
 							fontSize: "24px",
 							cursor: "pointer",
+							padding: 0,
 						}}
 					>
 						×
 					</button>
 				</div>
 
-				<div
-					style={{
-						padding: "20px",
-						backgroundColor: "#ffffff",
-						color: "#1a1a1a",
-					}}
-				>
+				<div style={{ padding: "var(--spacing-xl)" }}>
 					{error && (
 						<div
-							style={{
-								backgroundColor: "#fee",
-								color: "#c33",
-								padding: "12px",
-								borderRadius: "4px",
-								marginBottom: "15px",
-								fontSize: "14px",
-								border: "1px solid #fcc",
-							}}
+							className="alert alert-error"
+							style={{ marginBottom: "var(--spacing-lg)" }}
 						>
 							{error}
 						</div>
@@ -255,31 +189,21 @@ function UserManagementModal({ onClose }) {
 					{!showCreateForm ? (
 						<button
 							onClick={() => setShowCreateForm(true)}
-							style={{
-								...buttonStyle,
-								marginBottom: "20px",
-								backgroundColor: "#27ae60",
-							}}
+							className="btn btn-success"
+							style={{ marginBottom: "var(--spacing-xl)" }}
 						>
 							Create New User
 						</button>
 					) : (
 						<div
+							className="card"
 							style={{
-								backgroundColor: "#f0f0f0",
-								padding: "20px",
-								borderRadius: "8px",
-								marginBottom: "20px",
-								border: "1px solid #ddd",
+								backgroundColor: "var(--color-surface-light)",
+								marginBottom: "var(--spacing-xl)",
+								border: "1px solid var(--color-border-light)",
 							}}
 						>
-							<h3
-								style={{
-									marginTop: 0,
-									marginBottom: "15px",
-									color: "#1a1a1a",
-								}}
-							>
+							<h3 style={{ marginTop: 0, marginBottom: "var(--spacing-lg)" }}>
 								Create New User
 							</h3>
 
@@ -288,7 +212,8 @@ function UserManagementModal({ onClose }) {
 									style={{
 										display: "grid",
 										gridTemplateColumns: "1fr 1fr",
-										gap: "15px",
+										gap: "var(--spacing-lg)",
+										marginBottom: "var(--spacing-lg)",
 									}}
 								>
 									<input
@@ -298,7 +223,7 @@ function UserManagementModal({ onClose }) {
 										onChange={(e) =>
 											setNewUser({ ...newUser, email: e.target.value })
 										}
-										style={inputStyle}
+										className="form-input"
 										required
 									/>
 									<input
@@ -308,7 +233,7 @@ function UserManagementModal({ onClose }) {
 										onChange={(e) =>
 											setNewUser({ ...newUser, password: e.target.value })
 										}
-										style={inputStyle}
+										className="form-input"
 										required
 									/>
 									<input
@@ -318,7 +243,7 @@ function UserManagementModal({ onClose }) {
 										onChange={(e) =>
 											setNewUser({ ...newUser, firstName: e.target.value })
 										}
-										style={inputStyle}
+										className="form-input"
 										required
 									/>
 									<input
@@ -328,7 +253,7 @@ function UserManagementModal({ onClose }) {
 										onChange={(e) =>
 											setNewUser({ ...newUser, lastName: e.target.value })
 										}
-										style={inputStyle}
+										className="form-input"
 										required
 									/>
 									<select
@@ -336,7 +261,7 @@ function UserManagementModal({ onClose }) {
 										onChange={(e) =>
 											setNewUser({ ...newUser, role: e.target.value })
 										}
-										style={inputStyle}
+										className="form-select"
 									>
 										<option value="USER">USER</option>
 										<option value="NOC">NOC</option>
@@ -347,15 +272,8 @@ function UserManagementModal({ onClose }) {
 
 								{createError && (
 									<div
-										style={{
-											backgroundColor: "#fee",
-											color: "#c33",
-											padding: "12px",
-											borderRadius: "4px",
-											marginBottom: "15px",
-											fontSize: "14px",
-											border: "1px solid #fcc",
-										}}
+										className="alert alert-error"
+										style={{ marginBottom: "var(--spacing-lg)" }}
 									>
 										{createError}
 									</div>
@@ -363,43 +281,21 @@ function UserManagementModal({ onClose }) {
 
 								{createSuccess && (
 									<div
-										style={{
-											backgroundColor: "#efe",
-											color: "#3c3",
-											padding: "12px",
-											borderRadius: "4px",
-											marginBottom: "15px",
-											fontSize: "14px",
-											border: "1px solid #cfc",
-										}}
+										className="alert alert-success"
+										style={{ marginBottom: "var(--spacing-lg)" }}
 									>
 										{createSuccess}
 									</div>
 								)}
 
-								<div
-									style={{
-										display: "flex",
-										gap: "10px",
-										marginTop: "15px",
-									}}
-								>
-									<button
-										type="submit"
-										style={{
-											...buttonStyle,
-											backgroundColor: "#27ae60",
-										}}
-									>
+								<div style={{ display: "flex", gap: "var(--spacing-md)" }}>
+									<button type="submit" className="btn btn-success">
 										Create User
 									</button>
 									<button
 										type="button"
 										onClick={() => setShowCreateForm(false)}
-										style={{
-											...buttonStyle,
-											backgroundColor: "#9CA3AF",
-										}}
+										className="btn btn-secondary"
 									>
 										Cancel
 									</button>
@@ -409,106 +305,40 @@ function UserManagementModal({ onClose }) {
 					)}
 
 					{loading ? (
-						<p style={{ textAlign: "center", color: "#333" }}>
-							Loading users...
-						</p>
+						<div style={{ textAlign: "center", padding: "var(--spacing-2xl)" }}>
+							<p style={{ color: "var(--color-text-muted)" }}>
+								Loading users...
+							</p>
+						</div>
 					) : (
-						<div style={{ overflowX: "auto" }}>
-							<table
-								style={{
-									width: "100%",
-									borderCollapse: "collapse",
-									fontSize: "14px",
-									color: "#1a1a1a",
-								}}
-							>
+						<div className="table-container">
+							<table className="table">
 								<thead>
-									<tr
-										style={{
-											backgroundColor: "#e8e8e8",
-											borderBottom: "2px solid #ccc",
-											color: "#1a1a1a",
-										}}
-									>
-										<th
-											style={{
-												padding: "12px",
-												textAlign: "left",
-												fontWeight: "600",
-												color: "#1a1a1a",
-											}}
-										>
-											Email
-										</th>
-										<th
-											style={{
-												padding: "12px",
-												textAlign: "left",
-												fontWeight: "600",
-												color: "#1a1a1a",
-											}}
-										>
-											Name
-										</th>
-										<th
-											style={{
-												padding: "12px",
-												textAlign: "left",
-												fontWeight: "600",
-												color: "#1a1a1a",
-											}}
-										>
-											Role
-										</th>
-										<th
-											style={{
-												padding: "12px",
-												textAlign: "left",
-												fontWeight: "600",
-												color: "#1a1a1a",
-											}}
-										>
-											Status
-										</th>
-										<th
-											style={{
-												padding: "12px",
-												textAlign: "left",
-												fontWeight: "600",
-												color: "#1a1a1a",
-											}}
-										>
-											Actions
-										</th>
+									<tr>
+										<th>Email</th>
+										<th>Name</th>
+										<th>Role</th>
+										<th>Status</th>
+										<th>Actions</th>
 									</tr>
 								</thead>
 								<tbody>
 									{users.map((user) => (
-										<tr
-											key={user.id}
-											style={{
-												borderBottom: "1px solid #eee",
-												backgroundColor: user.enabled ? "#ffffff" : "#f0f0f0",
-												color: "#1a1a1a",
-											}}
-										>
-											<td style={{ padding: "12px" }}>{user.email}</td>
-											<td style={{ padding: "12px" }}>
+										<tr key={user.id}>
+											<td>{user.email}</td>
+											<td>
 												{user.firstName} {user.lastName}
 											</td>
-											<td style={{ padding: "12px" }}>
+											<td>
 												<select
 													value={user.role}
 													onChange={(e) =>
 														handleUpdateRole(user.id, e.target.value)
 													}
+													className="form-select"
 													style={{
-														padding: "4px 8px",
-														borderRadius: "4px",
-														border: "1px solid #ccc",
-														fontSize: "12px",
-														backgroundColor: "#f9f9f9",
-														color: "#1a1a1a",
+														fontSize: "var(--font-size-sm)",
+														padding: "var(--spacing-sm) var(--spacing-md)",
 													}}
 												>
 													<option value="USER">USER</option>
@@ -517,57 +347,37 @@ function UserManagementModal({ onClose }) {
 													<option value="SUPER">SUPER</option>
 												</select>
 											</td>
-											<td style={{ padding: "12px" }}>
+											<td>
 												<span
-													style={{
-														backgroundColor: user.enabled
-															? "#d4edda"
-															: "#f8d7da",
-														color: user.enabled ? "#155724" : "#721c24",
-														padding: "4px 8px",
-														borderRadius: "4px",
-														fontSize: "12px",
-														fontWeight: "500",
-													}}
+													className={
+														user.enabled ? "status-active" : "status-inactive"
+													}
 												>
 													{user.enabled ? "Enabled" : "Disabled"}
 												</span>
 											</td>
-											<td style={{ padding: "12px" }}>
+											<td>
 												<div
-													style={{
-														display: "flex",
-														gap: "5px",
-													}}
+													style={{ display: "flex", gap: "var(--spacing-sm)" }}
 												>
 													<button
 														onClick={() =>
 															handleToggleUserStatus(user.id, user.enabled)
 														}
+														className="btn btn-warning"
 														style={{
+															fontSize: "var(--font-size-sm)",
 															padding: "4px 8px",
-															backgroundColor: user.enabled
-																? "#ffc107"
-																: "#28a745",
-															color: "white",
-															border: "none",
-															borderRadius: "4px",
-															fontSize: "12px",
-															cursor: "pointer",
 														}}
 													>
 														{user.enabled ? "Disable" : "Enable"}
 													</button>
 													<button
 														onClick={() => handleDeleteUser(user.id)}
+														className="btn btn-danger"
 														style={{
+															fontSize: "var(--font-size-sm)",
 															padding: "4px 8px",
-															backgroundColor: "#dc3545",
-															color: "white",
-															border: "none",
-															borderRadius: "4px",
-															fontSize: "12px",
-															cursor: "pointer",
 														}}
 													>
 														Delete
@@ -580,15 +390,15 @@ function UserManagementModal({ onClose }) {
 							</table>
 
 							{users.length === 0 && (
-								<p
+								<div
 									style={{
 										textAlign: "center",
-										color: "#333",
-										padding: "20px",
+										padding: "var(--spacing-2xl)",
+										color: "var(--color-text-muted)",
 									}}
 								>
 									No users found
-								</p>
+								</div>
 							)}
 						</div>
 					)}

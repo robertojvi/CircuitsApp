@@ -318,9 +318,9 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 	const siteAddress = parts.length ? parts.join(", ") : "N/A";
 
 	const detailLabelStyle = {
-		fontSize: "12px",
+		fontSize: "var(--font-size-sm)",
 		fontWeight: "600",
-		color: "#6b7280",
+		color: "var(--color-text-muted)",
 		textTransform: "uppercase",
 		letterSpacing: "0.5px",
 		marginBottom: "4px",
@@ -328,9 +328,9 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 	};
 
 	const detailValueStyle = {
-		fontSize: "14px",
+		fontSize: "var(--font-size-base)",
 		fontWeight: "500",
-		color: "#1e293b",
+		color: "var(--color-text-dark)",
 		wordBreak: "break-word",
 	};
 
@@ -342,7 +342,7 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 				left: 0,
 				right: 0,
 				bottom: 0,
-				backgroundColor: "rgba(0,0,0,0.5)",
+				backgroundColor: "rgba(0,0,0,0.6)",
 				display: "flex",
 				justifyContent: "center",
 				alignItems: "center",
@@ -352,14 +352,14 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 		>
 			<div
 				style={{
-					backgroundColor: "#f9fafb",
-					borderRadius: "8px",
+					backgroundColor: "white",
+					borderRadius: "var(--radius-xl)",
 					width: "90%",
 					maxWidth: "850px",
 					margin: "20px",
 					maxHeight: "90vh",
 					overflowY: "auto",
-					boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
+					boxShadow: "var(--shadow-xl)",
 					display: "flex",
 					flexDirection: "column",
 				}}
@@ -368,18 +368,18 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 					style={{
 						position: "sticky",
 						top: 0,
-						backgroundColor: "#1e293b",
+						background: `linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)`,
 						color: "white",
-						padding: "20px 24px",
-						borderBottom: "2px solid #3b82f6",
-						borderRadius: "8px 8px 0 0",
+						padding: "var(--spacing-xl)",
+						borderBottom: `2px solid var(--color-primary)`,
+						borderRadius: "var(--radius-xl) var(--radius-xl) 0 0",
 						zIndex: 10,
 					}}
 				>
 					<h2
 						style={{
 							margin: 0,
-							fontSize: "22px",
+							fontSize: "var(--font-size-xl)",
 							fontWeight: "600",
 							letterSpacing: "-0.5px",
 						}}
@@ -388,7 +388,7 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 					</h2>
 				</div>
 
-				<div style={{ padding: "24px" }}>
+				<div style={{ padding: "var(--spacing-xl)" }}>
 					{/* BASIC INFORMATION SECTION */}
 					<div
 						style={{
@@ -1953,16 +1953,10 @@ function Circuits() {
 		...headerStyle,
 		cursor: "pointer",
 		position: "relative",
-		paddingRight: "20px",
-		backgroundColor: sortConfig.key === key ? "#34495e" : "#2c3e50",
-		"&:after": {
-			content:
-				sortConfig.key === key
-					? `"${sortConfig.direction === "ascending" ? "↑" : "↓"}"`
-					: '""',
-			position: "absolute",
-			right: "5px",
-		},
+		paddingRight: "30px",
+		backgroundColor:
+			sortConfig.key === key ? "rgba(52, 152, 219, 0.2)" : "transparent",
+		transition: "all var(--transition-fast)",
 	});
 
 	const renderContent = () => {
@@ -1975,9 +1969,9 @@ function Circuits() {
 				<div>
 					<div
 						style={{
-							marginBottom: "20px",
+							marginBottom: "var(--spacing-lg)",
 							display: "flex",
-							gap: "15px",
+							gap: "var(--spacing-lg)",
 							alignItems: "center",
 						}}
 					>
@@ -1988,16 +1982,20 @@ function Circuits() {
 									"_blank",
 								)
 							}
+							className="btn btn-ghost"
 							style={{
-								...buttonStyle,
 								backgroundColor: "#FFD700",
-								color: "black",
-								padding: "10px 20px",
-								fontSize: "14px",
+								color: "var(--color-dark-bg)",
+								padding: "var(--spacing-md) var(--spacing-lg)",
+								fontSize: "var(--font-size-base)",
 								fontWeight: "bold",
 								display: "flex",
 								alignItems: "center",
-								gap: "8px",
+								gap: "var(--spacing-md)",
+								border: "none",
+								borderRadius: "var(--radius-md)",
+								cursor: "pointer",
+								transition: `all var(--transition-base)`,
 							}}
 						>
 							📋 AccessParks Circuits
@@ -2009,24 +2007,33 @@ function Circuits() {
 							placeholder="Search circuits..."
 							value={searchTerm}
 							onChange={(e) => setSearchTerm(e.target.value)}
+							className="form-input"
 							style={{
-								width: "100%",
-								padding: "8px 12px",
-								fontSize: "16px",
-								border: "1px solid #3498db",
-								borderRadius: "4px",
-								backgroundColor: "#34495e",
-								color: "#ffffff",
-								outline: "none",
-								"::placeholder": {
-									color: "#95a5a6",
-								},
+								marginBottom: 0,
+								fontSize: "var(--font-size-base)",
+								backgroundColor: "white",
+								color: "var(--color-text-dark)",
 							}}
 						/>
 					</div>
-					<table style={{ width: "100%", borderCollapse: "collapse" }}>
-						<thead style={{ position: "sticky", top: 0, zIndex: 1 }}>
-							<tr style={{ backgroundColor: "#2c3e50" }}>
+					<table
+						style={{
+							width: "100%",
+							borderCollapse: "collapse",
+							backgroundColor: "white",
+						}}
+					>
+						<thead
+							style={{
+								position: "sticky",
+								top: 0,
+								zIndex: 1,
+								background:
+									"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
+								borderBottom: "3px solid var(--color-primary)",
+							}}
+						>
+							<tr>
 								<th
 									onClick={() => onSort("site.name")}
 									style={getSortableHeaderStyle("site.name")}
@@ -2192,18 +2199,24 @@ function Circuits() {
 		overflowX: "auto",
 		maxHeight: "80vh",
 		position: "relative",
+		borderRadius: "var(--radius-lg)",
+		border: "1px solid var(--color-border-light)",
+		boxShadow: "var(--shadow-sm)",
 	};
 
 	const responsiveNavStyle = {
-		width: "150px",
-		minHeight: "calc(100vh - 50px)",
-		backgroundColor: "#2c3e50",
-		padding: "20px",
+		width: "180px",
+		minHeight: "calc(100vh - 70px)",
+		backgroundColor: "var(--color-dark-bg)",
+		padding: "var(--spacing-lg)",
 		zIndex: 999,
+		borderRadius: "var(--radius-lg)",
+		boxShadow: "var(--shadow-md)",
 	};
 
 	const responsiveContentStyle = {
-		padding: "20px",
+		padding: "var(--spacing-lg)",
+		paddingTop: "60px",
 		flex: 1,
 		minWidth: 0,
 	};
@@ -2212,8 +2225,9 @@ function Circuits() {
 		<div
 			className="app-side-page"
 			style={{
-				paddingTop: "50px",
 				width: "100%",
+				backgroundColor: "var(--color-surface)",
+				minHeight: "100vh",
 			}}
 		>
 			<nav className="app-side-nav" style={responsiveNavStyle}>
@@ -2273,39 +2287,46 @@ function Circuits() {
 }
 
 const headerStyle = {
-	padding: "12px",
+	padding: "var(--spacing-lg)",
 	textAlign: "left",
 	color: "white",
-	fontWeight: "600",
-	backgroundColor: "#2c3e50",
-	boxShadow: "0 2px 4px rgba(0,0,0,0.1)", // Add shadow to visually separate fixed header
+	fontWeight: "700",
+	fontSize: "var(--font-size-sm)",
+	textTransform: "uppercase",
+	letterSpacing: "0.5px",
+	boxShadow: "none",
 };
 
 const cellStyle = {
-	padding: "12px",
+	padding: "var(--spacing-lg)",
+	color: "var(--color-text-dark)",
+	fontWeight: "500",
+	backgroundColor: "white",
 };
 
 const buttonStyle = {
 	padding: "6px 12px",
 	border: "none",
-	borderRadius: "4px",
-	backgroundColor: "#9CA3AF",
+	borderRadius: "var(--radius-md)",
+	backgroundColor: "var(--color-text-muted)",
 	color: "white",
 	cursor: "pointer",
+	transition: `all var(--transition-base)`,
 };
 
 const iconButtonStyle = {
 	padding: "4px 8px",
 	border: "none",
-	borderRadius: "4px",
+	borderRadius: "var(--radius-md)",
 	backgroundColor: "transparent",
 	cursor: "pointer",
 	fontSize: "20px",
+	transition: `all var(--transition-fast)`,
 };
 
 const detailRowStyle = {
 	padding: "8px 0",
-	borderBottom: "1px solid #edf2f7",
+	borderBottom: "1px solid var(--color-border-light)",
 	fontSize: "14px",
 	lineHeight: "1.5",
 };
@@ -2313,9 +2334,20 @@ const detailRowStyle = {
 const inputStyle = {
 	width: "100%",
 	padding: "8px",
-	border: "1px solid #D1D5DB",
-	borderRadius: "4px",
+	border: "1px solid var(--color-border-light)",
+	borderRadius: "var(--radius-md)",
 	fontSize: "12px",
+	backgroundColor: "white",
+	color: "var(--color-text-dark)",
+	transition: `all var(--transition-fast)`,
+};
+
+const labelStyle = {
+	fontSize: "var(--font-size-sm)",
+	fontWeight: "600",
+	color: "var(--color-text-dark)",
+	marginBottom: "4px",
+	display: "block",
 };
 
 export default Circuits;

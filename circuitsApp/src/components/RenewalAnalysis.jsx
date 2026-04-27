@@ -732,29 +732,29 @@ function RenewalAnalysis() {
 }
 
 const pageShellStyle = {
-	paddingTop: "70px",
-	paddingLeft: "20px",
-	paddingRight: "20px",
-	paddingBottom: "20px",
-	minHeight: "calc(100vh - 50px)",
-	backgroundColor: "#2c3e50",
-	color: "#ecf0f1",
+	paddingTop: "60px",
+	paddingLeft: "var(--spacing-lg)",
+	paddingRight: "var(--spacing-lg)",
+	paddingBottom: "var(--spacing-lg)",
+	minHeight: "calc(100vh - 60px)",
+	backgroundColor: "var(--color-dark-bg)",
+	color: "white",
 };
 
 const pageHeaderStyle = {
 	display: "block",
-	marginBottom: "20px",
+	marginBottom: "var(--spacing-lg)",
 };
 
 const headerIntroCardStyle = {
 	display: "flex",
 	flexDirection: "column",
 	alignItems: "center",
-	padding: "16px 18px",
-	borderRadius: "18px",
-	backgroundColor: "#34495e",
-	border: "1px solid #4b6584",
-	boxShadow: "0 8px 24px rgba(0, 0, 0, 0.18)",
+	padding: "var(--spacing-md)",
+	borderRadius: "var(--radius-xl)",
+	backgroundColor: "var(--color-dark-bg-secondary)",
+	border: `1px solid var(--color-border-light)`,
+	boxShadow: "var(--shadow-lg)",
 	width: "100%",
 	maxWidth: "none",
 	boxSizing: "border-box",
@@ -764,8 +764,8 @@ const headerBrandRowStyle = {
 	display: "flex",
 	alignItems: "center",
 	justifyContent: "center",
-	gap: "10px",
-	marginBottom: "12px",
+	gap: "var(--spacing-md)",
+	marginBottom: "var(--spacing-md)",
 };
 
 const headerLogoStyle = {
@@ -776,7 +776,7 @@ const headerLogoStyle = {
 };
 
 const headerBrandLabelStyle = {
-	fontSize: "12px",
+	fontSize: "var(--font-size-sm)",
 	fontWeight: 700,
 	letterSpacing: "0.08em",
 	color: "#d6eaf8",
@@ -786,11 +786,11 @@ const titleBadgeStyle = {
 	display: "inline-flex",
 	alignItems: "center",
 	justifyContent: "center",
-	padding: "10px 16px",
-	borderRadius: "14px",
-	backgroundColor: "#2c3e50",
-	border: "1px solid #3498db",
-	boxShadow: "0 6px 18px rgba(0, 0, 0, 0.18)",
+	padding: "var(--spacing-md)",
+	borderRadius: "var(--radius-lg)",
+	backgroundColor: "var(--color-dark-bg)",
+	border: `1px solid var(--color-primary)`,
+	boxShadow: "var(--shadow-lg)",
 };
 
 const titleTextStyle = {
@@ -858,26 +858,32 @@ const tableStyle = {
 };
 
 const tableHeaderRowStyle = {
-	backgroundColor: "#2c3e50",
+	background:
+		"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
+	borderBottom: "3px solid var(--color-primary)",
 };
 
 const headerCellStyle = {
-	padding: "14px 16px",
+	padding: "var(--spacing-lg)",
 	textAlign: "left",
-	color: "#ffffff",
-	fontWeight: 600,
-	fontSize: "14px",
+	color: "white",
+	fontWeight: 700,
+	fontSize: "var(--font-size-sm)",
+	textTransform: "uppercase",
+	letterSpacing: "0.5px",
 };
 
 const tableRowStyle = {
-	borderBottom: "1px solid #4b6584",
-	backgroundColor: "#34495e",
+	borderBottom: `1px solid var(--color-border-light)`,
+	backgroundColor: "white",
+	transition: "all var(--transition-fast)",
 };
 
 const tableCellStyle = {
-	padding: "14px 16px",
-	fontSize: "14px",
-	color: "#ecf0f1",
+	padding: "var(--spacing-lg)",
+	fontSize: "var(--font-size-base)",
+	color: "var(--color-text-dark)",
+	fontWeight: "500",
 };
 
 const iconButtonStyle = {
@@ -1140,22 +1146,24 @@ const calculationNoteStyle = {
 const resultsGridStyle = {
 	display: "grid",
 	gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-	gap: "16px",
-	marginBottom: "16px",
+	gap: "var(--spacing-lg)",
+	marginBottom: "var(--spacing-lg)",
 };
 
 const resultCardStyle = {
-	backgroundColor: "#2c3e50",
-	border: "1px solid #4b6584",
-	borderRadius: "12px",
-	padding: "16px",
+	backgroundColor: "var(--color-dark-bg)",
+	border: `1px solid var(--color-border-light)`,
+	borderRadius: "var(--radius-xl)",
+	padding: "var(--spacing-lg)",
 	minHeight: "110px",
 	display: "flex",
 	flexDirection: "column",
 	justifyContent: "center",
 	alignItems: "center",
 	textAlign: "center",
-	gap: "10px",
+	gap: "var(--spacing-md)",
+	boxShadow: "var(--shadow-sm)",
+	transition: `all var(--transition-base)`,
 };
 
 const totalSavingsCardStyle = {
@@ -1166,7 +1174,7 @@ const totalSavingsCardStyle = {
 	alignItems: "center",
 	justifyContent: "center",
 	textAlign: "center",
-	gap: "10px",
+	gap: "var(--spacing-md)",
 };
 
 const resultValueStyle = {
@@ -1177,14 +1185,15 @@ const resultValueStyle = {
 };
 
 const analysisSummaryStyle = {
-	padding: "14px 16px",
-	borderRadius: "12px",
-	backgroundColor: "#2c3e50",
-	border: "1px solid #3498db",
+	padding: "var(--spacing-md)",
+	borderRadius: "var(--radius-xl)",
+	backgroundColor: "var(--color-dark-bg)",
+	border: `1px solid var(--color-primary)`,
 	color: "#d6eaf8",
-	fontSize: "13px",
+	fontSize: "var(--font-size-sm)",
 	lineHeight: 1.6,
-	marginBottom: "16px",
+	marginBottom: "var(--spacing-lg)",
+	boxShadow: "var(--shadow-sm)",
 };
 
 const timelineSummaryGridStyle = {
@@ -1194,17 +1203,19 @@ const timelineSummaryGridStyle = {
 };
 
 const timelinePillStyle = {
-	padding: "14px 16px",
-	borderRadius: "12px",
-	backgroundColor: "#2c3e50",
-	border: "1px solid #4b6584",
+	padding: "var(--spacing-md)",
+	borderRadius: "var(--radius-xl)",
+	backgroundColor: "var(--color-dark-bg)",
+	border: `1px solid var(--color-border-light)`,
 	display: "flex",
 	flexDirection: "column",
-	gap: "6px",
+	gap: "var(--spacing-sm)",
+	boxShadow: "var(--shadow-sm)",
+	transition: `all var(--transition-base)`,
 };
 
 const timelinePillLabelStyle = {
-	fontSize: "11px",
+	fontSize: "var(--font-size-xs)",
 	fontWeight: 700,
 	textTransform: "uppercase",
 	letterSpacing: "0.05em",
@@ -1212,46 +1223,48 @@ const timelinePillLabelStyle = {
 };
 
 const timelinePillValueStyle = {
-	fontSize: "14px",
+	fontSize: "var(--font-size-base)",
 	fontWeight: 600,
-	color: "#ffffff",
+	color: "white",
 };
 
 const modalActionsStyle = {
 	display: "flex",
 	justifyContent: "flex-end",
-	gap: "12px",
-	padding: "0 24px 24px",
+	gap: "var(--spacing-md)",
+	padding: `0 var(--spacing-xl) var(--spacing-xl)`,
 };
 
 const primaryButtonStyle = {
 	padding: "10px 16px",
-	borderRadius: "8px",
+	borderRadius: "var(--radius-md)",
 	border: "none",
-	backgroundColor: "#2563eb",
-	color: "#ffffff",
-	fontWeight: 600,
+	backgroundColor: "var(--color-primary)",
+	color: "white",
+	fontWeight: "600",
 	cursor: "pointer",
+	transition: `all var(--transition-base)`,
 };
 
 const secondaryButtonStyle = {
 	padding: "10px 16px",
-	borderRadius: "8px",
-	border: "1px solid #5d6d7e",
-	backgroundColor: "#34495e",
-	color: "#ecf0f1",
-	fontWeight: 600,
+	borderRadius: "var(--radius-md)",
+	border: `1px solid var(--color-border-light)`,
+	backgroundColor: "var(--color-dark-bg)",
+	color: "white",
+	fontWeight: "600",
 	cursor: "pointer",
+	transition: `all var(--transition-base)`,
 };
 
 const errorStyle = {
-	marginBottom: "16px",
-	padding: "12px 14px",
-	borderRadius: "8px",
+	marginBottom: "var(--spacing-lg)",
+	padding: "var(--spacing-md)",
+	borderRadius: "var(--radius-md)",
 	backgroundColor: "#5b2c2c",
 	color: "#fecaca",
-	border: "1px solid #c0392b",
-	boxShadow: "0 8px 24px rgba(0, 0, 0, 0.14)",
+	border: `1px solid var(--color-error)`,
+	boxShadow: "var(--shadow-md)",
 };
 
 export default RenewalAnalysis;
