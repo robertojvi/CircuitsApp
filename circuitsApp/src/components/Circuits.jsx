@@ -317,6 +317,23 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 		parts.push(cityState + (site.zipCode ? ` ${site.zipCode}` : ""));
 	const siteAddress = parts.length ? parts.join(", ") : "N/A";
 
+	const detailLabelStyle = {
+		fontSize: "12px",
+		fontWeight: "600",
+		color: "#6b7280",
+		textTransform: "uppercase",
+		letterSpacing: "0.5px",
+		marginBottom: "4px",
+		display: "block",
+	};
+
+	const detailValueStyle = {
+		fontSize: "14px",
+		fontWeight: "500",
+		color: "#1e293b",
+		wordBreak: "break-word",
+	};
+
 	return (
 		<div
 			style={{
@@ -335,261 +352,475 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 		>
 			<div
 				style={{
-					backgroundColor: "#2c3e50",
-					padding: "20px",
+					backgroundColor: "#f9fafb",
 					borderRadius: "8px",
-					width: "500px",
-					maxWidth: "90%",
+					width: "90%",
+					maxWidth: "850px",
+					margin: "20px",
 					maxHeight: "90vh",
 					overflowY: "auto",
-					boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-					color: "#ffffff",
+					boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
+					display: "flex",
+					flexDirection: "column",
 				}}
 			>
-				<h2
-					style={{
-						marginBottom: "20px",
-						color: "#fff",
-						borderBottom: "2px solid #3498db",
-					}}
-				>
-					Circuit Details
-				</h2>
 				<div
 					style={{
-						marginBottom: "15px",
-						backgroundColor: "#34495e",
-						padding: "15px",
-						borderRadius: "6px",
-						border: "1px solid #3498db",
+						position: "sticky",
+						top: 0,
+						backgroundColor: "#1e293b",
+						color: "white",
+						padding: "20px 24px",
+						borderBottom: "2px solid #3b82f6",
+						borderRadius: "8px 8px 0 0",
+						zIndex: 10,
 					}}
 				>
-					<p style={detailRowStyle}>
-						<strong>Site:</strong> {circuit.site.name}
-					</p>
-					<p style={detailRowStyle}>
-						<strong>Site Address:</strong> {siteAddress}
-					</p>
-					<p style={detailRowStyle}>
-						<strong>Provider:</strong> {circuit.provider.name}
-					</p>
-					<p style={detailRowStyle}>
-						<strong>Contact Number:</strong>{" "}
-						{circuit.provider.contactNumber || "N/A"}
-					</p>
-					{circuit.provider.providerEscalationList && (
-						<p style={detailRowStyle}>
-							<strong>Provider Escalation List:</strong>{" "}
-							<a
-								href={circuit.provider.providerEscalationList}
-								target="_blank"
-								rel="noopener noreferrer"
-								style={{ color: "#3B82F6", textDecoration: "underline" }}
-							>
-								Open Escalation List
-							</a>
-						</p>
-					)}
-					<p style={detailRowStyle}>
-						<strong>Circuit Type:</strong>{" "}
-						<span
-							style={{
-								padding: "4px 8px",
-								borderRadius: "4px",
-								fontSize: "12px",
-								fontWeight: "bold",
-								backgroundColor:
-									circuit.circuitType === "Fiber"
-										? "#3B82F6" // Blue for Fiber Circuit
-										: circuit.circuitType === "Tower"
-											? "#8B5CF6" // Purple for Tower
-											: "#94A3B8", // Gray for other types
-								color: "white",
-							}}
-						>
-							{circuit.circuitType || "Unknown"}
-						</span>
-					</p>
-					<p style={detailRowStyle}>
-						<strong>Has Tower:</strong>{" "}
-						<span
-							style={{
-								padding: "4px 8px",
-								borderRadius: "4px",
-								fontSize: "12px",
-								fontWeight: "bold",
-								backgroundColor: circuit.hasTower ? "#10B981" : "#EF4444", // Green for Yes, Red for No
-								color: "white",
-							}}
-						>
-							{circuit.hasTower ? "Yes" : "No"}
-						</span>
-					</p>
-					<p style={detailRowStyle}>
-						<strong>Status:</strong>{" "}
-						<span
-							style={{
-								padding: "4px 8px",
-								borderRadius: "4px",
-								fontSize: "12px",
-								fontWeight: "bold",
-								backgroundColor:
-									circuit.status === "Active"
-										? "#10B981" // Green for Active
-										: circuit.status === "Inactive"
-											? "#EF4444" // Red for Inactive
-											: "#F59E0B", // Yellow for Pending or other status
-								color: "white",
-							}}
-						>
-							{circuit.status || "Pending"}
-						</span>
-					</p>
-					<p style={detailRowStyle}>
-						<strong>Account Number:</strong> {circuit.accountNumber || "N/A"}
-					</p>
-					<p style={detailRowStyle}>
-						<strong>Circuit ID:</strong> {circuit.circuitId || "N/A"}
-					</p>
-					<p style={detailRowStyle}>
-						<strong>Bandwidth:</strong> {circuit.circuitBandwidth || "N/A"}
-					</p>
-					{user?.role !== "NOC" && (
-						<p style={detailRowStyle}>
-							<strong>Monthly Cost:</strong>{" "}
-							{"$" + (circuit.monthlyCost || "0.00")}
-						</p>
-					)}
-					<p style={detailRowStyle}>
-						<strong>Installation Date:</strong>{" "}
-						{circuit.installationDate || "N/A"}
-					</p>
-					<p
+					<h2
 						style={{
-							...detailRowStyle,
-							backgroundColor: isExpired(circuit.expirationDate)
-								? "#FEE2E2" // Light red for expired
-								: isExpirationSoon(circuit.expirationDate)
-									? "#FEF3C7" // Yellow for expiring soon
-									: "transparent",
-							padding:
-								isExpired(circuit.expirationDate) ||
-								isExpirationSoon(circuit.expirationDate)
-									? "8px 5px"
-									: "8px 0",
-							borderRadius:
-								isExpired(circuit.expirationDate) ||
-								isExpirationSoon(circuit.expirationDate)
-									? "4px"
-									: "0",
-						}}
-					>
-						<strong
-							style={{
-								color: isExpired(circuit.expirationDate)
-									? "#B91C1C" // Dark red for expired
-									: isExpirationSoon(circuit.expirationDate)
-										? "#B45309" // Amber for expiring soon
-										: "inherit",
-							}}
-						>
-							Expiration Date:
-						</strong>{" "}
-						<span
-							style={{
-								color: isExpired(circuit.expirationDate)
-									? "#B91C1C" // Dark red for expired
-									: isExpirationSoon(circuit.expirationDate)
-										? "#B45309" // Amber for expiring soon
-										: "inherit",
-								fontWeight:
-									isExpired(circuit.expirationDate) ||
-									isExpirationSoon(circuit.expirationDate)
-										? "bold"
-										: "normal",
-							}}
-						>
-							{circuit.expirationDate || "N/A"}
-						</span>
-						{isExpired(circuit.expirationDate) && (
-							<span
-								style={{
-									marginLeft: "5px",
-									fontSize: "12px",
-									color: "#B91C1C",
-								}}
-							>
-								(Expired)
-							</span>
-						)}
-						{!isExpired(circuit.expirationDate) &&
-							isExpirationSoon(circuit.expirationDate) && (
-								<span
-									style={{
-										marginLeft: "5px",
-										fontSize: "12px",
-										color: "#B45309",
-									}}
-								>
-									(Expires soon)
-								</span>
-							)}
-					</p>
-					<p
-						style={{
-							...detailRowStyle,
-							backgroundColor: "#DBEAFE",
-							color: "#1D4ED8",
-							padding: "8px 10px",
-							borderRadius: "4px",
+							margin: 0,
+							fontSize: "22px",
 							fontWeight: "600",
+							letterSpacing: "-0.5px",
 						}}
 					>
-						<strong style={{ color: "#1E3A8A" }}>Renewal Term:</strong>{" "}
-						{circuit.renewalTerm || "N/A"}
-					</p>
-					<p
+						📋 Circuit Details
+					</h2>
+				</div>
+
+				<div style={{ padding: "24px" }}>
+					{/* BASIC INFORMATION SECTION */}
+					<div
 						style={{
-							...detailRowStyle,
-							backgroundColor: "#FEF3C7",
-							color: "#92400E",
-							padding: "8px 10px",
-							borderRadius: "4px",
-							fontWeight: "600",
+							backgroundColor: "#ffffff",
+							padding: "20px",
+							borderRadius: "8px",
+							marginBottom: "20px",
+							border: "1px solid #e5e7eb",
 						}}
 					>
-						<strong style={{ color: "#78350F" }}>Renewal Notice Date:</strong>{" "}
-						{circuit.renewalNoticeDate || "N/A"}
-					</p>
-					{circuit.hasAggregator ? (
-						<p style={detailRowStyle}>
-							<strong>Aggregator:</strong> {circuit.aggregatorName || "N/A"}
-						</p>
-					) : (
-						<p style={detailRowStyle}>
-							<strong>Aggregator:</strong> No
-						</p>
-					)}
-					<div style={detailRowStyle}>
-						<strong>Notes:</strong>
-						<div style={{ marginTop: "4px", whiteSpace: "pre-wrap" }}>
-							{circuit.notes || "N/A"}
+						<h3
+							style={{
+								marginTop: 0,
+								marginBottom: "16px",
+								fontSize: "15px",
+								fontWeight: "700",
+								color: "#1e293b",
+								textTransform: "uppercase",
+								letterSpacing: "0.5px",
+								display: "flex",
+								alignItems: "center",
+							}}
+						>
+							🏢 Basic Information
+						</h3>
+						<div
+							style={{
+								display: "grid",
+								gridTemplateColumns: "1fr 1fr",
+								gap: "16px",
+							}}
+						>
+							<div>
+								<span style={detailLabelStyle}>Site</span>
+								<div style={detailValueStyle}>{circuit.site.name}</div>
+							</div>
+							<div>
+								<span style={detailLabelStyle}>Provider</span>
+								<div style={detailValueStyle}>{circuit.provider.name}</div>
+							</div>
+							<div style={{ gridColumn: "1 / -1" }}>
+								<span style={detailLabelStyle}>Site Address</span>
+								<div style={detailValueStyle}>{siteAddress}</div>
+							</div>
+							<div>
+								<span style={detailLabelStyle}>Contact Number</span>
+								<div style={detailValueStyle}>
+									{circuit.provider.contactNumber || "N/A"}
+								</div>
+							</div>
+							<div>
+								<span style={detailLabelStyle}>Escalation List</span>
+								<div style={detailValueStyle}>
+									{circuit.provider.providerEscalationList ? (
+										<a
+											href={circuit.provider.providerEscalationList}
+											target="_blank"
+											rel="noopener noreferrer"
+											style={{ color: "#3B82F6", textDecoration: "underline" }}
+										>
+											View List
+										</a>
+									) : (
+										"N/A"
+									)}
+								</div>
+							</div>
 						</div>
 					</div>
+
+					{/* CIRCUIT INFORMATION SECTION */}
+					<div
+						style={{
+							backgroundColor: "#ffffff",
+							padding: "20px",
+							borderRadius: "8px",
+							marginBottom: "20px",
+							border: "1px solid #e5e7eb",
+						}}
+					>
+						<h3
+							style={{
+								marginTop: 0,
+								marginBottom: "16px",
+								fontSize: "15px",
+								fontWeight: "700",
+								color: "#1e293b",
+								textTransform: "uppercase",
+								letterSpacing: "0.5px",
+								display: "flex",
+								alignItems: "center",
+							}}
+						>
+							📋 Circuit Information
+						</h3>
+						<div
+							style={{
+								display: "grid",
+								gridTemplateColumns: "1fr 1fr",
+								gap: "16px",
+							}}
+						>
+							<div>
+								<span style={detailLabelStyle}>Account Number</span>
+								<div style={detailValueStyle}>
+									{circuit.accountNumber || "N/A"}
+								</div>
+							</div>
+							<div>
+								<span style={detailLabelStyle}>Circuit ID</span>
+								<div style={detailValueStyle}>{circuit.circuitId || "N/A"}</div>
+							</div>
+							<div>
+								<span style={detailLabelStyle}>Bandwidth</span>
+								<div style={detailValueStyle}>
+									{circuit.circuitBandwidth || "N/A"}
+								</div>
+							</div>
+							{user?.role !== "NOC" && (
+								<div>
+									<span style={detailLabelStyle}>Monthly Cost</span>
+									<div style={detailValueStyle}>
+										{"$" + (circuit.monthlyCost || "0.00")}
+									</div>
+								</div>
+							)}
+							<div>
+								<span style={detailLabelStyle}>Installation Date</span>
+								<div style={detailValueStyle}>
+									{circuit.installationDate || "N/A"}
+								</div>
+							</div>
+							<div>
+								<span style={detailLabelStyle}>Contract Date</span>
+								<div style={detailValueStyle}>
+									{circuit.circuitContractDate || "N/A"}
+								</div>
+							</div>
+							<div>
+								<span style={detailLabelStyle}>Status</span>
+								<div>
+									<span
+										style={{
+											padding: "4px 12px",
+											borderRadius: "4px",
+											fontSize: "12px",
+											fontWeight: "bold",
+											backgroundColor:
+												circuit.status === "Active"
+													? "#d1fae5"
+													: circuit.status === "Inactive"
+														? "#fee2e2"
+														: "#fef3c7",
+											color:
+												circuit.status === "Active"
+													? "#065f46"
+													: circuit.status === "Inactive"
+														? "#7f1d1d"
+														: "#92400e",
+										}}
+									>
+										{circuit.status === "Active"
+											? "✅ Active"
+											: circuit.status === "Inactive"
+												? "❌ Inactive"
+												: "⏳ Pending"}
+									</span>
+								</div>
+							</div>
+							<div>
+								<span style={detailLabelStyle}>Expiration Date</span>
+								<div
+									style={{
+										...detailValueStyle,
+										backgroundColor: isExpired(circuit.expirationDate)
+											? "#fee2e2"
+											: isExpirationSoon(circuit.expirationDate)
+												? "#fef3c7"
+												: "transparent",
+										padding:
+											isExpired(circuit.expirationDate) ||
+											isExpirationSoon(circuit.expirationDate)
+												? "8px 10px"
+												: "0",
+										borderRadius: "4px",
+										color: isExpired(circuit.expirationDate)
+											? "#7f1d1d"
+											: isExpirationSoon(circuit.expirationDate)
+												? "#92400e"
+												: "#1e293b",
+										fontWeight:
+											isExpired(circuit.expirationDate) ||
+											isExpirationSoon(circuit.expirationDate)
+												? "600"
+												: "500",
+									}}
+								>
+									{circuit.expirationDate || "N/A"}
+									{isExpired(circuit.expirationDate) && (
+										<span
+											style={{
+												marginLeft: "8px",
+												fontSize: "11px",
+												color: "#7f1d1d",
+											}}
+										>
+											(Expired)
+										</span>
+									)}
+									{!isExpired(circuit.expirationDate) &&
+										isExpirationSoon(circuit.expirationDate) && (
+											<span
+												style={{
+													marginLeft: "8px",
+													fontSize: "11px",
+													color: "#92400e",
+												}}
+											>
+												(Expires soon)
+											</span>
+										)}
+								</div>
+							</div>
+							<div>
+								<span style={detailLabelStyle}>Circuit Type</span>
+								<div>
+									<span
+										style={{
+											padding: "4px 12px",
+											borderRadius: "4px",
+											fontSize: "12px",
+											fontWeight: "bold",
+											backgroundColor:
+												circuit.circuitType === "Fiber"
+													? "#dbeafe"
+													: circuit.circuitType === "Wireless"
+														? "#dbeafe"
+														: "#e5e7eb",
+											color:
+												circuit.circuitType === "Fiber"
+													? "#0c4a6e"
+													: circuit.circuitType === "Wireless"
+														? "#0c4a6e"
+														: "#374151",
+										}}
+									>
+										{circuit.circuitType === "Fiber"
+											? "🔌 Fiber"
+											: circuit.circuitType === "Wireless"
+												? "📡 Wireless"
+												: circuit.circuitType || "Unknown"}
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{/* RENEWAL INFORMATION SECTION */}
+					<div
+						style={{
+							backgroundColor: "#eff6ff",
+							padding: "20px",
+							borderRadius: "8px",
+							marginBottom: "20px",
+							border: "2px solid #3b82f6",
+						}}
+					>
+						<h3
+							style={{
+								marginTop: 0,
+								marginBottom: "16px",
+								fontSize: "15px",
+								fontWeight: "700",
+								color: "#1e40af",
+								textTransform: "uppercase",
+								letterSpacing: "0.5px",
+								display: "flex",
+								alignItems: "center",
+							}}
+						>
+							🔄 Renewal Information
+						</h3>
+						<div
+							style={{
+								display: "grid",
+								gridTemplateColumns: "1fr 1fr",
+								gap: "16px",
+							}}
+						>
+							<div>
+								<span style={{ ...detailLabelStyle, color: "#1e40af" }}>
+									Renewal Term
+								</span>
+								<div style={{ ...detailValueStyle, color: "#1e40af" }}>
+									{circuit.renewalTerm || "N/A"}
+								</div>
+							</div>
+							<div>
+								<span style={{ ...detailLabelStyle, color: "#1e40af" }}>
+									Renewal Notice Date
+								</span>
+								<div style={{ ...detailValueStyle, color: "#1e40af" }}>
+									{circuit.renewalNoticeDate || "N/A"}
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{/* AGGREGATOR & STATUS SECTION */}
+					<div
+						style={{
+							backgroundColor: "#ffffff",
+							padding: "20px",
+							borderRadius: "8px",
+							marginBottom: "20px",
+							border: "1px solid #e5e7eb",
+						}}
+					>
+						<h3
+							style={{
+								marginTop: 0,
+								marginBottom: "16px",
+								fontSize: "15px",
+								fontWeight: "700",
+								color: "#1e293b",
+								textTransform: "uppercase",
+								letterSpacing: "0.5px",
+								display: "flex",
+								alignItems: "center",
+							}}
+						>
+							⚙️ Additional Details
+						</h3>
+						<div
+							style={{
+								display: "grid",
+								gridTemplateColumns: "1fr 1fr",
+								gap: "16px",
+							}}
+						>
+							<div>
+								<span style={detailLabelStyle}>Has Tower</span>
+								<div>
+									<span
+										style={{
+											padding: "4px 12px",
+											borderRadius: "4px",
+											fontSize: "12px",
+											fontWeight: "bold",
+											backgroundColor: circuit.hasTower ? "#d1fae5" : "#fee2e2",
+											color: circuit.hasTower ? "#065f46" : "#7f1d1d",
+										}}
+									>
+										{circuit.hasTower ? "✅ Yes" : "❌ No"}
+									</span>
+								</div>
+							</div>
+							<div>
+								<span style={detailLabelStyle}>Has Aggregator</span>
+								<div>
+									<span
+										style={{
+											padding: "4px 12px",
+											borderRadius: "4px",
+											fontSize: "12px",
+											fontWeight: "bold",
+											backgroundColor: circuit.hasAggregator
+												? "#d1fae5"
+												: "#fee2e2",
+											color: circuit.hasAggregator ? "#065f46" : "#7f1d1d",
+										}}
+									>
+										{circuit.hasAggregator ? "✅ Yes" : "❌ No"}
+									</span>
+								</div>
+							</div>
+							{circuit.hasAggregator && (
+								<div style={{ gridColumn: "1 / -1" }}>
+									<span style={detailLabelStyle}>Aggregator Name</span>
+									<div style={detailValueStyle}>
+										{circuit.aggregatorName || "N/A"}
+									</div>
+								</div>
+							)}
+							<div style={{ gridColumn: "1 / -1" }}>
+								<span style={detailLabelStyle}>Notes</span>
+								<div
+									style={{
+										...detailValueStyle,
+										backgroundColor: "#f3f4f6",
+										padding: "10px",
+										borderRadius: "4px",
+										whiteSpace: "pre-wrap",
+										minHeight: "60px",
+										maxHeight: "120px",
+										overflowY: "auto",
+										border: "1px solid #e5e7eb",
+									}}
+								>
+									{circuit.notes || "N/A"}
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{/* TOWER INFORMATION SECTION */}
 					{circuit.hasTower && (
 						<div
 							style={{
-								marginTop: "10px",
-								backgroundColor: "#22303a",
-								padding: "10px",
-								borderRadius: "6px",
-								border: "1px solid #3b82f6",
+								backgroundColor: "#f3f4f6",
+								padding: "20px",
+								borderRadius: "8px",
+								marginBottom: "20px",
+								border: "2px solid #f59e0b",
 							}}
 						>
-							<p style={detailRowStyle}>
-								<strong>Number of Towers:</strong>{" "}
-								{circuit.numberOfTowers || "N/A"}
-							</p>
+							<h3
+								style={{
+									marginTop: 0,
+									marginBottom: "16px",
+									fontSize: "15px",
+									fontWeight: "700",
+									color: "#92400e",
+									textTransform: "uppercase",
+									letterSpacing: "0.5px",
+									display: "flex",
+									alignItems: "center",
+								}}
+							>
+								🏗️ Tower Information ({circuit.numberOfTowers || 0} tower
+								{parseInt(circuit.numberOfTowers) !== 1 ? "s" : ""})
+							</h3>
 							{circuit.numberOfTowers &&
 								parseInt(circuit.numberOfTowers) > 0 &&
 								Array.from(
@@ -599,54 +830,84 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 									<div
 										key={towerNum}
 										style={{
-											marginTop: "12px",
-											paddingTop: "12px",
-											borderTop: "1px solid #3b82f6",
+											marginBottom: "16px",
+											backgroundColor: "#ffffff",
+											padding: "16px",
+											borderRadius: "6px",
+											border: "1px solid #f59e0b",
+											borderLeft: "4px solid #f59e0b",
 										}}
 									>
 										<h4
 											style={{
 												marginTop: 0,
-												marginBottom: "8px",
-												color: "#3B82F6",
+												marginBottom: "12px",
+												color: "#92400e",
 												fontSize: "13px",
-												fontWeight: "600",
+												fontWeight: "700",
 											}}
 										>
 											Tower {towerNum}
 										</h4>
-										<p style={detailRowStyle}>
-											<strong>Provider:</strong>{" "}
-											{circuit[`towerProvider${towerNum}`] || "N/A"}
-										</p>
-										<p style={detailRowStyle}>
-											<strong>Installation Date:</strong>{" "}
-											{circuit[`towerInstallDate${towerNum}`] || "N/A"}
-										</p>
-										<p style={detailRowStyle}>
-											<strong>Expiration Date:</strong>{" "}
-											{circuit[`towerExpirationDate${towerNum}`] || "N/A"}
-										</p>
-										{user?.role !== "NOC" && (
-											<p style={detailRowStyle}>
-												<strong>Monthly Cost:</strong>{" "}
-												{circuit[`towerMonthlyCost${towerNum}`]
-													? "$" +
-														parseFloat(
-															circuit[`towerMonthlyCost${towerNum}`],
-														).toFixed(2)
-													: "N/A"}
-											</p>
-										)}
+										<div
+											style={{
+												display: "grid",
+												gridTemplateColumns: "1fr 1fr",
+												gap: "12px",
+											}}
+										>
+											<div>
+												<span style={detailLabelStyle}>Provider</span>
+												<div style={detailValueStyle}>
+													{circuit[`towerProvider${towerNum}`] || "N/A"}
+												</div>
+											</div>
+											<div>
+												<span style={detailLabelStyle}>Installation Date</span>
+												<div style={detailValueStyle}>
+													{circuit[`towerInstallDate${towerNum}`] || "N/A"}
+												</div>
+											</div>
+											<div>
+												<span style={detailLabelStyle}>Expiration Date</span>
+												<div style={detailValueStyle}>
+													{circuit[`towerExpirationDate${towerNum}`] || "N/A"}
+												</div>
+											</div>
+											{user?.role !== "NOC" && (
+												<div>
+													<span style={detailLabelStyle}>Monthly Cost</span>
+													<div style={detailValueStyle}>
+														{circuit[`towerMonthlyCost${towerNum}`]
+															? "$" +
+																parseFloat(
+																	circuit[`towerMonthlyCost${towerNum}`],
+																).toFixed(2)
+															: "N/A"}
+													</div>
+												</div>
+											)}
+										</div>
 									</div>
 								))}
 						</div>
 					)}
 				</div>
-				<div style={{ display: "flex", justifyContent: "flex-end" }}>
+
+				<div
+					style={{
+						padding: "0 24px 24px 24px",
+						display: "flex",
+						justifyContent: "flex-end",
+					}}
+				>
 					<button
 						onClick={onClose}
-						style={{ ...buttonStyle, backgroundColor: "#3498db" }}
+						style={{
+							...buttonStyle,
+							backgroundColor: "#3b82f6",
+							color: "white",
+						}}
 					>
 						Close
 					</button>
@@ -1041,7 +1302,29 @@ const EditCircuitModal = ({
 								onChange={(e) =>
 									setCircuit({ ...circuit, expirationDate: e.target.value })
 								}
-								style={inputStyle}
+								style={{
+									...inputStyle,
+									backgroundColor: isExpired(circuit.expirationDate)
+										? "#fee2e2"
+										: isExpirationSoon(circuit.expirationDate)
+											? "#fef3c7"
+											: "#ffffff",
+									borderColor: isExpired(circuit.expirationDate)
+										? "#dc2626"
+										: isExpirationSoon(circuit.expirationDate)
+											? "#f59e0b"
+											: "#d1d5db",
+									color: isExpired(circuit.expirationDate)
+										? "#7f1d1d"
+										: isExpirationSoon(circuit.expirationDate)
+											? "#92400e"
+											: "#1f2937",
+									fontWeight:
+										isExpired(circuit.expirationDate) ||
+										isExpirationSoon(circuit.expirationDate)
+											? "600"
+											: "400",
+								}}
 								required
 							/>
 						</div>
