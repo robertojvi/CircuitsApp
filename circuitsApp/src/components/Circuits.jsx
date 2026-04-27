@@ -1033,6 +1033,28 @@ const EditCircuitModal = ({
 									color: "#374151",
 								}}
 							>
+								Expiration Date *
+							</label>
+							<input
+								type="date"
+								value={circuit.expirationDate || ""}
+								onChange={(e) =>
+									setCircuit({ ...circuit, expirationDate: e.target.value })
+								}
+								style={inputStyle}
+								required
+							/>
+						</div>
+						<div>
+							<label
+								style={{
+									display: "block",
+									marginBottom: "6px",
+									fontSize: "13px",
+									fontWeight: "600",
+									color: "#374151",
+								}}
+							>
 								Circuit Type *
 							</label>
 							<select
@@ -1047,28 +1069,6 @@ const EditCircuitModal = ({
 								<option value="Fiber">🔌 Fiber Circuit</option>
 								<option value="Wireless">📡 Wireless</option>
 							</select>
-						</div>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "#374151",
-								}}
-							>
-								Expiration Date *
-							</label>
-							<input
-								type="date"
-								value={circuit.expirationDate || ""}
-								onChange={(e) =>
-									setCircuit({ ...circuit, expirationDate: e.target.value })
-								}
-								style={inputStyle}
-								required
-							/>
 						</div>
 					</div>
 				</div>
