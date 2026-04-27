@@ -161,22 +161,6 @@ const CircuitRenewalFields = ({ circuit, setCircuit }) => {
 		color: "#374151",
 	};
 
-	const handleExpirationDateChange = (event) => {
-		const expirationDate = event.target.value;
-		const noticeDays =
-			renewalNoticeOption === "Other"
-				? renewalNoticeOtherDays
-				: renewalNoticeOption;
-
-		setCircuit({
-			...circuit,
-			expirationDate,
-			renewalNoticeDate: noticeDays
-				? calculateRenewalNoticeDate(expirationDate, noticeDays)
-				: "",
-		});
-	};
-
 	const handleRenewalTermOptionChange = (event) => {
 		const option = event.target.value;
 		setRenewalTermOption(option);
@@ -222,16 +206,6 @@ const CircuitRenewalFields = ({ circuit, setCircuit }) => {
 				}}
 			>
 				<div>
-					<label style={labelStyle}>Expiration Date *</label>
-					<input
-						type="date"
-						value={circuit.expirationDate || ""}
-						onChange={handleExpirationDateChange}
-						style={inputStyle}
-						required
-					/>
-				</div>
-				<div>
 					<label style={labelStyle}>Renewal Notice Date</label>
 					<input
 						type="date"
@@ -245,7 +219,7 @@ const CircuitRenewalFields = ({ circuit, setCircuit }) => {
 						}}
 					/>
 					<p style={{ fontSize: "11px", color: "#9ca3af", marginTop: "4px" }}>
-						Auto-calculated from notice period
+						Auto-calculated from expiration date and notice period
 					</p>
 				</div>
 			</div>
@@ -848,7 +822,7 @@ const EditCircuitModal = ({
 					</div>
 				</div>
 
-				{/* CIRCUIT DETAILS SECTION */}
+				{/* CIRCUIT INFORMATION SECTION */}
 				<div
 					style={{
 						backgroundColor: "#ffffff",
@@ -871,7 +845,7 @@ const EditCircuitModal = ({
 							alignItems: "center",
 						}}
 					>
-						🔌 Circuit Details
+						📋 Circuit Information
 					</h3>
 					<div
 						style={{
@@ -976,41 +950,6 @@ const EditCircuitModal = ({
 								required
 							/>
 						</div>
-					</div>
-				</div>
-
-				{/* DATES SECTION */}
-				<div
-					style={{
-						backgroundColor: "#ffffff",
-						padding: "20px",
-						borderRadius: "8px",
-						marginBottom: "20px",
-						border: "1px solid #e5e7eb",
-					}}
-				>
-					<h3
-						style={{
-							marginTop: 0,
-							marginBottom: "16px",
-							fontSize: "15px",
-							fontWeight: "700",
-							color: "#1e293b",
-							textTransform: "uppercase",
-							letterSpacing: "0.5px",
-							display: "flex",
-							alignItems: "center",
-						}}
-					>
-						📅 Important Dates
-					</h3>
-					<div
-						style={{
-							display: "grid",
-							gridTemplateColumns: "1fr 1fr",
-							gap: "16px",
-						}}
-					>
 						<div>
 							<label
 								style={{
@@ -1058,41 +997,6 @@ const EditCircuitModal = ({
 								required
 							/>
 						</div>
-					</div>
-				</div>
-
-				{/* STATUS & TYPE SECTION */}
-				<div
-					style={{
-						backgroundColor: "#ffffff",
-						padding: "20px",
-						borderRadius: "8px",
-						marginBottom: "20px",
-						border: "1px solid #e5e7eb",
-					}}
-				>
-					<h3
-						style={{
-							marginTop: 0,
-							marginBottom: "16px",
-							fontSize: "15px",
-							fontWeight: "700",
-							color: "#1e293b",
-							textTransform: "uppercase",
-							letterSpacing: "0.5px",
-							display: "flex",
-							alignItems: "center",
-						}}
-					>
-						⚙️ Status & Type
-					</h3>
-					<div
-						style={{
-							display: "grid",
-							gridTemplateColumns: "1fr 1fr",
-							gap: "16px",
-						}}
-					>
 						<div>
 							<label
 								style={{
@@ -1143,6 +1047,28 @@ const EditCircuitModal = ({
 								<option value="Fiber">🔌 Fiber Circuit</option>
 								<option value="Wireless">📡 Wireless</option>
 							</select>
+						</div>
+						<div>
+							<label
+								style={{
+									display: "block",
+									marginBottom: "6px",
+									fontSize: "13px",
+									fontWeight: "600",
+									color: "#374151",
+								}}
+							>
+								Expiration Date *
+							</label>
+							<input
+								type="date"
+								value={circuit.expirationDate || ""}
+								onChange={(e) =>
+									setCircuit({ ...circuit, expirationDate: e.target.value })
+								}
+								style={inputStyle}
+								required
+							/>
 						</div>
 					</div>
 				</div>
