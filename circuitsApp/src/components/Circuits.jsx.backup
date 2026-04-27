@@ -155,10 +155,13 @@ const CircuitRenewalFields = ({ circuit, setCircuit }) => {
 
 	const labelStyle = {
 		display: "block",
-		marginBottom: "8px",
-		fontSize: "13px",
-		fontWeight: "600",
-		color: "#374151",
+		marginBottom: "5px",
+		fontSize: "14px",
+		fontWeight: "500",
+		color: "#3498db",
+		backgroundColor: "#f8f9fa",
+		padding: "3px 5px",
+		borderRadius: "3px",
 	};
 
 	const handleExpirationDateChange = (event) => {
@@ -213,84 +216,36 @@ const CircuitRenewalFields = ({ circuit, setCircuit }) => {
 
 	return (
 		<>
-			<div
-				style={{
-					display: "grid",
-					gridTemplateColumns: "1fr 1fr",
-					gap: "16px",
-					marginBottom: "16px",
-				}}
-			>
-				<div>
-					<label style={labelStyle}>Expiration Date *</label>
-					<input
-						type="date"
-						value={circuit.expirationDate || ""}
-						onChange={handleExpirationDateChange}
-						style={inputStyle}
-						required
-					/>
-				</div>
-				<div>
-					<label style={labelStyle}>Renewal Notice Date</label>
-					<input
-						type="date"
-						value={circuit.renewalNoticeDate || ""}
-						readOnly
-						style={{
-							...inputStyle,
-							backgroundColor: "#f3f4f6",
-							cursor: "not-allowed",
-							color: "#6b7280",
-						}}
-					/>
-					<p style={{ fontSize: "11px", color: "#9ca3af", marginTop: "4px" }}>
-						Auto-calculated from notice period
-					</p>
-				</div>
+			<div style={{ marginBottom: "15px" }}>
+				<label style={labelStyle}>Expiration Date</label>
+				<input
+					type="date"
+					placeholder="Expiration Date"
+					value={circuit.expirationDate || ""}
+					onChange={handleExpirationDateChange}
+					style={inputStyle}
+					required
+				/>
 			</div>
-
-			<div
-				style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}
-			>
-				<div>
-					<label style={labelStyle}>Renewal Term *</label>
-					<select
-						value={renewalTermOption}
-						onChange={handleRenewalTermOptionChange}
-						style={inputStyle}
-					>
-						<option value="">Select Renewal Term</option>
-						<option value="Month to Month">📅 Month to Month</option>
-						<option value="1 Year">📅 1 Year</option>
-						<option value="Same as Original Term">
-							📅 Same as Original Term
-						</option>
-						<option value="Other">✏️ Other (custom)</option>
-					</select>
-				</div>
-				<div>
-					<label style={labelStyle}>Renewal Notice Period *</label>
-					<select
-						value={renewalNoticeOption}
-						onChange={handleRenewalNoticeOptionChange}
-						style={inputStyle}
-					>
-						<option value="">Select Notice Period</option>
-						<option value="30">🔔 30 days</option>
-						<option value="60">🔔 60 days</option>
-						<option value="90">🔔 90 days</option>
-						<option value="Other">✏️ Other (custom)</option>
-					</select>
-				</div>
+			<div style={{ marginBottom: "15px" }}>
+				<label style={labelStyle}>Renewal Term</label>
+				<select
+					value={renewalTermOption}
+					onChange={handleRenewalTermOptionChange}
+					style={inputStyle}
+				>
+					<option value="">Select Renewal Term</option>
+					<option value="Month to Month">Month to Month</option>
+					<option value="1 Year">1 Year</option>
+					<option value="Same as Original Term">Same as Original Term</option>
+					<option value="Other">Other</option>
+				</select>
 			</div>
-
 			{renewalTermOption === "Other" && (
-				<div style={{ marginTop: "16px" }}>
-					<label style={labelStyle}>Custom Renewal Term</label>
+				<div style={{ marginBottom: "15px" }}>
 					<input
 						type="text"
-						placeholder="e.g., 2 Years, 3 Years, Bi-annual"
+						placeholder="Enter Renewal Term"
 						value={renewalTermOther}
 						onChange={(event) => {
 							const value = event.target.value;
@@ -305,13 +260,25 @@ const CircuitRenewalFields = ({ circuit, setCircuit }) => {
 					/>
 				</div>
 			)}
-
+			<div style={{ marginBottom: "15px" }}>
+				<label style={labelStyle}>Renewal Notice</label>
+				<select
+					value={renewalNoticeOption}
+					onChange={handleRenewalNoticeOptionChange}
+					style={inputStyle}
+				>
+					<option value="">Select Notice Period</option>
+					<option value="30">30 days</option>
+					<option value="60">60 days</option>
+					<option value="90">90 days</option>
+					<option value="Other">Other</option>
+				</select>
+			</div>
 			{renewalNoticeOption === "Other" && (
-				<div style={{ marginTop: "16px" }}>
-					<label style={labelStyle}>Custom Notice Days</label>
+				<div style={{ marginBottom: "15px" }}>
 					<input
 						type="number"
-						placeholder="Enter number of days"
+						placeholder="Enter notice days"
 						value={renewalNoticeOtherDays}
 						onChange={(event) => {
 							const value = event.target.value;
@@ -330,6 +297,19 @@ const CircuitRenewalFields = ({ circuit, setCircuit }) => {
 					/>
 				</div>
 			)}
+			<div style={{ marginBottom: "15px" }}>
+				<label style={labelStyle}>Renewal Notice Date</label>
+				<input
+					type="date"
+					value={circuit.renewalNoticeDate || ""}
+					readOnly
+					style={{
+						...inputStyle,
+						backgroundColor: "#f8f9fa",
+						cursor: "not-allowed",
+					}}
+				/>
+			</div>
 		</>
 	);
 };
@@ -743,455 +723,190 @@ const EditCircuitModal = ({
 				</h2>
 			</div>
 			<form onSubmit={onSubmit} style={{ padding: "24px", flex: 1 }}>
-				{/* BASIC INFORMATION SECTION */}
-				<div
-					style={{
-						backgroundColor: "#ffffff",
-						padding: "20px",
-						borderRadius: "8px",
-						marginBottom: "20px",
-						border: "1px solid #e5e7eb",
-					}}
-				>
-					<h3
-						style={{
-							marginTop: 0,
-							marginBottom: "16px",
-							fontSize: "15px",
-							fontWeight: "700",
-							color: "#1e293b",
-							textTransform: "uppercase",
-							letterSpacing: "0.5px",
-							display: "flex",
-							alignItems: "center",
-						}}
+				<div style={{ marginBottom: "15px" }}>
+					<select
+						value={circuit.site?.id || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, site: { id: Number(e.target.value) } })
+						}
+						style={inputStyle}
+						required
 					>
-						🏢 Basic Information
-					</h3>
-					<div
-						style={{
-							display: "grid",
-							gridTemplateColumns: "1fr 1fr",
-							gap: "16px",
-						}}
-					>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "#374151",
-								}}
-							>
-								Site *
-							</label>
-							<select
-								value={circuit.site?.id || ""}
-								onChange={(e) =>
-									setCircuit({
-										...circuit,
-										site: { id: Number(e.target.value) },
-									})
-								}
-								style={{ ...inputStyle, backgroundColor: "#ffffff" }}
-								required
-							>
-								<option value="">Select Site</option>
-								{[...sites]
-									.sort((a, b) =>
-										a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
-									)
-									.map((site) => (
-										<option key={site.id} value={site.id}>
-											{site.name}
-										</option>
-									))}
-							</select>
-						</div>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "#374151",
-								}}
-							>
-								Provider *
-							</label>
-							<select
-								value={circuit.provider?.id || ""}
-								onChange={(e) =>
-									setCircuit({
-										...circuit,
-										provider: { id: Number(e.target.value) },
-									})
-								}
-								style={{ ...inputStyle, backgroundColor: "#ffffff" }}
-								required
-							>
-								<option value="">Select Provider</option>
-								{[...providers]
-									.sort((a, b) =>
-										a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
-									)
-									.map((provider) => (
-										<option key={provider.id} value={provider.id}>
-											{provider.name}
-										</option>
-									))}
-							</select>
-						</div>
-					</div>
+						<option value="">Select Site</option>
+						{[...sites]
+							.sort((a, b) =>
+								a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+							)
+							.map((site) => (
+								<option key={site.id} value={site.id}>
+									{site.name}
+								</option>
+							))}
+					</select>
 				</div>
-
-				{/* CIRCUIT DETAILS SECTION */}
-				<div
-					style={{
-						backgroundColor: "#ffffff",
-						padding: "20px",
-						borderRadius: "8px",
-						marginBottom: "20px",
-						border: "1px solid #e5e7eb",
-					}}
-				>
-					<h3
-						style={{
-							marginTop: 0,
-							marginBottom: "16px",
-							fontSize: "15px",
-							fontWeight: "700",
-							color: "#1e293b",
-							textTransform: "uppercase",
-							letterSpacing: "0.5px",
-							display: "flex",
-							alignItems: "center",
-						}}
+				<div style={{ marginBottom: "15px" }}>
+					<select
+						value={circuit.provider?.id || ""}
+						onChange={(e) =>
+							setCircuit({
+								...circuit,
+								provider: { id: Number(e.target.value) },
+							})
+						}
+						style={inputStyle}
+						required
 					>
-						🔌 Circuit Details
-					</h3>
-					<div
-						style={{
-							display: "grid",
-							gridTemplateColumns: "1fr 1fr",
-							gap: "16px",
-						}}
-					>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "#374151",
-								}}
-							>
-								Account Number *
-							</label>
-							<input
-								type="text"
-								placeholder="Enter Account Number"
-								value={circuit.accountNumber || ""}
-								onChange={(e) =>
-									setCircuit({ ...circuit, accountNumber: e.target.value })
-								}
-								style={inputStyle}
-								required
-							/>
-						</div>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "#374151",
-								}}
-							>
-								Circuit ID *
-							</label>
-							<input
-								type="text"
-								placeholder="Enter Circuit ID"
-								value={circuit.circuitId || ""}
-								onChange={(e) =>
-									setCircuit({ ...circuit, circuitId: e.target.value })
-								}
-								style={inputStyle}
-								required
-							/>
-						</div>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "#374151",
-								}}
-							>
-								Bandwidth *
-							</label>
-							<input
-								type="text"
-								placeholder="e.g., 1Gbps"
-								value={circuit.circuitBandwidth || ""}
-								onChange={(e) =>
-									setCircuit({ ...circuit, circuitBandwidth: e.target.value })
-								}
-								style={inputStyle}
-								required
-							/>
-						</div>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "#374151",
-								}}
-							>
-								Monthly Cost *
-							</label>
-							<input
-								type="number"
-								placeholder="0.00"
-								step="0.01"
-								value={circuit.monthlyCost || ""}
-								onChange={(e) =>
-									setCircuit({
-										...circuit,
-										monthlyCost: Number(e.target.value),
-									})
-								}
-								style={inputStyle}
-								required
-							/>
-						</div>
-					</div>
+						<option value="">Select Provider</option>
+						{[...providers]
+							.sort((a, b) =>
+								a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+							)
+							.map((provider) => (
+								<option key={provider.id} value={provider.id}>
+									{provider.name}
+								</option>
+							))}
+					</select>
 				</div>
-
-				{/* DATES SECTION */}
-				<div
-					style={{
-						backgroundColor: "#ffffff",
-						padding: "20px",
-						borderRadius: "8px",
-						marginBottom: "20px",
-						border: "1px solid #e5e7eb",
-					}}
-				>
-					<h3
-						style={{
-							marginTop: 0,
-							marginBottom: "16px",
-							fontSize: "15px",
-							fontWeight: "700",
-							color: "#1e293b",
-							textTransform: "uppercase",
-							letterSpacing: "0.5px",
-							display: "flex",
-							alignItems: "center",
-						}}
-					>
-						📅 Important Dates
-					</h3>
-					<div
-						style={{
-							display: "grid",
-							gridTemplateColumns: "1fr 1fr",
-							gap: "16px",
-						}}
-					>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "#374151",
-								}}
-							>
-								Installation Date *
-							</label>
-							<input
-								type="date"
-								value={circuit.installationDate || ""}
-								onChange={(e) =>
-									setCircuit({ ...circuit, installationDate: e.target.value })
-								}
-								style={inputStyle}
-								required
-							/>
-						</div>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "#374151",
-								}}
-							>
-								Contract Date *
-							</label>
-							<input
-								type="date"
-								value={circuit.circuitContractDate || ""}
-								onChange={(e) =>
-									setCircuit({
-										...circuit,
-										circuitContractDate: e.target.value,
-									})
-								}
-								style={inputStyle}
-								required
-							/>
-						</div>
-					</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Account Number"
+						value={circuit.accountNumber || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, accountNumber: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
 				</div>
-
-				{/* STATUS & TYPE SECTION */}
-				<div
-					style={{
-						backgroundColor: "#ffffff",
-						padding: "20px",
-						borderRadius: "8px",
-						marginBottom: "20px",
-						border: "1px solid #e5e7eb",
-					}}
-				>
-					<h3
-						style={{
-							marginTop: 0,
-							marginBottom: "16px",
-							fontSize: "15px",
-							fontWeight: "700",
-							color: "#1e293b",
-							textTransform: "uppercase",
-							letterSpacing: "0.5px",
-							display: "flex",
-							alignItems: "center",
-						}}
-					>
-						⚙️ Status & Type
-					</h3>
-					<div
-						style={{
-							display: "grid",
-							gridTemplateColumns: "1fr 1fr",
-							gap: "16px",
-						}}
-					>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "#374151",
-								}}
-							>
-								Status *
-							</label>
-							<select
-								value={circuit.status || ""}
-								onChange={(e) =>
-									setCircuit({ ...circuit, status: e.target.value })
-								}
-								style={inputStyle}
-								required
-							>
-								<option value="">Select Status</option>
-								<option value="Active">✅ Active</option>
-								<option value="Inactive">❌ Inactive</option>
-								<option value="Pending">⏳ Pending</option>
-							</select>
-						</div>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "#374151",
-								}}
-							>
-								Circuit Type *
-							</label>
-							<select
-								value={circuit.circuitType || ""}
-								onChange={(e) =>
-									setCircuit({ ...circuit, circuitType: e.target.value })
-								}
-								style={inputStyle}
-								required
-							>
-								<option value="">Select Type</option>
-								<option value="Fiber">🔌 Fiber Circuit</option>
-								<option value="Wireless">📡 Wireless</option>
-							</select>
-						</div>
-					</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Circuit ID"
+						value={circuit.circuitId || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, circuitId: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
 				</div>
-
-				{/* RENEWAL INFORMATION SECTION */}
-				<div
-					style={{
-						backgroundColor: "#eff6ff",
-						padding: "20px",
-						borderRadius: "8px",
-						marginBottom: "20px",
-						border: "2px solid #3b82f6",
-					}}
-				>
-					<h3
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="text"
+						placeholder="Bandwidth"
+						value={circuit.circuitBandwidth || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, circuitBandwidth: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<input
+						type="number"
+						placeholder="Monthly Cost"
+						value={circuit.monthlyCost || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, monthlyCost: Number(e.target.value) })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<label
 						style={{
-							marginTop: 0,
-							marginBottom: "16px",
-							fontSize: "15px",
-							fontWeight: "700",
-							color: "#1e40af",
-							textTransform: "uppercase",
-							letterSpacing: "0.5px",
-							display: "flex",
-							alignItems: "center",
+							display: "block",
+							marginBottom: "5px",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
+							backgroundColor: "#f8f9fa",
+							padding: "3px 5px",
+							borderRadius: "3px",
 						}}
 					>
-						🔄 Renewal Information
-					</h3>
-					<CircuitRenewalFields circuit={circuit} setCircuit={setCircuit} />
+						Installation Date
+					</label>
+					<input
+						type="date"
+						placeholder="Installation Date"
+						value={circuit.installationDate || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, installationDate: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
 				</div>
-
-				{/* HAS TOWER SECTION */}
-				<div
-					style={{
-						backgroundColor: "#ffffff",
-						padding: "20px",
-						borderRadius: "8px",
-						marginBottom: "20px",
-						border: "1px solid #e5e7eb",
-					}}
-				>
+				<CircuitRenewalFields circuit={circuit} setCircuit={setCircuit} />
+				<div style={{ marginBottom: "15px" }}>
+					<label
+						style={{
+							display: "block",
+							marginBottom: "5px",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
+							backgroundColor: "#f8f9fa",
+							padding: "3px 5px",
+							borderRadius: "3px",
+						}}
+					>
+						Contract Date
+					</label>
+					<input
+						type="date"
+						placeholder="Contract Date"
+						value={circuit.circuitContractDate || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, circuitContractDate: e.target.value })
+						}
+						style={inputStyle}
+						required
+					/>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<select
+						value={circuit.status || ""}
+						onChange={(e) => setCircuit({ ...circuit, status: e.target.value })}
+						style={inputStyle}
+						required
+					>
+						<option value="">Select Status</option>
+						<option value="Active">Active</option>
+						<option value="Inactive">Inactive</option>
+						<option value="Pending">Pending</option>
+					</select>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
+					<select
+						value={circuit.circuitType || ""}
+						onChange={(e) =>
+							setCircuit({ ...circuit, circuitType: e.target.value })
+						}
+						style={inputStyle}
+						required
+					>
+						<option value="">Select Circuit Type</option>
+						<option value="Fiber">Fiber Circuit</option>
+						<option value="Wireless">Wireless</option>
+					</select>
+				</div>
+				<div style={{ marginBottom: "15px" }}>
 					<label
 						style={{
 							display: "flex",
 							alignItems: "center",
 							fontSize: "14px",
-							fontWeight: "600",
-							color: "#1e293b",
+							fontWeight: "500",
+							color: "#3498db",
+							backgroundColor: "#f8f9fa",
+							padding: "10px",
+							borderRadius: "4px",
 							cursor: "pointer",
 						}}
 					>
@@ -1202,52 +917,46 @@ const EditCircuitModal = ({
 								setCircuit({ ...circuit, hasTower: e.target.checked })
 							}
 							style={{
-								marginRight: "12px",
-								transform: "scale(1.3)",
+								marginRight: "8px",
+								transform: "scale(1.2)",
 								cursor: "pointer",
-								accentColor: "#3b82f6",
 							}}
 						/>
-						<span>🏗️ Manage Tower Information</span>
+						Has Tower
 					</label>
 				</div>
-
 				{circuit.hasTower && (
 					<div
 						style={{
-							backgroundColor: "#f3f4f6",
-							padding: "20px",
-							borderRadius: "8px",
 							marginBottom: "20px",
-							border: "2px solid #f59e0b",
+							borderTop: "2px solid #3498db",
+							paddingTop: "15px",
+							backgroundColor: "#f8f9fa",
+							padding: "15px",
+							borderRadius: "4px",
 						}}
 					>
 						<h3
 							style={{
+								marginBottom: "15px",
+								color: "#2c3e50",
+								fontSize: "16px",
 								marginTop: 0,
-								marginBottom: "16px",
-								fontSize: "15px",
-								fontWeight: "700",
-								color: "#92400e",
-								textTransform: "uppercase",
-								letterSpacing: "0.5px",
-								display: "flex",
-								alignItems: "center",
 							}}
 						>
-							🏗️ Tower Information
+							Tower Information
 						</h3>
-						<div style={{ marginBottom: "16px" }}>
+						<div style={{ marginBottom: "15px" }}>
 							<label
 								style={{
 									display: "block",
-									marginBottom: "8px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "#374151",
+									marginBottom: "5px",
+									fontSize: "14px",
+									fontWeight: "500",
+									color: "#3498db",
 								}}
 							>
-								Number of Towers *
+								Number of Towers
 							</label>
 							<input
 								type="number"
@@ -1274,158 +983,144 @@ const EditCircuitModal = ({
 								<div
 									key={towerNum}
 									style={{
-										marginBottom: "16px",
-										borderLeft: "4px solid #f59e0b",
-										paddingLeft: "16px",
+										marginBottom: "20px",
+										borderLeft: "4px solid #3498db",
+										paddingLeft: "12px",
 										backgroundColor: "#ffffff",
-										padding: "16px",
-										borderRadius: "6px",
+										padding: "12px",
+										borderRadius: "4px",
 									}}
 								>
 									<h4
 										style={{
 											marginTop: 0,
-											marginBottom: "12px",
-											color: "#92400e",
-											fontSize: "13px",
+											marginBottom: "10px",
+											color: "#2c3e50",
+											fontSize: "14px",
 											fontWeight: "600",
 										}}
 									>
-										Tower {towerNum} Details
+										Tower {towerNum}
 									</h4>
-									<div
-										style={{
-											display: "grid",
-											gridTemplateColumns: "1fr 1fr",
-											gap: "12px",
-										}}
-									>
-										<div>
-											<label
-												style={{
-													display: "block",
-													marginBottom: "4px",
-													fontSize: "12px",
-													fontWeight: "600",
-													color: "#374151",
-												}}
-											>
-												Provider
-											</label>
-											<input
-												type="text"
-												placeholder="Tower Provider"
-												value={circuit[`towerProvider${towerNum}`] || ""}
-												onChange={(e) =>
-													setCircuit({
-														...circuit,
-														[`towerProvider${towerNum}`]: e.target.value,
-													})
-												}
-												style={inputStyle}
-												required
-											/>
-										</div>
-										<div>
-											<label
-												style={{
-													display: "block",
-													marginBottom: "4px",
-													fontSize: "12px",
-													fontWeight: "600",
-													color: "#374151",
-												}}
-											>
-												Installation Date
-											</label>
-											<input
-												type="date"
-												value={circuit[`towerInstallDate${towerNum}`] || ""}
-												onChange={(e) =>
-													setCircuit({
-														...circuit,
-														[`towerInstallDate${towerNum}`]: e.target.value,
-													})
-												}
-												style={inputStyle}
-												required
-											/>
-										</div>
-										<div>
-											<label
-												style={{
-													display: "block",
-													marginBottom: "4px",
-													fontSize: "12px",
-													fontWeight: "600",
-													color: "#374151",
-												}}
-											>
-												Expiration Date
-											</label>
-											<input
-												type="date"
-												value={circuit[`towerExpirationDate${towerNum}`] || ""}
-												onChange={(e) =>
-													setCircuit({
-														...circuit,
-														[`towerExpirationDate${towerNum}`]: e.target.value,
-													})
-												}
-												style={inputStyle}
-												required
-											/>
-										</div>
-										<div>
-											<label
-												style={{
-													display: "block",
-													marginBottom: "4px",
-													fontSize: "12px",
-													fontWeight: "600",
-													color: "#374151",
-												}}
-											>
-												Monthly Cost
-											</label>
-											<input
-												type="number"
-												placeholder="0.00"
-												step="0.01"
-												value={circuit[`towerMonthlyCost${towerNum}`] || ""}
-												onChange={(e) =>
-													setCircuit({
-														...circuit,
-														[`towerMonthlyCost${towerNum}`]: e.target.value,
-													})
-												}
-												style={inputStyle}
-												required
-											/>
-										</div>
+									<div style={{ marginBottom: "12px" }}>
+										<label
+											style={{
+												display: "block",
+												marginBottom: "5px",
+												fontSize: "12px",
+												fontWeight: "500",
+												color: "#3498db",
+											}}
+										>
+											Tower Provider
+										</label>
+										<input
+											type="text"
+											placeholder="Tower Provider"
+											value={circuit[`towerProvider${towerNum}`] || ""}
+											onChange={(e) =>
+												setCircuit({
+													...circuit,
+													[`towerProvider${towerNum}`]: e.target.value,
+												})
+											}
+											style={inputStyle}
+											required
+										/>
+									</div>
+									<div style={{ marginBottom: "12px" }}>
+										<label
+											style={{
+												display: "block",
+												marginBottom: "5px",
+												fontSize: "12px",
+												fontWeight: "500",
+												color: "#3498db",
+											}}
+										>
+											Installation Date
+										</label>
+										<input
+											type="date"
+											placeholder="Tower Installation Date"
+											value={circuit[`towerInstallDate${towerNum}`] || ""}
+											onChange={(e) =>
+												setCircuit({
+													...circuit,
+													[`towerInstallDate${towerNum}`]: e.target.value,
+												})
+											}
+											style={inputStyle}
+											required
+										/>
+									</div>
+									<div style={{ marginBottom: "12px" }}>
+										<label
+											style={{
+												display: "block",
+												marginBottom: "5px",
+												fontSize: "12px",
+												fontWeight: "500",
+												color: "#3498db",
+											}}
+										>
+											Expiration Date
+										</label>
+										<input
+											type="date"
+											placeholder="Tower Expiration Date"
+											value={circuit[`towerExpirationDate${towerNum}`] || ""}
+											onChange={(e) =>
+												setCircuit({
+													...circuit,
+													[`towerExpirationDate${towerNum}`]: e.target.value,
+												})
+											}
+											style={inputStyle}
+											required
+										/>
+									</div>
+									<div style={{ marginBottom: "12px" }}>
+										<label
+											style={{
+												display: "block",
+												marginBottom: "5px",
+												fontSize: "12px",
+												fontWeight: "500",
+												color: "#3498db",
+											}}
+										>
+											Monthly Cost
+										</label>
+										<input
+											type="number"
+											placeholder="Tower Monthly Cost"
+											value={circuit[`towerMonthlyCost${towerNum}`] || ""}
+											onChange={(e) =>
+												setCircuit({
+													...circuit,
+													[`towerMonthlyCost${towerNum}`]: e.target.value,
+												})
+											}
+											style={inputStyle}
+											required
+										/>
 									</div>
 								</div>
 							))}
 					</div>
 				)}
-
-				{/* HAS AGGREGATOR SECTION */}
-				<div
-					style={{
-						backgroundColor: "#ffffff",
-						padding: "20px",
-						borderRadius: "8px",
-						marginBottom: "20px",
-						border: "1px solid #e5e7eb",
-					}}
-				>
+				<div style={{ marginBottom: "15px" }}>
 					<label
 						style={{
 							display: "flex",
 							alignItems: "center",
 							fontSize: "14px",
-							fontWeight: "600",
-							color: "#1e293b",
+							fontWeight: "500",
+							color: "#3498db",
+							backgroundColor: "#f8f9fa",
+							padding: "10px",
+							borderRadius: "4px",
 							cursor: "pointer",
 						}}
 					>
@@ -1436,52 +1131,46 @@ const EditCircuitModal = ({
 								setCircuit({ ...circuit, hasAggregator: e.target.checked })
 							}
 							style={{
-								marginRight: "12px",
-								transform: "scale(1.3)",
+								marginRight: "8px",
+								transform: "scale(1.2)",
 								cursor: "pointer",
-								accentColor: "#3b82f6",
 							}}
 						/>
-						<span>🔗 Has Aggregator</span>
+						Has Aggregator
 					</label>
 				</div>
-
 				{circuit.hasAggregator && (
 					<div
 						style={{
-							backgroundColor: "#f0fdf4",
-							padding: "20px",
-							borderRadius: "8px",
 							marginBottom: "20px",
-							border: "2px solid #22c55e",
+							borderTop: "2px solid #3498db",
+							paddingTop: "15px",
+							backgroundColor: "#f8f9fa",
+							padding: "15px",
+							borderRadius: "4px",
 						}}
 					>
 						<h3
 							style={{
+								marginBottom: "15px",
+								color: "#2c3e50",
+								fontSize: "16px",
 								marginTop: 0,
-								marginBottom: "16px",
-								fontSize: "15px",
-								fontWeight: "700",
-								color: "#16a34a",
-								textTransform: "uppercase",
-								letterSpacing: "0.5px",
-								display: "flex",
-								alignItems: "center",
 							}}
 						>
-							🔗 Aggregator Information
+							Aggregator Information
 						</h3>
-						<div>
+						<div style={{ marginBottom: "15px" }}>
 							<label
 								style={{
 									display: "block",
-									marginBottom: "8px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "#374151",
+									marginBottom: "5px",
+									fontSize: "14px",
+									fontWeight: "500",
+									color: "#3498db",
 								}}
 							>
-								Aggregator Name *
+								Aggregator Name
 							</label>
 							<input
 								type="text"
@@ -1499,77 +1188,44 @@ const EditCircuitModal = ({
 						</div>
 					</div>
 				)}
-
-				{/* NOTES SECTION */}
-				<div
-					style={{
-						backgroundColor: "#ffffff",
-						padding: "20px",
-						borderRadius: "8px",
-						marginBottom: "20px",
-						border: "1px solid #e5e7eb",
-					}}
-				>
-					<h3
+				<div style={{ marginBottom: "15px" }}>
+					<label
 						style={{
-							marginTop: 0,
-							marginBottom: "12px",
-							fontSize: "13px",
-							fontWeight: "600",
-							color: "#374151",
-							textTransform: "uppercase",
-							letterSpacing: "0.5px",
+							display: "block",
+							marginBottom: "5px",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "#3498db",
 						}}
 					>
-						📝 Additional Notes
-					</h3>
+						Notes
+					</label>
 					<textarea
-						placeholder="Add any additional notes (optional)"
+						placeholder="Notes (optional)"
 						value={circuit.notes || ""}
 						onChange={(e) => setCircuit({ ...circuit, notes: e.target.value })}
-						style={{
-							...inputStyle,
-							minHeight: "100px",
-							resize: "vertical",
-							fontFamily: "inherit",
-						}}
+						style={{ ...inputStyle, minHeight: "80px", resize: "vertical" }}
 					/>
 				</div>
-
-				{/* ACTION BUTTONS */}
 				<div
 					style={{
 						display: "flex",
 						justifyContent: "flex-end",
-						gap: "12px",
-						paddingTop: "16px",
-						borderTop: "1px solid #e5e7eb",
+						gap: "10px",
 					}}
 				>
 					<button
 						type="button"
 						onClick={onClose}
-						style={{
-							...buttonStyle,
-							backgroundColor: "#6b7280",
-							padding: "10px 20px",
-							fontSize: "14px",
-							fontWeight: "500",
-						}}
+						style={{ ...buttonStyle, backgroundColor: "#9CA3AF" }}
 					>
 						Cancel
 					</button>
 					<button
 						type="submit"
-						style={{
-							...buttonStyle,
-							backgroundColor: "#3b82f6",
-							padding: "10px 24px",
-							fontSize: "14px",
-							fontWeight: "500",
-						}}
+						style={{ ...buttonStyle, backgroundColor: "#4299E1" }}
 					>
-						💾 Save Changes
+						Save
 					</button>
 				</div>
 			</form>
