@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 import { Bar } from "react-chartjs-2";
 import {
 	Chart as ChartJS,
@@ -29,6 +30,48 @@ function Reports() {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const { token, user } = useAuth();
+	const { theme } = useTheme();
+
+	// Theme-aware color palette for charts
+	const chartColors = {
+		light: {
+			primary: "#3498db",
+			success: "#27ae60",
+			warning: "#f39c12",
+			error: "#e74c3c",
+			secondary: "#95a5a6",
+			containerBg: "#f8f9fa",
+			textDark: "#2c3e50",
+			textLight: "#2c3e50", // Dark text for light backgrounds
+			headerText: "#2c3e50", // Headers in light mode use dark text
+			dataLabelColor: "#ffffff", // White labels on bars for contrast
+			gridColor: "#e8e8e8",
+			borderColor: "#bdc3c7",
+		},
+		dark: {
+			primary: "#3498db",
+			success: "#2ecc71",
+			warning: "#f39c12",
+			error: "#e74c3c",
+			secondary: "#7f8c8d",
+			containerBg: "#2c3e50",
+			textDark: "#2c3e50",
+			textLight: "#ecf0f1", // Light text for dark backgrounds
+			headerText: "#ecf0f1", // Headers in dark mode use light text
+			dataLabelColor: "#ffffff", // White labels on bars for contrast
+			gridColor: "#34495e",
+			borderColor: "#34495e",
+		},
+	};
+
+	const colors = chartColors[theme] || chartColors.dark;
+
+	// Helper function to get CSS variable value (computed style)
+	const getCSSVariableValue = (variableName) => {
+		return getComputedStyle(document.documentElement)
+			.getPropertyValue(variableName)
+			.trim();
+	};
 	const [siteTypeFilter, setSiteTypeFilter] = useState("All");
 	const [statusFilter, setStatusFilter] = useState("All");
 	const [circuitTypeFilter, setCircuitTypeFilter] = useState("All");
@@ -295,8 +338,8 @@ function Reports() {
 				{
 					label: getDatasetLabel("Bandwidth"),
 					data: sortedEntries.map(([, value]) => value),
-					backgroundColor: "#3498db",
-					borderColor: "#2980b9",
+					backgroundColor: colors.primary,
+					borderColor: colors.primary,
 					borderWidth: 1,
 				},
 			],
@@ -321,8 +364,8 @@ function Reports() {
 				{
 					label: getDatasetLabel("Provider"),
 					data: sortedEntries.map(([, value]) => value),
-					backgroundColor: "#2ecc71",
-					borderColor: "#27ae60",
+					backgroundColor: colors.success,
+					borderColor: colors.success,
 					borderWidth: 1,
 				},
 			],
@@ -354,26 +397,26 @@ function Reports() {
 						// Color-code by status
 						switch (key) {
 							case "Active":
-								return "#2ecc71"; // Green for Active
+								return colors.success;
 							case "Pending":
-								return "#f39c12"; // Orange for Pending
+								return colors.warning;
 							case "Inactive":
-								return "#e74c3c"; // Red for Inactive
+								return colors.error;
 							default:
-								return "#95a5a6"; // Gray for other statuses
+								return colors.secondary;
 						}
 					}),
 					borderColor: sortedEntries.map(([key]) => {
 						// Darker border colors
 						switch (key) {
 							case "Active":
-								return "#27ae60"; // Darker green
+								return colors.success;
 							case "Pending":
-								return "#d35400"; // Darker orange
+								return colors.warning;
 							case "Inactive":
-								return "#c0392b"; // Darker red
+								return colors.error;
 							default:
-								return "#7f8c8d"; // Darker gray
+								return colors.secondary;
 						}
 					}),
 					borderWidth: 1,
@@ -927,7 +970,7 @@ function Reports() {
 									style={{
 										padding: "6px 10px",
 										borderRadius: "4px",
-										border: "1px solid #3498db",
+										border: "1px solid var(--color-primary)",
 										backgroundColor: "#34495e",
 										color: "#ffffff",
 										fontSize: "14px",
@@ -953,7 +996,7 @@ function Reports() {
 									style={{
 										padding: "6px 10px",
 										borderRadius: "4px",
-										border: "1px solid #3498db",
+										border: "1px solid var(--color-primary)",
 										backgroundColor: "#34495e",
 										color: "#ffffff",
 										fontSize: "14px",
@@ -979,7 +1022,7 @@ function Reports() {
 									style={{
 										padding: "6px 10px",
 										borderRadius: "4px",
-										border: "1px solid #3498db",
+										border: "1px solid var(--color-primary)",
 										backgroundColor: "#34495e",
 										color: "#ffffff",
 										fontSize: "14px",
@@ -1005,7 +1048,7 @@ function Reports() {
 									style={{
 										padding: "6px 10px",
 										borderRadius: "4px",
-										border: "1px solid #3498db",
+										border: "1px solid var(--color-primary)",
 										backgroundColor: "#34495e",
 										color: "#ffffff",
 										fontSize: "14px",
@@ -1033,7 +1076,7 @@ function Reports() {
 									style={{
 										padding: "6px 10px",
 										borderRadius: "4px",
-										border: "1px solid #3498db",
+										border: "1px solid var(--color-primary)",
 										backgroundColor: "#34495e",
 										color: "#ffffff",
 										fontSize: "14px",
@@ -1062,7 +1105,7 @@ function Reports() {
 									style={{
 										padding: "6px 10px",
 										borderRadius: "4px",
-										border: "1px solid #3498db",
+										border: "1px solid var(--color-primary)",
 										backgroundColor: "#34495e",
 										color: "#ffffff",
 										fontSize: "14px",
@@ -1091,8 +1134,8 @@ function Reports() {
 							<h2
 								style={{
 									marginBottom: "20px",
-									color: "#ffffff",
-									backgroundColor: "#2c3e50",
+									color: colors.headerText,
+									backgroundColor: colors.containerBg,
 									padding: "10px 20px",
 									borderRadius: "4px",
 									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
@@ -1102,7 +1145,7 @@ function Reports() {
 							</h2>
 							<div
 								style={{
-									backgroundColor: "#f8f9fa",
+									backgroundColor: colors.containerBg,
 									padding: "20px",
 									borderRadius: "8px",
 									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
@@ -1127,16 +1170,18 @@ function Reports() {
 												labels: {
 													boxWidth: 20,
 													font: { size: 12 },
+													color: colors.textLight,
 												},
 											},
 											title: {
 												display: true,
 												text: `Sites per Bandwidth${getFilterSubtitle()}`,
 												font: { size: 14 },
+												color: colors.headerText,
 											},
 											datalabels: {
 												display: true,
-												color: "#2c3e50",
+												color: colors.dataLabelColor,
 												anchor: "start",
 												align: "end",
 												offset: -20,
@@ -1157,11 +1202,19 @@ function Reports() {
 												ticks: {
 													stepSize: 1,
 													font: { size: 11 },
+													color: colors.textLight,
+												},
+												grid: {
+													color: colors.gridColor,
 												},
 											},
 											x: {
 												ticks: {
 													font: { size: 11 },
+													color: colors.textLight,
+												},
+												grid: {
+													color: colors.gridColor,
 												},
 											},
 										},
@@ -1173,8 +1226,8 @@ function Reports() {
 							<h2
 								style={{
 									marginBottom: "20px",
-									color: "#ffffff",
-									backgroundColor: "#2c3e50",
+									color: colors.headerText,
+									backgroundColor: colors.containerBg,
 									padding: "10px 20px",
 									borderRadius: "4px",
 									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
@@ -1184,7 +1237,7 @@ function Reports() {
 							</h2>
 							<div
 								style={{
-									backgroundColor: "#f8f9fa",
+									backgroundColor: colors.containerBg,
 									padding: "20px",
 									borderRadius: "8px",
 									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
@@ -1204,15 +1257,23 @@ function Reports() {
 										responsive: true,
 										maintainAspectRatio: false,
 										plugins: {
-											legend: { position: "top" },
+											legend: {
+												position: "top",
+												labels: {
+													color: colors.textLight,
+													boxWidth: 20,
+													font: { size: 12 },
+												},
+											},
 											title: {
 												display: true,
 												text: `Circuit Status Distribution${getFilterSubtitle()}`,
 												font: { size: 14 },
+												color: colors.headerText,
 											},
 											datalabels: {
 												display: true,
-												color: "#2c3e50",
+												color: colors.dataLabelColor,
 												anchor: "start",
 												align: "end",
 												offset: -20,
@@ -1230,7 +1291,21 @@ function Reports() {
 										scales: {
 											y: {
 												beginAtZero: true,
-												ticks: { stepSize: 1 },
+												ticks: {
+													stepSize: 1,
+													color: colors.textLight,
+												},
+												grid: {
+													color: colors.gridColor,
+												},
+											},
+											x: {
+												ticks: {
+													color: colors.textLight,
+												},
+												grid: {
+													color: colors.gridColor,
+												},
 											},
 										},
 									}}
@@ -1241,8 +1316,8 @@ function Reports() {
 							<h2
 								style={{
 									marginBottom: "20px",
-									color: "#ffffff",
-									backgroundColor: "#2c3e50",
+									color: colors.headerText,
+									backgroundColor: colors.containerBg,
 									padding: "10px 20px",
 									borderRadius: "4px",
 									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
@@ -1252,7 +1327,7 @@ function Reports() {
 							</h2>
 							<div
 								style={{
-									backgroundColor: "#f8f9fa",
+									backgroundColor: colors.containerBg,
 									padding: "20px",
 									borderRadius: "8px",
 									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
@@ -1272,15 +1347,23 @@ function Reports() {
 										responsive: true,
 										maintainAspectRatio: false,
 										plugins: {
-											legend: { position: "top" },
+											legend: {
+												position: "top",
+												labels: {
+													color: colors.textLight,
+													boxWidth: 20,
+													font: { size: 12 },
+												},
+											},
 											title: {
 												display: true,
 												text: `Sites per Provider${getFilterSubtitle()}`,
 												font: { size: 14 },
+												color: colors.headerText,
 											},
 											datalabels: {
 												display: true,
-												color: "#2c3e50",
+												color: colors.textLight,
 												anchor: "start",
 												align: "end",
 												offset: -20,
@@ -1298,7 +1381,21 @@ function Reports() {
 										scales: {
 											y: {
 												beginAtZero: true,
-												ticks: { stepSize: 1 },
+												ticks: {
+													stepSize: 1,
+													color: colors.textLight,
+												},
+												grid: {
+													color: colors.gridColor,
+												},
+											},
+											x: {
+												ticks: {
+													color: colors.textLight,
+												},
+												grid: {
+													color: colors.gridColor,
+												},
 											},
 										},
 									}}
@@ -1339,7 +1436,7 @@ function Reports() {
 									padding: "10px 16px",
 									border: "none",
 									borderRadius: "4px",
-									backgroundColor: "#27ae60",
+									backgroundColor: "var(--color-success)",
 									color: "white",
 									fontSize: "14px",
 									fontWeight: "bold",
@@ -1354,7 +1451,7 @@ function Reports() {
 									e.target.style.backgroundColor = "#229954";
 								}}
 								onMouseLeave={(e) => {
-									e.target.style.backgroundColor = "#27ae60";
+									e.target.style.backgroundColor = "var(--color-success)";
 								}}
 							>
 								📥 Export to Excel
@@ -1396,9 +1493,11 @@ function Reports() {
 											<tr
 												key={circuit.id}
 												style={{
-													borderBottom: "1px solid #dee2e6",
+													borderBottom: "1px solid var(--color-border-light)",
 													backgroundColor:
-														index % 2 === 0 ? "#ffffff" : "#eef2f7",
+														index % 2 === 0
+															? "var(--color-surface)"
+															: "var(--color-surface-light)",
 												}}
 											>
 												<td style={{ ...tableCellStyle, fontWeight: "600" }}>
@@ -1577,7 +1676,7 @@ function Reports() {
 								style={{
 									padding: "6px 10px",
 									borderRadius: "4px",
-									border: "1px solid #3498db",
+									border: "1px solid var(--color-primary)",
 									backgroundColor: "#34495e",
 									color: "#ffffff",
 									fontSize: "14px",
@@ -1604,7 +1703,7 @@ function Reports() {
 								style={{
 									padding: "6px 10px",
 									borderRadius: "4px",
-									border: "1px solid #3498db",
+									border: "1px solid var(--color-primary)",
 									backgroundColor: "#34495e",
 									color: "#ffffff",
 									fontSize: "14px",
@@ -1617,7 +1716,7 @@ function Reports() {
 									padding: "8px 16px",
 									border: "none",
 									borderRadius: "4px",
-									backgroundColor: "#27ae60",
+									backgroundColor: "var(--color-success)",
 									color: "white",
 									fontSize: "14px",
 									fontWeight: "bold",
@@ -1631,7 +1730,7 @@ function Reports() {
 									e.target.style.backgroundColor = "#229954";
 								}}
 								onMouseLeave={(e) => {
-									e.target.style.backgroundColor = "#27ae60";
+									e.target.style.backgroundColor = "var(--color-success)";
 								}}
 							>
 								📥 Download Excel
@@ -1701,9 +1800,11 @@ function Reports() {
 											<tr
 												key={circuit.id}
 												style={{
-													borderBottom: "1px solid #dee2e6",
+													borderBottom: "1px solid var(--color-border-light)",
 													backgroundColor:
-														index % 2 === 0 ? "#ffffff" : "#eef2f7",
+														index % 2 === 0
+															? "var(--color-surface)"
+															: "var(--color-surface-light)",
 												}}
 											>
 												<td style={{ ...tableCellStyle, fontWeight: "600" }}>
@@ -1989,7 +2090,7 @@ function Reports() {
 								style={{
 									padding: "6px 10px",
 									borderRadius: "4px",
-									border: "1px solid #3498db",
+									border: "1px solid var(--color-primary)",
 									backgroundColor: "#34495e",
 									color: "#ffffff",
 									fontSize: "14px",
@@ -2020,7 +2121,7 @@ function Reports() {
 								style={{
 									padding: "6px 10px",
 									borderRadius: "4px",
-									border: "1px solid #3498db",
+									border: "1px solid var(--color-primary)",
 									backgroundColor: "#34495e",
 									color: "#ffffff",
 									fontSize: "14px",
@@ -2037,7 +2138,7 @@ function Reports() {
 								style={{
 									padding: "6px 10px",
 									borderRadius: "4px",
-									border: "1px solid #3498db",
+									border: "1px solid var(--color-primary)",
 									backgroundColor: "#34495e",
 									color: "#ffffff",
 									fontSize: "14px",
@@ -2057,7 +2158,7 @@ function Reports() {
 									padding: "8px 16px",
 									border: "none",
 									borderRadius: "4px",
-									backgroundColor: "#27ae60",
+									backgroundColor: "var(--color-success)",
 									color: "white",
 									fontSize: "14px",
 									fontWeight: "bold",
@@ -2119,9 +2220,11 @@ function Reports() {
 											<tr
 												key={circuit.id}
 												style={{
-													borderBottom: "1px solid #dee2e6",
+													borderBottom: "1px solid var(--color-border-light)",
 													backgroundColor:
-														index % 2 === 0 ? "#ffffff" : "#eef2f7",
+														index % 2 === 0
+															? "var(--color-surface)"
+															: "var(--color-surface-light)",
 												}}
 											>
 												<td style={{ ...tableCellStyle, fontWeight: "600" }}>
@@ -2268,7 +2371,7 @@ function Reports() {
 				fontWeight: "700",
 				fontSize: "15px",
 				textAlign: "left",
-				borderBottom: "3px solid #3498db",
+				borderBottom: "3px solid var(--color-primary)",
 			};
 
 			const towerSectionHeaderStyle = {
@@ -2278,7 +2381,7 @@ function Reports() {
 				fontWeight: "600",
 				fontSize: "13px",
 				textAlign: "left",
-				borderLeft: "4px solid #3498db",
+				borderLeft: "4px solid var(--color-primary)",
 			};
 
 			return (
@@ -2355,7 +2458,7 @@ function Reports() {
 											marginBottom: "24px",
 											borderRadius: "6px",
 											overflow: "hidden",
-											border: "2px solid #3498db",
+											border: "2px solid var(--color-primary)",
 											boxShadow:
 												siteIndex % 2 === 0
 													? "0 2px 6px rgba(52, 152, 219, 0.15)"
@@ -2413,7 +2516,7 @@ function Reports() {
 												</span>
 												<span
 													style={{
-														backgroundColor: "#3498db",
+														backgroundColor: "var(--color-primary)",
 														color: "white",
 														padding: "2px 8px",
 														borderRadius: "4px",
@@ -2509,7 +2612,7 @@ function Reports() {
 															style={{
 																...tableCellStyle,
 																fontWeight: "700",
-																color: "#3498db",
+																color: "var(--color-primary)",
 																fontSize: "15px",
 															}}
 														>
@@ -2537,9 +2640,9 @@ function Reports() {
 																backgroundColor: isExpired(
 																	row.towerExpirationDate,
 																)
-																	? "#e74c3c"
+																	? "var(--color-error)"
 																	: isExpirationSoon(row.towerExpirationDate)
-																		? "#f39c12"
+																		? "var(--color-warning)"
 																		: "transparent",
 																fontWeight: isExpired(row.towerExpirationDate)
 																	? "700"
@@ -2565,7 +2668,7 @@ function Reports() {
 																style={{
 																	...tableCellStyle,
 																	fontWeight: "600",
-																	color: "#27ae60",
+																	color: "var(--color-success)",
 																}}
 															>
 																{typeof row.towerMonthlyCost === "number" ||
@@ -2878,9 +2981,11 @@ function Reports() {
 												<tr
 													key={circuit.id}
 													style={{
-														borderBottom: "1px solid #dee2e6",
+														borderBottom: "1px solid var(--color-border-light)",
 														backgroundColor:
-															index % 2 === 0 ? "#ffffff" : "#eef2f7",
+															index % 2 === 0
+																? "var(--color-surface)"
+																: "var(--color-surface-light)",
 													}}
 												>
 													<td style={{ ...tableCellStyle, fontWeight: "600" }}>
@@ -2895,10 +3000,10 @@ function Reports() {
 																fontWeight: "bold",
 																backgroundColor:
 																	circuit.site.siteType === "MHC"
-																		? "#3498db"
+																		? "var(--color-primary)"
 																		: circuit.site.siteType === "DHC"
 																			? "#9b59b6"
-																			: "#95a5a6",
+																			: "var(--color-text-muted)",
 																color: "white",
 															}}
 														>
@@ -2938,12 +3043,12 @@ function Reports() {
 																fontWeight: "bold",
 																backgroundColor:
 																	circuit.status === "Active"
-																		? "#2ecc71"
+																		? "var(--color-success)"
 																		: circuit.status === "Pending"
-																			? "#f39c12"
+																			? "var(--color-warning)"
 																			: circuit.status === "Inactive"
-																				? "#e74c3c"
-																				: "#95a5a6",
+																				? "var(--color-error)"
+																				: "var(--color-text-muted)",
 																color: "white",
 															}}
 														>
@@ -2961,7 +3066,7 @@ function Reports() {
 								style={{
 									textAlign: "center",
 									padding: "40px 20px",
-									color: "#7f8c8d",
+									color: "var(--color-text-muted)",
 									fontSize: "16px",
 								}}
 							>
@@ -3008,7 +3113,7 @@ function Reports() {
 		fontWeight: "700",
 		fontSize: "var(--font-size-sm)",
 		backgroundColor: "transparent",
-		color: "white",
+		color: theme === "light" ? "#2c3e50" : "#ffffff",
 		textTransform: "uppercase",
 		letterSpacing: "0.5px",
 	};
@@ -3017,9 +3122,9 @@ function Reports() {
 		padding: "var(--spacing-lg)",
 		textAlign: "left",
 		fontSize: "var(--font-size-base)",
-		color: "var(--color-text-dark)",
+		color: theme === "light" ? "#2c3e50" : "#ecf0f1",
 		fontWeight: "500",
-		backgroundColor: "white",
+		backgroundColor: "var(--color-surface)",
 	};
 
 	return (
@@ -3036,7 +3141,7 @@ function Reports() {
 					style={{
 						listStyle: "none",
 						padding: 0,
-						color: "#ecf0f1",
+						color: "var(--color-sidebar-text)",
 						fontSize: "16px",
 					}}
 				>
@@ -3054,7 +3159,11 @@ function Reports() {
 								padding: "10px",
 								cursor: "pointer",
 								backgroundColor:
-									selectedMenu === item ? "#34495e" : "transparent",
+									selectedMenu === item
+										? "var(--color-dark-bg-secondary)"
+										: "transparent",
+								transition: "all var(--transition-fast)",
+								borderRadius: "var(--radius-md)",
 							}}
 							onClick={() => setSelectedMenu(item)}
 						>

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 import AccessLogo from "../images/Access.png";
 
 const getApiErrorMessage = async (response, fallbackMessage) => {
@@ -187,6 +188,7 @@ const RenewalAnalysisModal = ({
 	onSave,
 	saving,
 }) => {
+	const { theme } = useTheme();
 	const [renewalTerm, setRenewalTerm] = useState(() =>
 		inferRenewalTerm(circuit.renewalCircuitExpirationDate),
 	);
@@ -199,9 +201,87 @@ const RenewalAnalysisModal = ({
 	const isCostComparisonAvailable =
 		preview.costFromCustomerExpirationToRenewalExpiration != null &&
 		preview.savingsUntilCustomerContractExpiration != null;
+
+	// Theme-aware modal styles
+	const themedModalStyle = {
+		...modalStyle,
+		backgroundColor: theme === "light" ? "#ffffff" : "var(--color-dark-bg)",
+		color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+		colorScheme: theme,
+	};
+
+	const themedModalHeaderStyle = {
+		...modalHeaderStyle,
+		backgroundColor: theme === "light" ? "#ffffff" : "var(--color-dark-bg)",
+		borderBottomColor: theme === "light" ? "#3498db" : "#3498db",
+	};
+
+	const themedCloseButtonStyle = {
+		...closeButtonStyle,
+		backgroundColor:
+			theme === "light" ? "#f8f9fa" : "var(--color-dark-bg-secondary)",
+		color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+	};
+
+	const themedSectionCardStyle = {
+		...sectionCardStyle,
+		backgroundColor:
+			theme === "light" ? "#f8f9fa" : "var(--color-dark-bg-secondary)",
+		borderColor: theme === "light" ? "#e0e0e0" : "var(--color-border)",
+	};
+
+	const themedSectionHeadingStyle = {
+		...sectionHeadingStyle,
+		color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+	};
+
+	const themedSectionDescriptionStyle = {
+		...sectionDescriptionStyle,
+		color: theme === "light" ? "#7f8c8d" : "var(--color-text-muted)",
+	};
+
+	const themedFieldLabelStyle = {
+		...fieldLabelStyle,
+		color: theme === "light" ? "#3498db" : "var(--color-primary-light)",
+	};
+
+	const themedFieldValueStyle = {
+		...fieldValueStyle,
+		color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+	};
+
+	const themedInputLabelStyle = {
+		...inputLabelStyle,
+		color: theme === "light" ? "#555555" : "var(--color-label-muted)",
+	};
+
+	const themedInputStyle = {
+		...inputStyle,
+		backgroundColor: theme === "light" ? "#ffffff" : "var(--color-dark-bg)",
+		color: theme === "light" ? "#2c3e50" : "var(--color-surface-light)",
+		borderColor: theme === "light" ? "#d0d0d0" : "var(--color-border)",
+	};
+
+	const themedReadOnlyInputStyle = {
+		...readOnlyInputStyle,
+		backgroundColor:
+			theme === "light" ? "#e8e8e8" : "var(--color-dark-bg-tertiary)",
+		color: theme === "light" ? "#555555" : "var(--color-text-light)",
+	};
+
+	const themedModalHeaderBrandLabelStyle = {
+		...modalHeaderBrandLabelStyle,
+		color: theme === "light" ? "#555555" : "var(--color-label-text)",
+	};
+
+	const themedModalHeaderSubtitleStyle = {
+		...modalHeaderSubtitleStyle,
+		color: theme === "light" ? "#7f8c8d" : "var(--color-text-muted)",
+	};
+
 	const totalSavingsStyle =
 		preview.totalSavings == null
-			? readOnlyInputStyle
+			? themedReadOnlyInputStyle
 			: preview.totalSavings > 0
 				? successHighlightStyle
 				: preview.totalSavings < 0
@@ -240,8 +320,8 @@ const RenewalAnalysisModal = ({
 
 	return (
 		<div style={overlayStyle}>
-			<div style={modalStyle}>
-				<div style={modalHeaderStyle}>
+			<div style={themedModalStyle}>
+				<div style={themedModalHeaderStyle}>
 					<div style={modalHeaderContentStyle}>
 						<div style={modalHeaderBrandStyle}>
 							<img
@@ -249,43 +329,49 @@ const RenewalAnalysisModal = ({
 								alt="AccessParks logo"
 								style={modalHeaderLogoStyle}
 							/>
-							<span style={modalHeaderBrandLabelStyle}>AccessParks</span>
+							<span style={themedModalHeaderBrandLabelStyle}>AccessParks</span>
 						</div>
 						<div style={modalHeaderTextContainerStyle}>
 							<h2 style={{ margin: 0 }}>Renewal Analysis</h2>
-							<p style={modalHeaderSubtitleStyle}>
+							<p style={themedModalHeaderSubtitleStyle}>
 								Review the contract timeline, enter renewal inputs, and compare
 								savings against the future renewal cost.
 							</p>
 						</div>
 					</div>
-					<button type="button" onClick={onClose} style={closeButtonStyle}>
+					<button
+						type="button"
+						onClick={onClose}
+						style={themedCloseButtonStyle}
+					>
 						Close
 					</button>
 				</div>
 				<div style={modalBodyStyle}>
-					<div style={sectionCardStyle}>
-						<div style={sectionHeadingStyle}>Circuit Overview</div>
+					<div style={themedSectionCardStyle}>
+						<div style={themedSectionHeadingStyle}>Circuit Overview</div>
 						<div style={summaryGridStyle}>
 							<div>
-								<div style={fieldLabelStyle}>Site</div>
-								<div style={fieldValueStyle}>{circuit.site?.name || "N/A"}</div>
+								<div style={themedFieldLabelStyle}>Site</div>
+								<div style={themedFieldValueStyle}>
+									{circuit.site?.name || "N/A"}
+								</div>
 							</div>
 							<div>
-								<div style={fieldLabelStyle}>Provider</div>
-								<div style={fieldValueStyle}>
+								<div style={themedFieldLabelStyle}>Provider</div>
+								<div style={themedFieldValueStyle}>
 									{circuit.provider?.name || "N/A"}
 								</div>
 							</div>
 							<div>
-								<div style={fieldLabelStyle}>Bandwidth</div>
-								<div style={fieldValueStyle}>
+								<div style={themedFieldLabelStyle}>Bandwidth</div>
+								<div style={themedFieldValueStyle}>
 									{circuit.circuitBandwidth || "N/A"}
 								</div>
 							</div>
 							<div>
-								<div style={fieldLabelStyle}>Aggregator</div>
-								<div style={fieldValueStyle}>
+								<div style={themedFieldLabelStyle}>Aggregator</div>
+								<div style={themedFieldValueStyle}>
 									{circuit.aggregatorName || "N/A"}
 								</div>
 							</div>
@@ -293,25 +379,27 @@ const RenewalAnalysisModal = ({
 					</div>
 
 					<div style={twoColumnLayoutStyle}>
-						<div style={sectionCardStyle}>
-							<div style={sectionHeadingStyle}>Contract Timeline</div>
-							<div style={sectionDescriptionStyle}>
+						<div style={themedSectionCardStyle}>
+							<div style={themedSectionHeadingStyle}>Contract Timeline</div>
+							<div style={themedSectionDescriptionStyle}>
 								These dates drive the month-based savings and renewal cost
 								calculations.
 							</div>
 							<div style={sectionGridStyle}>
 								<div>
-									<div style={fieldLabelStyle}>Site</div>
-									<label style={inputLabelStyle}>Circuit Expiration Date</label>
+									<div style={themedFieldLabelStyle}>Site</div>
+									<label style={themedInputLabelStyle}>
+										Circuit Expiration Date
+									</label>
 									<input
 										type="date"
 										value={circuit.expirationDate || ""}
 										readOnly
-										style={{ ...inputStyle, ...readOnlyInputStyle }}
+										style={{ ...themedInputStyle, ...themedReadOnlyInputStyle }}
 									/>
 								</div>
 								<div>
-									<label style={inputLabelStyle}>
+									<label style={themedInputLabelStyle}>
 										Customer Contract Expiration Date
 									</label>
 									<input
@@ -323,17 +411,17 @@ const RenewalAnalysisModal = ({
 												event.target.value,
 											)
 										}
-										style={inputStyle}
+										style={themedInputStyle}
 									/>
 								</div>
 								<div>
-									<label style={inputLabelStyle}>
+									<label style={themedInputLabelStyle}>
 										Renewal Circuit Expiration Term
 									</label>
 									<select
 										value={renewalTerm}
 										onChange={handleRenewalTermChange}
-										style={inputStyle}
+										style={themedInputStyle}
 									>
 										<option value="1">1 Year</option>
 										<option value="2">2 Years</option>
@@ -342,7 +430,7 @@ const RenewalAnalysisModal = ({
 									</select>
 								</div>
 								<div>
-									<label style={inputLabelStyle}>
+									<label style={themedInputLabelStyle}>
 										Renewal Circuit Expiration Date
 									</label>
 									<input
@@ -358,32 +446,32 @@ const RenewalAnalysisModal = ({
 										}
 										style={
 											renewalTerm !== "other"
-												? { ...inputStyle, ...readOnlyInputStyle }
-												: inputStyle
+												? { ...themedInputStyle, ...themedReadOnlyInputStyle }
+												: themedInputStyle
 										}
 									/>
 								</div>
 							</div>
 						</div>
 
-						<div style={sectionCardStyle}>
-							<div style={sectionHeadingStyle}>Pricing Inputs</div>
-							<div style={sectionDescriptionStyle}>
+						<div style={themedSectionCardStyle}>
+							<div style={themedSectionHeadingStyle}>Pricing Inputs</div>
+							<div style={themedSectionDescriptionStyle}>
 								Use the current monthly recurring cost and proposed renewal cost
 								to calculate projected savings.
 							</div>
 							<div style={sectionGridStyle}>
 								<div>
-									<label style={inputLabelStyle}>Current MRC</label>
+									<label style={themedInputLabelStyle}>Current MRC</label>
 									<input
 										type="text"
 										value={formatCurrency(circuit.monthlyCost)}
 										readOnly
-										style={{ ...inputStyle, ...readOnlyInputStyle }}
+										style={{ ...themedInputStyle, ...themedReadOnlyInputStyle }}
 									/>
 								</div>
 								<div>
-									<label style={inputLabelStyle}>Renewal MRC</label>
+									<label style={themedInputLabelStyle}>Renewal MRC</label>
 									<input
 										type="number"
 										min="0"
@@ -398,31 +486,33 @@ const RenewalAnalysisModal = ({
 														: Number(event.target.value),
 											})
 										}
-										style={inputStyle}
+										style={themedInputStyle}
 									/>
 								</div>
 								<div>
-									<label style={inputLabelStyle}>Savings Difference</label>
+									<label style={themedInputLabelStyle}>
+										Savings Difference
+									</label>
 									<input
 										type="text"
 										value={formatCurrency(preview.savingsDifference)}
 										readOnly
-										style={{ ...inputStyle, ...readOnlyInputStyle }}
+										style={{ ...themedInputStyle, ...themedReadOnlyInputStyle }}
 									/>
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<div style={sectionCardStyle}>
-						<div style={sectionHeadingStyle}>Analysis Results</div>
-						<div style={sectionDescriptionStyle}>
+					<div style={themedSectionCardStyle}>
+						<div style={themedSectionHeadingStyle}>Analysis Results</div>
+						<div style={themedSectionDescriptionStyle}>
 							These values are calculated from the dates and pricing entered
 							above and saved with the circuit.
 						</div>
 						<div style={resultsGridStyle}>
 							<div style={resultCardStyle}>
-								<div style={fieldLabelStyle}>
+								<div style={themedFieldLabelStyle}>
 									Months To Customer Contract Expiration
 								</div>
 								<div style={resultValueStyle}>
@@ -432,7 +522,7 @@ const RenewalAnalysisModal = ({
 								</div>
 							</div>
 							<div style={{ ...resultCardStyle, ...infoHighlightStyle }}>
-								<div style={fieldLabelStyle}>
+								<div style={themedFieldLabelStyle}>
 									Savings To Customer Contract Expiration
 								</div>
 								<div style={resultValueStyle}>
@@ -442,7 +532,7 @@ const RenewalAnalysisModal = ({
 								</div>
 							</div>
 							<div style={{ ...resultCardStyle, ...costHighlightStyle }}>
-								<div style={{ ...fieldLabelStyle, ...costTitleStyle }}>
+								<div style={{ ...themedFieldLabelStyle, ...costTitleStyle }}>
 									Cost From Customer Expiration To Renewal Circuit Expiration
 								</div>
 								<div style={resultValueStyle}>
@@ -458,7 +548,7 @@ const RenewalAnalysisModal = ({
 									...totalSavingsStyle,
 								}}
 							>
-								<div style={fieldLabelStyle}>Total Savings</div>
+								<div style={themedFieldLabelStyle}>Total Savings</div>
 								<div style={resultValueStyle}>
 									{formatCurrency(preview.totalSavings)}
 								</div>
@@ -779,7 +869,7 @@ const headerBrandLabelStyle = {
 	fontSize: "var(--font-size-sm)",
 	fontWeight: 700,
 	letterSpacing: "0.08em",
-	color: "#d6eaf8",
+	color: "var(--color-label-text)",
 };
 
 const titleBadgeStyle = {
@@ -795,7 +885,7 @@ const titleBadgeStyle = {
 
 const titleTextStyle = {
 	margin: 0,
-	color: "#f8fafc",
+	color: "var(--color-navbar-text)",
 	fontSize: "clamp(1.8rem, 2vw, 2.4rem)",
 	lineHeight: 1.1,
 };
@@ -803,7 +893,7 @@ const titleTextStyle = {
 const pageSubtitleStyle = {
 	marginTop: "8px",
 	marginBottom: 0,
-	color: "#d6e2ea",
+	color: "var(--color-label-muted)",
 	maxWidth: "720px",
 	lineHeight: 1.5,
 	textAlign: "center",
@@ -819,8 +909,8 @@ const searchPanelStyle = {
 	width: "100%",
 	padding: "14px",
 	borderRadius: "16px",
-	backgroundColor: "#34495e",
-	border: "1px solid #4b6584",
+	backgroundColor: "var(--color-dark-bg-secondary)",
+	border: "1px solid var(--color-border)",
 	boxShadow: "0 8px 24px rgba(0, 0, 0, 0.18)",
 };
 
@@ -829,7 +919,7 @@ const searchPanelLabelStyle = {
 	fontWeight: 700,
 	textTransform: "uppercase",
 	letterSpacing: "0.08em",
-	color: "#95a5a6",
+	color: "var(--color-text-muted)",
 	marginBottom: "8px",
 };
 
@@ -839,17 +929,17 @@ const searchInputStyle = {
 	border: "1px solid #3498db",
 	borderRadius: "8px",
 	fontSize: "14px",
-	backgroundColor: "#2c3e50",
-	color: "#f8fafc",
+	backgroundColor: "var(--color-dark-bg)",
+	color: "var(--color-surface-light)",
 	boxSizing: "border-box",
 };
 
 const tableContainerStyle = {
-	backgroundColor: "#34495e",
+	backgroundColor: "var(--color-dark-bg-secondary)",
 	borderRadius: "12px",
 	boxShadow: "0 10px 30px rgba(0, 0, 0, 0.16)",
 	overflowX: "auto",
-	border: "1px solid #4b6584",
+	border: "1px solid var(--color-border)",
 };
 
 const tableStyle = {
@@ -858,15 +948,14 @@ const tableStyle = {
 };
 
 const tableHeaderRowStyle = {
-	background:
-		"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
+	backgroundColor: "var(--color-table-header-bg)",
 	borderBottom: "3px solid var(--color-primary)",
 };
 
 const headerCellStyle = {
 	padding: "var(--spacing-lg)",
 	textAlign: "left",
-	color: "white",
+	color: "var(--color-table-header-text)",
 	fontWeight: 700,
 	fontSize: "var(--font-size-sm)",
 	textTransform: "uppercase",
@@ -875,14 +964,14 @@ const headerCellStyle = {
 
 const tableRowStyle = {
 	borderBottom: `1px solid var(--color-border-light)`,
-	backgroundColor: "white",
+	backgroundColor: "var(--color-surface)",
 	transition: "all var(--transition-fast)",
 };
 
 const tableCellStyle = {
 	padding: "var(--spacing-lg)",
 	fontSize: "var(--font-size-base)",
-	color: "var(--color-text-dark)",
+	color: "var(--color-sidebar-text)",
 	fontWeight: "500",
 };
 
@@ -891,7 +980,7 @@ const iconButtonStyle = {
 	borderRadius: "8px",
 	border: "1px solid #3498db",
 	backgroundColor: "rgba(52, 152, 219, 0.15)",
-	color: "#85c1e9",
+	color: "var(--color-primary-light)",
 	cursor: "pointer",
 	fontSize: "18px",
 };
@@ -899,16 +988,16 @@ const iconButtonStyle = {
 const emptyStateStyle = {
 	padding: "24px",
 	textAlign: "center",
-	color: "#d6e2ea",
+	color: "var(--color-label-muted)",
 };
 
 const statusMessageStyle = {
 	marginBottom: "16px",
 	padding: "12px 14px",
 	borderRadius: "12px",
-	backgroundColor: "#34495e",
+	backgroundColor: "var(--color-dark-bg-secondary)",
 	border: "1px solid #3498db",
-	color: "#ecf0f1",
+	color: "var(--color-text-light)",
 	boxShadow: "0 8px 24px rgba(0, 0, 0, 0.14)",
 };
 
@@ -931,10 +1020,10 @@ const modalStyle = {
 	maxWidth: "960px",
 	maxHeight: "90vh",
 	overflowY: "auto",
-	backgroundColor: "#2c3e50",
-	color: "#ecf0f1",
+	backgroundColor: "var(--color-dark-bg)",
+	color: "var(--color-text-light)",
 	borderRadius: "16px",
-	border: "1px solid #4b6584",
+	border: "1px solid var(--color-border)",
 	colorScheme: "dark",
 	boxShadow: "0 24px 60px rgba(0, 0, 0, 0.24)",
 };
@@ -947,7 +1036,7 @@ const modalHeaderStyle = {
 	borderBottom: "1px solid #3498db",
 	position: "sticky",
 	top: 0,
-	backgroundColor: "#2c3e50",
+	backgroundColor: "var(--color-dark-bg)",
 	gap: "16px",
 };
 
@@ -975,7 +1064,7 @@ const modalHeaderBrandLabelStyle = {
 	fontSize: "11px",
 	fontWeight: 700,
 	letterSpacing: "0.08em",
-	color: "#d6eaf8",
+	color: "var(--color-label-text)",
 };
 
 const modalHeaderTextContainerStyle = {
@@ -987,16 +1076,16 @@ const modalHeaderSubtitleStyle = {
 	marginBottom: 0,
 	fontSize: "13px",
 	lineHeight: 1.5,
-	color: "#c7d5df",
+	color: "var(--color-text-muted)",
 	maxWidth: "420px",
 };
 
 const closeButtonStyle = {
 	border: "1px solid #3498db",
-	backgroundColor: "#34495e",
+	backgroundColor: "var(--color-dark-bg-secondary)",
 	borderRadius: "8px",
 	padding: "8px 12px",
-	color: "#ecf0f1",
+	color: "var(--color-text-light)",
 	cursor: "pointer",
 };
 
@@ -1012,8 +1101,8 @@ const modalBodyStyle = {
 };
 
 const sectionCardStyle = {
-	backgroundColor: "#34495e",
-	border: "1px solid #4b6584",
+	backgroundColor: "var(--color-dark-bg-secondary)",
+	border: "1px solid var(--color-border)",
 	borderRadius: "14px",
 	padding: "18px",
 	boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.04)",
@@ -1022,14 +1111,14 @@ const sectionCardStyle = {
 const sectionHeadingStyle = {
 	fontSize: "15px",
 	fontWeight: 700,
-	color: "#ffffff",
+	color: "var(--color-text-light)",
 	marginBottom: "8px",
 };
 
 const sectionDescriptionStyle = {
 	fontSize: "13px",
 	lineHeight: 1.6,
-	color: "#c7d5df",
+	color: "var(--color-text-muted)",
 	marginBottom: "16px",
 };
 
@@ -1063,13 +1152,13 @@ const fieldLabelStyle = {
 	fontWeight: 600,
 	textTransform: "uppercase",
 	letterSpacing: "0.04em",
-	color: "#85c1e9",
+	color: "var(--color-primary-light)",
 	marginBottom: "6px",
 };
 
 const fieldValueStyle = {
 	fontSize: "15px",
-	color: "#ffffff",
+	color: "var(--color-text-light)",
 	fontWeight: 500,
 };
 
@@ -1078,41 +1167,41 @@ const inputLabelStyle = {
 	marginBottom: "6px",
 	fontSize: "13px",
 	fontWeight: 600,
-	color: "#d6e2ea",
+	color: "var(--color-label-muted)",
 };
 
 const inputStyle = {
 	width: "100%",
 	padding: "10px 12px",
-	border: "1px solid #5d6d7e",
+	border: "1px solid var(--color-border)",
 	borderRadius: "8px",
 	fontSize: "14px",
-	backgroundColor: "#2c3e50",
-	color: "#f8fafc",
+	backgroundColor: "var(--color-dark-bg)",
+	color: "var(--color-surface-light)",
 	boxSizing: "border-box",
 };
 
 const readOnlyInputStyle = {
-	backgroundColor: "#3a5166",
-	color: "#ecf0f1",
+	backgroundColor: "var(--color-dark-bg-tertiary)",
+	color: "var(--color-text-light)",
 };
 
 const successHighlightStyle = {
-	backgroundColor: "#14532d",
+	backgroundColor: "var(--color-success-dark-bg)",
 	borderColor: "#22c55e",
 	color: "#dcfce7",
 	fontWeight: 600,
 };
 
 const dangerHighlightStyle = {
-	backgroundColor: "#7f1d1d",
+	backgroundColor: "var(--color-danger-dark-bg)",
 	borderColor: "#ef4444",
 	color: "#fee2e2",
 	fontWeight: 600,
 };
 
 const warningHighlightStyle = {
-	backgroundColor: "#78350f",
+	backgroundColor: "var(--color-warning-dark-bg)",
 	borderColor: "#facc15",
 	color: "#fef9c3",
 	fontWeight: 600,
@@ -1121,16 +1210,16 @@ const warningHighlightStyle = {
 const costHighlightStyle = {
 	backgroundColor: "#facc15",
 	borderColor: "#eab308",
-	color: "#111827",
+	color: "var(--color-text-dark)",
 	fontWeight: 600,
 };
 
 const costTitleStyle = {
-	color: "#111827",
+	color: "var(--color-text-dark)",
 };
 
 const infoHighlightStyle = {
-	backgroundColor: "#1e3a8a",
+	backgroundColor: "var(--color-info-dark-bg)",
 	borderColor: "#3b82f6",
 	color: "#dbeafe",
 	fontWeight: 600,
@@ -1189,7 +1278,7 @@ const analysisSummaryStyle = {
 	borderRadius: "var(--radius-xl)",
 	backgroundColor: "var(--color-dark-bg)",
 	border: `1px solid var(--color-primary)`,
-	color: "#d6eaf8",
+	color: "var(--color-label-text)",
 	fontSize: "var(--font-size-sm)",
 	lineHeight: 1.6,
 	marginBottom: "var(--spacing-lg)",
@@ -1219,7 +1308,7 @@ const timelinePillLabelStyle = {
 	fontWeight: 700,
 	textTransform: "uppercase",
 	letterSpacing: "0.05em",
-	color: "#85c1e9",
+	color: "var(--color-primary-light)",
 };
 
 const timelinePillValueStyle = {

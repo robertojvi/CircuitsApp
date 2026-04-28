@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 
 // Helper function to check if a date is within the next 6 months
 const isExpirationSoon = (dateString) => {
@@ -158,7 +159,7 @@ const CircuitRenewalFields = ({ circuit, setCircuit }) => {
 		marginBottom: "8px",
 		fontSize: "13px",
 		fontWeight: "600",
-		color: "#374151",
+		color: "var(--color-text-dark)",
 	};
 
 	const handleRenewalTermOptionChange = (event) => {
@@ -213,12 +214,18 @@ const CircuitRenewalFields = ({ circuit, setCircuit }) => {
 						readOnly
 						style={{
 							...inputStyle,
-							backgroundColor: "#f3f4f6",
+							backgroundColor: "var(--color-surface-light)",
 							cursor: "not-allowed",
-							color: "#6b7280",
+							color: "var(--color-text-muted)",
 						}}
 					/>
-					<p style={{ fontSize: "11px", color: "#9ca3af", marginTop: "4px" }}>
+					<p
+						style={{
+							fontSize: "11px",
+							color: "var(--color-text-muted)",
+							marginTop: "4px",
+						}}
+					>
 						Auto-calculated from expiration date and notice period
 					</p>
 				</div>
@@ -368,8 +375,8 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 					style={{
 						position: "sticky",
 						top: 0,
-						background: `linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)`,
-						color: "white",
+						backgroundColor: "var(--color-modal-header-bg)",
+						color: "var(--color-modal-header-text)",
 						padding: "var(--spacing-xl)",
 						borderBottom: `2px solid var(--color-primary)`,
 						borderRadius: "var(--radius-xl) var(--radius-xl) 0 0",
@@ -632,7 +639,7 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 													? "#0c4a6e"
 													: circuit.circuitType === "Wireless"
 														? "#0c4a6e"
-														: "#374151",
+														: "var(--color-text-dark)",
 										}}
 									>
 										{circuit.circuitType === "Fiber"
@@ -778,7 +785,7 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 								<div
 									style={{
 										...detailValueStyle,
-										backgroundColor: "#f3f4f6",
+										backgroundColor: "var(--color-surface-light)",
 										padding: "10px",
 										borderRadius: "4px",
 										whiteSpace: "pre-wrap",
@@ -798,7 +805,7 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 					{circuit.hasTower && (
 						<div
 							style={{
-								backgroundColor: "#f3f4f6",
+								backgroundColor: "var(--color-surface-light)",
 								padding: "20px",
 								borderRadius: "8px",
 								marginBottom: "20px",
@@ -958,8 +965,8 @@ const EditCircuitModal = ({
 				style={{
 					position: "sticky",
 					top: 0,
-					backgroundColor: "#1e293b",
-					color: "white",
+					backgroundColor: "var(--color-modal-header-bg)",
+					color: "var(--color-modal-header-text)",
 					padding: "20px 24px",
 					borderBottom: "2px solid #3b82f6",
 					borderRadius: "8px 8px 0 0",
@@ -1017,7 +1024,7 @@ const EditCircuitModal = ({
 									marginBottom: "6px",
 									fontSize: "13px",
 									fontWeight: "600",
-									color: "#374151",
+									color: "var(--color-text-dark)",
 								}}
 							>
 								Site *
@@ -1052,7 +1059,7 @@ const EditCircuitModal = ({
 									marginBottom: "6px",
 									fontSize: "13px",
 									fontWeight: "600",
-									color: "#374151",
+									color: "var(--color-text-dark)",
 								}}
 							>
 								Provider *
@@ -1122,7 +1129,7 @@ const EditCircuitModal = ({
 									marginBottom: "6px",
 									fontSize: "13px",
 									fontWeight: "600",
-									color: "#374151",
+									color: "var(--color-text-dark)",
 								}}
 							>
 								Account Number *
@@ -1145,7 +1152,7 @@ const EditCircuitModal = ({
 									marginBottom: "6px",
 									fontSize: "13px",
 									fontWeight: "600",
-									color: "#374151",
+									color: "var(--color-text-dark)",
 								}}
 							>
 								Circuit ID *
@@ -1168,7 +1175,7 @@ const EditCircuitModal = ({
 									marginBottom: "6px",
 									fontSize: "13px",
 									fontWeight: "600",
-									color: "#374151",
+									color: "var(--color-text-dark)",
 								}}
 							>
 								Bandwidth *
@@ -1191,7 +1198,7 @@ const EditCircuitModal = ({
 									marginBottom: "6px",
 									fontSize: "13px",
 									fontWeight: "600",
-									color: "#374151",
+									color: "var(--color-text-dark)",
 								}}
 							>
 								Monthly Cost *
@@ -1218,7 +1225,7 @@ const EditCircuitModal = ({
 									marginBottom: "6px",
 									fontSize: "13px",
 									fontWeight: "600",
-									color: "#374151",
+									color: "var(--color-text-dark)",
 								}}
 							>
 								Installation Date *
@@ -1240,7 +1247,7 @@ const EditCircuitModal = ({
 									marginBottom: "6px",
 									fontSize: "13px",
 									fontWeight: "600",
-									color: "#374151",
+									color: "var(--color-text-dark)",
 								}}
 							>
 								Contract Date *
@@ -1265,7 +1272,7 @@ const EditCircuitModal = ({
 									marginBottom: "6px",
 									fontSize: "13px",
 									fontWeight: "600",
-									color: "#374151",
+									color: "var(--color-text-dark)",
 								}}
 							>
 								Status *
@@ -1291,7 +1298,7 @@ const EditCircuitModal = ({
 									marginBottom: "6px",
 									fontSize: "13px",
 									fontWeight: "600",
-									color: "#374151",
+									color: "var(--color-text-dark)",
 								}}
 							>
 								Expiration Date *
@@ -1335,7 +1342,7 @@ const EditCircuitModal = ({
 									marginBottom: "6px",
 									fontSize: "13px",
 									fontWeight: "600",
-									color: "#374151",
+									color: "var(--color-text-dark)",
 								}}
 							>
 								Circuit Type *
@@ -1424,7 +1431,7 @@ const EditCircuitModal = ({
 				{circuit.hasTower && (
 					<div
 						style={{
-							backgroundColor: "#f3f4f6",
+							backgroundColor: "var(--color-surface-light)",
 							padding: "20px",
 							borderRadius: "8px",
 							marginBottom: "20px",
@@ -1453,7 +1460,7 @@ const EditCircuitModal = ({
 									marginBottom: "8px",
 									fontSize: "13px",
 									fontWeight: "600",
-									color: "#374151",
+									color: "var(--color-text-dark)",
 								}}
 							>
 								Number of Towers *
@@ -1516,7 +1523,7 @@ const EditCircuitModal = ({
 													marginBottom: "4px",
 													fontSize: "12px",
 													fontWeight: "600",
-													color: "#374151",
+													color: "var(--color-text-dark)",
 												}}
 											>
 												Provider
@@ -1542,7 +1549,7 @@ const EditCircuitModal = ({
 													marginBottom: "4px",
 													fontSize: "12px",
 													fontWeight: "600",
-													color: "#374151",
+													color: "var(--color-text-dark)",
 												}}
 											>
 												Installation Date
@@ -1567,7 +1574,7 @@ const EditCircuitModal = ({
 													marginBottom: "4px",
 													fontSize: "12px",
 													fontWeight: "600",
-													color: "#374151",
+													color: "var(--color-text-dark)",
 												}}
 											>
 												Expiration Date
@@ -1592,7 +1599,7 @@ const EditCircuitModal = ({
 													marginBottom: "4px",
 													fontSize: "12px",
 													fontWeight: "600",
-													color: "#374151",
+													color: "var(--color-text-dark)",
 												}}
 											>
 												Monthly Cost
@@ -1687,7 +1694,7 @@ const EditCircuitModal = ({
 									marginBottom: "8px",
 									fontSize: "13px",
 									fontWeight: "600",
-									color: "#374151",
+									color: "var(--color-text-dark)",
 								}}
 							>
 								Aggregator Name *
@@ -1725,7 +1732,7 @@ const EditCircuitModal = ({
 							marginBottom: "12px",
 							fontSize: "13px",
 							fontWeight: "600",
-							color: "#374151",
+							color: "var(--color-text-dark)",
 							textTransform: "uppercase",
 							letterSpacing: "0.5px",
 						}}
@@ -1760,7 +1767,7 @@ const EditCircuitModal = ({
 						onClick={onClose}
 						style={{
 							...buttonStyle,
-							backgroundColor: "#6b7280",
+							backgroundColor: "var(--color-text-muted)",
 							padding: "10px 20px",
 							fontSize: "14px",
 							fontWeight: "500",
@@ -1802,6 +1809,7 @@ function Circuits() {
 	const [sites, setSites] = useState([]);
 	const [providers, setProviders] = useState([]);
 	const { token, user } = useAuth();
+	const { theme } = useTheme();
 
 	useEffect(() => {
 		if (selectedMenu === "Circuit Information") {
@@ -1950,13 +1958,36 @@ function Circuits() {
 		});
 	};
 
+	// Theme-aware table styles
+	const tableHeaderStyle = {
+		padding: "var(--spacing-lg)",
+		textAlign: "left",
+		color: "#ffffff",
+		fontWeight: "700",
+		fontSize: "var(--font-size-sm)",
+		textTransform: "uppercase",
+		letterSpacing: "0.5px",
+		boxShadow: "none",
+	};
+
+	const tableCellStyle = {
+		padding: "var(--spacing-lg)",
+		color: theme === "light" ? "#2c3e50" : "#ecf0f1",
+		fontWeight: "500",
+		backgroundColor: theme === "light" ? "#ffffff" : "var(--color-surface)",
+	};
+
 	const getSortableHeaderStyle = (key) => ({
-		...headerStyle,
+		...tableHeaderStyle,
 		cursor: "pointer",
 		position: "relative",
 		paddingRight: "30px",
 		backgroundColor:
-			sortConfig.key === key ? "rgba(52, 152, 219, 0.2)" : "transparent",
+			sortConfig.key === key
+				? theme === "light"
+					? "rgba(0, 0, 0, 0.05)"
+					: "rgba(255, 255, 255, 0.1)"
+				: "transparent",
 		transition: "all var(--transition-fast)",
 	});
 
@@ -2029,8 +2060,7 @@ function Circuits() {
 								position: "sticky",
 								top: 0,
 								zIndex: 1,
-								background:
-									"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
+								backgroundColor: "var(--color-table-header-bg)",
 								borderBottom: "3px solid var(--color-primary)",
 							}}
 						>
@@ -2085,9 +2115,9 @@ function Circuits() {
 								>
 									Aggregator
 								</th>
-								<th style={headerStyle}>Details</th>
+								<th style={tableHeaderStyle}>Details</th>
 								{(user?.role === "ADMIN" || user?.role === "SUPER") && (
-									<th style={headerStyle}>Actions</th>
+									<th style={tableHeaderStyle}>Actions</th>
 								)}
 							</tr>
 						</thead>
@@ -2097,8 +2127,8 @@ function Circuits() {
 									key={circuit.id}
 									style={{ borderBottom: "1px solid #dee2e6" }}
 								>
-									<td style={cellStyle}>{circuit.site.name}</td>
-									<td style={cellStyle}>
+									<td style={tableCellStyle}>{circuit.site.name}</td>
+									<td style={tableCellStyle}>
 										<span
 											style={{
 												padding: "4px 8px",
@@ -2119,8 +2149,8 @@ function Circuits() {
 											{circuit.site.siteType || "Unknown"}
 										</span>
 									</td>
-									<td style={cellStyle}>{circuit.provider.name}</td>
-									<td style={cellStyle}>
+									<td style={tableCellStyle}>{circuit.provider.name}</td>
+									<td style={tableCellStyle}>
 										<span
 											style={{
 												padding: "4px 8px",
@@ -2139,8 +2169,8 @@ function Circuits() {
 											{circuit.circuitType || "Unknown"}
 										</span>
 									</td>
-									<td style={cellStyle}>{circuit.circuitBandwidth}</td>
-									<td style={cellStyle}>
+									<td style={tableCellStyle}>{circuit.circuitBandwidth}</td>
+									<td style={tableCellStyle}>
 										<span
 											style={{
 												padding: "4px 8px",
@@ -2160,10 +2190,12 @@ function Circuits() {
 										</span>
 									</td>
 									{user?.role !== "NOC" && (
-										<td style={cellStyle}>${circuit.monthlyCost}</td>
+										<td style={tableCellStyle}>${circuit.monthlyCost}</td>
 									)}
-									<td style={cellStyle}>{circuit.aggregatorName || "N/A"}</td>
-									<td style={cellStyle}>
+									<td style={tableCellStyle}>
+										{circuit.aggregatorName || "N/A"}
+									</td>
+									<td style={tableCellStyle}>
 										<button
 											onClick={() => {
 												setSelectedCircuit(circuit);
@@ -2175,7 +2207,7 @@ function Circuits() {
 										</button>
 									</td>
 									{(user?.role === "ADMIN" || user?.role === "SUPER") && (
-										<td style={cellStyle}>
+										<td style={tableCellStyle}>
 											<button
 												onClick={() => handleEdit(circuit.id)}
 												style={iconButtonStyle}
@@ -2236,7 +2268,7 @@ function Circuits() {
 					style={{
 						listStyle: "none",
 						padding: 0,
-						color: "#ecf0f1",
+						color: "var(--color-sidebar-text)",
 						fontSize: "16px",
 					}}
 				>
@@ -2248,7 +2280,11 @@ function Circuits() {
 								padding: "10px",
 								cursor: "pointer",
 								backgroundColor:
-									selectedMenu === item ? "#34495e" : "transparent",
+									selectedMenu === item
+										? "var(--color-dark-bg-secondary)"
+										: "transparent",
+								transition: "all var(--transition-fast)",
+								borderRadius: "var(--radius-md)",
 							}}
 							onClick={() => setSelectedMenu(item)}
 						>
@@ -2290,7 +2326,7 @@ function Circuits() {
 const headerStyle = {
 	padding: "var(--spacing-lg)",
 	textAlign: "left",
-	color: "white",
+	color: "var(--color-table-header-text)",
 	fontWeight: "700",
 	fontSize: "var(--font-size-sm)",
 	textTransform: "uppercase",

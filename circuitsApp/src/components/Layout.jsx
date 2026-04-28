@@ -1,6 +1,7 @@
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import AccessLogo from "../images/Access.png";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 import { useState } from "react";
 import ChangePasswordModal from "./ChangePasswordModal";
 import UserManagementModal from "./UserManagementModal";
@@ -8,6 +9,7 @@ import UserManagementModal from "./UserManagementModal";
 function Layout() {
 	const location = useLocation();
 	const { user, logout } = useAuth();
+	const { theme, toggleTheme } = useTheme();
 	const navigate = useNavigate();
 	const [showPasswordModal, setShowPasswordModal] = useState(false);
 	const [showUserManagementModal, setShowUserManagementModal] = useState(false);
@@ -89,10 +91,15 @@ function Layout() {
 
 						<div style={{ display: "flex", gap: "8px" }}>
 							<button
-								onClick={() => setShowPasswordModal(true)}
+								onClick={toggleTheme}
 								className="btn btn-ghost"
-								style={{ fontSize: "12px", padding: "4px 8px" }}
+								style={{ fontSize: "14px", padding: "4px 10px" }}
+								title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
 							>
+								{theme === "dark" ? "☀️" : "🌙"}
+							</button>
+
+							<button style={{ fontSize: "12px", padding: "4px 8px" }}>
 								Change Password
 							</button>
 

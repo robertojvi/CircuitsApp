@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 import AccessLogo from "../images/Access.png";
 
 function Login() {
@@ -10,6 +11,7 @@ function Login() {
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 	const { login } = useAuth();
+	const { theme } = useTheme();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -34,11 +36,22 @@ function Login() {
 				alignItems: "center",
 				minHeight: "100vh",
 				background:
-					"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
+					theme === "light"
+						? "linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%)"
+						: "linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
 				padding: "var(--spacing-lg)",
 			}}
 		>
-			<div className="card" style={{ maxWidth: "420px" }}>
+			<div
+				className="card"
+				style={{
+					maxWidth: "420px",
+					backgroundColor:
+						theme === "light" ? "white" : "var(--color-dark-bg-secondary)",
+					color: theme === "light" ? "#1a1a1a" : "#ecf0f1",
+					border: `1px solid ${theme === "light" ? "#bdbdbd" : "#4b6584"}`,
+				}}
+			>
 				<div
 					style={{
 						display: "flex",
@@ -62,7 +75,7 @@ function Login() {
 					style={{
 						textAlign: "center",
 						marginBottom: "var(--spacing-2xl)",
-						color: "var(--color-dark-bg)",
+						color: theme === "light" ? "#1a1a1a" : "#ecf0f1",
 						fontSize: "var(--font-size-2xl)",
 					}}
 				>

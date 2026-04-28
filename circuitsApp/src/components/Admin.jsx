@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 
 const getApiErrorMessage = async (response, fallbackMessage) => {
 	try {
@@ -132,8 +133,8 @@ const CircuitRenewalFields = ({ circuit, setCircuit }) => {
 		marginBottom: "5px",
 		fontSize: "14px",
 		fontWeight: "500",
-		color: "#3498db",
-		backgroundColor: "#f8f9fa",
+		color: "var(--color-primary)",
+		backgroundColor: "var(--color-surface-light)",
 		padding: "3px 5px",
 		borderRadius: "3px",
 	};
@@ -279,7 +280,7 @@ const CircuitRenewalFields = ({ circuit, setCircuit }) => {
 					readOnly
 					style={{
 						...inputStyle,
-						backgroundColor: "#f8f9fa",
+						backgroundColor: "var(--color-surface-light)",
 						cursor: "not-allowed",
 					}}
 				/>
@@ -323,13 +324,12 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 		>
 			<div
 				style={{
-					backgroundColor: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
-					backgroundImage: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
-					color: "white",
+					backgroundColor: "var(--color-modal-header-bg)",
+					color: "var(--color-modal-header-text)",
 					padding: "24px 24px",
 					borderRadius: "12px 12px 0 0",
 					textAlign: "center",
-					borderBottom: "3px solid #3498db",
+					borderBottom: "3px solid var(--color-primary)",
 					display: "flex",
 					justifyContent: "space-between",
 					alignItems: "center",
@@ -378,10 +378,10 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 						margin: "0 0 16px 0",
 						fontSize: "14px",
 						fontWeight: "600",
-						color: "#2c3e50",
+						color: "var(--color-dark-bg)",
 						textTransform: "uppercase",
 						letterSpacing: "1px",
-						borderBottom: "2px solid #3498db",
+						borderBottom: "2px solid var(--color-primary)",
 						paddingBottom: "8px",
 					}}
 				>
@@ -491,10 +491,10 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 						margin: "24px 0 16px 0",
 						fontSize: "14px",
 						fontWeight: "600",
-						color: "#2c3e50",
+						color: "var(--color-dark-bg)",
 						textTransform: "uppercase",
 						letterSpacing: "1px",
-						borderBottom: "2px solid #3498db",
+						borderBottom: "2px solid var(--color-primary)",
 						paddingBottom: "8px",
 					}}
 				>
@@ -541,10 +541,10 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 						margin: "24px 0 16px 0",
 						fontSize: "14px",
 						fontWeight: "600",
-						color: "#2c3e50",
+						color: "var(--color-dark-bg)",
 						textTransform: "uppercase",
 						letterSpacing: "1px",
-						borderBottom: "2px solid #3498db",
+						borderBottom: "2px solid var(--color-primary)",
 						paddingBottom: "8px",
 					}}
 				>
@@ -611,13 +611,15 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 						type="submit"
 						style={{
 							...buttonStyle,
-							backgroundColor: "#3498db",
+							backgroundColor: "var(--color-primary)",
 							flex: 1,
 							transition: "all 0.2s",
 							fontWeight: "600",
 						}}
 						onMouseEnter={(e) => (e.target.style.backgroundColor = "#2980b9")}
-						onMouseLeave={(e) => (e.target.style.backgroundColor = "#3498db")}
+						onMouseLeave={(e) =>
+							(e.target.style.backgroundColor = "var(--color-primary)")
+						}
 					>
 						Create
 					</button>
@@ -665,13 +667,12 @@ const CreateProviderModal = ({
 		>
 			<div
 				style={{
-					backgroundColor: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
-					backgroundImage: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
-					color: "white",
+					backgroundColor: "var(--color-modal-header-bg)",
+					color: "var(--color-modal-header-text)",
 					padding: "24px 24px",
 					borderRadius: "12px 12px 0 0",
 					textAlign: "center",
-					borderBottom: "3px solid #3498db",
+					borderBottom: "3px solid var(--color-primary)",
 					display: "flex",
 					justifyContent: "space-between",
 					alignItems: "center",
@@ -716,10 +717,10 @@ const CreateProviderModal = ({
 						margin: "0 0 16px 0",
 						fontSize: "14px",
 						fontWeight: "600",
-						color: "#2c3e50",
+						color: "var(--color-dark-bg)",
 						textTransform: "uppercase",
 						letterSpacing: "1px",
-						borderBottom: "2px solid #3498db",
+						borderBottom: "2px solid var(--color-primary)",
 						paddingBottom: "8px",
 					}}
 				>
@@ -838,13 +839,15 @@ const CreateProviderModal = ({
 						type="submit"
 						style={{
 							...buttonStyle,
-							backgroundColor: "#3498db",
+							backgroundColor: "var(--color-primary)",
 							flex: 1,
 							transition: "all 0.2s",
 							fontWeight: "600",
 						}}
 						onMouseEnter={(e) => (e.target.style.backgroundColor = "#2980b9")}
-						onMouseLeave={(e) => (e.target.style.backgroundColor = "#3498db")}
+						onMouseLeave={(e) =>
+							(e.target.style.backgroundColor = "var(--color-primary)")
+						}
 					>
 						Create
 					</button>
@@ -906,14 +909,14 @@ const CreateCircuitModal = ({
 				<div
 					style={{
 						backgroundColor:
-							"linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
+							"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
 						backgroundImage:
-							"linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
+							"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
 						color: "white",
 						padding: "24px 24px",
 						borderRadius: "12px 12px 0 0",
 						textAlign: "center",
-						borderBottom: "3px solid #3498db",
+						borderBottom: "3px solid var(--color-primary)",
 						display: "flex",
 						justifyContent: "space-between",
 						alignItems: "center",
@@ -964,10 +967,10 @@ const CreateCircuitModal = ({
 							margin: "0 0 16px 0",
 							fontSize: "14px",
 							fontWeight: "600",
-							color: "#2c3e50",
+							color: "var(--color-dark-bg)",
 							textTransform: "uppercase",
 							letterSpacing: "1px",
-							borderBottom: "2px solid #3498db",
+							borderBottom: "2px solid var(--color-primary)",
 							paddingBottom: "8px",
 						}}
 					>
@@ -1074,8 +1077,8 @@ const CreateCircuitModal = ({
 								marginBottom: "5px",
 								fontSize: "14px",
 								fontWeight: "500",
-								color: "#3498db", // Added blue color for better visibility
-								backgroundColor: "#f8f9fa", // Added light background
+								color: "var(--color-primary)", // Added blue color for better visibility
+								backgroundColor: "var(--color-surface-light)", // Added light background
 								padding: "3px 5px",
 								borderRadius: "3px",
 							}}
@@ -1107,8 +1110,8 @@ const CreateCircuitModal = ({
 								marginBottom: "5px",
 								fontSize: "14px",
 								fontWeight: "500",
-								color: "#3498db", // Added blue color for better visibility
-								backgroundColor: "#f8f9fa", // Added light background
+								color: "var(--color-primary)", // Added blue color for better visibility
+								backgroundColor: "var(--color-surface-light)", // Added light background
 								padding: "3px 5px",
 								borderRadius: "3px",
 							}}
@@ -1165,8 +1168,8 @@ const CreateCircuitModal = ({
 								alignItems: "center",
 								fontSize: "14px",
 								fontWeight: "500",
-								color: "#3498db",
-								backgroundColor: "#f8f9fa",
+								color: "var(--color-primary)",
+								backgroundColor: "var(--color-surface-light)",
 								padding: "10px",
 								borderRadius: "4px",
 								cursor: "pointer",
@@ -1191,9 +1194,9 @@ const CreateCircuitModal = ({
 						<div
 							style={{
 								marginBottom: "20px",
-								borderTop: "2px solid #3498db",
+								borderTop: "2px solid var(--color-primary)",
 								paddingTop: "15px",
-								backgroundColor: "#f8f9fa",
+								backgroundColor: "var(--color-surface-light)",
 								padding: "15px",
 								borderRadius: "4px",
 							}}
@@ -1201,7 +1204,7 @@ const CreateCircuitModal = ({
 							<h3
 								style={{
 									marginBottom: "15px",
-									color: "#2c3e50",
+									color: "var(--color-dark-bg)",
 									fontSize: "16px",
 									marginTop: 0,
 								}}
@@ -1215,7 +1218,7 @@ const CreateCircuitModal = ({
 										marginBottom: "5px",
 										fontSize: "14px",
 										fontWeight: "500",
-										color: "#3498db",
+										color: "var(--color-primary)",
 									}}
 								>
 									Number of Towers
@@ -1246,7 +1249,7 @@ const CreateCircuitModal = ({
 										key={towerNum}
 										style={{
 											marginBottom: "20px",
-											borderLeft: "4px solid #3498db",
+											borderLeft: "4px solid var(--color-primary)",
 											paddingLeft: "12px",
 											backgroundColor: "#ffffff",
 											padding: "12px",
@@ -1257,7 +1260,7 @@ const CreateCircuitModal = ({
 											style={{
 												marginTop: 0,
 												marginBottom: "10px",
-												color: "#2c3e50",
+												color: "var(--color-dark-bg)",
 												fontSize: "14px",
 												fontWeight: "600",
 											}}
@@ -1271,7 +1274,7 @@ const CreateCircuitModal = ({
 													marginBottom: "5px",
 													fontSize: "12px",
 													fontWeight: "500",
-													color: "#3498db",
+													color: "var(--color-primary)",
 												}}
 											>
 												Tower Provider
@@ -1297,7 +1300,7 @@ const CreateCircuitModal = ({
 													marginBottom: "5px",
 													fontSize: "12px",
 													fontWeight: "500",
-													color: "#3498db",
+													color: "var(--color-primary)",
 												}}
 											>
 												Installation Date
@@ -1323,7 +1326,7 @@ const CreateCircuitModal = ({
 													marginBottom: "5px",
 													fontSize: "12px",
 													fontWeight: "500",
-													color: "#3498db",
+													color: "var(--color-primary)",
 												}}
 											>
 												Expiration Date
@@ -1351,7 +1354,7 @@ const CreateCircuitModal = ({
 													marginBottom: "5px",
 													fontSize: "12px",
 													fontWeight: "500",
-													color: "#3498db",
+													color: "var(--color-primary)",
 												}}
 											>
 												Monthly Cost
@@ -1381,8 +1384,8 @@ const CreateCircuitModal = ({
 								alignItems: "center",
 								fontSize: "14px",
 								fontWeight: "500",
-								color: "#3498db",
-								backgroundColor: "#f8f9fa",
+								color: "var(--color-primary)",
+								backgroundColor: "var(--color-surface-light)",
 								padding: "10px",
 								borderRadius: "4px",
 								cursor: "pointer",
@@ -1410,9 +1413,9 @@ const CreateCircuitModal = ({
 						<div
 							style={{
 								marginBottom: "20px",
-								borderTop: "2px solid #3498db",
+								borderTop: "2px solid var(--color-primary)",
 								paddingTop: "15px",
-								backgroundColor: "#f8f9fa",
+								backgroundColor: "var(--color-surface-light)",
 								padding: "15px",
 								borderRadius: "4px",
 							}}
@@ -1420,7 +1423,7 @@ const CreateCircuitModal = ({
 							<h3
 								style={{
 									marginBottom: "15px",
-									color: "#2c3e50",
+									color: "var(--color-dark-bg)",
 									fontSize: "16px",
 									marginTop: 0,
 								}}
@@ -1434,7 +1437,7 @@ const CreateCircuitModal = ({
 										marginBottom: "5px",
 										fontSize: "14px",
 										fontWeight: "500",
-										color: "#3498db",
+										color: "var(--color-primary)",
 									}}
 								>
 									Aggregator Name
@@ -1462,7 +1465,7 @@ const CreateCircuitModal = ({
 								marginBottom: "5px",
 								fontSize: "14px",
 								fontWeight: "500",
-								color: "#3498db",
+								color: "var(--color-primary)",
 							}}
 						>
 							Notes
@@ -1505,13 +1508,15 @@ const CreateCircuitModal = ({
 							type="submit"
 							style={{
 								...buttonStyle,
-								backgroundColor: "#3498db",
+								backgroundColor: "var(--color-primary)",
 								flex: 1,
 								transition: "all 0.2s",
 								fontWeight: "600",
 							}}
 							onMouseEnter={(e) => (e.target.style.backgroundColor = "#2980b9")}
-							onMouseLeave={(e) => (e.target.style.backgroundColor = "#3498db")}
+							onMouseLeave={(e) =>
+								(e.target.style.backgroundColor = "var(--color-primary)")
+							}
 						>
 							Create
 						</button>
@@ -1557,13 +1562,12 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 		>
 			<div
 				style={{
-					backgroundColor: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
-					backgroundImage: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
-					color: "white",
+					backgroundColor: "var(--color-modal-header-bg)",
+					color: "var(--color-modal-header-text)",
 					padding: "24px 24px",
 					borderRadius: "12px 12px 0 0",
 					textAlign: "center",
-					borderBottom: "3px solid #3498db",
+					borderBottom: "3px solid var(--color-primary)",
 					display: "flex",
 					justifyContent: "space-between",
 					alignItems: "center",
@@ -1611,10 +1615,10 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 						margin: "0 0 16px 0",
 						fontSize: "14px",
 						fontWeight: "600",
-						color: "#2c3e50",
+						color: "var(--color-dark-bg)",
 						textTransform: "uppercase",
 						letterSpacing: "1px",
-						borderBottom: "2px solid #3498db",
+						borderBottom: "2px solid var(--color-primary)",
 						paddingBottom: "8px",
 					}}
 				>
@@ -1721,10 +1725,10 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 							margin: "24px 0 16px 0",
 							fontSize: "14px",
 							fontWeight: "600",
-							color: "#2c3e50",
+							color: "var(--color-dark-bg)",
 							textTransform: "uppercase",
 							letterSpacing: "1px",
-							borderBottom: "2px solid #3498db",
+							borderBottom: "2px solid var(--color-primary)",
 							paddingBottom: "8px",
 						}}
 					>
@@ -1778,10 +1782,10 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 							margin: "24px 0 16px 0",
 							fontSize: "14px",
 							fontWeight: "600",
-							color: "#2c3e50",
+							color: "var(--color-dark-bg)",
 							textTransform: "uppercase",
 							letterSpacing: "1px",
-							borderBottom: "2px solid #3498db",
+							borderBottom: "2px solid var(--color-primary)",
 							paddingBottom: "8px",
 						}}
 					>
@@ -1849,13 +1853,15 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 						type="submit"
 						style={{
 							...buttonStyle,
-							backgroundColor: "#3498db",
+							backgroundColor: "var(--color-primary)",
 							flex: 1,
 							transition: "all 0.2s",
 							fontWeight: "600",
 						}}
 						onMouseEnter={(e) => (e.target.style.backgroundColor = "#2980b9")}
-						onMouseLeave={(e) => (e.target.style.backgroundColor = "#3498db")}
+						onMouseLeave={(e) =>
+							(e.target.style.backgroundColor = "var(--color-primary)")
+						}
 					>
 						Save
 					</button>
@@ -1898,13 +1904,12 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 		>
 			<div
 				style={{
-					backgroundColor: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
-					backgroundImage: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
-					color: "white",
+					backgroundColor: "var(--color-modal-header-bg)",
+					color: "var(--color-modal-header-text)",
 					padding: "24px 24px",
 					borderRadius: "12px 12px 0 0",
 					textAlign: "center",
-					borderBottom: "3px solid #3498db",
+					borderBottom: "3px solid var(--color-primary)",
 					display: "flex",
 					justifyContent: "space-between",
 					alignItems: "center",
@@ -1949,10 +1954,10 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 						margin: "0 0 16px 0",
 						fontSize: "14px",
 						fontWeight: "600",
-						color: "#2c3e50",
+						color: "var(--color-dark-bg)",
 						textTransform: "uppercase",
 						letterSpacing: "1px",
-						borderBottom: "2px solid #3498db",
+						borderBottom: "2px solid var(--color-primary)",
 						paddingBottom: "8px",
 					}}
 				>
@@ -1975,8 +1980,8 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 							marginBottom: "5px",
 							fontSize: "14px",
 							fontWeight: "500",
-							color: "#3498db",
-							backgroundColor: "#f8f9fa",
+							color: "var(--color-primary)",
+							backgroundColor: "var(--color-surface-light)",
 							padding: "3px 5px",
 							borderRadius: "3px",
 						}}
@@ -2001,8 +2006,8 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 							marginBottom: "5px",
 							fontSize: "14px",
 							fontWeight: "500",
-							color: "#3498db",
-							backgroundColor: "#f8f9fa",
+							color: "var(--color-primary)",
+							backgroundColor: "var(--color-surface-light)",
 							padding: "3px 5px",
 							borderRadius: "3px",
 						}}
@@ -2025,8 +2030,8 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 							marginBottom: "5px",
 							fontSize: "14px",
 							fontWeight: "500",
-							color: "#3498db",
-							backgroundColor: "#f8f9fa",
+							color: "var(--color-primary)",
+							backgroundColor: "var(--color-surface-light)",
 							padding: "3px 5px",
 							borderRadius: "3px",
 						}}
@@ -2051,8 +2056,8 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 							marginBottom: "5px",
 							fontSize: "14px",
 							fontWeight: "500",
-							color: "#3498db",
-							backgroundColor: "#f8f9fa",
+							color: "var(--color-primary)",
+							backgroundColor: "var(--color-surface-light)",
 							padding: "3px 5px",
 							borderRadius: "3px",
 						}}
@@ -2077,8 +2082,8 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 							marginBottom: "5px",
 							fontSize: "14px",
 							fontWeight: "500",
-							color: "#3498db",
-							backgroundColor: "#f8f9fa",
+							color: "var(--color-primary)",
+							backgroundColor: "var(--color-surface-light)",
 							padding: "3px 5px",
 							borderRadius: "3px",
 						}}
@@ -2103,8 +2108,8 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 							marginBottom: "5px",
 							fontSize: "14px",
 							fontWeight: "500",
-							color: "#3498db",
-							backgroundColor: "#f8f9fa",
+							color: "var(--color-primary)",
+							backgroundColor: "var(--color-surface-light)",
 							padding: "3px 5px",
 							borderRadius: "3px",
 						}}
@@ -2151,13 +2156,15 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 						type="submit"
 						style={{
 							...buttonStyle,
-							backgroundColor: "#3498db",
+							backgroundColor: "var(--color-primary)",
 							flex: 1,
 							transition: "all 0.2s",
 							fontWeight: "600",
 						}}
 						onMouseEnter={(e) => (e.target.style.backgroundColor = "#2980b9")}
-						onMouseLeave={(e) => (e.target.style.backgroundColor = "#3498db")}
+						onMouseLeave={(e) =>
+							(e.target.style.backgroundColor = "var(--color-primary)")
+						}
 					>
 						Save
 					</button>
@@ -2209,13 +2216,15 @@ const EditCircuitModal = ({
 		>
 			<div
 				style={{
-					backgroundColor: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
-					backgroundImage: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
+					backgroundColor:
+						"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
+					backgroundImage:
+						"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
 					color: "white",
 					padding: "24px 24px",
 					borderRadius: "12px 12px 0 0",
 					textAlign: "center",
-					borderBottom: "3px solid #3498db",
+					borderBottom: "3px solid var(--color-primary)",
 					display: "flex",
 					justifyContent: "space-between",
 					alignItems: "center",
@@ -2266,10 +2275,10 @@ const EditCircuitModal = ({
 						margin: "0 0 16px 0",
 						fontSize: "14px",
 						fontWeight: "600",
-						color: "#2c3e50",
+						color: "var(--color-dark-bg)",
 						textTransform: "uppercase",
 						letterSpacing: "1px",
-						borderBottom: "2px solid #3498db",
+						borderBottom: "2px solid var(--color-primary)",
 						paddingBottom: "8px",
 					}}
 				>
@@ -2375,8 +2384,8 @@ const EditCircuitModal = ({
 							marginBottom: "5px",
 							fontSize: "14px",
 							fontWeight: "500",
-							color: "#3498db", // Added blue color for better visibility
-							backgroundColor: "#f8f9fa", // Added light background
+							color: "var(--color-primary)", // Added blue color for better visibility
+							backgroundColor: "var(--color-surface-light)", // Added light background
 							padding: "3px 5px",
 							borderRadius: "3px",
 						}}
@@ -2402,8 +2411,8 @@ const EditCircuitModal = ({
 							marginBottom: "5px",
 							fontSize: "14px",
 							fontWeight: "500",
-							color: "#3498db", // Added blue color for better visibility
-							backgroundColor: "#f8f9fa", // Added light background
+							color: "var(--color-primary)", // Added blue color for better visibility
+							backgroundColor: "var(--color-surface-light)", // Added light background
 							padding: "3px 5px",
 							borderRadius: "3px",
 						}}
@@ -2455,8 +2464,8 @@ const EditCircuitModal = ({
 							alignItems: "center",
 							fontSize: "14px",
 							fontWeight: "500",
-							color: "#3498db",
-							backgroundColor: "#f8f9fa",
+							color: "var(--color-primary)",
+							backgroundColor: "var(--color-surface-light)",
 							padding: "10px",
 							borderRadius: "4px",
 							cursor: "pointer",
@@ -2481,9 +2490,9 @@ const EditCircuitModal = ({
 					<div
 						style={{
 							marginBottom: "20px",
-							borderTop: "2px solid #3498db",
+							borderTop: "2px solid var(--color-primary)",
 							paddingTop: "15px",
-							backgroundColor: "#f8f9fa",
+							backgroundColor: "var(--color-surface-light)",
 							padding: "15px",
 							borderRadius: "4px",
 						}}
@@ -2491,7 +2500,7 @@ const EditCircuitModal = ({
 						<h3
 							style={{
 								marginBottom: "15px",
-								color: "#2c3e50",
+								color: "var(--color-dark-bg)",
 								fontSize: "16px",
 								marginTop: 0,
 							}}
@@ -2505,7 +2514,7 @@ const EditCircuitModal = ({
 									marginBottom: "5px",
 									fontSize: "14px",
 									fontWeight: "500",
-									color: "#3498db",
+									color: "var(--color-primary)",
 								}}
 							>
 								Number of Towers
@@ -2536,7 +2545,7 @@ const EditCircuitModal = ({
 									key={towerNum}
 									style={{
 										marginBottom: "20px",
-										borderLeft: "4px solid #3498db",
+										borderLeft: "4px solid var(--color-primary)",
 										paddingLeft: "12px",
 										backgroundColor: "#ffffff",
 										padding: "12px",
@@ -2547,7 +2556,7 @@ const EditCircuitModal = ({
 										style={{
 											marginTop: 0,
 											marginBottom: "10px",
-											color: "#2c3e50",
+											color: "var(--color-dark-bg)",
 											fontSize: "14px",
 											fontWeight: "600",
 										}}
@@ -2561,7 +2570,7 @@ const EditCircuitModal = ({
 												marginBottom: "5px",
 												fontSize: "12px",
 												fontWeight: "500",
-												color: "#3498db",
+												color: "var(--color-primary)",
 											}}
 										>
 											Tower Provider
@@ -2587,7 +2596,7 @@ const EditCircuitModal = ({
 												marginBottom: "5px",
 												fontSize: "12px",
 												fontWeight: "500",
-												color: "#3498db",
+												color: "var(--color-primary)",
 											}}
 										>
 											Installation Date
@@ -2613,7 +2622,7 @@ const EditCircuitModal = ({
 												marginBottom: "5px",
 												fontSize: "12px",
 												fontWeight: "500",
-												color: "#3498db",
+												color: "var(--color-primary)",
 											}}
 										>
 											Expiration Date
@@ -2639,7 +2648,7 @@ const EditCircuitModal = ({
 												marginBottom: "5px",
 												fontSize: "12px",
 												fontWeight: "500",
-												color: "#3498db",
+												color: "var(--color-primary)",
 											}}
 										>
 											Monthly Cost
@@ -2669,8 +2678,8 @@ const EditCircuitModal = ({
 							alignItems: "center",
 							fontSize: "14px",
 							fontWeight: "500",
-							color: "#3498db",
-							backgroundColor: "#f8f9fa",
+							color: "var(--color-primary)",
+							backgroundColor: "var(--color-surface-light)",
 							padding: "10px",
 							borderRadius: "4px",
 							cursor: "pointer",
@@ -2695,9 +2704,9 @@ const EditCircuitModal = ({
 					<div
 						style={{
 							marginBottom: "20px",
-							borderTop: "2px solid #3498db",
+							borderTop: "2px solid var(--color-primary)",
 							paddingTop: "15px",
-							backgroundColor: "#f8f9fa",
+							backgroundColor: "var(--color-surface-light)",
 							padding: "15px",
 							borderRadius: "4px",
 						}}
@@ -2705,7 +2714,7 @@ const EditCircuitModal = ({
 						<h3
 							style={{
 								marginBottom: "15px",
-								color: "#2c3e50",
+								color: "var(--color-dark-bg)",
 								fontSize: "16px",
 								marginTop: 0,
 							}}
@@ -2719,7 +2728,7 @@ const EditCircuitModal = ({
 									marginBottom: "5px",
 									fontSize: "14px",
 									fontWeight: "500",
-									color: "#3498db",
+									color: "var(--color-primary)",
 								}}
 							>
 								Aggregator Name
@@ -2747,7 +2756,7 @@ const EditCircuitModal = ({
 							marginBottom: "5px",
 							fontSize: "14px",
 							fontWeight: "500",
-							color: "#3498db",
+							color: "var(--color-primary)",
 						}}
 					>
 						Notes
@@ -2788,13 +2797,15 @@ const EditCircuitModal = ({
 						type="submit"
 						style={{
 							...buttonStyle,
-							backgroundColor: "#3498db",
+							backgroundColor: "var(--color-primary)",
 							flex: 1,
 							transition: "all 0.2s",
 							fontWeight: "600",
 						}}
 						onMouseEnter={(e) => (e.target.style.backgroundColor = "#2980b9")}
-						onMouseLeave={(e) => (e.target.style.backgroundColor = "#3498db")}
+						onMouseLeave={(e) =>
+							(e.target.style.backgroundColor = "var(--color-primary)")
+						}
 					>
 						Save
 					</button>
@@ -2812,6 +2823,7 @@ function Admin() {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const { token } = useAuth();
+	const { theme } = useTheme();
 	const [showCreateSiteModal, setShowCreateSiteModal] = useState(false);
 	const [newSite, setNewSite] = useState({
 		name: "",
@@ -3345,9 +3357,33 @@ function Admin() {
 		});
 	};
 
+	// Create themed styles
+	const themedHeaderStyle = {
+		padding: "var(--spacing-lg)",
+		textAlign: "center",
+		borderBottom: `2px solid ${theme === "light" ? "#e0e0e0" : "#34495e"}`,
+		backgroundColor: theme === "light" ? "#ffffff" : "var(--color-dark-bg)",
+		color: theme === "light" ? "#2c3e50" : "#ecf0f1",
+		fontWeight: "700",
+		fontSize: "var(--font-size-sm)",
+		textTransform: "uppercase",
+		letterSpacing: "0.5px",
+		boxShadow: "none",
+	};
+
+	const themedCellStyle = {
+		padding: "var(--spacing-lg)",
+		fontSize: "var(--font-size-base)",
+		color: theme === "light" ? "#2c3e50" : "#ecf0f1",
+		fontWeight: "500",
+		backgroundColor: theme === "light" ? "#ffffff" : "var(--color-dark-bg)",
+	};
+
+	const themedBorderColor = theme === "light" ? "#e0e0e0" : "#34495e";
+
 	// Add sortable header style
 	const getSortableHeaderStyle = (key) => ({
-		...headerStyle,
+		...themedHeaderStyle,
 		cursor: "pointer",
 		userSelect: "none",
 		position: "relative",
@@ -3375,8 +3411,8 @@ function Admin() {
 				<div>
 					<div
 						style={{
-							backgroundColor: "#2c3e50",
-							color: "white",
+							backgroundColor: "var(--color-dark-bg-secondary)",
+							color: "var(--color-sidebar-text)",
 							padding: "10px 20px",
 							borderRadius: "4px",
 							marginBottom: "20px",
@@ -3414,7 +3450,14 @@ function Admin() {
 						}}
 					>
 						<table style={{ width: "100%", borderCollapse: "collapse" }}>
-							<thead style={{ position: "sticky", top: 0, zIndex: 1 }}>
+							<thead
+								style={{
+									position: "sticky",
+									top: 0,
+									zIndex: 1,
+									backgroundColor: "var(--color-table-header-bg)",
+								}}
+							>
 								<tr>
 									<th
 										onClick={() => onSort("name")}
@@ -3452,17 +3495,17 @@ function Admin() {
 									>
 										Zip Code
 									</th>
-									<th style={headerStyle}>Actions</th>
+									<th style={themedHeaderStyle}>Actions</th>
 								</tr>
 							</thead>
 							<tbody>
 								{sortedSites.map((site) => (
 									<tr
 										key={site.id}
-										style={{ borderBottom: "1px solid #dee2e6" }}
+										style={{ borderBottom: `1px solid ${themedBorderColor}` }}
 									>
-										<td style={cellStyle}>{site.name}</td>
-										<td style={cellStyle}>
+										<td style={themedCellStyle}>{site.name}</td>
+										<td style={themedCellStyle}>
 											<span
 												style={{
 													padding: "4px 8px",
@@ -3483,11 +3526,11 @@ function Admin() {
 												{site.siteType || "Unknown"}
 											</span>
 										</td>
-										<td style={cellStyle}>{site.address}</td>
-										<td style={cellStyle}>{site.city}</td>
-										<td style={cellStyle}>{site.state}</td>
-										<td style={cellStyle}>{site.zipCode}</td>
-										<td style={cellStyle}>
+										<td style={themedCellStyle}>{site.address}</td>
+										<td style={themedCellStyle}>{site.city}</td>
+										<td style={themedCellStyle}>{site.state}</td>
+										<td style={themedCellStyle}>{site.zipCode}</td>
+										<td style={themedCellStyle}>
 											<button
 												onClick={() => handleEdit(site.id, "site")}
 												style={iconButtonStyle}
@@ -3516,8 +3559,8 @@ function Admin() {
 				<div>
 					<div
 						style={{
-							backgroundColor: "#2c3e50",
-							color: "white",
+							backgroundColor: "var(--color-dark-bg-secondary)",
+							color: "var(--color-sidebar-text)",
 							padding: "10px 20px",
 							borderRadius: "4px",
 							marginBottom: "20px",
@@ -3555,7 +3598,14 @@ function Admin() {
 						}}
 					>
 						<table style={{ width: "100%", borderCollapse: "collapse" }}>
-							<thead style={{ position: "sticky", top: 0, zIndex: 1 }}>
+							<thead
+								style={{
+									position: "sticky",
+									top: 0,
+									zIndex: 1,
+									backgroundColor: "var(--color-table-header-bg)",
+								}}
+							>
 								<tr>
 									<th
 										onClick={() => onSort("name")}
@@ -3593,22 +3643,22 @@ function Admin() {
 									>
 										Contact Number
 									</th>
-									<th style={headerStyle}>Actions</th>
+									<th style={themedHeaderStyle}>Actions</th>
 								</tr>
 							</thead>
 							<tbody>
 								{sortedProviders.map((provider) => (
 									<tr
 										key={provider.id}
-										style={{ borderBottom: "1px solid #dee2e6" }}
+										style={{ borderBottom: `1px solid ${themedBorderColor}` }}
 									>
-										<td style={cellStyle}>{provider.name}</td>
-										<td style={cellStyle}>{provider.address}</td>
-										<td style={cellStyle}>{provider.city}</td>
-										<td style={cellStyle}>{provider.state}</td>
-										<td style={cellStyle}>{provider.zipCode}</td>
-										<td style={cellStyle}>{provider.contactNumber}</td>
-										<td style={cellStyle}>
+										<td style={themedCellStyle}>{provider.name}</td>
+										<td style={themedCellStyle}>{provider.address}</td>
+										<td style={themedCellStyle}>{provider.city}</td>
+										<td style={themedCellStyle}>{provider.state}</td>
+										<td style={themedCellStyle}>{provider.zipCode}</td>
+										<td style={themedCellStyle}>{provider.contactNumber}</td>
+										<td style={themedCellStyle}>
 											<button
 												onClick={() => handleEdit(provider.id, "provider")}
 												style={iconButtonStyle}
@@ -3637,8 +3687,8 @@ function Admin() {
 				<div>
 					<div
 						style={{
-							backgroundColor: "#2c3e50",
-							color: "white",
+							backgroundColor: "var(--color-dark-bg-secondary)",
+							color: "var(--color-sidebar-text)",
 							padding: "10px 20px",
 							borderRadius: "4px",
 							marginBottom: "20px",
@@ -3680,7 +3730,14 @@ function Admin() {
 						}}
 					>
 						<table style={{ width: "100%", borderCollapse: "collapse" }}>
-							<thead style={{ position: "sticky", top: 0, zIndex: 1 }}>
+							<thead
+								style={{
+									position: "sticky",
+									top: 0,
+									zIndex: 1,
+									backgroundColor: "var(--color-table-header-bg)",
+								}}
+							>
 								<tr>
 									<th
 										onClick={() => onSort("site.name")}
@@ -3724,21 +3781,23 @@ function Admin() {
 									>
 										Notes
 									</th>
-									<th style={headerStyle}>Actions</th>
+									<th style={themedHeaderStyle}>Actions</th>
 								</tr>
 							</thead>
 							<tbody>
 								{sortedCircuits.map((circuit) => (
 									<tr
 										key={circuit.id}
-										style={{ borderBottom: "1px solid #dee2e6" }}
+										style={{ borderBottom: `1px solid ${themedBorderColor}` }}
 									>
-										<td style={cellStyle}>{circuit.site.name}</td>
-										<td style={cellStyle}>{circuit.provider.name}</td>
-										<td style={cellStyle}>{circuit.aggregatorName || "N/A"}</td>
-										<td style={cellStyle}>{circuit.circuitBandwidth}</td>
-										<td style={cellStyle}>${circuit.monthlyCost}</td>
-										<td style={cellStyle}>
+										<td style={themedCellStyle}>{circuit.site.name}</td>
+										<td style={themedCellStyle}>{circuit.provider.name}</td>
+										<td style={themedCellStyle}>
+											{circuit.aggregatorName || "N/A"}
+										</td>
+										<td style={themedCellStyle}>{circuit.circuitBandwidth}</td>
+										<td style={themedCellStyle}>${circuit.monthlyCost}</td>
+										<td style={themedCellStyle}>
 											<span
 												style={{
 													padding: "4px 8px",
@@ -3759,7 +3818,7 @@ function Admin() {
 										</td>
 										<td
 											style={{
-												...cellStyle,
+												...themedCellStyle,
 												cursor: circuit.notes ? "pointer" : "default",
 												maxWidth: "260px",
 												overflow: "hidden",
@@ -3778,7 +3837,7 @@ function Admin() {
 												? (circuit.notes || "").slice(0, 60) + "..."
 												: circuit.notes || ""}
 										</td>
-										<td style={cellStyle}>
+										<td style={themedCellStyle}>
 											<button
 												onClick={() => handleEdit(circuit.id, "circuit")}
 												style={iconButtonStyle}
@@ -3831,7 +3890,7 @@ function Admin() {
 						}}
 					/>
 				</div>
-				<h1 style={{ color: "var(--color-dark-bg)" }}>
+				<h1 style={{ color: "var(--color-sidebar-text)" }}>
 					Please select an option from the menu
 				</h1>
 			</div>
@@ -3888,7 +3947,7 @@ function Admin() {
 					style={{
 						listStyle: "none",
 						padding: 0,
-						color: "#ecf0f1",
+						color: "var(--color-sidebar-text)",
 						fontSize: "16px",
 					}}
 				>
@@ -3898,7 +3957,11 @@ function Admin() {
 							padding: "10px",
 							cursor: "pointer",
 							backgroundColor:
-								selectedItem === "Sites" ? "#34495e" : "transparent",
+								selectedItem === "Sites"
+									? "var(--color-dark-bg-secondary)"
+									: "transparent",
+							transition: "all var(--transition-fast)",
+							borderRadius: "var(--radius-md)",
 						}}
 						onClick={() => {
 							setSelectedItem("Sites");
@@ -3913,7 +3976,11 @@ function Admin() {
 							padding: "10px",
 							cursor: "pointer",
 							backgroundColor:
-								selectedItem === "Providers" ? "#34495e" : "transparent",
+								selectedItem === "Providers"
+									? "var(--color-dark-bg-secondary)"
+									: "transparent",
+							transition: "all var(--transition-fast)",
+							borderRadius: "var(--radius-md)",
 						}}
 						onClick={() => {
 							setSelectedItem("Providers");
@@ -3928,7 +3995,11 @@ function Admin() {
 							padding: "10px",
 							cursor: "pointer",
 							backgroundColor:
-								selectedItem === "Circuits" ? "#34495e" : "transparent",
+								selectedItem === "Circuits"
+									? "var(--color-dark-bg-secondary)"
+									: "transparent",
+							transition: "all var(--transition-fast)",
+							borderRadius: "var(--radius-md)",
 						}}
 						onClick={() => {
 							setSelectedItem("Circuits");
@@ -4067,7 +4138,7 @@ const headerStyle = {
 	textAlign: "center",
 	borderBottom: `2px solid var(--color-border-light)`,
 	backgroundColor: "transparent",
-	color: "white",
+	color: "var(--color-table-header-text)",
 	fontWeight: "700",
 	fontSize: "var(--font-size-sm)",
 	textTransform: "uppercase",
