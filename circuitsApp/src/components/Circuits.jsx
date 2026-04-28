@@ -1905,6 +1905,7 @@ function Circuits() {
 		const term = searchTerm.toLowerCase();
 		return (
 			(circuit.site.name || "").toLowerCase().includes(term) ||
+			(circuit.site.address || "").toLowerCase().includes(term) ||
 			(circuit.site.siteType || "").toLowerCase().includes(term) ||
 			(circuit.provider.name || "").toLowerCase().includes(term) ||
 			(circuit.circuitBandwidth || "").toLowerCase().includes(term) ||
