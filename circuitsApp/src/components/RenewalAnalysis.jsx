@@ -296,6 +296,14 @@ const RenewalAnalysisModal = ({
 		color: theme === "light" ? "#2c3e50" : "white",
 	};
 
+	// Theme-aware button styles
+	const themedSecondaryButtonStyle = {
+		...secondaryButtonStyle,
+		backgroundColor: theme === "light" ? "#f8f9fa" : "var(--color-dark-bg)",
+		color: theme === "light" ? "#2c3e50" : "white",
+		border: `1px solid ${theme === "light" ? "#d0d0d0" : "var(--color-border-light)"}`,
+	};
+
 	const totalSavingsStyle =
 		preview.totalSavings == null
 			? themedReadOnlyInputStyle
@@ -601,7 +609,11 @@ const RenewalAnalysisModal = ({
 					</div>
 				</div>
 				<div style={modalActionsStyle}>
-					<button type="button" onClick={onClose} style={secondaryButtonStyle}>
+					<button
+						type="button"
+						onClick={onClose}
+						style={themedSecondaryButtonStyle}
+					>
 						Cancel
 					</button>
 					<button type="button" onClick={onSave} style={primaryButtonStyle}>
