@@ -118,10 +118,27 @@ const getRenewalNoticeDays = (expirationDate, renewalNoticeDate) => {
 };
 
 const CircuitRenewalFields = ({ circuit, setCircuit }) => {
+	const { theme } = useTheme();
 	const [renewalTermOption, setRenewalTermOption] = useState("");
 	const [renewalTermOther, setRenewalTermOther] = useState("");
 	const [renewalNoticeOption, setRenewalNoticeOption] = useState("");
 	const [renewalNoticeOtherDays, setRenewalNoticeOtherDays] = useState("");
+
+	// Theme-aware input styling
+	const themedInputBg = theme === "light" ? "#ffffff" : "#3a4f63";
+	const themedInputBorder = theme === "light" ? "#e5e7eb" : "#4b6584";
+	const themedInputTextColor = theme === "light" ? "#1e293b" : "#ecf0f1";
+
+	const localInputStyle = {
+		width: "100%",
+		padding: "8px",
+		border: `1px solid ${themedInputBorder}`,
+		borderRadius: "var(--radius-md)",
+		fontSize: "12px",
+		backgroundColor: themedInputBg,
+		color: themedInputTextColor,
+		transition: `all var(--transition-fast)`,
+	};
 
 	useEffect(() => {
 		const currentRenewalTerm = circuit.renewalTerm || "";
@@ -213,10 +230,11 @@ const CircuitRenewalFields = ({ circuit, setCircuit }) => {
 						value={circuit.renewalNoticeDate || ""}
 						readOnly
 						style={{
-							...inputStyle,
-							backgroundColor: "var(--color-surface-light)",
+							...localInputStyle,
+							backgroundColor:
+								theme === "light" ? "var(--color-surface-light)" : "#4b5f75",
 							cursor: "not-allowed",
-							color: "var(--color-text-muted)",
+							color: theme === "light" ? "var(--color-text-muted)" : "#7a8c99",
 						}}
 					/>
 					<p
@@ -239,7 +257,7 @@ const CircuitRenewalFields = ({ circuit, setCircuit }) => {
 					<select
 						value={renewalTermOption}
 						onChange={handleRenewalTermOptionChange}
-						style={inputStyle}
+						style={localInputStyle}
 					>
 						<option value="">Select Renewal Term</option>
 						<option value="Month to Month">📅 Month to Month</option>
@@ -255,7 +273,7 @@ const CircuitRenewalFields = ({ circuit, setCircuit }) => {
 					<select
 						value={renewalNoticeOption}
 						onChange={handleRenewalNoticeOptionChange}
-						style={inputStyle}
+						style={localInputStyle}
 					>
 						<option value="">Select Notice Period</option>
 						<option value="30">🔔 30 days</option>
@@ -281,7 +299,7 @@ const CircuitRenewalFields = ({ circuit, setCircuit }) => {
 								renewalTerm: value,
 							});
 						}}
-						style={inputStyle}
+						style={localInputStyle}
 						required
 					/>
 				</div>
@@ -304,7 +322,7 @@ const CircuitRenewalFields = ({ circuit, setCircuit }) => {
 									: "",
 							});
 						}}
-						style={inputStyle}
+						style={localInputStyle}
 						min="0"
 						step="1"
 						required
@@ -316,6 +334,7 @@ const CircuitRenewalFields = ({ circuit, setCircuit }) => {
 };
 
 const CircuitDetailModal = ({ circuit, onClose, user }) => {
+	const { theme } = useTheme();
 	const site = circuit?.site || {};
 	const parts = [];
 	if (site.address) parts.push(site.address);
@@ -324,10 +343,17 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 		parts.push(cityState + (site.zipCode ? ` ${site.zipCode}` : ""));
 	const siteAddress = parts.length ? parts.join(", ") : "N/A";
 
+	// Theme-aware styles
+	const themedContainerBg =
+		theme === "light" ? "#ffffff" : "var(--color-dark-bg-secondary)";
+	const themedBorderColor = theme === "light" ? "#e5e7eb" : "#4b6584";
+	const themedTextColor = theme === "light" ? "#1e293b" : "#ecf0f1";
+	const themedMutedColor = theme === "light" ? "#64748b" : "#95a5a6";
+
 	const detailLabelStyle = {
 		fontSize: "var(--font-size-sm)",
 		fontWeight: "600",
-		color: "var(--color-text-muted)",
+		color: themedMutedColor,
 		textTransform: "uppercase",
 		letterSpacing: "0.5px",
 		marginBottom: "4px",
@@ -337,7 +363,7 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 	const detailValueStyle = {
 		fontSize: "var(--font-size-base)",
 		fontWeight: "500",
-		color: "var(--color-text-dark)",
+		color: themedTextColor,
 		wordBreak: "break-word",
 	};
 
@@ -359,7 +385,7 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 		>
 			<div
 				style={{
-					backgroundColor: "white",
+					backgroundColor: themedContainerBg,
 					borderRadius: "var(--radius-xl)",
 					width: "90%",
 					maxWidth: "850px",
@@ -399,11 +425,11 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 					{/* BASIC INFORMATION SECTION */}
 					<div
 						style={{
-							backgroundColor: "#ffffff",
+							backgroundColor: themedContainerBg,
 							padding: "20px",
 							borderRadius: "8px",
 							marginBottom: "20px",
-							border: "1px solid #e5e7eb",
+							border: `1px solid ${themedBorderColor}`,
 						}}
 					>
 						<h3
@@ -412,7 +438,7 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 								marginBottom: "16px",
 								fontSize: "15px",
 								fontWeight: "700",
-								color: "#1e293b",
+								color: themedTextColor,
 								textTransform: "uppercase",
 								letterSpacing: "0.5px",
 								display: "flex",
@@ -469,11 +495,11 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 					{/* CIRCUIT INFORMATION SECTION */}
 					<div
 						style={{
-							backgroundColor: "#ffffff",
+							backgroundColor: themedContainerBg,
 							padding: "20px",
 							borderRadius: "8px",
 							marginBottom: "20px",
-							border: "1px solid #e5e7eb",
+							border: `1px solid ${themedBorderColor}`,
 						}}
 					>
 						<h3
@@ -482,7 +508,7 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 								marginBottom: "16px",
 								fontSize: "15px",
 								fontWeight: "700",
-								color: "#1e293b",
+								color: themedTextColor,
 								textTransform: "uppercase",
 								letterSpacing: "0.5px",
 								display: "flex",
@@ -656,11 +682,12 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 					{/* RENEWAL INFORMATION SECTION */}
 					<div
 						style={{
-							backgroundColor: "#eff6ff",
+							backgroundColor: theme === "light" ? "#eff6ff" : "#1e3a5f",
 							padding: "20px",
 							borderRadius: "8px",
 							marginBottom: "20px",
-							border: "2px solid #3b82f6",
+							border:
+								theme === "light" ? "2px solid #3b82f6" : "2px solid #5dade2",
 						}}
 					>
 						<h3
@@ -669,7 +696,7 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 								marginBottom: "16px",
 								fontSize: "15px",
 								fontWeight: "700",
-								color: "#1e40af",
+								color: theme === "light" ? "#1e40af" : "#93c5fd",
 								textTransform: "uppercase",
 								letterSpacing: "0.5px",
 								display: "flex",
@@ -686,18 +713,38 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 							}}
 						>
 							<div>
-								<span style={{ ...detailLabelStyle, color: "#1e40af" }}>
+								<span
+									style={{
+										...detailLabelStyle,
+										color: theme === "light" ? "#1e40af" : "#93c5fd",
+									}}
+								>
 									Renewal Term
 								</span>
-								<div style={{ ...detailValueStyle, color: "#1e40af" }}>
+								<div
+									style={{
+										...detailValueStyle,
+										color: theme === "light" ? "#1e40af" : "#93c5fd",
+									}}
+								>
 									{circuit.renewalTerm || "N/A"}
 								</div>
 							</div>
 							<div>
-								<span style={{ ...detailLabelStyle, color: "#1e40af" }}>
+								<span
+									style={{
+										...detailLabelStyle,
+										color: theme === "light" ? "#1e40af" : "#93c5fd",
+									}}
+								>
 									Renewal Notice Date
 								</span>
-								<div style={{ ...detailValueStyle, color: "#1e40af" }}>
+								<div
+									style={{
+										...detailValueStyle,
+										color: theme === "light" ? "#1e40af" : "#93c5fd",
+									}}
+								>
 									{circuit.renewalNoticeDate || "N/A"}
 								</div>
 							</div>
@@ -707,11 +754,11 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 					{/* AGGREGATOR & STATUS SECTION */}
 					<div
 						style={{
-							backgroundColor: "#ffffff",
+							backgroundColor: themedContainerBg,
 							padding: "20px",
 							borderRadius: "8px",
 							marginBottom: "20px",
-							border: "1px solid #e5e7eb",
+							border: `1px solid ${themedBorderColor}`,
 						}}
 					>
 						<h3
@@ -720,7 +767,7 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 								marginBottom: "16px",
 								fontSize: "15px",
 								fontWeight: "700",
-								color: "#1e293b",
+								color: themedTextColor,
 								textTransform: "uppercase",
 								letterSpacing: "0.5px",
 								display: "flex",
@@ -785,14 +832,17 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 								<div
 									style={{
 										...detailValueStyle,
-										backgroundColor: "var(--color-surface-light)",
+										backgroundColor:
+											theme === "light"
+												? "var(--color-surface-light)"
+												: "#1a2332",
 										padding: "10px",
 										borderRadius: "4px",
 										whiteSpace: "pre-wrap",
 										minHeight: "60px",
 										maxHeight: "120px",
 										overflowY: "auto",
-										border: "1px solid #e5e7eb",
+										border: `1px solid ${themedBorderColor}`,
 									}}
 								>
 									{circuit.notes || "N/A"}
@@ -805,11 +855,14 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 					{circuit.hasTower && (
 						<div
 							style={{
-								backgroundColor: "var(--color-surface-light)",
+								backgroundColor:
+									theme === "light" ? "var(--color-surface-light)" : "#1a3a52",
 								padding: "20px",
 								borderRadius: "8px",
 								marginBottom: "20px",
-								border: "2px solid #f59e0b",
+								border: `2px solid ${
+									theme === "light" ? "#f59e0b" : "#fbbf24"
+								}`,
 							}}
 						>
 							<h3
@@ -818,7 +871,7 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 									marginBottom: "16px",
 									fontSize: "15px",
 									fontWeight: "700",
-									color: "#92400e",
+									color: theme === "light" ? "#92400e" : "#fcd34d",
 									textTransform: "uppercase",
 									letterSpacing: "0.5px",
 									display: "flex",
@@ -838,18 +891,23 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 										key={towerNum}
 										style={{
 											marginBottom: "16px",
-											backgroundColor: "#ffffff",
+											backgroundColor:
+												theme === "light" ? "#ffffff" : "#0f2438",
 											padding: "16px",
 											borderRadius: "6px",
-											border: "1px solid #f59e0b",
-											borderLeft: "4px solid #f59e0b",
+											border: `1px solid ${
+												theme === "light" ? "#f59e0b" : "#fbbf24"
+											}`,
+											borderLeft: `4px solid ${
+												theme === "light" ? "#f59e0b" : "#fbbf24"
+											}`,
 										}}
 									>
 										<h4
 											style={{
 												marginTop: 0,
 												marginBottom: "12px",
-												color: "#92400e",
+												color: theme === "light" ? "#92400e" : "#fcd34d",
 												fontSize: "13px",
 												fontWeight: "700",
 											}}
@@ -931,511 +989,93 @@ const EditCircuitModal = ({
 	setCircuit,
 	sites,
 	providers,
-}) => (
-	<div
-		style={{
-			position: "fixed",
-			top: 0,
-			left: 0,
-			right: 0,
-			bottom: 0,
-			backgroundColor: "rgba(0,0,0,0.5)",
-			display: "flex",
-			justifyContent: "center",
-			alignItems: "center",
-			zIndex: 1000,
-		}}
-	>
+}) => {
+	const { theme } = useTheme();
+
+	// Theme-aware styles
+	const themedContainerBg =
+		theme === "light" ? "#ffffff" : "var(--color-dark-bg-secondary)";
+	const themedBorderColor = theme === "light" ? "#e5e7eb" : "#4b6584";
+	const themedTextColor = theme === "light" ? "#1e293b" : "#ecf0f1";
+	const themedMutedColor = theme === "light" ? "#64748b" : "#95a5a6";
+	const themedInputBg = theme === "light" ? "#ffffff" : "#3a4f63";
+	const themedInputBorder = theme === "light" ? "#e5e7eb" : "#4b6584";
+	const themedInputTextColor = theme === "light" ? "#1e293b" : "#ecf0f1";
+
+	// Local inputStyle with theme awareness
+	const inputStyle = {
+		width: "100%",
+		padding: "8px",
+		border: `1px solid ${themedInputBorder}`,
+		borderRadius: "var(--radius-md)",
+		fontSize: "12px",
+		backgroundColor: themedInputBg,
+		color: themedInputTextColor,
+		transition: `all var(--transition-fast)`,
+	};
+
+	return (
 		<div
 			style={{
-				backgroundColor: "#f9fafb",
-				padding: "0",
-				borderRadius: "8px",
-				width: "90%",
-				maxWidth: "750px",
-				margin: "20px",
-				maxHeight: "90vh",
-				overflowY: "auto",
-				boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
+				position: "fixed",
+				top: 0,
+				left: 0,
+				right: 0,
+				bottom: 0,
+				backgroundColor: "rgba(0,0,0,0.5)",
 				display: "flex",
-				flexDirection: "column",
+				justifyContent: "center",
+				alignItems: "center",
+				zIndex: 1000,
 			}}
 		>
 			<div
 				style={{
-					position: "sticky",
-					top: 0,
-					backgroundColor: "var(--color-modal-header-bg)",
-					color: "var(--color-modal-header-text)",
-					padding: "20px 24px",
-					borderBottom: "2px solid #3b82f6",
-					borderRadius: "8px 8px 0 0",
-					zIndex: 10,
+					backgroundColor: themedContainerBg,
+					padding: "0",
+					borderRadius: "8px",
+					width: "90%",
+					maxWidth: "750px",
+					margin: "20px",
+					maxHeight: "90vh",
+					overflowY: "auto",
+					boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
+					display: "flex",
+					flexDirection: "column",
 				}}
 			>
-				<h2
-					style={{
-						margin: 0,
-						fontSize: "22px",
-						fontWeight: "600",
-						letterSpacing: "-0.5px",
-					}}
-				>
-					✏️ Edit Circuit
-				</h2>
-			</div>
-			<form onSubmit={onSubmit} style={{ padding: "24px", flex: 1 }}>
-				{/* BASIC INFORMATION SECTION */}
 				<div
 					style={{
-						backgroundColor: "#ffffff",
-						padding: "20px",
-						borderRadius: "8px",
-						marginBottom: "20px",
-						border: "1px solid #e5e7eb",
+						position: "sticky",
+						top: 0,
+						backgroundColor: "var(--color-modal-header-bg)",
+						color: "var(--color-modal-header-text)",
+						padding: "20px 24px",
+						borderBottom: "2px solid #3b82f6",
+						borderRadius: "8px 8px 0 0",
+						zIndex: 10,
 					}}
 				>
-					<h3
+					<h2
 						style={{
-							marginTop: 0,
-							marginBottom: "16px",
-							fontSize: "15px",
-							fontWeight: "700",
-							color: "#1e293b",
-							textTransform: "uppercase",
-							letterSpacing: "0.5px",
-							display: "flex",
-							alignItems: "center",
-						}}
-					>
-						🏢 Basic Information
-					</h3>
-					<div
-						style={{
-							display: "grid",
-							gridTemplateColumns: "1fr 1fr",
-							gap: "16px",
-						}}
-					>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "var(--color-text-dark)",
-								}}
-							>
-								Site *
-							</label>
-							<select
-								value={circuit.site?.id || ""}
-								onChange={(e) =>
-									setCircuit({
-										...circuit,
-										site: { id: Number(e.target.value) },
-									})
-								}
-								style={{ ...inputStyle, backgroundColor: "#ffffff" }}
-								required
-							>
-								<option value="">Select Site</option>
-								{[...sites]
-									.sort((a, b) =>
-										a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
-									)
-									.map((site) => (
-										<option key={site.id} value={site.id}>
-											{site.name}
-										</option>
-									))}
-							</select>
-						</div>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "var(--color-text-dark)",
-								}}
-							>
-								Provider *
-							</label>
-							<select
-								value={circuit.provider?.id || ""}
-								onChange={(e) =>
-									setCircuit({
-										...circuit,
-										provider: { id: Number(e.target.value) },
-									})
-								}
-								style={{ ...inputStyle, backgroundColor: "#ffffff" }}
-								required
-							>
-								<option value="">Select Provider</option>
-								{[...providers]
-									.sort((a, b) =>
-										a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
-									)
-									.map((provider) => (
-										<option key={provider.id} value={provider.id}>
-											{provider.name}
-										</option>
-									))}
-							</select>
-						</div>
-					</div>
-				</div>
-
-				{/* CIRCUIT INFORMATION SECTION */}
-				<div
-					style={{
-						backgroundColor: "#ffffff",
-						padding: "20px",
-						borderRadius: "8px",
-						marginBottom: "20px",
-						border: "1px solid #e5e7eb",
-					}}
-				>
-					<h3
-						style={{
-							marginTop: 0,
-							marginBottom: "16px",
-							fontSize: "15px",
-							fontWeight: "700",
-							color: "#1e293b",
-							textTransform: "uppercase",
-							letterSpacing: "0.5px",
-							display: "flex",
-							alignItems: "center",
-						}}
-					>
-						📋 Circuit Information
-					</h3>
-					<div
-						style={{
-							display: "grid",
-							gridTemplateColumns: "1fr 1fr",
-							gap: "16px",
-						}}
-					>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "var(--color-text-dark)",
-								}}
-							>
-								Account Number *
-							</label>
-							<input
-								type="text"
-								placeholder="Enter Account Number"
-								value={circuit.accountNumber || ""}
-								onChange={(e) =>
-									setCircuit({ ...circuit, accountNumber: e.target.value })
-								}
-								style={inputStyle}
-								required
-							/>
-						</div>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "var(--color-text-dark)",
-								}}
-							>
-								Circuit ID *
-							</label>
-							<input
-								type="text"
-								placeholder="Enter Circuit ID"
-								value={circuit.circuitId || ""}
-								onChange={(e) =>
-									setCircuit({ ...circuit, circuitId: e.target.value })
-								}
-								style={inputStyle}
-								required
-							/>
-						</div>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "var(--color-text-dark)",
-								}}
-							>
-								Bandwidth *
-							</label>
-							<input
-								type="text"
-								placeholder="e.g., 1Gbps"
-								value={circuit.circuitBandwidth || ""}
-								onChange={(e) =>
-									setCircuit({ ...circuit, circuitBandwidth: e.target.value })
-								}
-								style={inputStyle}
-								required
-							/>
-						</div>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "var(--color-text-dark)",
-								}}
-							>
-								Monthly Cost *
-							</label>
-							<input
-								type="number"
-								placeholder="0.00"
-								step="0.01"
-								value={circuit.monthlyCost || ""}
-								onChange={(e) =>
-									setCircuit({
-										...circuit,
-										monthlyCost: Number(e.target.value),
-									})
-								}
-								style={inputStyle}
-								required
-							/>
-						</div>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "var(--color-text-dark)",
-								}}
-							>
-								Installation Date *
-							</label>
-							<input
-								type="date"
-								value={circuit.installationDate || ""}
-								onChange={(e) =>
-									setCircuit({ ...circuit, installationDate: e.target.value })
-								}
-								style={inputStyle}
-								required
-							/>
-						</div>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "var(--color-text-dark)",
-								}}
-							>
-								Contract Date *
-							</label>
-							<input
-								type="date"
-								value={circuit.circuitContractDate || ""}
-								onChange={(e) =>
-									setCircuit({
-										...circuit,
-										circuitContractDate: e.target.value,
-									})
-								}
-								style={inputStyle}
-								required
-							/>
-						</div>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "var(--color-text-dark)",
-								}}
-							>
-								Status *
-							</label>
-							<select
-								value={circuit.status || ""}
-								onChange={(e) =>
-									setCircuit({ ...circuit, status: e.target.value })
-								}
-								style={inputStyle}
-								required
-							>
-								<option value="">Select Status</option>
-								<option value="Active">✅ Active</option>
-								<option value="Inactive">❌ Inactive</option>
-								<option value="Pending">⏳ Pending</option>
-							</select>
-						</div>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "var(--color-text-dark)",
-								}}
-							>
-								Expiration Date *
-							</label>
-							<input
-								type="date"
-								value={circuit.expirationDate || ""}
-								onChange={(e) =>
-									setCircuit({ ...circuit, expirationDate: e.target.value })
-								}
-								style={{
-									...inputStyle,
-									backgroundColor: isExpired(circuit.expirationDate)
-										? "#fee2e2"
-										: isExpirationSoon(circuit.expirationDate)
-											? "#fef3c7"
-											: "#ffffff",
-									borderColor: isExpired(circuit.expirationDate)
-										? "#dc2626"
-										: isExpirationSoon(circuit.expirationDate)
-											? "#f59e0b"
-											: "#d1d5db",
-									color: isExpired(circuit.expirationDate)
-										? "#7f1d1d"
-										: isExpirationSoon(circuit.expirationDate)
-											? "#92400e"
-											: "#1f2937",
-									fontWeight:
-										isExpired(circuit.expirationDate) ||
-										isExpirationSoon(circuit.expirationDate)
-											? "600"
-											: "400",
-								}}
-								required
-							/>
-						</div>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "6px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "var(--color-text-dark)",
-								}}
-							>
-								Circuit Type *
-							</label>
-							<select
-								value={circuit.circuitType || ""}
-								onChange={(e) =>
-									setCircuit({ ...circuit, circuitType: e.target.value })
-								}
-								style={inputStyle}
-								required
-							>
-								<option value="">Select Type</option>
-								<option value="Fiber">🔌 Fiber Circuit</option>
-								<option value="Wireless">📡 Wireless</option>
-							</select>
-						</div>
-					</div>
-				</div>
-
-				{/* RENEWAL INFORMATION SECTION */}
-				<div
-					style={{
-						backgroundColor: "#eff6ff",
-						padding: "20px",
-						borderRadius: "8px",
-						marginBottom: "20px",
-						border: "2px solid #3b82f6",
-					}}
-				>
-					<h3
-						style={{
-							marginTop: 0,
-							marginBottom: "16px",
-							fontSize: "15px",
-							fontWeight: "700",
-							color: "#1e40af",
-							textTransform: "uppercase",
-							letterSpacing: "0.5px",
-							display: "flex",
-							alignItems: "center",
-						}}
-					>
-						🔄 Renewal Information
-					</h3>
-					<CircuitRenewalFields circuit={circuit} setCircuit={setCircuit} />
-				</div>
-
-				{/* HAS TOWER SECTION */}
-				<div
-					style={{
-						backgroundColor: "#ffffff",
-						padding: "20px",
-						borderRadius: "8px",
-						marginBottom: "20px",
-						border: "1px solid #e5e7eb",
-					}}
-				>
-					<label
-						style={{
-							display: "flex",
-							alignItems: "center",
-							fontSize: "14px",
+							margin: 0,
+							fontSize: "22px",
 							fontWeight: "600",
-							color: "#1e293b",
-							cursor: "pointer",
+							letterSpacing: "-0.5px",
 						}}
 					>
-						<input
-							type="checkbox"
-							checked={circuit.hasTower || false}
-							onChange={(e) =>
-								setCircuit({ ...circuit, hasTower: e.target.checked })
-							}
-							style={{
-								marginRight: "12px",
-								transform: "scale(1.3)",
-								cursor: "pointer",
-								accentColor: "#3b82f6",
-							}}
-						/>
-						<span>🏗️ Manage Tower Information</span>
-					</label>
+						✏️ Edit Circuit
+					</h2>
 				</div>
-
-				{circuit.hasTower && (
+				<form onSubmit={onSubmit} style={{ padding: "24px", flex: 1 }}>
+					{/* BASIC INFORMATION SECTION */}
 					<div
 						style={{
-							backgroundColor: "var(--color-surface-light)",
+							backgroundColor: themedContainerBg,
 							padding: "20px",
 							borderRadius: "8px",
 							marginBottom: "20px",
-							border: "2px solid #f59e0b",
+							border: `1px solid ${themedBorderColor}`,
 						}}
 					>
 						<h3
@@ -1444,232 +1084,103 @@ const EditCircuitModal = ({
 								marginBottom: "16px",
 								fontSize: "15px",
 								fontWeight: "700",
-								color: "#92400e",
+								color: themedTextColor,
 								textTransform: "uppercase",
 								letterSpacing: "0.5px",
 								display: "flex",
 								alignItems: "center",
 							}}
 						>
-							🏗️ Tower Information
+							🏢 Basic Information
 						</h3>
-						<div style={{ marginBottom: "16px" }}>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "8px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "var(--color-text-dark)",
-								}}
-							>
-								Number of Towers *
-							</label>
-							<input
-								type="number"
-								placeholder="Number of Towers"
-								value={circuit.numberOfTowers || ""}
-								onChange={(e) =>
-									setCircuit({
-										...circuit,
-										numberOfTowers: e.target.value,
-									})
-								}
-								style={inputStyle}
-								required
-								min="1"
-								max="6"
-							/>
-						</div>
-						{circuit.numberOfTowers &&
-							parseInt(circuit.numberOfTowers) > 0 &&
-							Array.from(
-								{ length: parseInt(circuit.numberOfTowers) },
-								(_, i) => i + 1,
-							).map((towerNum) => (
-								<div
-									key={towerNum}
+						<div
+							style={{
+								display: "grid",
+								gridTemplateColumns: "1fr 1fr",
+								gap: "16px",
+							}}
+						>
+							<div>
+								<label
 									style={{
-										marginBottom: "16px",
-										borderLeft: "4px solid #f59e0b",
-										paddingLeft: "16px",
-										backgroundColor: "#ffffff",
-										padding: "16px",
-										borderRadius: "6px",
+										display: "block",
+										marginBottom: "6px",
+										fontSize: "13px",
+										fontWeight: "600",
+										color: "var(--color-text-dark)",
 									}}
 								>
-									<h4
-										style={{
-											marginTop: 0,
-											marginBottom: "12px",
-											color: "#92400e",
-											fontSize: "13px",
-											fontWeight: "600",
-										}}
-									>
-										Tower {towerNum} Details
-									</h4>
-									<div
-										style={{
-											display: "grid",
-											gridTemplateColumns: "1fr 1fr",
-											gap: "12px",
-										}}
-									>
-										<div>
-											<label
-												style={{
-													display: "block",
-													marginBottom: "4px",
-													fontSize: "12px",
-													fontWeight: "600",
-													color: "var(--color-text-dark)",
-												}}
-											>
-												Provider
-											</label>
-											<input
-												type="text"
-												placeholder="Tower Provider"
-												value={circuit[`towerProvider${towerNum}`] || ""}
-												onChange={(e) =>
-													setCircuit({
-														...circuit,
-														[`towerProvider${towerNum}`]: e.target.value,
-													})
-												}
-												style={inputStyle}
-												required
-											/>
-										</div>
-										<div>
-											<label
-												style={{
-													display: "block",
-													marginBottom: "4px",
-													fontSize: "12px",
-													fontWeight: "600",
-													color: "var(--color-text-dark)",
-												}}
-											>
-												Installation Date
-											</label>
-											<input
-												type="date"
-												value={circuit[`towerInstallDate${towerNum}`] || ""}
-												onChange={(e) =>
-													setCircuit({
-														...circuit,
-														[`towerInstallDate${towerNum}`]: e.target.value,
-													})
-												}
-												style={inputStyle}
-												required
-											/>
-										</div>
-										<div>
-											<label
-												style={{
-													display: "block",
-													marginBottom: "4px",
-													fontSize: "12px",
-													fontWeight: "600",
-													color: "var(--color-text-dark)",
-												}}
-											>
-												Expiration Date
-											</label>
-											<input
-												type="date"
-												value={circuit[`towerExpirationDate${towerNum}`] || ""}
-												onChange={(e) =>
-													setCircuit({
-														...circuit,
-														[`towerExpirationDate${towerNum}`]: e.target.value,
-													})
-												}
-												style={inputStyle}
-												required
-											/>
-										</div>
-										<div>
-											<label
-												style={{
-													display: "block",
-													marginBottom: "4px",
-													fontSize: "12px",
-													fontWeight: "600",
-													color: "var(--color-text-dark)",
-												}}
-											>
-												Monthly Cost
-											</label>
-											<input
-												type="number"
-												placeholder="0.00"
-												step="0.01"
-												value={circuit[`towerMonthlyCost${towerNum}`] || ""}
-												onChange={(e) =>
-													setCircuit({
-														...circuit,
-														[`towerMonthlyCost${towerNum}`]: e.target.value,
-													})
-												}
-												style={inputStyle}
-												required
-											/>
-										</div>
-									</div>
-								</div>
-							))}
+									Site *
+								</label>
+								<select
+									value={circuit.site?.id || ""}
+									onChange={(e) =>
+										setCircuit({
+											...circuit,
+											site: { id: Number(e.target.value) },
+										})
+									}
+									style={inputStyle}
+									required
+								>
+									<option value="">Select Site</option>
+									{[...sites]
+										.sort((a, b) =>
+											a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+										)
+										.map((site) => (
+											<option key={site.id} value={site.id}>
+												{site.name}
+											</option>
+										))}
+								</select>
+							</div>
+							<div>
+								<label
+									style={{
+										display: "block",
+										marginBottom: "6px",
+										fontSize: "13px",
+										fontWeight: "600",
+										color: "var(--color-text-dark)",
+									}}
+								>
+									Provider *
+								</label>
+								<select
+									value={circuit.provider?.id || ""}
+									onChange={(e) =>
+										setCircuit({
+											...circuit,
+											provider: { id: Number(e.target.value) },
+										})
+									}
+									style={inputStyle}
+									required
+								>
+									<option value="">Select Provider</option>
+									{[...providers]
+										.sort((a, b) =>
+											a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+										)
+										.map((provider) => (
+											<option key={provider.id} value={provider.id}>
+												{provider.name}
+											</option>
+										))}
+								</select>
+							</div>
+						</div>
 					</div>
-				)}
 
-				{/* HAS AGGREGATOR SECTION */}
-				<div
-					style={{
-						backgroundColor: "#ffffff",
-						padding: "20px",
-						borderRadius: "8px",
-						marginBottom: "20px",
-						border: "1px solid #e5e7eb",
-					}}
-				>
-					<label
-						style={{
-							display: "flex",
-							alignItems: "center",
-							fontSize: "14px",
-							fontWeight: "600",
-							color: "#1e293b",
-							cursor: "pointer",
-						}}
-					>
-						<input
-							type="checkbox"
-							checked={circuit.hasAggregator || false}
-							onChange={(e) =>
-								setCircuit({ ...circuit, hasAggregator: e.target.checked })
-							}
-							style={{
-								marginRight: "12px",
-								transform: "scale(1.3)",
-								cursor: "pointer",
-								accentColor: "#3b82f6",
-							}}
-						/>
-						<span>🔗 Has Aggregator</span>
-					</label>
-				</div>
-
-				{circuit.hasAggregator && (
+					{/* CIRCUIT INFORMATION SECTION */}
 					<div
 						style={{
-							backgroundColor: "#f0fdf4",
+							backgroundColor: themedContainerBg,
 							padding: "20px",
 							borderRadius: "8px",
 							marginBottom: "20px",
-							border: "2px solid #22c55e",
+							border: `1px solid ${themedBorderColor}`,
 						}}
 					>
 						<h3
@@ -1678,120 +1189,698 @@ const EditCircuitModal = ({
 								marginBottom: "16px",
 								fontSize: "15px",
 								fontWeight: "700",
-								color: "#16a34a",
+								color: themedTextColor,
 								textTransform: "uppercase",
 								letterSpacing: "0.5px",
 								display: "flex",
 								alignItems: "center",
 							}}
 						>
-							🔗 Aggregator Information
+							📋 Circuit Information
 						</h3>
-						<div>
-							<label
-								style={{
-									display: "block",
-									marginBottom: "8px",
-									fontSize: "13px",
-									fontWeight: "600",
-									color: "var(--color-text-dark)",
-								}}
-							>
-								Aggregator Name *
-							</label>
-							<input
-								type="text"
-								placeholder="Aggregator Name"
-								value={circuit.aggregatorName || ""}
-								onChange={(e) =>
-									setCircuit({
-										...circuit,
-										aggregatorName: e.target.value,
-									})
-								}
-								style={inputStyle}
-								required
-							/>
+						<div
+							style={{
+								display: "grid",
+								gridTemplateColumns: "1fr 1fr",
+								gap: "16px",
+							}}
+						>
+							<div>
+								<label
+									style={{
+										display: "block",
+										marginBottom: "6px",
+										fontSize: "13px",
+										fontWeight: "600",
+										color: "var(--color-text-dark)",
+									}}
+								>
+									Account Number *
+								</label>
+								<input
+									type="text"
+									placeholder="Enter Account Number"
+									value={circuit.accountNumber || ""}
+									onChange={(e) =>
+										setCircuit({ ...circuit, accountNumber: e.target.value })
+									}
+									style={inputStyle}
+									required
+								/>
+							</div>
+							<div>
+								<label
+									style={{
+										display: "block",
+										marginBottom: "6px",
+										fontSize: "13px",
+										fontWeight: "600",
+										color: "var(--color-text-dark)",
+									}}
+								>
+									Circuit ID *
+								</label>
+								<input
+									type="text"
+									placeholder="Enter Circuit ID"
+									value={circuit.circuitId || ""}
+									onChange={(e) =>
+										setCircuit({ ...circuit, circuitId: e.target.value })
+									}
+									style={inputStyle}
+									required
+								/>
+							</div>
+							<div>
+								<label
+									style={{
+										display: "block",
+										marginBottom: "6px",
+										fontSize: "13px",
+										fontWeight: "600",
+										color: "var(--color-text-dark)",
+									}}
+								>
+									Bandwidth *
+								</label>
+								<input
+									type="text"
+									placeholder="e.g., 1Gbps"
+									value={circuit.circuitBandwidth || ""}
+									onChange={(e) =>
+										setCircuit({ ...circuit, circuitBandwidth: e.target.value })
+									}
+									style={inputStyle}
+									required
+								/>
+							</div>
+							<div>
+								<label
+									style={{
+										display: "block",
+										marginBottom: "6px",
+										fontSize: "13px",
+										fontWeight: "600",
+										color: "var(--color-text-dark)",
+									}}
+								>
+									Monthly Cost *
+								</label>
+								<input
+									type="number"
+									placeholder="0.00"
+									step="0.01"
+									value={circuit.monthlyCost || ""}
+									onChange={(e) =>
+										setCircuit({
+											...circuit,
+											monthlyCost: Number(e.target.value),
+										})
+									}
+									style={inputStyle}
+									required
+								/>
+							</div>
+							<div>
+								<label
+									style={{
+										display: "block",
+										marginBottom: "6px",
+										fontSize: "13px",
+										fontWeight: "600",
+										color: "var(--color-text-dark)",
+									}}
+								>
+									Installation Date *
+								</label>
+								<input
+									type="date"
+									value={circuit.installationDate || ""}
+									onChange={(e) =>
+										setCircuit({ ...circuit, installationDate: e.target.value })
+									}
+									style={inputStyle}
+									required
+								/>
+							</div>
+							<div>
+								<label
+									style={{
+										display: "block",
+										marginBottom: "6px",
+										fontSize: "13px",
+										fontWeight: "600",
+										color: "var(--color-text-dark)",
+									}}
+								>
+									Contract Date *
+								</label>
+								<input
+									type="date"
+									value={circuit.circuitContractDate || ""}
+									onChange={(e) =>
+										setCircuit({
+											...circuit,
+											circuitContractDate: e.target.value,
+										})
+									}
+									style={inputStyle}
+									required
+								/>
+							</div>
+							<div>
+								<label
+									style={{
+										display: "block",
+										marginBottom: "6px",
+										fontSize: "13px",
+										fontWeight: "600",
+										color: "var(--color-text-dark)",
+									}}
+								>
+									Status *
+								</label>
+								<select
+									value={circuit.status || ""}
+									onChange={(e) =>
+										setCircuit({ ...circuit, status: e.target.value })
+									}
+									style={inputStyle}
+									required
+								>
+									<option value="">Select Status</option>
+									<option value="Active">✅ Active</option>
+									<option value="Inactive">❌ Inactive</option>
+									<option value="Pending">⏳ Pending</option>
+								</select>
+							</div>
+							<div>
+								<label
+									style={{
+										display: "block",
+										marginBottom: "6px",
+										fontSize: "13px",
+										fontWeight: "600",
+										color: "var(--color-text-dark)",
+									}}
+								>
+									Expiration Date *
+								</label>
+								<input
+									type="date"
+									value={circuit.expirationDate || ""}
+									onChange={(e) =>
+										setCircuit({ ...circuit, expirationDate: e.target.value })
+									}
+									style={{
+										...inputStyle,
+										backgroundColor: isExpired(circuit.expirationDate)
+											? "#fee2e2"
+											: isExpirationSoon(circuit.expirationDate)
+												? "#fef3c7"
+												: "#ffffff",
+										borderColor: isExpired(circuit.expirationDate)
+											? "#dc2626"
+											: isExpirationSoon(circuit.expirationDate)
+												? "#f59e0b"
+												: "#d1d5db",
+										color: isExpired(circuit.expirationDate)
+											? "#7f1d1d"
+											: isExpirationSoon(circuit.expirationDate)
+												? "#92400e"
+												: "#1f2937",
+										fontWeight:
+											isExpired(circuit.expirationDate) ||
+											isExpirationSoon(circuit.expirationDate)
+												? "600"
+												: "400",
+									}}
+									required
+								/>
+							</div>
+							<div>
+								<label
+									style={{
+										display: "block",
+										marginBottom: "6px",
+										fontSize: "13px",
+										fontWeight: "600",
+										color: "var(--color-text-dark)",
+									}}
+								>
+									Circuit Type *
+								</label>
+								<select
+									value={circuit.circuitType || ""}
+									onChange={(e) =>
+										setCircuit({ ...circuit, circuitType: e.target.value })
+									}
+									style={inputStyle}
+									required
+								>
+									<option value="">Select Type</option>
+									<option value="Fiber">🔌 Fiber Circuit</option>
+									<option value="Wireless">📡 Wireless</option>
+								</select>
+							</div>
 						</div>
 					</div>
-				)}
 
-				{/* NOTES SECTION */}
-				<div
-					style={{
-						backgroundColor: "#ffffff",
-						padding: "20px",
-						borderRadius: "8px",
-						marginBottom: "20px",
-						border: "1px solid #e5e7eb",
-					}}
-				>
-					<h3
+					{/* RENEWAL INFORMATION SECTION */}
+					<div
 						style={{
-							marginTop: 0,
-							marginBottom: "12px",
-							fontSize: "13px",
-							fontWeight: "600",
-							color: "var(--color-text-dark)",
-							textTransform: "uppercase",
-							letterSpacing: "0.5px",
+							backgroundColor: theme === "light" ? "#eff6ff" : "#1e3a5f",
+							padding: "20px",
+							borderRadius: "8px",
+							marginBottom: "20px",
+							border: `2px solid ${theme === "light" ? "#3b82f6" : "#5dade2"}`,
 						}}
 					>
-						📝 Additional Notes
-					</h3>
-					<textarea
-						placeholder="Add any additional notes (optional)"
-						value={circuit.notes || ""}
-						onChange={(e) => setCircuit({ ...circuit, notes: e.target.value })}
-						style={{
-							...inputStyle,
-							minHeight: "100px",
-							resize: "vertical",
-							fontFamily: "inherit",
-						}}
-					/>
-				</div>
+						<h3
+							style={{
+								marginTop: 0,
+								marginBottom: "16px",
+								fontSize: "15px",
+								fontWeight: "700",
+								color: theme === "light" ? "#1e40af" : "#93c5fd",
+								textTransform: "uppercase",
+								letterSpacing: "0.5px",
+								display: "flex",
+								alignItems: "center",
+							}}
+						>
+							🔄 Renewal Information
+						</h3>
+						<CircuitRenewalFields circuit={circuit} setCircuit={setCircuit} />
+					</div>
 
-				{/* ACTION BUTTONS */}
-				<div
-					style={{
-						display: "flex",
-						justifyContent: "flex-end",
-						gap: "12px",
-						paddingTop: "16px",
-						borderTop: "1px solid #e5e7eb",
-					}}
-				>
-					<button
-						type="button"
-						onClick={onClose}
+					{/* HAS TOWER SECTION */}
+					<div
 						style={{
-							...buttonStyle,
-							backgroundColor: "var(--color-text-muted)",
-							padding: "10px 20px",
-							fontSize: "14px",
-							fontWeight: "500",
+							backgroundColor: themedContainerBg,
+							padding: "20px",
+							borderRadius: "8px",
+							marginBottom: "20px",
+							border: `1px solid ${themedBorderColor}`,
 						}}
 					>
-						Cancel
-					</button>
-					<button
-						type="submit"
+						<label
+							style={{
+								display: "flex",
+								alignItems: "center",
+								fontSize: "14px",
+								fontWeight: "600",
+								color: themedTextColor,
+								cursor: "pointer",
+							}}
+						>
+							<input
+								type="checkbox"
+								checked={circuit.hasTower || false}
+								onChange={(e) =>
+									setCircuit({ ...circuit, hasTower: e.target.checked })
+								}
+								style={{
+									marginRight: "12px",
+									transform: "scale(1.3)",
+									cursor: "pointer",
+									accentColor: "#3b82f6",
+								}}
+							/>
+							<span>🏗️ Manage Tower Information</span>
+						</label>
+					</div>
+
+					{circuit.hasTower && (
+						<div
+							style={{
+								backgroundColor: "var(--color-surface-light)",
+								padding: "20px",
+								borderRadius: "8px",
+								marginBottom: "20px",
+								border: "2px solid #f59e0b",
+							}}
+						>
+							<h3
+								style={{
+									marginTop: 0,
+									marginBottom: "16px",
+									fontSize: "15px",
+									fontWeight: "700",
+									color: "#92400e",
+									textTransform: "uppercase",
+									letterSpacing: "0.5px",
+									display: "flex",
+									alignItems: "center",
+								}}
+							>
+								🏗️ Tower Information
+							</h3>
+							<div style={{ marginBottom: "16px" }}>
+								<label
+									style={{
+										display: "block",
+										marginBottom: "8px",
+										fontSize: "13px",
+										fontWeight: "600",
+										color: "var(--color-text-dark)",
+									}}
+								>
+									Number of Towers *
+								</label>
+								<input
+									type="number"
+									placeholder="Number of Towers"
+									value={circuit.numberOfTowers || ""}
+									onChange={(e) =>
+										setCircuit({
+											...circuit,
+											numberOfTowers: e.target.value,
+										})
+									}
+									style={inputStyle}
+									required
+									min="1"
+									max="6"
+								/>
+							</div>
+							{circuit.numberOfTowers &&
+								parseInt(circuit.numberOfTowers) > 0 &&
+								Array.from(
+									{ length: parseInt(circuit.numberOfTowers) },
+									(_, i) => i + 1,
+								).map((towerNum) => (
+									<div
+										key={towerNum}
+										style={{
+											marginBottom: "16px",
+											borderLeft: "4px solid #f59e0b",
+											paddingLeft: "16px",
+											backgroundColor: "#ffffff",
+											padding: "16px",
+											borderRadius: "6px",
+										}}
+									>
+										<h4
+											style={{
+												marginTop: 0,
+												marginBottom: "12px",
+												color: "#92400e",
+												fontSize: "13px",
+												fontWeight: "600",
+											}}
+										>
+											Tower {towerNum} Details
+										</h4>
+										<div
+											style={{
+												display: "grid",
+												gridTemplateColumns: "1fr 1fr",
+												gap: "12px",
+											}}
+										>
+											<div>
+												<label
+													style={{
+														display: "block",
+														marginBottom: "4px",
+														fontSize: "12px",
+														fontWeight: "600",
+														color: "var(--color-text-dark)",
+													}}
+												>
+													Provider
+												</label>
+												<input
+													type="text"
+													placeholder="Tower Provider"
+													value={circuit[`towerProvider${towerNum}`] || ""}
+													onChange={(e) =>
+														setCircuit({
+															...circuit,
+															[`towerProvider${towerNum}`]: e.target.value,
+														})
+													}
+													style={inputStyle}
+													required
+												/>
+											</div>
+											<div>
+												<label
+													style={{
+														display: "block",
+														marginBottom: "4px",
+														fontSize: "12px",
+														fontWeight: "600",
+														color: "var(--color-text-dark)",
+													}}
+												>
+													Installation Date
+												</label>
+												<input
+													type="date"
+													value={circuit[`towerInstallDate${towerNum}`] || ""}
+													onChange={(e) =>
+														setCircuit({
+															...circuit,
+															[`towerInstallDate${towerNum}`]: e.target.value,
+														})
+													}
+													style={inputStyle}
+													required
+												/>
+											</div>
+											<div>
+												<label
+													style={{
+														display: "block",
+														marginBottom: "4px",
+														fontSize: "12px",
+														fontWeight: "600",
+														color: "var(--color-text-dark)",
+													}}
+												>
+													Expiration Date
+												</label>
+												<input
+													type="date"
+													value={
+														circuit[`towerExpirationDate${towerNum}`] || ""
+													}
+													onChange={(e) =>
+														setCircuit({
+															...circuit,
+															[`towerExpirationDate${towerNum}`]:
+																e.target.value,
+														})
+													}
+													style={inputStyle}
+													required
+												/>
+											</div>
+											<div>
+												<label
+													style={{
+														display: "block",
+														marginBottom: "4px",
+														fontSize: "12px",
+														fontWeight: "600",
+														color: "var(--color-text-dark)",
+													}}
+												>
+													Monthly Cost
+												</label>
+												<input
+													type="number"
+													placeholder="0.00"
+													step="0.01"
+													value={circuit[`towerMonthlyCost${towerNum}`] || ""}
+													onChange={(e) =>
+														setCircuit({
+															...circuit,
+															[`towerMonthlyCost${towerNum}`]: e.target.value,
+														})
+													}
+													style={inputStyle}
+													required
+												/>
+											</div>
+										</div>
+									</div>
+								))}
+						</div>
+					)}
+
+					{/* HAS AGGREGATOR SECTION */}
+					<div
 						style={{
-							...buttonStyle,
-							backgroundColor: "#3b82f6",
-							padding: "10px 24px",
-							fontSize: "14px",
-							fontWeight: "500",
+							backgroundColor: themedContainerBg,
+							padding: "20px",
+							borderRadius: "8px",
+							marginBottom: "20px",
+							border: `1px solid ${themedBorderColor}`,
 						}}
 					>
-						💾 Save Changes
-					</button>
-				</div>
-			</form>
+						<label
+							style={{
+								display: "flex",
+								alignItems: "center",
+								fontSize: "14px",
+								fontWeight: "600",
+								color: themedTextColor,
+								cursor: "pointer",
+							}}
+						>
+							<input
+								type="checkbox"
+								checked={circuit.hasAggregator || false}
+								onChange={(e) =>
+									setCircuit({ ...circuit, hasAggregator: e.target.checked })
+								}
+								style={{
+									marginRight: "12px",
+									transform: "scale(1.3)",
+									cursor: "pointer",
+									accentColor: "#3b82f6",
+								}}
+							/>
+							<span>🔗 Has Aggregator</span>
+						</label>
+					</div>
+
+					{circuit.hasAggregator && (
+						<div
+							style={{
+								backgroundColor: "#f0fdf4",
+								padding: "20px",
+								borderRadius: "8px",
+								marginBottom: "20px",
+								border: "2px solid #22c55e",
+							}}
+						>
+							<h3
+								style={{
+									marginTop: 0,
+									marginBottom: "16px",
+									fontSize: "15px",
+									fontWeight: "700",
+									color: "#16a34a",
+									textTransform: "uppercase",
+									letterSpacing: "0.5px",
+									display: "flex",
+									alignItems: "center",
+								}}
+							>
+								🔗 Aggregator Information
+							</h3>
+							<div>
+								<label
+									style={{
+										display: "block",
+										marginBottom: "8px",
+										fontSize: "13px",
+										fontWeight: "600",
+										color: "var(--color-text-dark)",
+									}}
+								>
+									Aggregator Name *
+								</label>
+								<input
+									type="text"
+									placeholder="Aggregator Name"
+									value={circuit.aggregatorName || ""}
+									onChange={(e) =>
+										setCircuit({
+											...circuit,
+											aggregatorName: e.target.value,
+										})
+									}
+									style={inputStyle}
+									required
+								/>
+							</div>
+						</div>
+					)}
+
+					{/* NOTES SECTION */}
+					<div
+						style={{
+							backgroundColor: themedContainerBg,
+							padding: "20px",
+							borderRadius: "8px",
+							marginBottom: "20px",
+							border: `1px solid ${themedBorderColor}`,
+						}}
+					>
+						<h3
+							style={{
+								marginTop: 0,
+								marginBottom: "12px",
+								fontSize: "13px",
+								fontWeight: "600",
+								color: themedTextColor,
+								textTransform: "uppercase",
+								letterSpacing: "0.5px",
+							}}
+						>
+							📝 Additional Notes
+						</h3>
+						<textarea
+							placeholder="Add any additional notes (optional)"
+							value={circuit.notes || ""}
+							onChange={(e) =>
+								setCircuit({ ...circuit, notes: e.target.value })
+							}
+							style={{
+								...inputStyle,
+								minHeight: "100px",
+								resize: "vertical",
+								fontFamily: "inherit",
+							}}
+						/>
+					</div>
+
+					{/* ACTION BUTTONS */}
+					<div
+						style={{
+							display: "flex",
+							justifyContent: "flex-end",
+							gap: "12px",
+							paddingTop: "16px",
+							borderTop: "1px solid #e5e7eb",
+						}}
+					>
+						<button
+							type="button"
+							onClick={onClose}
+							style={{
+								...buttonStyle,
+								backgroundColor: "var(--color-text-muted)",
+								padding: "10px 20px",
+								fontSize: "14px",
+								fontWeight: "500",
+							}}
+						>
+							Cancel
+						</button>
+						<button
+							type="submit"
+							style={{
+								...buttonStyle,
+								backgroundColor: "#3b82f6",
+								padding: "10px 24px",
+								fontSize: "14px",
+								fontWeight: "500",
+							}}
+						>
+							💾 Save Changes
+						</button>
+					</div>
+				</form>
+			</div>
 		</div>
-	</div>
-);
+	);
+};
 
 function Circuits() {
 	const [selectedMenu, setSelectedMenu] = useState("Circuit Information");

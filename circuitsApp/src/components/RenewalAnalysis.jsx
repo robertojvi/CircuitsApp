@@ -279,6 +279,23 @@ const RenewalAnalysisModal = ({
 		color: theme === "light" ? "#7f8c8d" : "var(--color-text-muted)",
 	};
 
+	// Theme-aware timeline pill styles
+	const themedTimelinePillStyle = {
+		...timelinePillStyle,
+		backgroundColor: theme === "light" ? "#ffffff" : "var(--color-dark-bg)",
+		border: `1px solid ${theme === "light" ? "#e0e0e0" : "var(--color-border-light)"}`,
+	};
+
+	const themedTimelinePillLabelStyle = {
+		...timelinePillLabelStyle,
+		color: theme === "light" ? "#3498db" : "var(--color-primary-light)",
+	};
+
+	const themedTimelinePillValueStyle = {
+		...timelinePillValueStyle,
+		color: theme === "light" ? "#2c3e50" : "white",
+	};
+
 	const totalSavingsStyle =
 		preview.totalSavings == null
 			? themedReadOnlyInputStyle
@@ -556,27 +573,27 @@ const RenewalAnalysisModal = ({
 						</div>
 						<div style={analysisSummaryStyle}>{comparisonSummary}</div>
 						<div style={timelineSummaryGridStyle}>
-							<div style={timelinePillStyle}>
-								<span style={timelinePillLabelStyle}>
+							<div style={themedTimelinePillStyle}>
+								<span style={themedTimelinePillLabelStyle}>
 									Current Circuit Expiration
 								</span>
-								<span style={timelinePillValueStyle}>
+								<span style={themedTimelinePillValueStyle}>
 									{formatDate(circuit.expirationDate)}
 								</span>
 							</div>
-							<div style={timelinePillStyle}>
-								<span style={timelinePillLabelStyle}>
+							<div style={themedTimelinePillStyle}>
+								<span style={themedTimelinePillLabelStyle}>
 									Customer Contract Expiration
 								</span>
-								<span style={timelinePillValueStyle}>
+								<span style={themedTimelinePillValueStyle}>
 									{formatDate(circuit.site?.customerContractExpirationDate)}
 								</span>
 							</div>
-							<div style={timelinePillStyle}>
-								<span style={timelinePillLabelStyle}>
+							<div style={themedTimelinePillStyle}>
+								<span style={themedTimelinePillLabelStyle}>
 									Renewal Circuit Expiration
 								</span>
-								<span style={timelinePillValueStyle}>
+								<span style={themedTimelinePillValueStyle}>
 									{formatDate(circuit.renewalCircuitExpirationDate)}
 								</span>
 							</div>
