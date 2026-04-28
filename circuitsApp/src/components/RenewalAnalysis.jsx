@@ -213,7 +213,7 @@ const RenewalAnalysisModal = ({
 	const themedModalHeaderStyle = {
 		...modalHeaderStyle,
 		backgroundColor: theme === "light" ? "#ffffff" : "var(--color-dark-bg)",
-		borderBottomColor: theme === "light" ? "#3498db" : "#3498db",
+		borderBottomColor: "var(--color-primary)",
 	};
 
 	const themedCloseButtonStyle = {
@@ -242,7 +242,7 @@ const RenewalAnalysisModal = ({
 
 	const themedFieldLabelStyle = {
 		...fieldLabelStyle,
-		color: theme === "light" ? "#3498db" : "var(--color-primary-light)",
+		color: "var(--color-primary-light)",
 	};
 
 	const themedFieldValueStyle = {
@@ -258,7 +258,7 @@ const RenewalAnalysisModal = ({
 	const themedInputStyle = {
 		...inputStyle,
 		backgroundColor: theme === "light" ? "#ffffff" : "var(--color-dark-bg)",
-		color: theme === "light" ? "#2c3e50" : "var(--color-surface-light)",
+		color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 		borderColor: theme === "light" ? "#d0d0d0" : "var(--color-border)",
 	};
 
@@ -288,19 +288,19 @@ const RenewalAnalysisModal = ({
 
 	const themedTimelinePillLabelStyle = {
 		...timelinePillLabelStyle,
-		color: theme === "light" ? "#3498db" : "var(--color-primary-light)",
+		color: "var(--color-primary-light)",
 	};
 
 	const themedTimelinePillValueStyle = {
 		...timelinePillValueStyle,
-		color: theme === "light" ? "#2c3e50" : "white",
+		color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 	};
 
 	// Theme-aware button styles
 	const themedSecondaryButtonStyle = {
 		...secondaryButtonStyle,
 		backgroundColor: theme === "light" ? "#f8f9fa" : "var(--color-dark-bg)",
-		color: theme === "light" ? "#2c3e50" : "white",
+		color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 		border: `1px solid ${theme === "light" ? "#d0d0d0" : "var(--color-border-light)"}`,
 	};
 
@@ -857,7 +857,7 @@ const pageShellStyle = {
 	paddingBottom: "var(--spacing-lg)",
 	minHeight: "calc(100vh - 60px)",
 	backgroundColor: "var(--color-dark-bg)",
-	color: "white",
+	color: "var(--color-text-light)",
 };
 
 const pageHeaderStyle = {
@@ -955,11 +955,11 @@ const searchPanelLabelStyle = {
 const searchInputStyle = {
 	width: "100%",
 	padding: "10px 12px",
-	border: "1px solid #3498db",
+	border: "1px solid var(--color-primary)",
 	borderRadius: "8px",
 	fontSize: "14px",
 	backgroundColor: "var(--color-dark-bg)",
-	color: "var(--color-surface-light)",
+	color: "var(--color-text-light)",
 	boxSizing: "border-box",
 };
 
@@ -1007,7 +1007,7 @@ const tableCellStyle = {
 const iconButtonStyle = {
 	padding: "8px 10px",
 	borderRadius: "8px",
-	border: "1px solid #3498db",
+	border: "1px solid var(--color-primary)",
 	backgroundColor: "rgba(52, 152, 219, 0.15)",
 	color: "var(--color-primary-light)",
 	cursor: "pointer",
@@ -1025,7 +1025,7 @@ const statusMessageStyle = {
 	padding: "12px 14px",
 	borderRadius: "12px",
 	backgroundColor: "var(--color-dark-bg-secondary)",
-	border: "1px solid #3498db",
+	border: "1px solid var(--color-primary)",
 	color: "var(--color-text-light)",
 	boxShadow: "0 8px 24px rgba(0, 0, 0, 0.14)",
 };
@@ -1062,7 +1062,7 @@ const modalHeaderStyle = {
 	justifyContent: "space-between",
 	alignItems: "flex-start",
 	padding: "20px 24px",
-	borderBottom: "1px solid #3498db",
+	borderBottom: "1px solid var(--color-primary)",
 	position: "sticky",
 	top: 0,
 	backgroundColor: "var(--color-dark-bg)",
@@ -1110,7 +1110,7 @@ const modalHeaderSubtitleStyle = {
 };
 
 const closeButtonStyle = {
-	border: "1px solid #3498db",
+	border: "1px solid var(--color-primary)",
 	backgroundColor: "var(--color-dark-bg-secondary)",
 	borderRadius: "8px",
 	padding: "8px 12px",
@@ -1343,7 +1343,7 @@ const timelinePillLabelStyle = {
 const timelinePillValueStyle = {
 	fontSize: "var(--font-size-base)",
 	fontWeight: 600,
-	color: "white",
+	color: "var(--color-text-light)",
 };
 
 const modalActionsStyle = {
@@ -1358,7 +1358,7 @@ const primaryButtonStyle = {
 	borderRadius: "var(--radius-md)",
 	border: "none",
 	backgroundColor: "var(--color-primary)",
-	color: "white",
+	color: "var(--color-text-light)",
 	fontWeight: "600",
 	cursor: "pointer",
 	transition: `all var(--transition-base)`,
@@ -1369,7 +1369,7 @@ const secondaryButtonStyle = {
 	borderRadius: "var(--radius-md)",
 	border: `1px solid var(--color-border-light)`,
 	backgroundColor: "var(--color-dark-bg)",
-	color: "white",
+	color: "var(--color-text-light)",
 	fontWeight: "600",
 	cursor: "pointer",
 	transition: `all var(--transition-base)`,
