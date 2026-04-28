@@ -40,11 +40,11 @@ function Reports() {
 			warning: "#f39c12",
 			error: "#e74c3c",
 			secondary: "#95a5a6",
-			containerBg: "#f8f9fa",
+			containerBg: "var(--color-dark-bg-secondary)",
 			textDark: "#2c3e50",
 			textLight: "#2c3e50", // Dark text for light backgrounds
 			headerText: "#2c3e50", // Headers in light mode use dark text
-			dataLabelColor: "#ffffff", // White labels on bars for contrast
+			dataLabelColor: "var(--color-dark-bg)", // White labels on bars for contrast
 			gridColor: "#e8e8e8",
 			borderColor: "#bdc3c7",
 		},
@@ -58,7 +58,7 @@ function Reports() {
 			textDark: "#2c3e50",
 			textLight: "#ecf0f1", // Light text for dark backgrounds
 			headerText: "#ecf0f1", // Headers in dark mode use light text
-			dataLabelColor: "#ffffff", // White labels on bars for contrast
+			dataLabelColor: "var(--color-dark-bg)", // White labels on bars for contrast
 			gridColor: "#34495e",
 			borderColor: "#34495e",
 		},
@@ -909,8 +909,8 @@ function Reports() {
 								padding: "10px 20px",
 								border: "none",
 								borderRadius: "4px",
-								backgroundColor: "#FFD700",
-								color: "black",
+								backgroundColor: "var(--color-warning)",
+								color: "var(--color-text-dark)",
 								fontSize: "14px",
 								fontWeight: "bold",
 								cursor: "pointer",
@@ -925,10 +925,10 @@ function Reports() {
 					<div
 						style={{
 							marginBottom: "20px",
-							backgroundColor: "#2c3e50",
+							backgroundColor: "var(--color-dark-bg)",
 							padding: "15px 20px",
 							borderRadius: "4px",
-							color: "#ffffff",
+							color: "var(--color-text-light)",
 							display: "flex",
 							justifyContent: "space-between",
 							alignItems: "center",
@@ -971,8 +971,8 @@ function Reports() {
 										padding: "6px 10px",
 										borderRadius: "4px",
 										border: "1px solid var(--color-primary)",
-										backgroundColor: "#34495e",
-										color: "#ffffff",
+										backgroundColor: "var(--color-dark-bg-secondary)",
+										color: "var(--color-text-light)",
 										fontSize: "14px",
 										cursor: "pointer",
 									}}
@@ -997,8 +997,8 @@ function Reports() {
 										padding: "6px 10px",
 										borderRadius: "4px",
 										border: "1px solid var(--color-primary)",
-										backgroundColor: "#34495e",
-										color: "#ffffff",
+										backgroundColor: "var(--color-dark-bg-secondary)",
+										color: "var(--color-text-light)",
 										fontSize: "14px",
 										cursor: "pointer",
 									}}
@@ -1023,8 +1023,8 @@ function Reports() {
 										padding: "6px 10px",
 										borderRadius: "4px",
 										border: "1px solid var(--color-primary)",
-										backgroundColor: "#34495e",
-										color: "#ffffff",
+										backgroundColor: "var(--color-dark-bg-secondary)",
+										color: "var(--color-text-light)",
 										fontSize: "14px",
 										cursor: "pointer",
 									}}
@@ -1049,8 +1049,8 @@ function Reports() {
 										padding: "6px 10px",
 										borderRadius: "4px",
 										border: "1px solid var(--color-primary)",
-										backgroundColor: "#34495e",
-										color: "#ffffff",
+										backgroundColor: "var(--color-dark-bg-secondary)",
+										color: "var(--color-text-light)",
 										fontSize: "14px",
 										cursor: "pointer",
 									}}
@@ -1077,8 +1077,8 @@ function Reports() {
 										padding: "6px 10px",
 										borderRadius: "4px",
 										border: "1px solid var(--color-primary)",
-										backgroundColor: "#34495e",
-										color: "#ffffff",
+										backgroundColor: "var(--color-dark-bg-secondary)",
+										color: "var(--color-text-light)",
 										fontSize: "14px",
 										cursor: "pointer",
 									}}
@@ -1106,8 +1106,8 @@ function Reports() {
 										padding: "6px 10px",
 										borderRadius: "4px",
 										border: "1px solid var(--color-primary)",
-										backgroundColor: "#34495e",
-										color: "#ffffff",
+										backgroundColor: "var(--color-dark-bg-secondary)",
+										color: "var(--color-text-light)",
 										fontSize: "14px",
 										cursor: "pointer",
 									}}
@@ -1419,8 +1419,8 @@ function Reports() {
 							<h2
 								style={{
 									margin: 0,
-									color: "#ffffff",
-									backgroundColor: "#2c3e50",
+									color: "var(--color-text-light)",
+									backgroundColor: "var(--color-dark-bg)",
 									padding: "10px 20px",
 									borderRadius: "4px",
 									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
@@ -1437,7 +1437,7 @@ function Reports() {
 									border: "none",
 									borderRadius: "4px",
 									backgroundColor: "var(--color-success)",
-									color: "white",
+									color: "var(--color-text-light)",
 									fontSize: "14px",
 									fontWeight: "bold",
 									cursor: "pointer",
@@ -1448,7 +1448,7 @@ function Reports() {
 									whiteSpace: "nowrap",
 								}}
 								onMouseEnter={(e) => {
-									e.target.style.backgroundColor = "#229954";
+									e.target.style.backgroundColor = "var(--color-success)";
 								}}
 								onMouseLeave={(e) => {
 									e.target.style.backgroundColor = "var(--color-success)";
@@ -1459,7 +1459,7 @@ function Reports() {
 						</div>
 						<div
 							style={{
-								backgroundColor: "#f0f4f8",
+								backgroundColor: "var(--color-surface)",
 								padding: "20px",
 								borderRadius: "8px",
 								boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
@@ -1477,7 +1477,7 @@ function Reports() {
 												background:
 													"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
 												borderBottom: "3px solid var(--color-primary)",
-												color: "white",
+												color: "var(--color-text-light)",
 											}}
 										>
 											<th style={tableHeaderStyle}>Venue Name</th>
@@ -1518,7 +1518,7 @@ function Reports() {
 																		: circuit.site.siteType === "Hybrid"
 																			? "#8B5CF6" // Purple for Hybrid
 																			: "#94A3B8", // Gray for other types
-															color: "white",
+															color: "var(--color-text-light)",
 														}}
 													>
 														{circuit.site.siteType || "Unknown"}
@@ -1541,7 +1541,7 @@ function Reports() {
 																	: circuit.circuitType === "Tower"
 																		? "#8B5CF6" // Purple for Tower
 																		: "#94A3B8", // Gray for other types
-															color: "white",
+															color: "var(--color-text-light)",
 														}}
 													>
 														{circuit.circuitType || "Unknown"}
@@ -1560,7 +1560,7 @@ function Reports() {
 																	: circuit.status === "Inactive"
 																		? "#EF4444" // Red for Inactive
 																		: "#F59E0B", // Yellow for Pending or other status
-															color: "white",
+															color: "var(--color-text-light)",
 														}}
 													>
 														{circuit.status || "Pending"}
@@ -1575,7 +1575,7 @@ function Reports() {
 									style={{
 										textAlign: "center",
 										padding: "30px",
-										color: "#64748B",
+										color: "var(--color-text-light)",
 										fontStyle: "italic",
 									}}
 								>
@@ -1611,8 +1611,8 @@ function Reports() {
 								padding: "10px 20px",
 								border: "none",
 								borderRadius: "4px",
-								backgroundColor: "#FFD700",
-								color: "black",
+								backgroundColor: "var(--color-warning)",
+								color: "var(--color-text-dark)",
 								fontSize: "14px",
 								fontWeight: "bold",
 								cursor: "pointer",
@@ -1627,10 +1627,10 @@ function Reports() {
 					<div
 						style={{
 							marginBottom: "20px",
-							backgroundColor: "#2c3e50",
+							backgroundColor: "var(--color-dark-bg)",
 							padding: "15px 20px",
 							borderRadius: "4px",
-							color: "#ffffff",
+							color: "var(--color-text-dark)",
 							display: "flex",
 							justifyContent: "space-between",
 							alignItems: "center",
@@ -1677,8 +1677,8 @@ function Reports() {
 									padding: "6px 10px",
 									borderRadius: "4px",
 									border: "1px solid var(--color-primary)",
-									backgroundColor: "#34495e",
-									color: "#ffffff",
+									backgroundColor: "var(--color-dark-bg-secondary)",
+									color: "var(--color-text-light)",
 									fontSize: "14px",
 									cursor: "pointer",
 								}}
@@ -1688,7 +1688,11 @@ function Reports() {
 								<option value={6}>6 Months</option>
 								<option value={12}>12 Months</option>
 							</select>
-							<span style={{ fontSize: "14px", color: "#ffffff" }}>or</span>
+							<span
+								style={{ fontSize: "14px", color: "var(--color-text-light)" }}
+							>
+								or
+							</span>
 							<label htmlFor="customTimeRange" style={{ fontSize: "14px" }}>
 								Custom (months):
 							</label>
@@ -1704,8 +1708,8 @@ function Reports() {
 									padding: "6px 10px",
 									borderRadius: "4px",
 									border: "1px solid var(--color-primary)",
-									backgroundColor: "#34495e",
-									color: "#ffffff",
+									backgroundColor: "var(--color-dark-bg-secondary)",
+									color: "var(--color-text-light)",
 									fontSize: "14px",
 									width: "80px",
 								}}
@@ -1717,7 +1721,7 @@ function Reports() {
 									border: "none",
 									borderRadius: "4px",
 									backgroundColor: "var(--color-success)",
-									color: "white",
+									color: "var(--color-text-light)",
 									fontSize: "14px",
 									fontWeight: "bold",
 									cursor: "pointer",
@@ -1727,7 +1731,7 @@ function Reports() {
 									transition: "background-color 0.3s",
 								}}
 								onMouseEnter={(e) => {
-									e.target.style.backgroundColor = "#229954";
+									e.target.style.backgroundColor = "var(--color-success)";
 								}}
 								onMouseLeave={(e) => {
 									e.target.style.backgroundColor = "var(--color-success)";
@@ -1740,7 +1744,7 @@ function Reports() {
 
 					<div
 						style={{
-							backgroundColor: "#f0f4f8",
+							backgroundColor: "var(--color-surface)",
 							padding: "20px",
 							borderRadius: "8px",
 							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
@@ -1758,7 +1762,7 @@ function Reports() {
 											background:
 												"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
 											borderBottom: "3px solid var(--color-primary)",
-											color: "white",
+											color: "var(--color-text-light)",
 										}}
 									>
 										<th style={tableHeaderStyle}>Venue Name</th>
@@ -1848,7 +1852,7 @@ function Reports() {
 															fontSize: "12px",
 															fontWeight: "bold",
 															backgroundColor: urgencyColor,
-															color: "white",
+															color: "var(--color-text-light)",
 														}}
 													>
 														{monthsUntilExpiration <= 0
@@ -1871,7 +1875,7 @@ function Reports() {
 																	: circuit.status === "Inactive"
 																		? "#EF4444" // Red for Inactive
 																		: "#F59E0B", // Yellow for Pending
-															color: "white",
+															color: "var(--color-text-light)",
 														}}
 													>
 														{circuit.status || "Pending"}
@@ -1897,7 +1901,7 @@ function Reports() {
 								style={{
 									textAlign: "center",
 									padding: "30px",
-									color: "#64748B",
+									color: "var(--color-text-light)",
 									fontStyle: "italic",
 								}}
 							>
@@ -1911,14 +1915,14 @@ function Reports() {
 						style={{
 							marginTop: "30px",
 							padding: "15px",
-							backgroundColor: "#f0f4f8",
+							backgroundColor: "var(--color-surface)",
 							borderRadius: "8px",
 							maxWidth: "1000px",
 							margin: "30px auto 0",
 							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
 						}}
 					>
-						<h3 style={{ marginTop: "0", color: "#2c3e50" }}>
+						<h3 style={{ marginTop: "0", color: "var(--color-text-dark)" }}>
 							Color Code Legend
 						</h3>
 						<div style={{ display: "flex", flexWrap: "wrap", gap: "15px" }}>
@@ -1980,7 +1984,7 @@ function Reports() {
 								marginTop: "10px",
 								fontSize: "14px",
 								fontStyle: "italic",
-								color: "#64748B",
+								color: "var(--color-text-light)",
 							}}
 						>
 							Note: Currently showing circuits expiring within the next{" "}
@@ -2030,8 +2034,8 @@ function Reports() {
 								padding: "10px 20px",
 								border: "none",
 								borderRadius: "4px",
-								backgroundColor: "#FFD700",
-								color: "black",
+								backgroundColor: "var(--color-warning)",
+								color: "var(--color-text-dark)",
 								fontSize: "14px",
 								fontWeight: "bold",
 								cursor: "pointer",
@@ -2046,10 +2050,10 @@ function Reports() {
 					<div
 						style={{
 							marginBottom: "20px",
-							backgroundColor: "#2c3e50",
+							backgroundColor: "var(--color-dark-bg)",
 							padding: "15px 20px",
 							borderRadius: "4px",
-							color: "#ffffff",
+							color: "var(--color-text-dark)",
 							display: "flex",
 							justifyContent: "space-between",
 							alignItems: "center",
@@ -2091,8 +2095,8 @@ function Reports() {
 									padding: "6px 10px",
 									borderRadius: "4px",
 									border: "1px solid var(--color-primary)",
-									backgroundColor: "#34495e",
-									color: "#ffffff",
+									backgroundColor: "var(--color-dark-bg-secondary)",
+									color: "var(--color-text-light)",
 									fontSize: "14px",
 									cursor: "pointer",
 								}}
@@ -2103,7 +2107,11 @@ function Reports() {
 								<option value="90">90 Days</option>
 								<option value="180">180 Days</option>
 							</select>
-							<span style={{ fontSize: "14px", color: "#ffffff" }}>or</span>
+							<span
+								style={{ fontSize: "14px", color: "var(--color-text-light)" }}
+							>
+								or
+							</span>
 							<label
 								htmlFor="customRenewalNoticeDays"
 								style={{ fontSize: "14px" }}
@@ -2122,8 +2130,8 @@ function Reports() {
 									padding: "6px 10px",
 									borderRadius: "4px",
 									border: "1px solid var(--color-primary)",
-									backgroundColor: "#34495e",
-									color: "#ffffff",
+									backgroundColor: "var(--color-dark-bg-secondary)",
+									color: "var(--color-text-light)",
 									fontSize: "14px",
 									width: "100px",
 								}}
@@ -2139,8 +2147,8 @@ function Reports() {
 									padding: "6px 10px",
 									borderRadius: "4px",
 									border: "1px solid var(--color-primary)",
-									backgroundColor: "#34495e",
-									color: "#ffffff",
+									backgroundColor: "var(--color-dark-bg-secondary)",
+									color: "var(--color-text-light)",
 									fontSize: "14px",
 									cursor: "pointer",
 								}}
@@ -2159,7 +2167,7 @@ function Reports() {
 									border: "none",
 									borderRadius: "4px",
 									backgroundColor: "var(--color-success)",
-									color: "white",
+									color: "var(--color-text-light)",
 									fontSize: "14px",
 									fontWeight: "bold",
 									cursor: "pointer",
@@ -2175,7 +2183,7 @@ function Reports() {
 
 					<div
 						style={{
-							backgroundColor: "#f0f4f8",
+							backgroundColor: "var(--color-surface)",
 							padding: "20px",
 							borderRadius: "8px",
 							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
@@ -2193,7 +2201,7 @@ function Reports() {
 											background:
 												"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
 											borderBottom: "3px solid var(--color-primary)",
-											color: "white",
+											color: "var(--color-text-light)",
 										}}
 									>
 										<th style={tableHeaderStyle}>Venue Name</th>
@@ -2291,7 +2299,7 @@ function Reports() {
 								style={{
 									textAlign: "center",
 									padding: "30px",
-									color: "#64748B",
+									color: "var(--color-text-light)",
 									fontStyle: "italic",
 								}}
 							>
@@ -2304,13 +2312,13 @@ function Reports() {
 						style={{
 							marginTop: "20px",
 							padding: "15px",
-							backgroundColor: "#f0f4f8",
+							backgroundColor: "var(--color-surface)",
 							borderRadius: "8px",
 							maxWidth: "1200px",
 							margin: "20px auto 0",
 							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
 							fontSize: "14px",
-							color: "#64748B",
+							color: "var(--color-text-light)",
 						}}
 					>
 						Note: The filter shows renewal notification dates from today through
@@ -2365,8 +2373,8 @@ function Reports() {
 			};
 
 			const siteHeaderStyle = {
-				backgroundColor: "#2c3e50",
-				color: "white",
+				backgroundColor: "var(--color-dark-bg)",
+				color: "var(--color-text-light)",
 				padding: "14px 12px",
 				fontWeight: "700",
 				fontSize: "15px",
@@ -2375,8 +2383,8 @@ function Reports() {
 			};
 
 			const towerSectionHeaderStyle = {
-				backgroundColor: "#34495e",
-				color: "#ecf0f1",
+				backgroundColor: "var(--color-dark-bg-secondary)",
+				color: "var(--color-text-dark)",
 				padding: "10px 12px",
 				fontWeight: "600",
 				fontSize: "13px",
@@ -2405,8 +2413,8 @@ function Reports() {
 								padding: "10px 20px",
 								border: "none",
 								borderRadius: "4px",
-								backgroundColor: "#FFD700",
-								color: "black",
+								backgroundColor: "var(--color-warning)",
+								color: "var(--color-text-dark)",
 								fontSize: "14px",
 								fontWeight: "bold",
 								cursor: "pointer",
@@ -2420,7 +2428,7 @@ function Reports() {
 					</div>
 					<div
 						style={{
-							backgroundColor: "#f0f4f8",
+							backgroundColor: "var(--color-surface)",
 							padding: "20px",
 							borderRadius: "8px",
 							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
@@ -2432,8 +2440,8 @@ function Reports() {
 					>
 						<div
 							style={{
-								backgroundColor: "#2c3e50",
-								color: "#ffffff",
+								backgroundColor: "var(--color-dark-bg)",
+								color: "var(--color-text-dark)",
 								padding: "15px 20px",
 								borderRadius: "4px",
 								marginBottom: "20px",
@@ -2442,7 +2450,11 @@ function Reports() {
 						>
 							<h2 style={{ margin: 0, fontSize: "18px" }}>📊 Tower Report</h2>
 							<div
-								style={{ fontSize: "14px", marginTop: "8px", color: "#ecf0f1" }}
+								style={{
+									fontSize: "14px",
+									marginTop: "8px",
+									color: "var(--color-text-dark)",
+								}}
 							>
 								Showing {towerRows.length} towers from {towerCircuits.length}{" "}
 								site
@@ -2473,21 +2485,21 @@ function Reports() {
 										{/* Site Details */}
 										<div
 											style={{
-												backgroundColor: "#ecf0f1",
+												backgroundColor: "var(--color-dark-bg-secondary)",
 												padding: "12px 14px",
 												display: "grid",
 												gridTemplateColumns:
 													"repeat(auto-fit, minmax(200px, 1fr))",
 												gap: "12px",
 												fontSize: "13px",
-												color: "#2c3e50",
+												color: "var(--color-text-dark)",
 											}}
 										>
 											<div>
 												<span
 													style={{
 														fontWeight: "600",
-														color: "#34495e",
+														color: "var(--color-text-dark)",
 													}}
 												>
 													Address:{" "}
@@ -2498,7 +2510,7 @@ function Reports() {
 												<span
 													style={{
 														fontWeight: "600",
-														color: "#34495e",
+														color: "var(--color-text-dark)",
 													}}
 												>
 													Provider:{" "}
@@ -2509,7 +2521,7 @@ function Reports() {
 												<span
 													style={{
 														fontWeight: "600",
-														color: "#34495e",
+														color: "var(--color-text-dark)",
 													}}
 												>
 													Total Towers:{" "}
@@ -2517,7 +2529,7 @@ function Reports() {
 												<span
 													style={{
 														backgroundColor: "var(--color-primary)",
-														color: "white",
+														color: "var(--color-text-light)",
 														padding: "2px 8px",
 														borderRadius: "4px",
 														fontWeight: "bold",
@@ -2597,15 +2609,20 @@ function Reports() {
 																	? "1px solid #dee2e6"
 																	: "none",
 															backgroundColor:
-																towerIndex % 2 === 0 ? "#ffffff" : "#f8f9fa",
+																towerIndex % 2 === 0
+																	? "var(--color-dark-bg)"
+																	: "var(--color-dark-bg-secondary)",
 															transition: "background-color 0.2s ease",
 														}}
 														onMouseEnter={(e) => {
-															e.currentTarget.style.backgroundColor = "#e8f4f8";
+															e.currentTarget.style.backgroundColor =
+																"var(--color-primary)";
 														}}
 														onMouseLeave={(e) => {
 															e.currentTarget.style.backgroundColor =
-																towerIndex % 2 === 0 ? "#ffffff" : "#f8f9fa";
+																towerIndex % 2 === 0
+																	? "var(--color-dark-bg)"
+																	: "var(--color-dark-bg-secondary)";
 														}}
 													>
 														<td
@@ -2633,9 +2650,9 @@ function Reports() {
 															style={{
 																...tableCellStyle,
 																color: isExpired(row.towerExpirationDate)
-																	? "#ffffff"
+																	? "var(--color-dark-bg)"
 																	: isExpirationSoon(row.towerExpirationDate)
-																		? "#ffffff"
+																		? "var(--color-dark-bg)"
 																		: "#2c3e50",
 																backgroundColor: isExpired(
 																	row.towerExpirationDate,
@@ -2690,7 +2707,7 @@ function Reports() {
 								style={{
 									textAlign: "center",
 									padding: "30px",
-									color: "#64748B",
+									color: "var(--color-text-light)",
 									fontStyle: "italic",
 								}}
 							>
@@ -2725,8 +2742,8 @@ function Reports() {
 								padding: "10px 20px",
 								border: "none",
 								borderRadius: "4px",
-								backgroundColor: "#FFD700",
-								color: "black",
+								backgroundColor: "var(--color-warning)",
+								color: "var(--color-text-dark)",
 								fontSize: "14px",
 								fontWeight: "bold",
 								cursor: "pointer",
@@ -2741,15 +2758,10 @@ function Reports() {
 					<div
 						style={{
 							marginBottom: "20px",
-							backgroundColor: "#2c3e50",
+							backgroundColor: "var(--color-dark-bg)",
 							padding: "15px 20px",
 							borderRadius: "4px",
-							color: "#ffffff",
-							display: "flex",
-							justifyContent: "space-between",
-							alignItems: "center",
-							flexWrap: "wrap",
-							gap: "10px",
+							color: "var(--color-text-dark)",
 						}}
 					>
 						<div>
@@ -2763,7 +2775,7 @@ function Reports() {
 
 					<div
 						style={{
-							backgroundColor: "#f0f4f8",
+							backgroundColor: "var(--color-surface)",
 							padding: "20px",
 							borderRadius: "8px",
 							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
@@ -2781,7 +2793,7 @@ function Reports() {
 											background:
 												"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
 											borderBottom: "3px solid var(--color-primary)",
-											color: "white",
+											color: "var(--color-text-light)",
 										}}
 									>
 										<th
@@ -3004,7 +3016,7 @@ function Reports() {
 																		: circuit.site.siteType === "DHC"
 																			? "#9b59b6"
 																			: "var(--color-text-muted)",
-																color: "white",
+																color: "var(--color-text-light)",
 															}}
 														>
 															{circuit.site.siteType}
@@ -3049,7 +3061,7 @@ function Reports() {
 																			: circuit.status === "Inactive"
 																				? "var(--color-error)"
 																				: "var(--color-text-muted)",
-																color: "white",
+																color: "var(--color-text-light)",
 															}}
 														>
 															{circuit.status}
@@ -3113,7 +3125,7 @@ function Reports() {
 		fontWeight: "700",
 		fontSize: "var(--font-size-sm)",
 		backgroundColor: "transparent",
-		color: theme === "light" ? "#2c3e50" : "#ffffff",
+		color: "var(--color-text-light)",
 		textTransform: "uppercase",
 		letterSpacing: "0.5px",
 	};
@@ -3122,7 +3134,7 @@ function Reports() {
 		padding: "var(--spacing-lg)",
 		textAlign: "left",
 		fontSize: "var(--font-size-base)",
-		color: theme === "light" ? "#2c3e50" : "#ecf0f1",
+		color: "var(--color-text-dark)",
 		fontWeight: "500",
 		backgroundColor: "var(--color-surface)",
 	};

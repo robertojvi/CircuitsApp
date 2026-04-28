@@ -308,7 +308,7 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 	>
 		<div
 			style={{
-				backgroundColor: "white",
+				backgroundColor: "var(--color-dark-bg)",
 				padding: "0",
 				borderRadius: "12px",
 				width: "90%",
@@ -352,7 +352,7 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 					style={{
 						background: "none",
 						border: "none",
-						color: "white",
+						color: "var(--color-modal-header-text)",
 						fontSize: "28px",
 						cursor: "pointer",
 						padding: "0 4px",
@@ -371,14 +371,20 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 			</div>
 			<form
 				onSubmit={onSubmit}
-				style={{ padding: "24px", flex: 1, overflowY: "auto" }}
+				style={{
+					padding: "24px",
+					flex: 1,
+					overflowY: "auto",
+					backgroundColor: "var(--color-dark-bg)",
+					color: "var(--color-text-dark)",
+				}}
 			>
 				<h3
 					style={{
 						margin: "0 0 16px 0",
 						fontSize: "14px",
 						fontWeight: "600",
-						color: "var(--color-dark-bg)",
+						color: "var(--color-text-dark)",
 						textTransform: "uppercase",
 						letterSpacing: "1px",
 						borderBottom: "2px solid var(--color-primary)",
@@ -491,7 +497,7 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 						margin: "24px 0 16px 0",
 						fontSize: "14px",
 						fontWeight: "600",
-						color: "var(--color-dark-bg)",
+						color: "var(--color-text-dark)",
 						textTransform: "uppercase",
 						letterSpacing: "1px",
 						borderBottom: "2px solid var(--color-primary)",
@@ -541,7 +547,7 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 						margin: "24px 0 16px 0",
 						fontSize: "14px",
 						fontWeight: "600",
-						color: "var(--color-dark-bg)",
+						color: "var(--color-text-dark)",
 						textTransform: "uppercase",
 						letterSpacing: "1px",
 						borderBottom: "2px solid var(--color-primary)",
@@ -653,7 +659,7 @@ const CreateProviderModal = ({
 	>
 		<div
 			style={{
-				backgroundColor: "white",
+				backgroundColor: "var(--color-dark-bg)",
 				padding: "0",
 				borderRadius: "12px",
 				width: "90%",
@@ -694,7 +700,7 @@ const CreateProviderModal = ({
 					style={{
 						background: "none",
 						border: "none",
-						color: "white",
+						color: "var(--color-modal-header-text)",
 						fontSize: "28px",
 						cursor: "pointer",
 						padding: "0 4px",
@@ -711,13 +717,20 @@ const CreateProviderModal = ({
 					×
 				</button>
 			</div>
-			<form onSubmit={onSubmit} style={{ padding: "24px" }}>
+			<form
+				onSubmit={onSubmit}
+				style={{
+					padding: "24px",
+					backgroundColor: "var(--color-dark-bg)",
+					color: "var(--color-text-dark)",
+				}}
+			>
 				<h3
 					style={{
 						margin: "0 0 16px 0",
 						fontSize: "14px",
 						fontWeight: "600",
-						color: "var(--color-dark-bg)",
+						color: "var(--color-text-dark)",
 						textTransform: "uppercase",
 						letterSpacing: "1px",
 						borderBottom: "2px solid var(--color-primary)",
@@ -892,7 +905,7 @@ const CreateCircuitModal = ({
 		>
 			<div
 				style={{
-					backgroundColor: "white",
+					backgroundColor: "var(--color-dark-bg)",
 					padding: "0",
 					borderRadius: "12px",
 					width: "90%",
@@ -912,7 +925,7 @@ const CreateCircuitModal = ({
 							"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
 						backgroundImage:
 							"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
-						color: "white",
+						color: "var(--color-modal-header-text)",
 						padding: "24px 24px",
 						borderRadius: "12px 12px 0 0",
 						textAlign: "center",
@@ -941,7 +954,7 @@ const CreateCircuitModal = ({
 						style={{
 							background: "none",
 							border: "none",
-							color: "white",
+							color: "var(--color-modal-header-text)",
 							fontSize: "28px",
 							cursor: "pointer",
 							padding: "0 4px",
@@ -967,7 +980,7 @@ const CreateCircuitModal = ({
 							margin: "0 0 16px 0",
 							fontSize: "14px",
 							fontWeight: "600",
-							color: "var(--color-dark-bg)",
+							color: "var(--color-text-dark)",
 							textTransform: "uppercase",
 							letterSpacing: "1px",
 							borderBottom: "2px solid var(--color-primary)",
@@ -1204,7 +1217,7 @@ const CreateCircuitModal = ({
 							<h3
 								style={{
 									marginBottom: "15px",
-									color: "var(--color-dark-bg)",
+									color: "var(--color-text-dark)",
 									fontSize: "16px",
 									marginTop: 0,
 								}}
@@ -1251,7 +1264,7 @@ const CreateCircuitModal = ({
 											marginBottom: "20px",
 											borderLeft: "4px solid var(--color-primary)",
 											paddingLeft: "12px",
-											backgroundColor: "#ffffff",
+											backgroundColor: "var(--color-dark-bg-secondary)",
 											padding: "12px",
 											borderRadius: "4px",
 										}}
@@ -1260,7 +1273,7 @@ const CreateCircuitModal = ({
 											style={{
 												marginTop: 0,
 												marginBottom: "10px",
-												color: "var(--color-dark-bg)",
+												color: "var(--color-text-dark)",
 												fontSize: "14px",
 												fontWeight: "600",
 											}}
@@ -1423,7 +1436,7 @@ const CreateCircuitModal = ({
 							<h3
 								style={{
 									marginBottom: "15px",
-									color: "var(--color-dark-bg)",
+									color: "var(--color-text-dark)",
 									fontSize: "16px",
 									marginTop: 0,
 								}}
@@ -1546,7 +1559,7 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 	>
 		<div
 			style={{
-				backgroundColor: "white",
+				backgroundColor: "var(--color-dark-bg)",
 				padding: "0",
 				borderRadius: "12px",
 				width: "90%",
@@ -1589,7 +1602,7 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 					style={{
 						background: "none",
 						border: "none",
-						color: "white",
+						color: "var(--color-modal-header-text)",
 						fontSize: "28px",
 						cursor: "pointer",
 						padding: "0 4px",
@@ -1608,14 +1621,20 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 			</div>
 			<form
 				onSubmit={onSubmit}
-				style={{ padding: "24px", flex: 1, overflowY: "auto" }}
+				style={{
+					padding: "24px",
+					flex: 1,
+					overflowY: "auto",
+					backgroundColor: "var(--color-dark-bg)",
+					color: "var(--color-text-dark)",
+				}}
 			>
 				<h3
 					style={{
 						margin: "0 0 16px 0",
 						fontSize: "14px",
 						fontWeight: "600",
-						color: "var(--color-dark-bg)",
+						color: "var(--color-text-dark)",
 						textTransform: "uppercase",
 						letterSpacing: "1px",
 						borderBottom: "2px solid var(--color-primary)",
@@ -1725,7 +1744,7 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 							margin: "24px 0 16px 0",
 							fontSize: "14px",
 							fontWeight: "600",
-							color: "var(--color-dark-bg)",
+							color: "var(--color-text-dark)",
 							textTransform: "uppercase",
 							letterSpacing: "1px",
 							borderBottom: "2px solid var(--color-primary)",
@@ -1782,7 +1801,7 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 							margin: "24px 0 16px 0",
 							fontSize: "14px",
 							fontWeight: "600",
-							color: "var(--color-dark-bg)",
+							color: "var(--color-text-dark)",
 							textTransform: "uppercase",
 							letterSpacing: "1px",
 							borderBottom: "2px solid var(--color-primary)",
@@ -1890,7 +1909,7 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 	>
 		<div
 			style={{
-				backgroundColor: "white",
+				backgroundColor: "var(--color-dark-bg)",
 				padding: "0",
 				borderRadius: "12px",
 				width: "90%",
@@ -1931,7 +1950,7 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 					style={{
 						background: "none",
 						border: "none",
-						color: "white",
+						color: "var(--color-modal-header-text)",
 						fontSize: "28px",
 						cursor: "pointer",
 						padding: "0 4px",
@@ -1954,7 +1973,7 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 						margin: "0 0 16px 0",
 						fontSize: "14px",
 						fontWeight: "600",
-						color: "var(--color-dark-bg)",
+						color: "var(--color-text-dark)",
 						textTransform: "uppercase",
 						letterSpacing: "1px",
 						borderBottom: "2px solid var(--color-primary)",
@@ -1980,8 +1999,8 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 							marginBottom: "5px",
 							fontSize: "14px",
 							fontWeight: "500",
-							color: "var(--color-primary)",
-							backgroundColor: "var(--color-surface-light)",
+							color: "var(--color-text-dark)",
+							backgroundColor: "var(--color-dark-bg-secondary)",
 							padding: "3px 5px",
 							borderRadius: "3px",
 						}}
@@ -2006,8 +2025,8 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 							marginBottom: "5px",
 							fontSize: "14px",
 							fontWeight: "500",
-							color: "var(--color-primary)",
-							backgroundColor: "var(--color-surface-light)",
+							color: "var(--color-text-dark)",
+							backgroundColor: "var(--color-dark-bg-secondary)",
 							padding: "3px 5px",
 							borderRadius: "3px",
 						}}
@@ -2030,8 +2049,8 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 							marginBottom: "5px",
 							fontSize: "14px",
 							fontWeight: "500",
-							color: "var(--color-primary)",
-							backgroundColor: "var(--color-surface-light)",
+							color: "var(--color-text-dark)",
+							backgroundColor: "var(--color-dark-bg-secondary)",
 							padding: "3px 5px",
 							borderRadius: "3px",
 						}}
@@ -2056,8 +2075,8 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 							marginBottom: "5px",
 							fontSize: "14px",
 							fontWeight: "500",
-							color: "var(--color-primary)",
-							backgroundColor: "var(--color-surface-light)",
+							color: "var(--color-text-dark)",
+							backgroundColor: "var(--color-dark-bg-secondary)",
 							padding: "3px 5px",
 							borderRadius: "3px",
 						}}
@@ -2082,8 +2101,8 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 							marginBottom: "5px",
 							fontSize: "14px",
 							fontWeight: "500",
-							color: "var(--color-primary)",
-							backgroundColor: "var(--color-surface-light)",
+							color: "var(--color-text-dark)",
+							backgroundColor: "var(--color-dark-bg-secondary)",
 							padding: "3px 5px",
 							borderRadius: "3px",
 						}}
@@ -2108,8 +2127,8 @@ const EditProviderModal = ({ onClose, onSubmit, provider, setProvider }) => (
 							marginBottom: "5px",
 							fontSize: "14px",
 							fontWeight: "500",
-							color: "var(--color-primary)",
-							backgroundColor: "var(--color-surface-light)",
+							color: "var(--color-text-dark)",
+							backgroundColor: "var(--color-dark-bg-secondary)",
 							padding: "3px 5px",
 							borderRadius: "3px",
 						}}
@@ -2200,7 +2219,7 @@ const EditCircuitModal = ({
 	>
 		<div
 			style={{
-				backgroundColor: "white",
+				backgroundColor: "var(--color-dark-bg)",
 				padding: "0",
 				borderRadius: "12px",
 				width: "90%",
@@ -2220,7 +2239,7 @@ const EditCircuitModal = ({
 						"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
 					backgroundImage:
 						"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
-					color: "white",
+					color: "var(--color-modal-header-text)",
 					padding: "24px 24px",
 					borderRadius: "12px 12px 0 0",
 					textAlign: "center",
@@ -2249,7 +2268,7 @@ const EditCircuitModal = ({
 					style={{
 						background: "none",
 						border: "none",
-						color: "white",
+						color: "var(--color-modal-header-text)",
 						fontSize: "28px",
 						cursor: "pointer",
 						padding: "0 4px",
@@ -2268,14 +2287,20 @@ const EditCircuitModal = ({
 			</div>
 			<form
 				onSubmit={onSubmit}
-				style={{ padding: "24px", flex: 1, overflowY: "auto" }}
+				style={{
+					padding: "24px",
+					flex: 1,
+					overflowY: "auto",
+					backgroundColor: "var(--color-dark-bg)",
+					color: "var(--color-text-dark)",
+				}}
 			>
 				<h3
 					style={{
 						margin: "0 0 16px 0",
 						fontSize: "14px",
 						fontWeight: "600",
-						color: "var(--color-dark-bg)",
+						color: "var(--color-text-dark)",
 						textTransform: "uppercase",
 						letterSpacing: "1px",
 						borderBottom: "2px solid var(--color-primary)",
@@ -2500,7 +2525,7 @@ const EditCircuitModal = ({
 						<h3
 							style={{
 								marginBottom: "15px",
-								color: "var(--color-dark-bg)",
+								color: "var(--color-text-dark)",
 								fontSize: "16px",
 								marginTop: 0,
 							}}
@@ -2547,7 +2572,7 @@ const EditCircuitModal = ({
 										marginBottom: "20px",
 										borderLeft: "4px solid var(--color-primary)",
 										paddingLeft: "12px",
-										backgroundColor: "#ffffff",
+										backgroundColor: "var(--color-dark-bg-secondary)",
 										padding: "12px",
 										borderRadius: "4px",
 									}}
@@ -2556,7 +2581,7 @@ const EditCircuitModal = ({
 										style={{
 											marginTop: 0,
 											marginBottom: "10px",
-											color: "var(--color-dark-bg)",
+											color: "var(--color-text-dark)",
 											fontSize: "14px",
 											fontWeight: "600",
 										}}
@@ -2714,7 +2739,7 @@ const EditCircuitModal = ({
 						<h3
 							style={{
 								marginBottom: "15px",
-								color: "var(--color-dark-bg)",
+								color: "var(--color-text-dark)",
 								fontSize: "16px",
 								marginTop: 0,
 							}}
@@ -3310,7 +3335,7 @@ function Admin() {
 		fontSize: "var(--font-size-base)",
 		border: `1px solid var(--color-primary)`,
 		borderRadius: "var(--radius-md)",
-		backgroundColor: "white",
+		backgroundColor: "var(--color-input-bg)",
 		color: "var(--color-text-dark)",
 		outline: "none",
 		transition: `all var(--transition-fast)`,
@@ -3520,7 +3545,7 @@ function Admin() {
 																: site.siteType === "Hybrid"
 																	? "#8B5CF6" // Purple for Hybrid
 																	: "#94A3B8", // Gray for other types
-													color: "white",
+													color: "var(--color-modal-header-text)",
 												}}
 											>
 												{site.siteType || "Unknown"}
@@ -3810,7 +3835,7 @@ function Admin() {
 															: circuit.status === "Inactive"
 																? "#EF4444" // Red for Inactive
 																: "#F59E0B", // Yellow for Pending or other status
-													color: "white",
+													color: "var(--color-modal-header-text)",
 												}}
 											>
 												{circuit.status || "Pending"}
@@ -4108,7 +4133,7 @@ function NoteModal({ note, onClose }) {
 			<div
 				className="modal-content"
 				style={{
-					backgroundColor: "white",
+					backgroundColor: "var(--color-dark-bg)",
 					padding: "var(--spacing-lg)",
 					borderRadius: "var(--radius-lg)",
 					maxWidth: "500px",
@@ -4116,7 +4141,7 @@ function NoteModal({ note, onClose }) {
 					boxShadow: "var(--shadow-xl)",
 				}}
 			>
-				<h3 style={{ marginTop: 0, color: "var(--color-dark-bg)" }}>Notes</h3>
+				<h3 style={{ marginTop: 0, color: "var(--color-text-dark)" }}>Notes</h3>
 				<p style={{ color: "var(--color-text-light)" }}>{note}</p>
 				<button
 					onClick={onClose}
@@ -4151,7 +4176,7 @@ const cellStyle = {
 	fontSize: "var(--font-size-base)",
 	color: "var(--color-text-dark)",
 	fontWeight: "500",
-	backgroundColor: "white",
+	backgroundColor: "var(--color-dark-bg)",
 };
 
 const buttonStyle = {
@@ -4159,7 +4184,7 @@ const buttonStyle = {
 	margin: "0 4px",
 	border: "none",
 	borderRadius: "var(--radius-md)",
-	color: "white",
+	color: "var(--color-modal-header-text)",
 	cursor: "pointer",
 	transition: `all var(--transition-base)`,
 };
@@ -4177,11 +4202,11 @@ const iconButtonStyle = {
 const inputStyle = {
 	width: "100%",
 	padding: "8px",
-	border: `1px solid var(--color-border-light)`,
+	border: `1px solid var(--color-border)`,
 	borderRadius: "var(--radius-md)",
 	fontSize: "var(--font-size-sm)",
-	backgroundColor: "white",
-	color: "var(--color-text-dark)",
+	backgroundColor: "var(--color-input-bg)",
+	color: "var(--color-input-text)",
 	transition: `all var(--transition-fast)`,
 };
 
@@ -4190,8 +4215,8 @@ const modalLabelStyle = {
 	marginBottom: "5px",
 	fontSize: "var(--font-size-base)",
 	fontWeight: "500",
-	color: "var(--color-primary)",
-	backgroundColor: "var(--color-surface-light)",
+	color: "var(--color-text-dark)",
+	backgroundColor: "var(--color-dark-bg-secondary)",
 	padding: "3px 5px",
 	borderRadius: "var(--radius-sm)",
 };
