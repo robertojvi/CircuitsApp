@@ -230,6 +230,21 @@
   color: #95a5a6;
 }
 
+/* Placeholder styling for form inputs */
+.form-input::placeholder,
+.form-select::placeholder,
+.form-textarea::placeholder {
+  color: #999999;
+  opacity: 0.8;
+}
+
+:root[data-theme="dark"] .form-input::placeholder,
+:root[data-theme="dark"] .form-select::placeholder,
+:root[data-theme="dark"] .form-textarea::placeholder {
+  color: #95a5a6;
+  opacity: 0.9;
+}
+
 /* ==================== Cards ==================== */
 
 .card {
