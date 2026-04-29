@@ -627,6 +627,7 @@ const RenewalAnalysisModal = ({
 
 function RenewalAnalysis() {
 	const { token } = useAuth();
+	const { theme } = useTheme();
 	const [circuits, setCircuits] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
@@ -634,6 +635,55 @@ function RenewalAnalysis() {
 	const [selectedCircuit, setSelectedCircuit] = useState(null);
 	const [showModal, setShowModal] = useState(false);
 	const [saving, setSaving] = useState(false);
+
+	// Theme-aware styles
+	const themedSearchInputStyle = {
+		...searchInputStyle,
+		backgroundColor: theme === "light" ? "#ffffff" : "var(--color-dark-bg)",
+		color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+		borderColor: theme === "light" ? "#d0d0d0" : "var(--color-primary)",
+	};
+
+	const themedSearchPanelStyle = {
+		...searchPanelStyle,
+		backgroundColor:
+			theme === "light" ? "#f8f9fa" : "var(--color-dark-bg-secondary)",
+		borderColor: theme === "light" ? "#e0e0e0" : "var(--color-border)",
+	};
+
+	const themedStatusMessageStyle = {
+		...statusMessageStyle,
+		backgroundColor:
+			theme === "light" ? "#d1ecf1" : "var(--color-dark-bg-secondary)",
+		color: theme === "light" ? "#0c5460" : "var(--color-text-light)",
+		borderColor: theme === "light" ? "#bee5eb" : "var(--color-primary)",
+	};
+
+	const themedErrorStyle = {
+		...errorStyle,
+		backgroundColor: theme === "light" ? "#f8d7da" : "#5b2c2c",
+		color: theme === "light" ? "#721c24" : "#fecaca",
+		borderColor: theme === "light" ? "#f5c6cb" : "var(--color-error)",
+	};
+
+	const themedTableContainerStyle = {
+		...tableContainerStyle,
+		backgroundColor:
+			theme === "light" ? "#ffffff" : "var(--color-dark-bg-secondary)",
+		borderColor: theme === "light" ? "#e0e0e0" : "var(--color-border)",
+	};
+
+	const themedTableRowStyle = {
+		...tableRowStyle,
+		backgroundColor: theme === "light" ? "#ffffff" : "var(--color-surface)",
+		borderBottomColor:
+			theme === "light" ? "#e8e8e8" : "var(--color-border-light)",
+	};
+
+	const themedTableCellStyle = {
+		...tableCellStyle,
+		color: theme === "light" ? "#2c3e50" : "var(--color-sidebar-text)",
+	};
 
 	useEffect(() => {
 		fetchCircuits();
@@ -767,25 +817,24 @@ function RenewalAnalysis() {
 			</div>
 
 			<div style={searchPanelRowStyle}>
-				<div style={searchPanelStyle}>
+				<div style={themedSearchPanelStyle}>
 					<div style={searchPanelLabelStyle}>Find A Circuit</div>
 					<input
 						type="text"
 						placeholder="Search by site, provider, bandwidth, aggregator, or circuit ID"
 						value={searchTerm}
 						onChange={(event) => setSearchTerm(event.target.value)}
-						style={searchInputStyle}
+						style={themedSearchInputStyle}
 					/>
 				</div>
 			</div>
 
 			{loading && (
-				<div style={statusMessageStyle}>Loading renewal analysis...</div>
+				<div style={themedStatusMessageStyle}>Loading renewal analysis...</div>
 			)}
-			{error && <div style={errorStyle}>{error}</div>}
-
+			{error && <div style={themedErrorStyle}>{error}</div>}
 			{!loading && (
-				<div style={tableContainerStyle}>
+				<div style={themedTableContainerStyle}>
 					<table style={tableStyle}>
 						<thead>
 							<tr style={tableHeaderRowStyle}>
@@ -799,21 +848,23 @@ function RenewalAnalysis() {
 						</thead>
 						<tbody>
 							{filteredCircuits.map((circuit) => (
-								<tr key={circuit.id} style={tableRowStyle}>
-									<td style={tableCellStyle}>{circuit.site?.name || "N/A"}</td>
-									<td style={tableCellStyle}>
+								<tr key={circuit.id} style={themedTableRowStyle}>
+									<td style={themedTableCellStyle}>
+										{circuit.site?.name || "N/A"}
+									</td>
+									<td style={themedTableCellStyle}>
 										{circuit.provider?.name || "N/A"}
 									</td>
-									<td style={tableCellStyle}>
+									<td style={themedTableCellStyle}>
 										{circuit.circuitBandwidth || "N/A"}
 									</td>
-									<td style={tableCellStyle}>
+									<td style={themedTableCellStyle}>
 										{formatCurrency(circuit.monthlyCost)}
 									</td>
-									<td style={tableCellStyle}>
+									<td style={themedTableCellStyle}>
 										{circuit.aggregatorName || "N/A"}
 									</td>
-									<td style={tableCellStyle}>
+									<td style={themedTableCellStyle}>
 										<button
 											type="button"
 											onClick={() => openAnalysisModal(circuit)}
