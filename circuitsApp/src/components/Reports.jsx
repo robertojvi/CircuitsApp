@@ -883,9 +883,55 @@ function Reports() {
 		XLSX.writeFile(workbook, filename);
 	};
 
+	// Theme-aware UI element styles
+	const themedErrorStyle = {
+		color: theme === "light" ? "#a00000" : "#ff6b6b",
+		backgroundColor: theme === "light" ? "#f8d7da" : "#5b2c2c",
+		padding: "12px 14px",
+		borderRadius: "4px",
+		marginBottom: "16px",
+		border: `1px solid ${theme === "light" ? "#f5c6cb" : "var(--color-error)"}`,
+	};
+
+	const themedLoadingStyle = {
+		color: theme === "light" ? "#2c3e50" : "#ecf0f1",
+		padding: "12px 14px",
+		marginBottom: "16px",
+	};
+
+	const themedFilterContainerStyle = {
+		marginBottom: "20px",
+		backgroundColor: theme === "light" ? "#ffffff" : "var(--color-dark-bg)",
+		padding: "15px 20px",
+		borderRadius: "4px",
+		color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+		display: "flex",
+		justifyContent: "space-between",
+		alignItems: "center",
+		flexWrap: "wrap",
+		gap: "10px",
+		border: `1px solid ${theme === "light" ? "#e0e0e0" : "var(--color-border)"}`,
+	};
+
+	const themedFilterLabelStyle = {
+		fontSize: "14px",
+		color: theme === "light" ? "#2c3e50" : "inherit",
+	};
+
+	const themedSelectStyle = {
+		padding: "6px 10px",
+		borderRadius: "4px",
+		border: `1px solid ${theme === "light" ? "#d0d0d0" : "var(--color-primary)"}`,
+		backgroundColor:
+			theme === "light" ? "#ffffff" : "var(--color-dark-bg-secondary)",
+		color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+		fontSize: "14px",
+		cursor: "pointer",
+	};
+
 	const renderContent = () => {
-		if (loading) return <div>Loading...</div>;
-		if (error) return <div style={{ color: "red" }}>{error}</div>;
+		if (loading) return <div style={themedLoadingStyle}>Loading...</div>;
+		if (error) return <div style={themedErrorStyle}>{error}</div>;
 
 		if (selectedMenu === "Circuit Analytics") {
 			return (
@@ -925,10 +971,11 @@ function Reports() {
 					<div
 						style={{
 							marginBottom: "20px",
-							backgroundColor: "var(--color-dark-bg)",
+							backgroundColor:
+								theme === "light" ? "#f5f5f5" : "var(--color-dark-bg)",
 							padding: "15px 20px",
 							borderRadius: "4px",
-							color: "var(--color-text-light)",
+							color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 							display: "flex",
 							justifyContent: "space-between",
 							alignItems: "center",
@@ -937,10 +984,22 @@ function Reports() {
 						}}
 					>
 						<div>
-							<h2 style={{ margin: 0, fontSize: "18px" }}>
+							<h2
+								style={{
+									margin: 0,
+									fontSize: "18px",
+									color: theme === "light" ? "#2c3e50" : "inherit",
+								}}
+							>
 								Circuit Analytics Dashboard
 							</h2>
-							<div style={{ fontSize: "14px", marginTop: "5px" }}>
+							<div
+								style={{
+									fontSize: "14px",
+									marginTop: "5px",
+									color: theme === "light" ? "#555555" : "inherit",
+								}}
+							>
 								Showing {getFilteredCircuits().length} circuits
 								{siteTypeFilter !== "All" ? ` for ${siteTypeFilter} sites` : ""}
 								{statusFilter !== "All" ? ` with ${statusFilter} status` : ""}
@@ -960,22 +1019,14 @@ function Reports() {
 							<div
 								style={{ display: "flex", alignItems: "center", gap: "10px" }}
 							>
-								<label htmlFor="siteTypeFilter" style={{ fontSize: "14px" }}>
+								<label htmlFor="siteTypeFilter" style={themedFilterLabelStyle}>
 									Site Type:
 								</label>
 								<select
 									id="siteTypeFilter"
 									value={siteTypeFilter}
 									onChange={(e) => setSiteTypeFilter(e.target.value)}
-									style={{
-										padding: "6px 10px",
-										borderRadius: "4px",
-										border: "1px solid var(--color-primary)",
-										backgroundColor: "var(--color-dark-bg-secondary)",
-										color: "var(--color-text-light)",
-										fontSize: "14px",
-										cursor: "pointer",
-									}}
+									style={themedSelectStyle}
 								>
 									<option value="All">All Sites</option>
 									<option value="MHC">MHC</option>
@@ -986,22 +1037,14 @@ function Reports() {
 							<div
 								style={{ display: "flex", alignItems: "center", gap: "10px" }}
 							>
-								<label htmlFor="statusFilter" style={{ fontSize: "14px" }}>
+								<label htmlFor="statusFilter" style={themedFilterLabelStyle}>
 									Circuit Status:
 								</label>
 								<select
 									id="statusFilter"
 									value={statusFilter}
 									onChange={(e) => setStatusFilter(e.target.value)}
-									style={{
-										padding: "6px 10px",
-										borderRadius: "4px",
-										border: "1px solid var(--color-primary)",
-										backgroundColor: "var(--color-dark-bg-secondary)",
-										color: "var(--color-text-light)",
-										fontSize: "14px",
-										cursor: "pointer",
-									}}
+									style={themedSelectStyle}
 								>
 									<option value="All">All Statuses</option>
 									<option value="Active">Active</option>
@@ -1012,22 +1055,17 @@ function Reports() {
 							<div
 								style={{ display: "flex", alignItems: "center", gap: "10px" }}
 							>
-								<label htmlFor="circuitTypeFilter" style={{ fontSize: "14px" }}>
+								<label
+									htmlFor="circuitTypeFilter"
+									style={themedFilterLabelStyle}
+								>
 									Circuit Type:
 								</label>
 								<select
 									id="circuitTypeFilter"
 									value={circuitTypeFilter}
 									onChange={(e) => setCircuitTypeFilter(e.target.value)}
-									style={{
-										padding: "6px 10px",
-										borderRadius: "4px",
-										border: "1px solid var(--color-primary)",
-										backgroundColor: "var(--color-dark-bg-secondary)",
-										color: "var(--color-text-light)",
-										fontSize: "14px",
-										cursor: "pointer",
-									}}
+									style={themedSelectStyle}
 								>
 									<option value="All">All Types</option>
 									<option value="Fiber">Fiber</option>
@@ -1038,22 +1076,14 @@ function Reports() {
 							<div
 								style={{ display: "flex", alignItems: "center", gap: "10px" }}
 							>
-								<label htmlFor="providerFilter" style={{ fontSize: "14px" }}>
+								<label htmlFor="providerFilter" style={themedFilterLabelStyle}>
 									Provider:
 								</label>
 								<select
 									id="providerFilter"
 									value={providerFilter}
 									onChange={(e) => setProviderFilter(e.target.value)}
-									style={{
-										padding: "6px 10px",
-										borderRadius: "4px",
-										border: "1px solid var(--color-primary)",
-										backgroundColor: "var(--color-dark-bg-secondary)",
-										color: "var(--color-text-light)",
-										fontSize: "14px",
-										cursor: "pointer",
-									}}
+									style={themedSelectStyle}
 								>
 									<option value="All">All Providers</option>
 									{getUniqueProviders().map((provider) => (
@@ -1066,22 +1096,17 @@ function Reports() {
 							<div
 								style={{ display: "flex", alignItems: "center", gap: "10px" }}
 							>
-								<label htmlFor="aggregatorFilter" style={{ fontSize: "14px" }}>
+								<label
+									htmlFor="aggregatorFilter"
+									style={themedFilterLabelStyle}
+								>
 									Aggregator:
 								</label>
 								<select
 									id="aggregatorFilter"
 									value={aggregatorFilter}
 									onChange={(e) => setAggregatorFilter(e.target.value)}
-									style={{
-										padding: "6px 10px",
-										borderRadius: "4px",
-										border: "1px solid var(--color-primary)",
-										backgroundColor: "var(--color-dark-bg-secondary)",
-										color: "var(--color-text-light)",
-										fontSize: "14px",
-										cursor: "pointer",
-									}}
+									style={themedSelectStyle}
 								>
 									<option value="All">All Aggregators</option>
 									<option value={AGGREGATOR_NA_FILTER}>N/A</option>
@@ -1095,22 +1120,14 @@ function Reports() {
 							<div
 								style={{ display: "flex", alignItems: "center", gap: "10px" }}
 							>
-								<label htmlFor="siteStateFilter" style={{ fontSize: "14px" }}>
+								<label htmlFor="siteStateFilter" style={themedFilterLabelStyle}>
 									State:
 								</label>
 								<select
 									id="siteStateFilter"
 									value={siteStateFilter}
 									onChange={(e) => setSiteStateFilter(e.target.value)}
-									style={{
-										padding: "6px 10px",
-										borderRadius: "4px",
-										border: "1px solid var(--color-primary)",
-										backgroundColor: "var(--color-dark-bg-secondary)",
-										color: "var(--color-text-light)",
-										fontSize: "14px",
-										cursor: "pointer",
-									}}
+									style={themedSelectStyle}
 								>
 									<option value="All">All States</option>
 									{getUniqueSiteStates().map((state) => (
@@ -1627,10 +1644,11 @@ function Reports() {
 					<div
 						style={{
 							marginBottom: "20px",
-							backgroundColor: "var(--color-dark-bg)",
+							backgroundColor:
+								theme === "light" ? "#f5f5f5" : "var(--color-dark-bg)",
 							padding: "15px 20px",
 							borderRadius: "4px",
-							color: "var(--color-text-dark)",
+							color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 							display: "flex",
 							justifyContent: "space-between",
 							alignItems: "center",
@@ -1639,10 +1657,22 @@ function Reports() {
 						}}
 					>
 						<div>
-							<h2 style={{ margin: 0, fontSize: "18px" }}>
+							<h2
+								style={{
+									margin: 0,
+									fontSize: "18px",
+									color: theme === "light" ? "#2c3e50" : "inherit",
+								}}
+							>
 								Circuit Expiration Report
 							</h2>
-							<div style={{ fontSize: "14px", marginTop: "5px" }}>
+							<div
+								style={{
+									fontSize: "14px",
+									marginTop: "5px",
+									color: theme === "light" ? "#555555" : "inherit",
+								}}
+							>
 								Showing {expiringCircuits.length} circuits expiring within the
 								next{" "}
 								{customExpirationMonths
@@ -1663,7 +1693,7 @@ function Reports() {
 								flexWrap: "wrap",
 							}}
 						>
-							<label htmlFor="timeRangeFilter" style={{ fontSize: "14px" }}>
+							<label htmlFor="timeRangeFilter" style={themedFilterLabelStyle}>
 								Time Range:
 							</label>
 							<select
@@ -1673,15 +1703,7 @@ function Reports() {
 									setExpirationTimeRange(Number(e.target.value));
 									setCustomExpirationMonths(""); // Clear custom when selecting preset
 								}}
-								style={{
-									padding: "6px 10px",
-									borderRadius: "4px",
-									border: "1px solid var(--color-primary)",
-									backgroundColor: "var(--color-dark-bg-secondary)",
-									color: "var(--color-text-light)",
-									fontSize: "14px",
-									cursor: "pointer",
-								}}
+								style={themedSelectStyle}
 							>
 								<option value={1}>1 Month</option>
 								<option value={3}>3 Months</option>
@@ -1689,11 +1711,15 @@ function Reports() {
 								<option value={12}>12 Months</option>
 							</select>
 							<span
-								style={{ fontSize: "14px", color: "var(--color-text-light)" }}
+								style={{
+									fontSize: "14px",
+									color:
+										theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+								}}
 							>
 								or
 							</span>
-							<label htmlFor="customTimeRange" style={{ fontSize: "14px" }}>
+							<label htmlFor="customTimeRange" style={themedFilterLabelStyle}>
 								Custom (months):
 							</label>
 							<input
@@ -1705,12 +1731,7 @@ function Reports() {
 								onChange={(e) => setCustomExpirationMonths(e.target.value)}
 								placeholder="Enter months"
 								style={{
-									padding: "6px 10px",
-									borderRadius: "4px",
-									border: "1px solid var(--color-primary)",
-									backgroundColor: "var(--color-dark-bg-secondary)",
-									color: "var(--color-text-light)",
-									fontSize: "14px",
+									...themedSelectStyle,
 									width: "80px",
 								}}
 							/>
@@ -2050,10 +2071,11 @@ function Reports() {
 					<div
 						style={{
 							marginBottom: "20px",
-							backgroundColor: "var(--color-dark-bg)",
+							backgroundColor:
+								theme === "light" ? "#f5f5f5" : "var(--color-dark-bg)",
 							padding: "15px 20px",
 							borderRadius: "4px",
-							color: "var(--color-text-dark)",
+							color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 							display: "flex",
 							justifyContent: "space-between",
 							alignItems: "center",
@@ -2062,10 +2084,22 @@ function Reports() {
 						}}
 					>
 						<div>
-							<h2 style={{ margin: 0, fontSize: "18px" }}>
+							<h2
+								style={{
+									margin: 0,
+									fontSize: "18px",
+									color: theme === "light" ? "#2c3e50" : "inherit",
+								}}
+							>
 								Renewal Notice Report
 							</h2>
-							<div style={{ fontSize: "14px", marginTop: "5px" }}>
+							<div
+								style={{
+									fontSize: "14px",
+									marginTop: "5px",
+									color: theme === "light" ? "#555555" : "inherit",
+								}}
+							>
 								Showing {renewalNoticeCircuits.length} circuits for{" "}
 								{renewalNoticeRangeLabel}
 							</div>
@@ -2080,7 +2114,7 @@ function Reports() {
 						>
 							<label
 								htmlFor="renewalNoticeTimeRange"
-								style={{ fontSize: "14px" }}
+								style={themedFilterLabelStyle}
 							>
 								Date Range:
 							</label>
@@ -2091,15 +2125,7 @@ function Reports() {
 									setRenewalNoticeTimeRange(e.target.value);
 									setCustomRenewalNoticeDays("");
 								}}
-								style={{
-									padding: "6px 10px",
-									borderRadius: "4px",
-									border: "1px solid var(--color-primary)",
-									backgroundColor: "var(--color-dark-bg-secondary)",
-									color: "var(--color-text-light)",
-									fontSize: "14px",
-									cursor: "pointer",
-								}}
+								style={themedSelectStyle}
 							>
 								<option value="All">All</option>
 								<option value="30">30 Days</option>
@@ -2108,13 +2134,17 @@ function Reports() {
 								<option value="180">180 Days</option>
 							</select>
 							<span
-								style={{ fontSize: "14px", color: "var(--color-text-light)" }}
+								style={{
+									fontSize: "14px",
+									color:
+										theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+								}}
 							>
 								or
 							</span>
 							<label
 								htmlFor="customRenewalNoticeDays"
-								style={{ fontSize: "14px" }}
+								style={themedFilterLabelStyle}
 							>
 								Custom (days):
 							</label>
@@ -2127,31 +2157,18 @@ function Reports() {
 								onChange={(e) => setCustomRenewalNoticeDays(e.target.value)}
 								placeholder="Enter days"
 								style={{
-									padding: "6px 10px",
-									borderRadius: "4px",
-									border: "1px solid var(--color-primary)",
-									backgroundColor: "var(--color-dark-bg-secondary)",
-									color: "var(--color-text-light)",
-									fontSize: "14px",
+									...themedSelectStyle,
 									width: "100px",
 								}}
 							/>
-							<label htmlFor="renewalTermFilter" style={{ fontSize: "14px" }}>
+							<label htmlFor="renewalTermFilter" style={themedFilterLabelStyle}>
 								Renewal Term:
 							</label>
 							<select
 								id="renewalTermFilter"
 								value={renewalTermFilter}
 								onChange={(e) => setRenewalTermFilter(e.target.value)}
-								style={{
-									padding: "6px 10px",
-									borderRadius: "4px",
-									border: "1px solid var(--color-primary)",
-									backgroundColor: "var(--color-dark-bg-secondary)",
-									color: "var(--color-text-light)",
-									fontSize: "14px",
-									cursor: "pointer",
-								}}
+								style={themedSelectStyle}
 							>
 								<option value="All">All Terms</option>
 								{renewalTerms.map((term) => (
@@ -2373,8 +2390,8 @@ function Reports() {
 			};
 
 			const siteHeaderStyle = {
-				backgroundColor: "var(--color-dark-bg)",
-				color: "var(--color-text-light)",
+				backgroundColor: theme === "light" ? "#f5f5f5" : "var(--color-dark-bg)",
+				color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 				padding: "14px 12px",
 				fontWeight: "700",
 				fontSize: "15px",
@@ -2383,8 +2400,9 @@ function Reports() {
 			};
 
 			const towerSectionHeaderStyle = {
-				backgroundColor: "var(--color-dark-bg-secondary)",
-				color: "var(--color-text-dark)",
+				backgroundColor:
+					theme === "light" ? "#f5f5f5" : "var(--color-dark-bg-secondary)",
+				color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 				padding: "10px 12px",
 				fontWeight: "600",
 				fontSize: "13px",
@@ -2440,20 +2458,31 @@ function Reports() {
 					>
 						<div
 							style={{
-								backgroundColor: "var(--color-dark-bg)",
-								color: "var(--color-text-dark)",
+								backgroundColor:
+									theme === "light" ? "#f5f5f5" : "var(--color-dark-bg)",
+								color:
+									theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 								padding: "15px 20px",
 								borderRadius: "4px",
 								marginBottom: "20px",
 								boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
 							}}
 						>
-							<h2 style={{ margin: 0, fontSize: "18px" }}>📊 Tower Report</h2>
+							<h2
+								style={{
+									margin: 0,
+									fontSize: "18px",
+									color: theme === "light" ? "#2c3e50" : "inherit",
+								}}
+							>
+								📊 Tower Report
+							</h2>
 							<div
 								style={{
 									fontSize: "14px",
 									marginTop: "8px",
-									color: "var(--color-text-dark)",
+									color:
+										theme === "light" ? "#555555" : "var(--color-text-light)",
 								}}
 							>
 								Showing {towerRows.length} towers from {towerCircuits.length}{" "}
@@ -2485,21 +2514,30 @@ function Reports() {
 										{/* Site Details */}
 										<div
 											style={{
-												backgroundColor: "var(--color-dark-bg-secondary)",
+												backgroundColor:
+													theme === "light"
+														? "#f0f2f5"
+														: "var(--color-dark-bg-secondary)",
 												padding: "12px 14px",
 												display: "grid",
 												gridTemplateColumns:
 													"repeat(auto-fit, minmax(200px, 1fr))",
 												gap: "12px",
 												fontSize: "13px",
-												color: "var(--color-text-dark)",
+												color:
+													theme === "light"
+														? "#2c3e50"
+														: "var(--color-text-light)",
 											}}
 										>
 											<div>
 												<span
 													style={{
 														fontWeight: "600",
-														color: "var(--color-text-dark)",
+														color:
+															theme === "light"
+																? "#2c3e50"
+																: "var(--color-text-light)",
 													}}
 												>
 													Address:{" "}
@@ -2510,7 +2548,10 @@ function Reports() {
 												<span
 													style={{
 														fontWeight: "600",
-														color: "var(--color-text-dark)",
+														color:
+															theme === "light"
+																? "#2c3e50"
+																: "var(--color-text-light)",
 													}}
 												>
 													Provider:{" "}
@@ -2521,7 +2562,10 @@ function Reports() {
 												<span
 													style={{
 														fontWeight: "600",
-														color: "var(--color-text-dark)",
+														color:
+															theme === "light"
+																? "#2c3e50"
+																: "var(--color-text-light)",
 													}}
 												>
 													Total Towers:{" "}
@@ -2653,7 +2697,9 @@ function Reports() {
 																	? "var(--color-dark-bg)"
 																	: isExpirationSoon(row.towerExpirationDate)
 																		? "var(--color-dark-bg)"
-																		: "#2c3e50",
+																		: theme === "light"
+																			? "#2c3e50"
+																			: "var(--color-text-light)",
 																backgroundColor: isExpired(
 																	row.towerExpirationDate,
 																)
@@ -2758,15 +2804,31 @@ function Reports() {
 					<div
 						style={{
 							marginBottom: "20px",
-							backgroundColor: "var(--color-dark-bg)",
+							backgroundColor:
+								theme === "light" ? "#f5f5f5" : "var(--color-dark-bg)",
 							padding: "15px 20px",
 							borderRadius: "4px",
-							color: "var(--color-text-dark)",
+							color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 						}}
 					>
 						<div>
-							<h2 style={{ margin: 0, fontSize: "18px" }}>Expired Circuits</h2>
-							<div style={{ fontSize: "14px", marginTop: "5px" }}>
+							<h2
+								style={{
+									margin: 0,
+									fontSize: "18px",
+									color: theme === "light" ? "#2c3e50" : "inherit",
+								}}
+							>
+								Expired Circuits
+							</h2>
+							<div
+								style={{
+									fontSize: "14px",
+									marginTop: "5px",
+									color:
+										theme === "light" ? "#555555" : "var(--color-text-light)",
+								}}
+							>
 								Showing {expiredCircuits.length} circuits with expiration dates
 								equal to or before today
 							</div>
@@ -2791,9 +2853,14 @@ function Reports() {
 									<tr
 										style={{
 											background:
-												"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
+												theme === "light"
+													? "#f5f5f5"
+													: "linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
 											borderBottom: "3px solid var(--color-primary)",
-											color: "var(--color-text-light)",
+											color:
+												theme === "light"
+													? "#2c3e50"
+													: "var(--color-text-light)",
 										}}
 									>
 										<th
@@ -2802,9 +2869,13 @@ function Reports() {
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
-													expiredCircuitsSortConfig.key === "venueName"
-														? "#34495e"
-														: "#2c3e50",
+													theme === "light"
+														? expiredCircuitsSortConfig.key === "venueName"
+															? "#e0e0e0"
+															: "#f5f5f5"
+														: expiredCircuitsSortConfig.key === "venueName"
+															? "#34495e"
+															: "#2c3e50",
 											}}
 											onClick={() =>
 												handleExpiredCircuitsSortClick("venueName")
@@ -2823,9 +2894,13 @@ function Reports() {
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
-													expiredCircuitsSortConfig.key === "siteType"
-														? "#34495e"
-														: "#2c3e50",
+													theme === "light"
+														? expiredCircuitsSortConfig.key === "siteType"
+															? "#e0e0e0"
+															: "#f5f5f5"
+														: expiredCircuitsSortConfig.key === "siteType"
+															? "#34495e"
+															: "#2c3e50",
 											}}
 											onClick={() => handleExpiredCircuitsSortClick("siteType")}
 											title="Click to sort"
@@ -2842,9 +2917,13 @@ function Reports() {
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
-													expiredCircuitsSortConfig.key === "provider"
-														? "#34495e"
-														: "#2c3e50",
+													theme === "light"
+														? expiredCircuitsSortConfig.key === "provider"
+															? "#e0e0e0"
+															: "#f5f5f5"
+														: expiredCircuitsSortConfig.key === "provider"
+															? "#34495e"
+															: "#2c3e50",
 											}}
 											onClick={() => handleExpiredCircuitsSortClick("provider")}
 											title="Click to sort"
@@ -2861,9 +2940,13 @@ function Reports() {
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
-													expiredCircuitsSortConfig.key === "aggregator"
-														? "#34495e"
-														: "#2c3e50",
+													theme === "light"
+														? expiredCircuitsSortConfig.key === "aggregator"
+															? "#e0e0e0"
+															: "#f5f5f5"
+														: expiredCircuitsSortConfig.key === "aggregator"
+															? "#34495e"
+															: "#2c3e50",
 											}}
 											onClick={() =>
 												handleExpiredCircuitsSortClick("aggregator")
@@ -2882,9 +2965,13 @@ function Reports() {
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
-													expiredCircuitsSortConfig.key === "circuitType"
-														? "#34495e"
-														: "#2c3e50",
+													theme === "light"
+														? expiredCircuitsSortConfig.key === "circuitType"
+															? "#e0e0e0"
+															: "#f5f5f5"
+														: expiredCircuitsSortConfig.key === "circuitType"
+															? "#34495e"
+															: "#2c3e50",
 											}}
 											onClick={() =>
 												handleExpiredCircuitsSortClick("circuitType")
@@ -2903,9 +2990,13 @@ function Reports() {
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
-													expiredCircuitsSortConfig.key === "bandwidth"
-														? "#34495e"
-														: "#2c3e50",
+													theme === "light"
+														? expiredCircuitsSortConfig.key === "bandwidth"
+															? "#e0e0e0"
+															: "#f5f5f5"
+														: expiredCircuitsSortConfig.key === "bandwidth"
+															? "#34495e"
+															: "#2c3e50",
 											}}
 											onClick={() =>
 												handleExpiredCircuitsSortClick("bandwidth")
@@ -2924,9 +3015,13 @@ function Reports() {
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
-													expiredCircuitsSortConfig.key === "expirationDate"
-														? "#34495e"
-														: "#2c3e50",
+													theme === "light"
+														? expiredCircuitsSortConfig.key === "expirationDate"
+															? "#e0e0e0"
+															: "#f5f5f5"
+														: expiredCircuitsSortConfig.key === "expirationDate"
+															? "#34495e"
+															: "#2c3e50",
 											}}
 											onClick={() =>
 												handleExpiredCircuitsSortClick("expirationDate")
@@ -2945,9 +3040,13 @@ function Reports() {
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
-													expiredCircuitsSortConfig.key === "daysExpired"
-														? "#34495e"
-														: "#2c3e50",
+													theme === "light"
+														? expiredCircuitsSortConfig.key === "daysExpired"
+															? "#e0e0e0"
+															: "#f5f5f5"
+														: expiredCircuitsSortConfig.key === "daysExpired"
+															? "#34495e"
+															: "#2c3e50",
 											}}
 											onClick={() =>
 												handleExpiredCircuitsSortClick("daysExpired")
@@ -2966,9 +3065,13 @@ function Reports() {
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
-													expiredCircuitsSortConfig.key === "status"
-														? "#34495e"
-														: "#2c3e50",
+													theme === "light"
+														? expiredCircuitsSortConfig.key === "status"
+															? "#e0e0e0"
+															: "#f5f5f5"
+														: expiredCircuitsSortConfig.key === "status"
+															? "#34495e"
+															: "#2c3e50",
 											}}
 											onClick={() => handleExpiredCircuitsSortClick("status")}
 											title="Click to sort"
@@ -3125,7 +3228,7 @@ function Reports() {
 		fontWeight: "700",
 		fontSize: "var(--font-size-sm)",
 		backgroundColor: "transparent",
-		color: "var(--color-text-light)",
+		color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 		textTransform: "uppercase",
 		letterSpacing: "0.5px",
 	};
@@ -3134,7 +3237,7 @@ function Reports() {
 		padding: "var(--spacing-lg)",
 		textAlign: "left",
 		fontSize: "var(--font-size-base)",
-		color: "var(--color-text-dark)",
+		color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 		fontWeight: "500",
 		backgroundColor: "var(--color-surface)",
 	};
