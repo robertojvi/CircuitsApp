@@ -2081,8 +2081,18 @@ function Circuits() {
 	});
 
 	const renderContent = () => {
-		if (loading) return <div style={{ color: theme === "light" ? "#1a1a1a" : "#ecf0f1" }}>Loading...</div>;
-		if (error) return <div style={{ color: theme === "light" ? "#a00000" : "#ff6b6b" }}>{error}</div>;
+		if (loading)
+			return (
+				<div style={{ color: theme === "light" ? "#1a1a1a" : "#ecf0f1" }}>
+					Loading...
+				</div>
+			);
+		if (error)
+			return (
+				<div style={{ color: theme === "light" ? "#a00000" : "#ff6b6b" }}>
+					{error}
+				</div>
+			);
 
 		if (selectedMenu === "Circuit Information") {
 			const sortedCircuits = getSortedCircuits(filteredCircuits);
@@ -2132,9 +2142,10 @@ function Circuits() {
 							style={{
 								marginBottom: 0,
 								fontSize: "var(--font-size-base)",
-								backgroundColor: theme === "light" ? "#ffffff" : "var(--color-surface)",
+								backgroundColor:
+									theme === "light" ? "#ffffff" : "var(--color-surface)",
 								color: theme === "light" ? "#1a1a1a" : "#ecf0f1",
-								border: `1px solid ${theme === "light" ? "#bdbdbd" : "var(--color-border)"}`
+								border: `1px solid ${theme === "light" ? "#bdbdbd" : "var(--color-border)"}`,
 							}}
 						/>
 					</div>
@@ -2142,7 +2153,8 @@ function Circuits() {
 						style={{
 							width: "100%",
 							borderCollapse: "collapse",
-							backgroundColor: theme === "light" ? "#ffffff" : "var(--color-surface)",
+							backgroundColor:
+								theme === "light" ? "#ffffff" : "var(--color-surface)",
 						}}
 					>
 						<thead
@@ -2215,7 +2227,9 @@ function Circuits() {
 							{sortedCircuits.map((circuit) => (
 								<tr
 									key={circuit.id}
-									style={{ borderBottom: `1px solid ${theme === "light" ? "#dee2e6" : "var(--color-border)"}` }}
+									style={{
+										borderBottom: `1px solid ${theme === "light" ? "#dee2e6" : "var(--color-border)"}`,
+									}}
 								>
 									<td style={tableCellStyle}>{circuit.site.name}</td>
 									<td style={tableCellStyle}>
