@@ -1592,7 +1592,8 @@ function Reports() {
 									style={{
 										textAlign: "center",
 										padding: "30px",
-										color: "var(--color-text-light)",
+										color:
+											theme === "light" ? "#555555" : "var(--color-text-light)",
 										fontStyle: "italic",
 									}}
 								>
@@ -1922,7 +1923,8 @@ function Reports() {
 								style={{
 									textAlign: "center",
 									padding: "30px",
-									color: "var(--color-text-light)",
+									color:
+										theme === "light" ? "#555555" : "var(--color-text-light)",
 									fontStyle: "italic",
 								}}
 							>
@@ -2005,7 +2007,8 @@ function Reports() {
 								marginTop: "10px",
 								fontSize: "14px",
 								fontStyle: "italic",
-								color: "var(--color-text-light)",
+								color:
+									theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 							}}
 						>
 							Note: Currently showing circuits expiring within the next{" "}
@@ -2316,7 +2319,8 @@ function Reports() {
 								style={{
 									textAlign: "center",
 									padding: "30px",
-									color: "var(--color-text-light)",
+									color:
+										theme === "light" ? "#555555" : "var(--color-text-light)",
 									fontStyle: "italic",
 								}}
 							>
@@ -2335,7 +2339,7 @@ function Reports() {
 							margin: "20px auto 0",
 							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
 							fontSize: "14px",
-							color: "var(--color-text-light)",
+							color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 						}}
 					>
 						Note: The filter shows renewal notification dates from today through
@@ -2753,7 +2757,8 @@ function Reports() {
 								style={{
 									textAlign: "center",
 									padding: "30px",
-									color: "var(--color-text-light)",
+									color:
+										theme === "light" ? "#555555" : "var(--color-text-light)",
 									fontStyle: "italic",
 								}}
 							>
