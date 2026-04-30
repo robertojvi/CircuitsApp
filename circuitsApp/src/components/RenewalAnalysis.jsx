@@ -304,14 +304,40 @@ const RenewalAnalysisModal = ({
 		border: `1px solid ${theme === "light" ? "#d0d0d0" : "var(--color-border-light)"}`,
 	};
 
+	// Theme-aware highlight styles for result cards
+	const themedInfoHighlightStyle = {
+		...infoHighlightStyle,
+		color: theme === "light" ? "#1e40af" : "#dbeafe",
+	};
+
+	const themedSuccessHighlightStyle = {
+		...successHighlightStyle,
+		color: theme === "light" ? "#166534" : "#dcfce7",
+	};
+
+	const themedDangerHighlightStyle = {
+		...dangerHighlightStyle,
+		color: theme === "light" ? "#7f1d1d" : "#fee2e2",
+	};
+
+	const themedWarningHighlightStyle = {
+		...warningHighlightStyle,
+		color: theme === "light" ? "#713f12" : "#fef9c3",
+	};
+
+	const themedResultValueStyle = {
+		...resultValueStyle,
+		color: theme === "light" ? "#1e293b" : "inherit",
+	};
+
 	const totalSavingsStyle =
 		preview.totalSavings == null
 			? themedReadOnlyInputStyle
 			: preview.totalSavings > 0
-				? successHighlightStyle
+				? themedSuccessHighlightStyle
 				: preview.totalSavings < 0
-					? dangerHighlightStyle
-					: warningHighlightStyle;
+					? themedDangerHighlightStyle
+					: themedWarningHighlightStyle;
 	const comparisonSummary = !isCostComparisonAvailable
 		? "Enter contract expiration and renewal values to compare total savings against the post-contract renewal cost."
 		: preview.costFromCustomerExpirationToRenewalExpiration <
@@ -540,17 +566,17 @@ const RenewalAnalysisModal = ({
 								<div style={themedFieldLabelStyle}>
 									Months To Customer Contract Expiration
 								</div>
-								<div style={resultValueStyle}>
+								<div style={themedResultValueStyle}>
 									{preview.monthsToCustomerContractExpiration != null
 										? String(preview.monthsToCustomerContractExpiration)
 										: "N/A"}
 								</div>
 							</div>
-							<div style={{ ...resultCardStyle, ...infoHighlightStyle }}>
+							<div style={{ ...resultCardStyle, ...themedInfoHighlightStyle }}>
 								<div style={themedFieldLabelStyle}>
 									Savings To Customer Contract Expiration
 								</div>
-								<div style={resultValueStyle}>
+								<div style={themedResultValueStyle}>
 									{formatCurrency(
 										preview.savingsUntilCustomerContractExpiration,
 									)}
@@ -560,7 +586,7 @@ const RenewalAnalysisModal = ({
 								<div style={{ ...themedFieldLabelStyle, ...costTitleStyle }}>
 									Cost From Customer Expiration To Renewal Circuit Expiration
 								</div>
-								<div style={resultValueStyle}>
+								<div style={themedResultValueStyle}>
 									{formatCurrency(
 										preview.costFromCustomerExpirationToRenewalExpiration,
 									)}
@@ -574,7 +600,7 @@ const RenewalAnalysisModal = ({
 								}}
 							>
 								<div style={themedFieldLabelStyle}>Total Savings</div>
-								<div style={resultValueStyle}>
+								<div style={themedResultValueStyle}>
 									{formatCurrency(preview.totalSavings)}
 								</div>
 							</div>
@@ -1288,7 +1314,6 @@ const warningHighlightStyle = {
 };
 
 const costHighlightStyle = {
-	backgroundColor: "#facc15",
 	borderColor: "#eab308",
 	color: "var(--color-text-dark)",
 	fontWeight: 600,

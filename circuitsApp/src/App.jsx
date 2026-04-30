@@ -49,6 +49,14 @@ function App() {
 								}
 							/>
 							<Route
+								path="circuit/:id"
+								element={
+									<ProtectedRoute>
+										<Circuits />
+									</ProtectedRoute>
+								}
+							/>
+							<Route
 								path="reports"
 								element={
 									<ProtectedRoute>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 
@@ -343,6 +344,11 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 		parts.push(cityState + (site.zipCode ? ` ${site.zipCode}` : ""));
 	const siteAddress = parts.length ? parts.join(", ") : "N/A";
 
+	// Generate circuit details URL
+	const circuitDetailsUrl = circuit?.id
+		? `${window.location.origin}/circuit/${circuit.id}`
+		: null;
+
 	// Theme-aware styles
 	const themedContainerBg =
 		theme === "light" ? "#ffffff" : "var(--color-dark-bg-secondary)";
@@ -674,6 +680,28 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 												? "📡 Wireless"
 												: circuit.circuitType || "Unknown"}
 									</span>
+								</div>
+							</div>
+							<div style={{ gridColumn: "1 / -1" }}>
+								<span style={detailLabelStyle}>Circuit Details URL</span>
+								<div style={detailValueStyle}>
+									{circuitDetailsUrl ? (
+										<a
+											href={circuitDetailsUrl}
+											target="_self"
+											rel="noopener noreferrer"
+											style={{
+												color: "#3B82F6",
+												textDecoration: "underline",
+												wordBreak: "break-all",
+												fontSize: "12px",
+											}}
+										>
+											{circuitDetailsUrl}
+										</a>
+									) : (
+										"N/A"
+									)}
 								</div>
 							</div>
 						</div>
@@ -1883,6 +1911,8 @@ const EditCircuitModal = ({
 };
 
 function Circuits() {
+	const { id: circuitIdFromUrl } = useParams();
+	const navigate = useNavigate();
 	const [selectedMenu, setSelectedMenu] = useState("Circuit Information");
 	const [circuits, setCircuits] = useState([]);
 	const [loading, setLoading] = useState(false);
@@ -1905,6 +1935,17 @@ function Circuits() {
 			fetchCircuits();
 		}
 	}, [selectedMenu]);
+
+	// Auto-open circuit details if accessed via URL
+	useEffect(() => {
+		if (circuitIdFromUrl && circuits.length > 0) {
+			const circuit = circuits.find((c) => c.id === parseInt(circuitIdFromUrl));
+			if (circuit) {
+				setSelectedCircuit(circuit);
+				setShowCircuitDetail(true);
+			}
+		}
+	}, [circuitIdFromUrl, circuits]);
 
 	const fetchCircuits = async () => {
 		setLoading(true);
@@ -2406,6 +2447,10 @@ function Circuits() {
 						onClose={() => {
 							setShowCircuitDetail(false);
 							setSelectedCircuit(null);
+							// Navigate back to circuits page if accessed via URL
+							if (circuitIdFromUrl) {
+								navigate("/circuits");
+							}
 						}}
 					/>
 				)}

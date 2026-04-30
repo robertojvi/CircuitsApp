@@ -61,6 +61,7 @@ public class Circuit {
     private String towerInstallDate5;
     private String towerExpirationDate5;
     private Double towerMonthlyCost5;
+    private String circuitDetailsUrl;
     @Lob
     @Column(columnDefinition = "LONGTEXT")
     private String notes;
@@ -455,5 +456,13 @@ public class Circuit {
 
     public void setMonthlyCost(Double monthlyCost) {
         this.monthlyCost = monthlyCost;
+    }
+
+    public String getCircuitDetailsUrl() {
+        return circuitDetailsUrl;
+    }
+
+    public void setCircuitDetailsUrl(String circuitDetailsUrl) {
+        this.circuitDetailsUrl = circuitDetailsUrl;
     }
 }

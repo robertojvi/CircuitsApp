@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useTheme } from "../context/ThemeContext";
 
 function UserManagementModal({ onClose }) {
 	const [users, setUsers] = useState([]);
@@ -16,6 +17,19 @@ function UserManagementModal({ onClose }) {
 	const [createError, setCreateError] = useState("");
 	const [createSuccess, setCreateSuccess] = useState("");
 	const { token } = useAuth();
+	const { theme } = useTheme();
+
+	// Theme-aware colors
+	const themedBg = theme === "light" ? "#ffffff" : "#2c3e50";
+	const themedBorder = theme === "light" ? "#e5e7eb" : "#4b6584";
+	const themedText = theme === "light" ? "#1e293b" : "#ecf0f1";
+	const themedMuted = theme === "light" ? "#64748b" : "#95a5a6";
+	const themedInputBg = theme === "light" ? "#ffffff" : "#3a4f63";
+	const themedTableBg = theme === "light" ? "#ffffff" : "#1a2332";
+	const themedTableBorder = theme === "light" ? "#e5e7eb" : "#4b6584";
+	const themedTableHeaderBg = theme === "light" ? "#f8fafc" : "#0f2438";
+	const themedTableHeaderText = theme === "light" ? "#1e293b" : "#e2e8f0";
+	const themedTableRowHover = theme === "light" ? "#f1f5f9" : "#2c3e50";
 
 	useEffect(() => {
 		fetchUsers();
@@ -156,17 +170,34 @@ function UserManagementModal({ onClose }) {
 		<div className="modal-overlay" onClick={onClose}>
 			<div
 				className="modal-content"
-				style={{ maxWidth: "900px", maxHeight: "90vh" }}
+				style={{
+					maxWidth: "900px",
+					maxHeight: "90vh",
+					backgroundColor: themedBg,
+					border: `1px solid ${themedBorder}`,
+				}}
 				onClick={(e) => e.stopPropagation()}
 			>
-				<div className="modal-header">
-					<h2>User Management</h2>
+				<div
+					style={{
+						backgroundColor: "var(--color-modal-header-bg)",
+						color: "var(--color-modal-header-text)",
+						padding: "var(--spacing-xl)",
+						borderBottom: "2px solid var(--color-primary)",
+						display: "flex",
+						justifyContent: "space-between",
+						alignItems: "center",
+					}}
+				>
+					<h2 style={{ margin: 0, fontSize: "20px", fontWeight: "600" }}>
+						👥 User Management
+					</h2>
 					<button
 						onClick={onClose}
 						style={{
 							backgroundColor: "transparent",
 							border: "none",
-							color: "white",
+							color: "var(--color-modal-header-text)",
 							fontSize: "24px",
 							cursor: "pointer",
 							padding: 0,
@@ -179,8 +210,14 @@ function UserManagementModal({ onClose }) {
 				<div style={{ padding: "var(--spacing-xl)" }}>
 					{error && (
 						<div
-							className="alert alert-error"
-							style={{ marginBottom: "var(--spacing-lg)" }}
+							style={{
+								backgroundColor: "#fee2e2",
+								border: "1px solid #fecaca",
+								color: "#7f1d1d",
+								padding: "var(--spacing-lg)",
+								borderRadius: "4px",
+								marginBottom: "var(--spacing-lg)",
+							}}
 						>
 							{error}
 						</div>
@@ -189,22 +226,38 @@ function UserManagementModal({ onClose }) {
 					{!showCreateForm ? (
 						<button
 							onClick={() => setShowCreateForm(true)}
-							className="btn btn-success"
-							style={{ marginBottom: "var(--spacing-xl)" }}
+							style={{
+								backgroundColor: "#10b981",
+								color: "white",
+								padding: "10px 20px",
+								border: "none",
+								borderRadius: "6px",
+								cursor: "pointer",
+								fontWeight: "600",
+								marginBottom: "var(--spacing-xl)",
+							}}
 						>
-							Create New User
+							+ Create New User
 						</button>
 					) : (
 						<div
-							className="card"
 							style={{
-								backgroundColor: "var(--color-surface-light)",
+								backgroundColor: themedBg,
 								marginBottom: "var(--spacing-xl)",
-								border: "1px solid var(--color-border-light)",
+								border: `1px solid ${themedBorder}`,
+								padding: "var(--spacing-lg)",
+								borderRadius: "6px",
 							}}
 						>
-							<h3 style={{ marginTop: 0, marginBottom: "var(--spacing-lg)" }}>
-								Create New User
+							<h3
+								style={{
+									marginTop: 0,
+									marginBottom: "var(--spacing-lg)",
+									color: themedText,
+									fontSize: "16px",
+								}}
+							>
+								✨ Create New User
 							</h3>
 
 							<form onSubmit={handleCreateUser}>
@@ -306,20 +359,84 @@ function UserManagementModal({ onClose }) {
 
 					{loading ? (
 						<div style={{ textAlign: "center", padding: "var(--spacing-2xl)" }}>
-							<p style={{ color: "var(--color-text-muted)" }}>
-								Loading users...
-							</p>
+							<p style={{ color: themedMuted }}>⏳ Loading users...</p>
 						</div>
 					) : (
-						<div className="table-container">
-							<table className="table">
+						<div
+							style={{
+								overflow: "auto",
+								borderRadius: "6px",
+								border: `1px solid ${themedTableBorder}`,
+							}}
+						>
+							<table
+								style={{
+									width: "100%",
+									borderCollapse: "collapse",
+								}}
+							>
 								<thead>
-									<tr>
-										<th>Email</th>
-										<th>Name</th>
-										<th>Role</th>
-										<th>Status</th>
-										<th>Actions</th>
+									<tr
+										style={{
+											backgroundColor: themedTableHeaderBg,
+											borderBottom: `2px solid ${themedTableBorder}`,
+										}}
+									>
+										<th
+											style={{
+												padding: "12px",
+												color: themedTableHeaderText,
+												fontWeight: "600",
+												textAlign: "left",
+												fontSize: "13px",
+											}}
+										>
+											📧 Email
+										</th>
+										<th
+											style={{
+												padding: "12px",
+												color: themedTableHeaderText,
+												fontWeight: "600",
+												textAlign: "left",
+												fontSize: "13px",
+											}}
+										>
+											👤 Name
+										</th>
+										<th
+											style={{
+												padding: "12px",
+												color: themedTableHeaderText,
+												fontWeight: "600",
+												textAlign: "left",
+												fontSize: "13px",
+											}}
+										>
+											🎭 Role
+										</th>
+										<th
+											style={{
+												padding: "12px",
+												color: themedTableHeaderText,
+												fontWeight: "600",
+												textAlign: "left",
+												fontSize: "13px",
+											}}
+										>
+											✨ Status
+										</th>
+										<th
+											style={{
+												padding: "12px",
+												color: themedTableHeaderText,
+												fontWeight: "600",
+												textAlign: "left",
+												fontSize: "13px",
+											}}
+										>
+											⚡ Actions
+										</th>
 									</tr>
 								</thead>
 								<tbody>
