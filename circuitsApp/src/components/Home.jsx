@@ -18,7 +18,7 @@ function Home() {
 					textAlign: "center",
 					maxWidth: "800px",
 					margin: "0 auto",
-					backgroundColor: "white",
+					backgroundColor: "var(--color-surface)",
 					borderRadius: "var(--radius-xl)",
 					boxShadow: "var(--shadow-md)",
 				}}
@@ -37,7 +37,7 @@ function Home() {
 					style={{
 						fontSize: "var(--font-size-3xl)",
 						marginBottom: "var(--spacing-lg)",
-						color: "var(--color-dark-bg)",
+						color: "var(--color-text-dark)",
 					}}
 				>
 					AccessParks Circuits
@@ -45,7 +45,7 @@ function Home() {
 				<p
 					style={{
 						fontSize: "var(--font-size-lg)",
-						color: "var(--color-text-muted)",
+						color: "var(--color-text-dark)",
 						marginBottom: "var(--spacing-xl)",
 					}}
 				>
