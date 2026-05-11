@@ -18,6 +18,15 @@ public class SiteDTO {
     private String customerContractDate;
     private String customerContractExpirationDate;
     private Boolean newBuild;
+    private String serviceCommencementDate;
+
+    public String getServiceCommencementDate() {
+        return serviceCommencementDate;
+    }
+
+    public void setServiceCommencementDate(String serviceCommencementDate) {
+        this.serviceCommencementDate = serviceCommencementDate;
+    }
 
     public Boolean getNewBuild() {
         return newBuild;

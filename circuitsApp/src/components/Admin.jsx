@@ -519,6 +519,20 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 						New Build Site
 					</label>
 				</div>
+				<div style={{ marginBottom: "20px" }}>
+					<label style={modalLabelStyle}>Service Commencement Date</label>
+					<input
+						type="date"
+						value={newSite.serviceCommencementDate || ""}
+						onChange={(e) =>
+							setNewSite({
+								...newSite,
+								serviceCommencementDate: e.target.value,
+							})
+						}
+						style={inputStyle}
+					/>
+				</div>
 				<h3
 					style={{
 						margin: "24px 0 16px 0",
@@ -1784,6 +1798,20 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 						/>
 						New Build Site
 					</label>
+				</div>
+				<div style={{ marginBottom: "20px" }}>
+					<label style={modalLabelStyle}>Service Commencement Date</label>
+					<input
+						type="date"
+						value={site.serviceCommencementDate || ""}
+						onChange={(e) =>
+							setSite({
+								...site,
+								serviceCommencementDate: e.target.value,
+							})
+						}
+						style={inputStyle}
+					/>
 				</div>
 				<div
 					style={{
