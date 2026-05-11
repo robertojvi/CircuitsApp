@@ -17,6 +17,15 @@ public class SiteDTO {
     private String secondaryEmail;
     private String customerContractDate;
     private String customerContractExpirationDate;
+    private Boolean newBuild;
+
+    public Boolean getNewBuild() {
+        return newBuild;
+    }
+
+    public void setNewBuild(Boolean newBuild) {
+        this.newBuild = newBuild;
+    }
 
     public String getCustomerContractDate() {
         return customerContractDate;

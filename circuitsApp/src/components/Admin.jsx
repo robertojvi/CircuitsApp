@@ -492,6 +492,33 @@ const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 						style={inputStyle}
 					/>
 				</div>
+				<div style={{ marginBottom: "20px" }}>
+					<label
+						style={{
+							display: "flex",
+							alignItems: "center",
+							gap: "8px",
+							cursor: "pointer",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "var(--color-text-dark)",
+						}}
+					>
+						<input
+							type="checkbox"
+							checked={newSite.newBuild || false}
+							onChange={(e) =>
+								setNewSite({ ...newSite, newBuild: e.target.checked })
+							}
+							style={{
+								width: "18px",
+								height: "18px",
+								cursor: "pointer",
+							}}
+						/>
+						New Build Site
+					</label>
+				</div>
 				<h3
 					style={{
 						margin: "24px 0 16px 0",
@@ -1732,6 +1759,31 @@ const EditSiteModal = ({ onClose, onSubmit, site, setSite }) => (
 						}
 						style={inputStyle}
 					/>
+				</div>
+				<div style={{ marginBottom: "20px" }}>
+					<label
+						style={{
+							display: "flex",
+							alignItems: "center",
+							gap: "8px",
+							cursor: "pointer",
+							fontSize: "14px",
+							fontWeight: "500",
+							color: "var(--color-text-dark)",
+						}}
+					>
+						<input
+							type="checkbox"
+							checked={site.newBuild || false}
+							onChange={(e) => setSite({ ...site, newBuild: e.target.checked })}
+							style={{
+								width: "18px",
+								height: "18px",
+								cursor: "pointer",
+							}}
+						/>
+						New Build Site
+					</label>
 				</div>
 				<div
 					style={{
