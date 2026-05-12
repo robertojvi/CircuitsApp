@@ -612,7 +612,7 @@ function Reports() {
 	// Function to get sites with newBuild flag set to true
 	const getNewBuildSites = () => {
 		const sitesMap = new Map();
-		
+
 		// Collect all sites with newBuild = true
 		circuits.forEach((circuit) => {
 			if (circuit.site && circuit.site.newBuild === true) {
@@ -627,22 +627,22 @@ function Reports() {
 				}
 			}
 		});
-		
+
 		return Array.from(sitesMap.values()).sort((a, b) =>
-			a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+			a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
 		);
 	};
 
 	// Function to calculate days between two dates
 	const calculateDaysBetween = (startDateStr, endDateStr) => {
 		if (!startDateStr || !endDateStr) return null;
-		
+
 		const startDate = new Date(startDateStr);
 		const endDate = new Date(endDateStr);
-		
+
 		const timeDifference = endDate - startDate;
 		const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-		
+
 		return daysDifference;
 	};
 
@@ -2785,7 +2785,7 @@ function Reports() {
 			);
 		} else if (selectedMenu === "New Build Sites Report") {
 			const newBuildSites = getNewBuildSites();
-			
+
 			// Calculate days between dates for each site
 			const sitesWithDaysDifference = newBuildSites.map((site) => {
 				const daysDiff = calculateDaysBetween(
@@ -2797,16 +2797,16 @@ function Reports() {
 					daysDifference: daysDiff,
 				};
 			});
-			
+
 			// Calculate average days
 			const validDays = sitesWithDaysDifference
 				.filter((site) => site.daysDifference !== null)
 				.map((site) => site.daysDifference);
 			const averageDays =
 				validDays.length > 0
-					? (validDays.reduce((sum, days) => sum + days, 0) / validDays.length).toFixed(
-						1,
-					)
+					? (
+							validDays.reduce((sum, days) => sum + days, 0) / validDays.length
+						).toFixed(1)
 					: 0;
 
 			return (
@@ -2818,10 +2818,7 @@ function Reports() {
 								theme === "light" ? "#f5f5f5" : "var(--color-dark-bg)",
 							padding: "15px 20px",
 							borderRadius: "4px",
-							color:
-								theme === "light"
-									? "#2c3e50"
-									: "var(--color-text-light)",
+							color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 						}}
 					>
 						<div>
@@ -2866,8 +2863,7 @@ function Reports() {
 										style={{
 											background:
 												"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
-											borderBottom:
-												"3px solid var(--color-primary)",
+											borderBottom: "3px solid var(--color-primary)",
 											color: "var(--color-text-light)",
 										}}
 									>
@@ -2907,7 +2903,9 @@ function Reports() {
 														textAlign: "center",
 													}}
 												>
-													{site.daysDifference !== null ? site.daysDifference : "N/A"}
+													{site.daysDifference !== null
+														? site.daysDifference
+														: "N/A"}
 												</td>
 											</tr>
 										);
@@ -2920,9 +2918,7 @@ function Reports() {
 									textAlign: "center",
 									padding: "30px",
 									color:
-										theme === "light"
-											? "#555555"
-											: "var(--color-text-light)",
+										theme === "light" ? "#555555" : "var(--color-text-light)",
 									fontStyle: "italic",
 								}}
 							>
@@ -2945,11 +2941,11 @@ function Reports() {
 						<div
 							style={{
 								padding: "15px",
-								backgroundColor:
-									theme === "light" ? "#f0f8ff" : "#1a3a52",
+								backgroundColor: theme === "light" ? "#f0f8ff" : "#1a3a52",
 								borderLeft: "4px solid var(--color-primary)",
 								borderRadius: "4px",
-								color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+								color:
+									theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 							}}
 						>
 							<strong>Average Days Between Dates:</strong> {averageDays} days
@@ -2959,7 +2955,7 @@ function Reports() {
 			);
 		} else if (selectedMenu === "New Build Sites Report") {
 			const newBuildSites = getNewBuildSites();
-			
+
 			// Calculate days between dates for each site
 			const sitesWithDaysDifference = newBuildSites.map((site) => {
 				const daysDiff = calculateDaysBetween(
@@ -2971,16 +2967,16 @@ function Reports() {
 					daysDifference: daysDiff,
 				};
 			});
-			
+
 			// Calculate average days
 			const validDays = sitesWithDaysDifference
 				.filter((site) => site.daysDifference !== null)
 				.map((site) => site.daysDifference);
 			const averageDays =
 				validDays.length > 0
-					? (validDays.reduce((sum, days) => sum + days, 0) / validDays.length).toFixed(
-						1,
-					)
+					? (
+							validDays.reduce((sum, days) => sum + days, 0) / validDays.length
+						).toFixed(1)
 					: 0;
 
 			return (
@@ -2992,10 +2988,7 @@ function Reports() {
 								theme === "light" ? "#f5f5f5" : "var(--color-dark-bg)",
 							padding: "15px 20px",
 							borderRadius: "4px",
-							color:
-								theme === "light"
-									? "#2c3e50"
-									: "var(--color-text-light)",
+							color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 						}}
 					>
 						<div>
@@ -3040,8 +3033,7 @@ function Reports() {
 										style={{
 											background:
 												"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
-											borderBottom:
-												"3px solid var(--color-primary)",
+											borderBottom: "3px solid var(--color-primary)",
 											color: "var(--color-text-light)",
 										}}
 									>
@@ -3081,7 +3073,9 @@ function Reports() {
 														textAlign: "center",
 													}}
 												>
-													{site.daysDifference !== null ? site.daysDifference : "N/A"}
+													{site.daysDifference !== null
+														? site.daysDifference
+														: "N/A"}
 												</td>
 											</tr>
 										);
@@ -3094,9 +3088,7 @@ function Reports() {
 									textAlign: "center",
 									padding: "30px",
 									color:
-										theme === "light"
-											? "#555555"
-											: "var(--color-text-light)",
+										theme === "light" ? "#555555" : "var(--color-text-light)",
 									fontStyle: "italic",
 								}}
 							>
@@ -3119,11 +3111,11 @@ function Reports() {
 						<div
 							style={{
 								padding: "15px",
-								backgroundColor:
-									theme === "light" ? "#f0f8ff" : "#1a3a52",
+								backgroundColor: theme === "light" ? "#f0f8ff" : "#1a3a52",
 								borderLeft: "4px solid var(--color-primary)",
 								borderRadius: "4px",
-								color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+								color:
+									theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 							}}
 						>
 							<strong>Average Days Between Dates:</strong> {averageDays} days
@@ -3634,7 +3626,7 @@ function Reports() {
 						"Renewal Notice Report",
 						"Expired Circuits",
 						"Tower Report",
-					"New Build Sites Report",
+						"New Build Sites Report",
 					].map((item) => (
 						<li
 							key={item}
