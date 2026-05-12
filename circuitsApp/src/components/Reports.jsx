@@ -95,7 +95,8 @@ function Reports() {
 			selectedMenu === "Circuit Expiration Report" ||
 			selectedMenu === "Renewal Notice Report" ||
 			selectedMenu === "Expired Circuits" ||
-			selectedMenu === "Tower Report"
+			selectedMenu === "Tower Report" ||
+			selectedMenu === "New Build Sites Report"
 		) {
 			fetchCircuits();
 		}
@@ -452,29 +453,6 @@ function Reports() {
 			});
 	};
 
-	// Function to get circuits that have already expired (expiration date is equal to or before today)
-	const getExpiredCircuits = () => {
-		const today = new Date();
-		today.setHours(0, 0, 0, 0);
-
-		return circuits
-			.filter((circuit) => {
-				// Skip circuits without expiration dates
-				if (!circuit.expirationDate) return false;
-
-				// Convert expiration date string to Date object
-				const expirationDate = new Date(circuit.expirationDate);
-				expirationDate.setHours(0, 0, 0, 0);
-
-				// Check if expiration date is equal to or before today
-				return expirationDate <= today;
-			})
-			.sort((a, b) => {
-				// Sort by expiration date (descending - most recent first)
-				return new Date(b.expirationDate) - new Date(a.expirationDate);
-			});
-	};
-
 	const getRenewalNoticeCircuits = () => {
 		const hasMeaningfulRenewalTerm = (renewalTerm) => {
 			if (!renewalTerm) return false;
@@ -629,6 +607,43 @@ function Reports() {
 			month: "short",
 			day: "numeric",
 		});
+	};
+
+	// Function to get sites with newBuild flag set to true
+	const getNewBuildSites = () => {
+		const sitesMap = new Map();
+		
+		// Collect all sites with newBuild = true
+		circuits.forEach((circuit) => {
+			if (circuit.site && circuit.site.newBuild === true) {
+				const siteId = circuit.site.id;
+				if (!sitesMap.has(siteId)) {
+					sitesMap.set(siteId, {
+						id: circuit.site.id,
+						name: circuit.site.name,
+						customerContractDate: circuit.site.customerContractDate,
+						serviceCommencementDate: circuit.site.serviceCommencementDate,
+					});
+				}
+			}
+		});
+		
+		return Array.from(sitesMap.values()).sort((a, b) =>
+			a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+		);
+	};
+
+	// Function to calculate days between two dates
+	const calculateDaysBetween = (startDateStr, endDateStr) => {
+		if (!startDateStr || !endDateStr) return null;
+		
+		const startDate = new Date(startDateStr);
+		const endDate = new Date(endDateStr);
+		
+		const timeDifference = endDate - startDate;
+		const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+		
+		return daysDifference;
 	};
 
 	// Helper function to calculate days until expiration
@@ -2768,6 +2783,354 @@ function Reports() {
 					</div>
 				</div>
 			);
+		} else if (selectedMenu === "New Build Sites Report") {
+			const newBuildSites = getNewBuildSites();
+			
+			// Calculate days between dates for each site
+			const sitesWithDaysDifference = newBuildSites.map((site) => {
+				const daysDiff = calculateDaysBetween(
+					site.customerContractDate,
+					site.serviceCommencementDate,
+				);
+				return {
+					...site,
+					daysDifference: daysDiff,
+				};
+			});
+			
+			// Calculate average days
+			const validDays = sitesWithDaysDifference
+				.filter((site) => site.daysDifference !== null)
+				.map((site) => site.daysDifference);
+			const averageDays =
+				validDays.length > 0
+					? (validDays.reduce((sum, days) => sum + days, 0) / validDays.length).toFixed(
+						1,
+					)
+					: 0;
+
+			return (
+				<div style={{ width: "100%" }}>
+					<div
+						style={{
+							marginBottom: "20px",
+							backgroundColor:
+								theme === "light" ? "#f5f5f5" : "var(--color-dark-bg)",
+							padding: "15px 20px",
+							borderRadius: "4px",
+							color:
+								theme === "light"
+									? "#2c3e50"
+									: "var(--color-text-light)",
+						}}
+					>
+						<div>
+							<h2
+								style={{
+									margin: 0,
+									fontSize: "18px",
+									color: theme === "light" ? "#2c3e50" : "inherit",
+								}}
+							>
+								New Build Sites Report
+							</h2>
+							<p
+								style={{
+									margin: "8px 0 0 0",
+									fontSize: "14px",
+									opacity: "0.7",
+								}}
+							>
+								Showing {sitesWithDaysDifference.length} site
+								{sitesWithDaysDifference.length !== 1 ? "s" : ""}
+							</p>
+						</div>
+					</div>
+
+					<div
+						style={{
+							backgroundColor: "var(--color-surface)",
+							padding: "20px",
+							borderRadius: "8px",
+							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+							margin: "0 auto",
+							maxWidth: "1400px",
+							width: "100%",
+							overflowX: "auto",
+						}}
+					>
+						{sitesWithDaysDifference.length > 0 ? (
+							<table style={{ width: "100%", borderCollapse: "collapse" }}>
+								<thead>
+									<tr
+										style={{
+											background:
+												"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
+											borderBottom:
+												"3px solid var(--color-primary)",
+											color: "var(--color-text-light)",
+										}}
+									>
+										<th style={tableHeaderStyle}>Site Name</th>
+										<th style={tableHeaderStyle}>Customer Contract Date</th>
+										<th style={tableHeaderStyle}>Service Commencement Date</th>
+										<th style={tableHeaderStyle}>Days Between</th>
+									</tr>
+								</thead>
+								<tbody>
+									{sitesWithDaysDifference.map((site, index) => {
+										return (
+											<tr
+												key={site.id}
+												style={{
+													borderBottom: "1px solid var(--color-border-light)",
+													backgroundColor:
+														index % 2 === 0
+															? "var(--color-surface)"
+															: "var(--color-surface-light)",
+												}}
+											>
+												<td style={{ ...tableCellStyle, fontWeight: "600" }}>
+													{site.name || "N/A"}
+												</td>
+												<td style={tableCellStyle}>
+													{formatDate(site.customerContractDate)}
+												</td>
+												<td style={tableCellStyle}>
+													{formatDate(site.serviceCommencementDate)}
+												</td>
+												<td
+													style={{
+														...tableCellStyle,
+														fontWeight: "600",
+														color: "#1d4ed8",
+														textAlign: "center",
+													}}
+												>
+													{site.daysDifference !== null ? site.daysDifference : "N/A"}
+												</td>
+											</tr>
+										);
+									})}
+								</tbody>
+							</table>
+						) : (
+							<div
+								style={{
+									textAlign: "center",
+									padding: "30px",
+									color:
+										theme === "light"
+											? "#555555"
+											: "var(--color-text-light)",
+									fontStyle: "italic",
+								}}
+							>
+								No sites with newBuild flag selected
+							</div>
+						)}
+					</div>
+
+					<div
+						style={{
+							marginTop: "20px",
+							padding: "15px 20px",
+							backgroundColor: "var(--color-surface)",
+							borderRadius: "8px",
+							maxWidth: "1400px",
+							margin: "20px auto 0",
+							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+						}}
+					>
+						<div
+							style={{
+								padding: "15px",
+								backgroundColor:
+									theme === "light" ? "#f0f8ff" : "#1a3a52",
+								borderLeft: "4px solid var(--color-primary)",
+								borderRadius: "4px",
+								color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+							}}
+						>
+							<strong>Average Days Between Dates:</strong> {averageDays} days
+						</div>
+					</div>
+				</div>
+			);
+		} else if (selectedMenu === "New Build Sites Report") {
+			const newBuildSites = getNewBuildSites();
+			
+			// Calculate days between dates for each site
+			const sitesWithDaysDifference = newBuildSites.map((site) => {
+				const daysDiff = calculateDaysBetween(
+					site.customerContractDate,
+					site.serviceCommencementDate,
+				);
+				return {
+					...site,
+					daysDifference: daysDiff,
+				};
+			});
+			
+			// Calculate average days
+			const validDays = sitesWithDaysDifference
+				.filter((site) => site.daysDifference !== null)
+				.map((site) => site.daysDifference);
+			const averageDays =
+				validDays.length > 0
+					? (validDays.reduce((sum, days) => sum + days, 0) / validDays.length).toFixed(
+						1,
+					)
+					: 0;
+
+			return (
+				<div style={{ width: "100%" }}>
+					<div
+						style={{
+							marginBottom: "20px",
+							backgroundColor:
+								theme === "light" ? "#f5f5f5" : "var(--color-dark-bg)",
+							padding: "15px 20px",
+							borderRadius: "4px",
+							color:
+								theme === "light"
+									? "#2c3e50"
+									: "var(--color-text-light)",
+						}}
+					>
+						<div>
+							<h2
+								style={{
+									margin: 0,
+									fontSize: "18px",
+									color: theme === "light" ? "#2c3e50" : "inherit",
+								}}
+							>
+								New Build Sites Report
+							</h2>
+							<p
+								style={{
+									margin: "8px 0 0 0",
+									fontSize: "14px",
+									opacity: "0.7",
+								}}
+							>
+								Showing {sitesWithDaysDifference.length} site
+								{sitesWithDaysDifference.length !== 1 ? "s" : ""}
+							</p>
+						</div>
+					</div>
+
+					<div
+						style={{
+							backgroundColor: "var(--color-surface)",
+							padding: "20px",
+							borderRadius: "8px",
+							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+							margin: "0 auto",
+							maxWidth: "1400px",
+							width: "100%",
+							overflowX: "auto",
+						}}
+					>
+						{sitesWithDaysDifference.length > 0 ? (
+							<table style={{ width: "100%", borderCollapse: "collapse" }}>
+								<thead>
+									<tr
+										style={{
+											background:
+												"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
+											borderBottom:
+												"3px solid var(--color-primary)",
+											color: "var(--color-text-light)",
+										}}
+									>
+										<th style={tableHeaderStyle}>Site Name</th>
+										<th style={tableHeaderStyle}>Customer Contract Date</th>
+										<th style={tableHeaderStyle}>Service Commencement Date</th>
+										<th style={tableHeaderStyle}>Days Between</th>
+									</tr>
+								</thead>
+								<tbody>
+									{sitesWithDaysDifference.map((site, index) => {
+										return (
+											<tr
+												key={site.id}
+												style={{
+													borderBottom: "1px solid var(--color-border-light)",
+													backgroundColor:
+														index % 2 === 0
+															? "var(--color-surface)"
+															: "var(--color-surface-light)",
+												}}
+											>
+												<td style={{ ...tableCellStyle, fontWeight: "600" }}>
+													{site.name || "N/A"}
+												</td>
+												<td style={tableCellStyle}>
+													{formatDate(site.customerContractDate)}
+												</td>
+												<td style={tableCellStyle}>
+													{formatDate(site.serviceCommencementDate)}
+												</td>
+												<td
+													style={{
+														...tableCellStyle,
+														fontWeight: "600",
+														color: "#1d4ed8",
+														textAlign: "center",
+													}}
+												>
+													{site.daysDifference !== null ? site.daysDifference : "N/A"}
+												</td>
+											</tr>
+										);
+									})}
+								</tbody>
+							</table>
+						) : (
+							<div
+								style={{
+									textAlign: "center",
+									padding: "30px",
+									color:
+										theme === "light"
+											? "#555555"
+											: "var(--color-text-light)",
+									fontStyle: "italic",
+								}}
+							>
+								No sites with newBuild flag selected
+							</div>
+						)}
+					</div>
+
+					<div
+						style={{
+							marginTop: "20px",
+							padding: "15px 20px",
+							backgroundColor: "var(--color-surface)",
+							borderRadius: "8px",
+							maxWidth: "1400px",
+							margin: "20px auto 0",
+							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+						}}
+					>
+						<div
+							style={{
+								padding: "15px",
+								backgroundColor:
+									theme === "light" ? "#f0f8ff" : "#1a3a52",
+								borderLeft: "4px solid var(--color-primary)",
+								borderRadius: "4px",
+								color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+							}}
+						>
+							<strong>Average Days Between Dates:</strong> {averageDays} days
+						</div>
+					</div>
+				</div>
+			);
 		} else if (selectedMenu === "Expired Circuits") {
 			const expiredCircuits = getExpiredCircuits();
 			const today = new Date();
@@ -3271,6 +3634,7 @@ function Reports() {
 						"Renewal Notice Report",
 						"Expired Circuits",
 						"Tower Report",
+					"New Build Sites Report",
 					].map((item) => (
 						<li
 							key={item}
