@@ -951,7 +951,7 @@ function Reports() {
 	const getTowerRenewalNoticeData = () => {
 		const showAll = towerRenewalDays === "all";
 		const daysToCheck = showAll
-			? null
+			? 60 // default threshold used only for "Expiring Soon" badge in All Sites mode
 			: customTowerRenewalDays
 				? parseInt(customTowerRenewalDays, 10)
 				: towerRenewalDays;
@@ -959,11 +959,11 @@ function Reports() {
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);
 
-		const notificationDate = showAll ? null : new Date(today);
-		if (!showAll) notificationDate.setDate(today.getDate() + daysToCheck);
+		const notificationDate = new Date(today);
+		notificationDate.setDate(today.getDate() + daysToCheck);
 
-		const isQualifyingTower = (expirationDate) => {
-			if (showAll) return true;
+		// Checks whether a tower's expiration falls within the selected days window
+		const isExpiringWithinRange = (expirationDate) => {
 			if (!expirationDate) return false;
 			const expDate = new Date(expirationDate);
 			expDate.setHours(0, 0, 0, 0);
@@ -976,7 +976,7 @@ function Reports() {
 			if (circuit.hasTower) {
 				const numTowers = parseInt(circuit.numberOfTowers) || 0;
 				for (let i = 1; i <= numTowers; i++) {
-					if (showAll || isQualifyingTower(circuit[`towerExpirationDate${i}`])) {
+					if (showAll || isExpiringWithinRange(circuit[`towerExpirationDate${i}`])) {
 						qualifyingCircuitIds.add(circuit.id);
 						break;
 					}
@@ -1000,7 +1000,7 @@ function Reports() {
 						towerRenewalNoticeDate: circuit[`towerRenewalNoticeDate${i}`] || null,
 						towerMonthlyCost: circuit[`towerMonthlyCost${i}`] || "0.00",
 						daysUntilExpiration: getDaysUntilExpiration(towerExpirationDate),
-						isQualifying: isQualifyingTower(towerExpirationDate),
+						isQualifying: isExpiringWithinRange(towerExpirationDate),
 					});
 				}
 			}
