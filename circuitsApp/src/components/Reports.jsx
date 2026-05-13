@@ -978,6 +978,7 @@ function Reports() {
 								towerProvider: circuit[`towerProvider${i}`] || "N/A",
 								towerInstallDate: circuit[`towerInstallDate${i}`] || "N/A",
 								towerExpirationDate: towerExpirationDate,
+								towerRenewalNoticeDate: circuit[`towerRenewalNoticeDate${i}`] || null,
 								towerMonthlyCost: circuit[`towerMonthlyCost${i}`] || "0.00",
 								daysUntilExpiration:
 									getDaysUntilExpiration(towerExpirationDate),
@@ -1010,6 +1011,7 @@ function Reports() {
 				"Tower Provider": row.towerProvider,
 				"Install Date": formatDate(row.towerInstallDate),
 				"Expiration Date": formatDate(row.towerExpirationDate),
+				"Renewal Notice Date": formatDate(row.towerRenewalNoticeDate),
 				"Days Until Expiration": row.daysUntilExpiration,
 			};
 
@@ -1033,6 +1035,7 @@ function Reports() {
 			{ wch: 18 },
 			{ wch: 14 },
 			{ wch: 16 },
+			{ wch: 20 },
 			{ wch: 20 },
 			...(user?.role !== "NOC" ? [{ wch: 14 }] : []),
 		];
@@ -3074,6 +3077,7 @@ function Reports() {
 										<th style={tableHeaderStyle}>Provider</th>
 										<th style={tableHeaderStyle}>Install Date</th>
 										<th style={tableHeaderStyle}>Expiration Date</th>
+										<th style={tableHeaderStyle}>Renewal Notice Date</th>
 										<th style={tableHeaderStyle}>Days Until Expiration</th>
 										{user?.role !== "NOC" && (
 											<th style={tableHeaderStyle}>Monthly Cost</th>
@@ -3124,6 +3128,17 @@ function Reports() {
 												</td>
 												<td style={{ ...tableCellStyle, fontWeight: "500" }}>
 													{formatDate(row.towerExpirationDate)}
+												</td>
+												<td
+													style={{
+														...tableCellStyle,
+														fontWeight: "600",
+														color: "#1d4ed8",
+													}}
+												>
+													{row.towerRenewalNoticeDate
+														? formatDate(row.towerRenewalNoticeDate)
+														: "N/A"}
 												</td>
 												<td style={tableCellStyle}>
 													<span

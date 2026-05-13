@@ -30,26 +30,32 @@ public class CircuitDTO {
     private String towerInstallDate;
     private String towerExpirationDate;
     private Double towerMonthlyCost;
+    private String towerRenewalNoticeDate;
     private String towerProvider1;
     private String towerInstallDate1;
     private String towerExpirationDate1;
     private Double towerMonthlyCost1;
+    private String towerRenewalNoticeDate1;
     private String towerProvider2;
     private String towerInstallDate2;
     private String towerExpirationDate2;
     private Double towerMonthlyCost2;
+    private String towerRenewalNoticeDate2;
     private String towerProvider3;
     private String towerInstallDate3;
     private String towerExpirationDate3;
     private Double towerMonthlyCost3;
+    private String towerRenewalNoticeDate3;
     private String towerProvider4;
     private String towerInstallDate4;
     private String towerExpirationDate4;
     private Double towerMonthlyCost4;
+    private String towerRenewalNoticeDate4;
     private String towerProvider5;
     private String towerInstallDate5;
     private String towerExpirationDate5;
     private Double towerMonthlyCost5;
+    private String towerRenewalNoticeDate5;
     private String circuitDetailsUrl;
     private String notes;
 
@@ -275,6 +281,54 @@ public class CircuitDTO {
 
     public void setTowerMonthlyCost5(Double towerMonthlyCost5) {
         this.towerMonthlyCost5 = towerMonthlyCost5;
+    }
+
+    public String getTowerRenewalNoticeDate() {
+        return towerRenewalNoticeDate;
+    }
+
+    public void setTowerRenewalNoticeDate(String towerRenewalNoticeDate) {
+        this.towerRenewalNoticeDate = towerRenewalNoticeDate;
+    }
+
+    public String getTowerRenewalNoticeDate1() {
+        return towerRenewalNoticeDate1;
+    }
+
+    public void setTowerRenewalNoticeDate1(String towerRenewalNoticeDate1) {
+        this.towerRenewalNoticeDate1 = towerRenewalNoticeDate1;
+    }
+
+    public String getTowerRenewalNoticeDate2() {
+        return towerRenewalNoticeDate2;
+    }
+
+    public void setTowerRenewalNoticeDate2(String towerRenewalNoticeDate2) {
+        this.towerRenewalNoticeDate2 = towerRenewalNoticeDate2;
+    }
+
+    public String getTowerRenewalNoticeDate3() {
+        return towerRenewalNoticeDate3;
+    }
+
+    public void setTowerRenewalNoticeDate3(String towerRenewalNoticeDate3) {
+        this.towerRenewalNoticeDate3 = towerRenewalNoticeDate3;
+    }
+
+    public String getTowerRenewalNoticeDate4() {
+        return towerRenewalNoticeDate4;
+    }
+
+    public void setTowerRenewalNoticeDate4(String towerRenewalNoticeDate4) {
+        this.towerRenewalNoticeDate4 = towerRenewalNoticeDate4;
+    }
+
+    public String getTowerRenewalNoticeDate5() {
+        return towerRenewalNoticeDate5;
+    }
+
+    public void setTowerRenewalNoticeDate5(String towerRenewalNoticeDate5) {
+        this.towerRenewalNoticeDate5 = towerRenewalNoticeDate5;
     }
 
     public String getNotes() {

@@ -289,6 +289,112 @@ const CircuitRenewalFields = ({ circuit, setCircuit }) => {
 	);
 };
 
+const TowerRenewalNoticeField = ({ circuit, setCircuit, towerNum }) => {
+	const [noticeOption, setNoticeOption] = useState("");
+	const [noticeOtherDays, setNoticeOtherDays] = useState("");
+
+	const renewalNoticeDateKey = `towerRenewalNoticeDate${towerNum}`;
+	const expirationDate = circuit[`towerExpirationDate${towerNum}`];
+	const renewalNoticeDateValue = circuit[renewalNoticeDateKey];
+
+	useEffect(() => {
+		const days = getRenewalNoticeDays(expirationDate, renewalNoticeDateValue);
+		if (days == null) {
+			setNoticeOption("");
+			setNoticeOtherDays("");
+		} else if ([60, 90, 120].includes(days)) {
+			setNoticeOption(String(days));
+			setNoticeOtherDays("");
+		} else {
+			setNoticeOption("Other");
+			setNoticeOtherDays(String(days));
+		}
+	}, [expirationDate, renewalNoticeDateValue]);
+
+	const towerLabelStyle = {
+		display: "block",
+		marginBottom: "5px",
+		fontSize: "12px",
+		fontWeight: "500",
+		color: "var(--color-primary)",
+	};
+
+	const handleOptionChange = (e) => {
+		const option = e.target.value;
+		setNoticeOption(option);
+		setCircuit({
+			...circuit,
+			[renewalNoticeDateKey]: option
+				? calculateRenewalNoticeDate(
+						expirationDate,
+						option === "Other" ? noticeOtherDays : option,
+					)
+				: "",
+		});
+	};
+
+	return (
+		<>
+			<div style={{ marginBottom: "12px" }}>
+				<label style={towerLabelStyle}>Renewal Notice Period</label>
+				<select value={noticeOption} onChange={handleOptionChange} style={inputStyle}>
+					<option value="">Select Notice Period</option>
+					<option value="60">60 days</option>
+					<option value="90">90 days</option>
+					<option value="120">120 days</option>
+					<option value="Other">Other (custom)</option>
+				</select>
+			</div>
+			{noticeOption === "Other" && (
+				<div style={{ marginBottom: "12px" }}>
+					<label style={towerLabelStyle}>Custom Notice Days</label>
+					<input
+						type="number"
+						placeholder="Enter number of days"
+						value={noticeOtherDays}
+						onChange={(e) => {
+							const value = e.target.value;
+							setNoticeOtherDays(value);
+							setCircuit({
+								...circuit,
+								[renewalNoticeDateKey]: value
+									? calculateRenewalNoticeDate(expirationDate, value)
+									: "",
+							});
+						}}
+						style={inputStyle}
+						min="0"
+						step="1"
+					/>
+				</div>
+			)}
+			<div style={{ marginBottom: "12px" }}>
+				<label style={towerLabelStyle}>Tower Renewal Notice Date</label>
+				<input
+					type="date"
+					value={circuit[renewalNoticeDateKey] || ""}
+					readOnly
+					style={{
+						...inputStyle,
+						backgroundColor: "var(--color-surface-light)",
+						cursor: "not-allowed",
+					}}
+				/>
+				<p
+					style={{
+						fontSize: "11px",
+						color: "var(--color-text-muted)",
+						marginTop: "4px",
+						marginBottom: 0,
+					}}
+				>
+					Auto-calculated from expiration date and notice period
+				</p>
+			</div>
+		</>
+	);
+};
+
 const CreateSiteModal = ({ onClose, onSubmit, newSite, setNewSite }) => (
 	<div
 		style={{
@@ -1427,6 +1533,11 @@ const CreateCircuitModal = ({
 												required
 											/>
 										</div>
+										<TowerRenewalNoticeField
+											circuit={newCircuit}
+											setCircuit={setNewCircuit}
+											towerNum={towerNum}
+										/>
 									</div>
 								))}
 						</div>
@@ -2772,6 +2883,11 @@ const EditCircuitModal = ({
 											required
 										/>
 									</div>
+									<TowerRenewalNoticeField
+										circuit={circuit}
+										setCircuit={setCircuit}
+										towerNum={towerNum}
+									/>
 								</div>
 							))}
 					</div>
