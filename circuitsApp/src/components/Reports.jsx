@@ -949,17 +949,21 @@ function Reports() {
 
 	// Helper function to get towers that need renewal notification
 	const getTowerRenewalNoticeData = () => {
-		const daysToCheck = customTowerRenewalDays
-			? parseInt(customTowerRenewalDays, 10)
-			: towerRenewalDays;
+		const showAll = towerRenewalDays === "all";
+		const daysToCheck = showAll
+			? null
+			: customTowerRenewalDays
+				? parseInt(customTowerRenewalDays, 10)
+				: towerRenewalDays;
 
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);
 
-		const notificationDate = new Date(today);
-		notificationDate.setDate(today.getDate() + daysToCheck);
+		const notificationDate = showAll ? null : new Date(today);
+		if (!showAll) notificationDate.setDate(today.getDate() + daysToCheck);
 
 		const isQualifyingTower = (expirationDate) => {
+			if (showAll) return true;
 			if (!expirationDate) return false;
 			const expDate = new Date(expirationDate);
 			expDate.setHours(0, 0, 0, 0);
@@ -972,7 +976,7 @@ function Reports() {
 			if (circuit.hasTower) {
 				const numTowers = parseInt(circuit.numberOfTowers) || 0;
 				for (let i = 1; i <= numTowers; i++) {
-					if (isQualifyingTower(circuit[`towerExpirationDate${i}`])) {
+					if (showAll || isQualifyingTower(circuit[`towerExpirationDate${i}`])) {
 						qualifyingCircuitIds.add(circuit.id);
 						break;
 					}
@@ -3011,7 +3015,10 @@ function Reports() {
 									color: theme === "light" ? "#555555" : "inherit",
 								}}
 							>
-								Showing {qualifyingCount} tower{qualifyingCount !== 1 ? "s" : ""} expiring within the next {daysToNotify} days across {siteCount} site{siteCount !== 1 ? "s" : ""}
+								{towerRenewalDays === "all"
+									? `Showing all ${siteCount} site${siteCount !== 1 ? "s" : ""} with towers`
+									: `Showing ${qualifyingCount} tower${qualifyingCount !== 1 ? "s" : ""} expiring within the next ${daysToNotify} days across ${siteCount} site${siteCount !== 1 ? "s" : ""}`
+								}
 							</div>
 						</div>
 						<div
@@ -3035,6 +3042,9 @@ function Reports() {
 									const value = e.target.value;
 									if (value === "other") {
 										setTowerRenewalDays("other");
+									} else if (value === "all") {
+										setTowerRenewalDays("all");
+										setCustomTowerRenewalDays("");
 									} else {
 										setTowerRenewalDays(Number(value));
 										setCustomTowerRenewalDays(""); // Clear custom when selecting preset
@@ -3046,6 +3056,7 @@ function Reports() {
 								<option value={90}>90 Days</option>
 								<option value={120}>120 Days</option>
 								<option value="other">Other</option>
+								<option value="all">All Sites</option>
 							</select>
 							{towerRenewalDays === "other" && (
 								<>
@@ -3311,8 +3322,10 @@ function Reports() {
 									fontStyle: "italic",
 								}}
 							>
-								Great news! No towers are expiring within the next{" "}
-								{daysToNotify} days
+								{towerRenewalDays === "all"
+									? "No sites with towers found"
+									: `Great news! No towers are expiring within the next ${daysToNotify} days`
+								}
 							</div>
 						)}
 					</div>
