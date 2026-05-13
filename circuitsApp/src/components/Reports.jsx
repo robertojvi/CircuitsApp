@@ -2979,8 +2979,13 @@ function Reports() {
 								id="towerRenewalDaysFilter"
 								value={towerRenewalDays}
 								onChange={(e) => {
-									setTowerRenewalDays(Number(e.target.value));
-									setCustomTowerRenewalDays(""); // Clear custom when selecting preset
+									const value = e.target.value;
+									if (value === "other") {
+										setTowerRenewalDays("other");
+									} else {
+										setTowerRenewalDays(Number(value));
+										setCustomTowerRenewalDays(""); // Clear custom when selecting preset
+									}
 								}}
 								style={themedSelectStyle}
 							>
