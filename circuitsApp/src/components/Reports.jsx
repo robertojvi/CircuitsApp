@@ -83,6 +83,8 @@ function Reports() {
 	const [renewalNoticeTimeRange, setRenewalNoticeTimeRange] = useState("All");
 	const [customRenewalNoticeDays, setCustomRenewalNoticeDays] = useState("");
 	const [renewalTermFilter, setRenewalTermFilter] = useState("All");
+	const [towerRenewalDays, setTowerRenewalDays] = useState(60); // Default to 60 days
+	const [customTowerRenewalDays, setCustomTowerRenewalDays] = useState(""); // For custom days input
 	const AGGREGATOR_NA_FILTER = "__NA__";
 	const [expiredCircuitsSortConfig, setExpiredCircuitsSortConfig] = useState({
 		key: "expirationDate",
@@ -96,6 +98,7 @@ function Reports() {
 			selectedMenu === "Renewal Notice Report" ||
 			selectedMenu === "Expired Circuits" ||
 			selectedMenu === "Tower Report" ||
+			selectedMenu === "Tower Renewal Notice Report" ||
 			selectedMenu === "New Build Sites Report"
 		) {
 			fetchCircuits();
@@ -942,6 +945,104 @@ function Reports() {
 		color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 		fontSize: "14px",
 		cursor: "pointer",
+	};
+
+	// Helper function to get towers that need renewal notification
+	const getTowerRenewalNoticeData = () => {
+		const daysToCheck = customTowerRenewalDays
+			? parseInt(customTowerRenewalDays, 10)
+			: towerRenewalDays;
+
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		const notificationDate = new Date(today);
+		notificationDate.setDate(today.getDate() + daysToCheck);
+
+		const towerRenewalData = [];
+
+		circuits.forEach((circuit) => {
+			if (circuit.hasTower) {
+				const numTowers = parseInt(circuit.numberOfTowers) || 0;
+				for (let i = 1; i <= numTowers; i++) {
+					const towerExpirationDate = circuit[`towerExpirationDate${i}`];
+					if (towerExpirationDate) {
+						const expDate = new Date(towerExpirationDate);
+						expDate.setHours(0, 0, 0, 0);
+
+						// Check if expiration date is between today and the notification date
+						if (expDate >= today && expDate <= notificationDate) {
+							towerRenewalData.push({
+								circuit,
+								towerNumber: i,
+								towerProvider: circuit[`towerProvider${i}`] || "N/A",
+								towerInstallDate: circuit[`towerInstallDate${i}`] || "N/A",
+								towerExpirationDate: towerExpirationDate,
+								towerMonthlyCost: circuit[`towerMonthlyCost${i}`] || "0.00",
+								daysUntilExpiration:
+									getDaysUntilExpiration(towerExpirationDate),
+							});
+						}
+					}
+				}
+			}
+		});
+
+		// Sort by days until expiration (ascending)
+		return towerRenewalData.sort(
+			(a, b) => a.daysUntilExpiration - b.daysUntilExpiration,
+		);
+	};
+
+	const downloadTowerRenewalNoticeAsExcel = () => {
+		const towerRenewalData = getTowerRenewalNoticeData();
+
+		if (towerRenewalData.length === 0) {
+			alert("No towers to export");
+			return;
+		}
+
+		const excelData = towerRenewalData.map((row) => {
+			const excelRow = {
+				"Venue Name": row.circuit.site?.name || "N/A",
+				Address: formatSiteAddress(row.circuit.site),
+				"Tower Number": row.towerNumber,
+				"Tower Provider": row.towerProvider,
+				"Install Date": formatDate(row.towerInstallDate),
+				"Expiration Date": formatDate(row.towerExpirationDate),
+				"Days Until Expiration": row.daysUntilExpiration,
+			};
+
+			if (user?.role !== "NOC") {
+				excelRow["Monthly Cost"] =
+					typeof row.towerMonthlyCost === "number"
+						? `$${row.towerMonthlyCost.toFixed(2)}`
+						: `$${parseFloat(row.towerMonthlyCost).toFixed(2)}`;
+			}
+
+			return excelRow;
+		});
+
+		const workbook = XLSX.utils.book_new();
+		const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+		worksheet["!cols"] = [
+			{ wch: 24 },
+			{ wch: 40 },
+			{ wch: 14 },
+			{ wch: 18 },
+			{ wch: 14 },
+			{ wch: 16 },
+			{ wch: 20 },
+			...(user?.role !== "NOC" ? [{ wch: 14 }] : []),
+		];
+
+		XLSX.utils.book_append_sheet(workbook, worksheet, "Tower Renewal Notice");
+
+		const timestamp = new Date().toISOString().split("T")[0];
+		const filename = `Tower_Renewal_Notice_${timestamp}.xlsx`;
+
+		XLSX.writeFile(workbook, filename);
 	};
 
 	const renderContent = () => {
@@ -2783,6 +2884,283 @@ function Reports() {
 					</div>
 				</div>
 			);
+		} else if (selectedMenu === "Tower Renewal Notice Report") {
+			const towerRenewalData = getTowerRenewalNoticeData();
+			const daysToNotify = customTowerRenewalDays
+				? parseInt(customTowerRenewalDays)
+				: towerRenewalDays;
+
+			return (
+				<div style={{ width: "100%" }}>
+					<div
+						style={{
+							marginBottom: "20px",
+							display: "flex",
+							gap: "15px",
+							alignItems: "center",
+						}}
+					>
+						<button
+							onClick={() =>
+								window.open(
+									"https://app.asana.com/1/943649575918213/project/1209991618007270/board/1209993686905714",
+									"_blank",
+								)
+							}
+							style={{
+								padding: "10px 20px",
+								border: "none",
+								borderRadius: "4px",
+								backgroundColor: "var(--color-warning)",
+								color: "var(--color-text-dark)",
+								fontSize: "14px",
+								fontWeight: "bold",
+								cursor: "pointer",
+								display: "flex",
+								alignItems: "center",
+								gap: "8px",
+							}}
+						>
+							📋 AccessParks Circuits
+						</button>
+					</div>
+
+					<div
+						style={{
+							marginBottom: "20px",
+							backgroundColor:
+								theme === "light" ? "#f5f5f5" : "var(--color-dark-bg)",
+							padding: "15px 20px",
+							borderRadius: "4px",
+							color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+							display: "flex",
+							justifyContent: "space-between",
+							alignItems: "center",
+							flexWrap: "wrap",
+							gap: "10px",
+						}}
+					>
+						<div>
+							<h2
+								style={{
+									margin: 0,
+									fontSize: "18px",
+									color: theme === "light" ? "#2c3e50" : "inherit",
+								}}
+							>
+								Tower Renewal Notice Report
+							</h2>
+							<div
+								style={{
+									fontSize: "14px",
+									marginTop: "5px",
+									color: theme === "light" ? "#555555" : "inherit",
+								}}
+							>
+								Showing {towerRenewalData.length} towers expiring within the
+								next {daysToNotify} days
+							</div>
+						</div>
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								gap: "10px",
+								flexWrap: "wrap",
+							}}
+						>
+							<label
+								htmlFor="towerRenewalDaysFilter"
+								style={themedFilterLabelStyle}
+							>
+								Days Before Expiration:
+							</label>
+							<select
+								id="towerRenewalDaysFilter"
+								value={towerRenewalDays}
+								onChange={(e) => {
+									setTowerRenewalDays(Number(e.target.value));
+									setCustomTowerRenewalDays(""); // Clear custom when selecting preset
+								}}
+								style={themedSelectStyle}
+							>
+								<option value={60}>60 Days</option>
+								<option value={90}>90 Days</option>
+								<option value={120}>120 Days</option>
+								<option value="other">Other</option>
+							</select>
+							{towerRenewalDays === "other" && (
+								<>
+									<label
+										htmlFor="customTowerDays"
+										style={themedFilterLabelStyle}
+									>
+										Custom (days):
+									</label>
+									<input
+										id="customTowerDays"
+										type="number"
+										min="1"
+										max="365"
+										value={customTowerRenewalDays}
+										onChange={(e) => setCustomTowerRenewalDays(e.target.value)}
+										placeholder="Enter days"
+										style={{
+											...themedSelectStyle,
+											width: "80px",
+										}}
+									/>
+								</>
+							)}
+							<button
+								onClick={downloadTowerRenewalNoticeAsExcel}
+								style={{
+									padding: "8px 16px",
+									border: "none",
+									borderRadius: "4px",
+									backgroundColor: "var(--color-success)",
+									color: "var(--color-text-light)",
+									fontSize: "14px",
+									fontWeight: "bold",
+									cursor: "pointer",
+									display: "flex",
+									alignItems: "center",
+									gap: "6px",
+									transition: "background-color 0.3s",
+								}}
+								onMouseEnter={(e) => {
+									e.target.style.backgroundColor = "var(--color-success)";
+								}}
+								onMouseLeave={(e) => {
+									e.target.style.backgroundColor = "var(--color-success)";
+								}}
+							>
+								📥 Download Excel
+							</button>
+						</div>
+					</div>
+
+					<div
+						style={{
+							backgroundColor: "var(--color-surface)",
+							padding: "20px",
+							borderRadius: "8px",
+							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+							margin: "0 auto",
+							maxWidth: "1400px",
+							width: "100%",
+							overflowX: "auto",
+						}}
+					>
+						{towerRenewalData.length > 0 ? (
+							<table style={{ width: "100%", borderCollapse: "collapse" }}>
+								<thead>
+									<tr
+										style={{
+											background:
+												"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
+											borderBottom: "3px solid var(--color-primary)",
+											color: "var(--color-text-light)",
+										}}
+									>
+										<th style={tableHeaderStyle}>Venue Name</th>
+										<th style={tableHeaderStyle}>Address</th>
+										<th style={tableHeaderStyle}>Tower #</th>
+										<th style={tableHeaderStyle}>Provider</th>
+										<th style={tableHeaderStyle}>Install Date</th>
+										<th style={tableHeaderStyle}>Expiration Date</th>
+										<th style={tableHeaderStyle}>Days Until Expiration</th>
+										{user?.role !== "NOC" && (
+											<th style={tableHeaderStyle}>Monthly Cost</th>
+										)}
+									</tr>
+								</thead>
+								<tbody>
+									{towerRenewalData.map((row, index) => {
+										const daysValue = row.daysUntilExpiration;
+										let urgencyColor = "#10B981"; // Green for > 30 days
+
+										if (daysValue <= 7) {
+											urgencyColor = "#EF4444"; // Red for 7 days or less
+										} else if (daysValue <= 14) {
+											urgencyColor = "#F59E0B"; // Orange for 14 days or less
+										} else if (daysValue <= 30) {
+											urgencyColor = "#FBBF24"; // Yellow for 30 days or less
+										}
+
+										return (
+											<tr
+												key={`${row.circuit.id}-tower-${row.towerNumber}`}
+												style={{
+													borderBottom: "1px solid var(--color-border-light)",
+													backgroundColor:
+														index % 2 === 0
+															? "var(--color-surface)"
+															: "var(--color-surface-light)",
+												}}
+											>
+												<td style={{ ...tableCellStyle, fontWeight: "600" }}>
+													{row.circuit.site?.name}
+												</td>
+												<td style={tableCellStyle}>
+													{[
+														row.circuit.site?.address,
+														row.circuit.site?.city,
+														row.circuit.site?.state,
+														row.circuit.site?.zipCode,
+													]
+														.filter(Boolean)
+														.join(", ")}
+												</td>
+												<td style={tableCellStyle}>{row.towerNumber}</td>
+												<td style={tableCellStyle}>{row.towerProvider}</td>
+												<td style={tableCellStyle}>
+													{formatDate(row.towerInstallDate)}
+												</td>
+												<td style={{ ...tableCellStyle, fontWeight: "500" }}>
+													{formatDate(row.towerExpirationDate)}
+												</td>
+												<td style={tableCellStyle}>
+													<span
+														style={{
+															padding: "4px 8px",
+															borderRadius: "4px",
+															fontSize: "12px",
+															fontWeight: "bold",
+															backgroundColor: urgencyColor,
+															color: "var(--color-text-light)",
+														}}
+													>
+														{daysValue} {daysValue === 1 ? "day" : "days"}
+													</span>
+												</td>
+												{user?.role !== "NOC" && (
+													<td style={tableCellStyle}>
+														${parseFloat(row.towerMonthlyCost).toFixed(2)}
+													</td>
+												)}
+											</tr>
+										);
+									})}
+								</tbody>
+							</table>
+						) : (
+							<div
+								style={{
+									textAlign: "center",
+									padding: "30px",
+									color:
+										theme === "light" ? "#555555" : "var(--color-text-light)",
+									fontStyle: "italic",
+								}}
+							>
+								Great news! No towers are expiring within the next{" "}
+								{daysToNotify} days
+							</div>
+						)}
+					</div>
+				</div>
+			);
 		} else if (selectedMenu === "New Build Sites Report") {
 			const newBuildSites = getNewBuildSites();
 
@@ -3626,6 +4004,7 @@ function Reports() {
 						"Renewal Notice Report",
 						"Expired Circuits",
 						"Tower Report",
+						"Tower Renewal Notice Report",
 						"New Build Sites Report",
 					].map((item) => (
 						<li
