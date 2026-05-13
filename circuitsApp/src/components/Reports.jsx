@@ -959,40 +959,57 @@ function Reports() {
 		const notificationDate = new Date(today);
 		notificationDate.setDate(today.getDate() + daysToCheck);
 
-		const towerRenewalData = [];
+		const isQualifyingTower = (expirationDate) => {
+			if (!expirationDate) return false;
+			const expDate = new Date(expirationDate);
+			expDate.setHours(0, 0, 0, 0);
+			return expDate >= today && expDate <= notificationDate;
+		};
 
+		// Find circuits that have at least one qualifying tower
+		const qualifyingCircuitIds = new Set();
 		circuits.forEach((circuit) => {
 			if (circuit.hasTower) {
 				const numTowers = parseInt(circuit.numberOfTowers) || 0;
 				for (let i = 1; i <= numTowers; i++) {
-					const towerExpirationDate = circuit[`towerExpirationDate${i}`];
-					if (towerExpirationDate) {
-						const expDate = new Date(towerExpirationDate);
-						expDate.setHours(0, 0, 0, 0);
-
-						// Check if expiration date is between today and the notification date
-						if (expDate >= today && expDate <= notificationDate) {
-							towerRenewalData.push({
-								circuit,
-								towerNumber: i,
-								towerProvider: circuit[`towerProvider${i}`] || "N/A",
-								towerInstallDate: circuit[`towerInstallDate${i}`] || "N/A",
-								towerExpirationDate: towerExpirationDate,
-								towerRenewalNoticeDate: circuit[`towerRenewalNoticeDate${i}`] || null,
-								towerMonthlyCost: circuit[`towerMonthlyCost${i}`] || "0.00",
-								daysUntilExpiration:
-									getDaysUntilExpiration(towerExpirationDate),
-							});
-						}
+					if (isQualifyingTower(circuit[`towerExpirationDate${i}`])) {
+						qualifyingCircuitIds.add(circuit.id);
+						break;
 					}
 				}
 			}
 		});
 
-		// Sort by days until expiration (ascending)
-		return towerRenewalData.sort(
-			(a, b) => a.daysUntilExpiration - b.daysUntilExpiration,
-		);
+		// Include ALL towers for qualifying circuits
+		const towerRenewalData = [];
+		circuits.forEach((circuit) => {
+			if (qualifyingCircuitIds.has(circuit.id)) {
+				const numTowers = parseInt(circuit.numberOfTowers) || 0;
+				for (let i = 1; i <= numTowers; i++) {
+					const towerExpirationDate = circuit[`towerExpirationDate${i}`];
+					towerRenewalData.push({
+						circuit,
+						towerNumber: i,
+						towerProvider: circuit[`towerProvider${i}`] || "N/A",
+						towerInstallDate: circuit[`towerInstallDate${i}`] || "N/A",
+						towerExpirationDate: towerExpirationDate,
+						towerRenewalNoticeDate: circuit[`towerRenewalNoticeDate${i}`] || null,
+						towerMonthlyCost: circuit[`towerMonthlyCost${i}`] || "0.00",
+						daysUntilExpiration: getDaysUntilExpiration(towerExpirationDate),
+						isQualifying: isQualifyingTower(towerExpirationDate),
+					});
+				}
+			}
+		});
+
+		// Sort by site name, then tower number
+		return towerRenewalData.sort((a, b) => {
+			const nameA = a.circuit.site?.name?.toLowerCase() || "";
+			const nameB = b.circuit.site?.name?.toLowerCase() || "";
+			const nameCompare = nameA.localeCompare(nameB);
+			if (nameCompare !== 0) return nameCompare;
+			return a.towerNumber - b.towerNumber;
+		});
 	};
 
 	const downloadTowerRenewalNoticeAsExcel = () => {
@@ -1012,14 +1029,15 @@ function Reports() {
 				"Install Date": formatDate(row.towerInstallDate),
 				"Expiration Date": formatDate(row.towerExpirationDate),
 				"Renewal Notice Date": formatDate(row.towerRenewalNoticeDate),
-				"Days Until Expiration": row.daysUntilExpiration,
+				"Days Until Expiration": typeof row.daysUntilExpiration === "number" ? row.daysUntilExpiration : "N/A",
+				Status: row.isQualifying ? "Expiring Soon" : "",
 			};
 
 			if (user?.role !== "NOC") {
 				excelRow["Monthly Cost"] =
 					typeof row.towerMonthlyCost === "number"
 						? `$${row.towerMonthlyCost.toFixed(2)}`
-						: `$${parseFloat(row.towerMonthlyCost).toFixed(2)}`;
+						: `$${parseFloat(row.towerMonthlyCost || 0).toFixed(2)}`;
 			}
 
 			return excelRow;
@@ -1037,6 +1055,7 @@ function Reports() {
 			{ wch: 16 },
 			{ wch: 20 },
 			{ wch: 20 },
+			{ wch: 14 },
 			...(user?.role !== "NOC" ? [{ wch: 14 }] : []),
 		];
 
@@ -2893,6 +2912,38 @@ function Reports() {
 				? parseInt(customTowerRenewalDays)
 				: towerRenewalDays;
 
+			// Group towers by circuit
+			const towerSiteGroups = {};
+			towerRenewalData.forEach((row) => {
+				const circuitId = row.circuit.id;
+				if (!towerSiteGroups[circuitId]) {
+					towerSiteGroups[circuitId] = { circuit: row.circuit, towers: [] };
+				}
+				towerSiteGroups[circuitId].towers.push(row);
+			});
+			const qualifyingCount = towerRenewalData.filter((r) => r.isQualifying).length;
+			const siteCount = Object.keys(towerSiteGroups).length;
+
+			const towerRenewalSiteHeaderStyle = {
+				backgroundColor: theme === "light" ? "#f5f5f5" : "var(--color-dark-bg)",
+				color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+				padding: "14px 12px",
+				fontWeight: "700",
+				fontSize: "15px",
+				textAlign: "left",
+				borderBottom: "3px solid var(--color-primary)",
+			};
+
+			const towerRenewalSubHeaderStyle = {
+				backgroundColor: theme === "light" ? "#f5f5f5" : "var(--color-dark-bg-secondary)",
+				color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+				padding: "10px 12px",
+				fontWeight: "600",
+				fontSize: "13px",
+				textAlign: "left",
+				borderLeft: "4px solid var(--color-primary)",
+			};
+
 			return (
 				<div style={{ width: "100%" }}>
 					<div
@@ -2960,8 +3011,7 @@ function Reports() {
 									color: theme === "light" ? "#555555" : "inherit",
 								}}
 							>
-								Showing {towerRenewalData.length} towers expiring within the
-								next {daysToNotify} days
+								Showing {qualifyingCount} tower{qualifyingCount !== 1 ? "s" : ""} expiring within the next {daysToNotify} days across {siteCount} site{siteCount !== 1 ? "s" : ""}
 							</div>
 						</div>
 						<div
@@ -3060,110 +3110,197 @@ function Reports() {
 							overflowX: "auto",
 						}}
 					>
-						{towerRenewalData.length > 0 ? (
-							<table style={{ width: "100%", borderCollapse: "collapse" }}>
-								<thead>
-									<tr
+						{siteCount > 0 ? (
+							<div>
+								{Object.values(towerSiteGroups).map((siteGroup, siteIndex) => (
+									<div
+										key={siteGroup.circuit.id}
 										style={{
-											background:
-												"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
-											borderBottom: "3px solid var(--color-primary)",
-											color: "var(--color-text-light)",
+											marginBottom: "24px",
+											borderRadius: "6px",
+											overflow: "hidden",
+											border: "2px solid var(--color-primary)",
+											boxShadow:
+												siteIndex % 2 === 0
+													? "0 2px 6px rgba(52, 152, 219, 0.15)"
+													: "0 2px 6px rgba(52, 73, 94, 0.1)",
 										}}
 									>
-										<th style={tableHeaderStyle}>Venue Name</th>
-										<th style={tableHeaderStyle}>Address</th>
-										<th style={tableHeaderStyle}>Tower #</th>
-										<th style={tableHeaderStyle}>Provider</th>
-										<th style={tableHeaderStyle}>Install Date</th>
-										<th style={tableHeaderStyle}>Expiration Date</th>
-										<th style={tableHeaderStyle}>Renewal Notice Date</th>
-										<th style={tableHeaderStyle}>Days Until Expiration</th>
-										{user?.role !== "NOC" && (
-											<th style={tableHeaderStyle}>Monthly Cost</th>
-										)}
-									</tr>
-								</thead>
-								<tbody>
-									{towerRenewalData.map((row, index) => {
-										const daysValue = row.daysUntilExpiration;
-										let urgencyColor = "#10B981"; // Green for > 30 days
+										{/* Site Header */}
+										<div style={towerRenewalSiteHeaderStyle}>
+											📍 {siteGroup.circuit.site?.name || "N/A"}
+										</div>
 
-										if (daysValue <= 7) {
-											urgencyColor = "#EF4444"; // Red for 7 days or less
-										} else if (daysValue <= 14) {
-											urgencyColor = "#F59E0B"; // Orange for 14 days or less
-										} else if (daysValue <= 30) {
-											urgencyColor = "#FBBF24"; // Yellow for 30 days or less
-										}
-
-										return (
-											<tr
-												key={`${row.circuit.id}-tower-${row.towerNumber}`}
-												style={{
-													borderBottom: "1px solid var(--color-border-light)",
-													backgroundColor:
-														index % 2 === 0
-															? "var(--color-surface)"
-															: "var(--color-surface-light)",
-												}}
-											>
-												<td style={{ ...tableCellStyle, fontWeight: "600" }}>
-													{row.circuit.site?.name}
-												</td>
-												<td style={tableCellStyle}>
-													{[
-														row.circuit.site?.address,
-														row.circuit.site?.city,
-														row.circuit.site?.state,
-														row.circuit.site?.zipCode,
-													]
-														.filter(Boolean)
-														.join(", ")}
-												</td>
-												<td style={tableCellStyle}>{row.towerNumber}</td>
-												<td style={tableCellStyle}>{row.towerProvider}</td>
-												<td style={tableCellStyle}>
-													{formatDate(row.towerInstallDate)}
-												</td>
-												<td style={{ ...tableCellStyle, fontWeight: "500" }}>
-													{formatDate(row.towerExpirationDate)}
-												</td>
-												<td
+										{/* Site Details */}
+										<div
+											style={{
+												backgroundColor:
+													theme === "light"
+														? "#f0f2f5"
+														: "var(--color-dark-bg-secondary)",
+												padding: "12px 14px",
+												display: "grid",
+												gridTemplateColumns:
+													"repeat(auto-fit, minmax(200px, 1fr))",
+												gap: "12px",
+												fontSize: "13px",
+												color:
+													theme === "light"
+														? "#2c3e50"
+														: "var(--color-text-light)",
+											}}
+										>
+											<div>
+												<span style={{ fontWeight: "600" }}>Address: </span>
+												<span>{formatSiteAddress(siteGroup.circuit.site)}</span>
+											</div>
+											<div>
+												<span style={{ fontWeight: "600" }}>Provider: </span>
+												<span>{siteGroup.circuit.provider?.name || "N/A"}</span>
+											</div>
+											<div>
+												<span style={{ fontWeight: "600" }}>Total Towers: </span>
+												<span
 													style={{
-														...tableCellStyle,
-														fontWeight: "600",
-														color: "#1d4ed8",
+														backgroundColor: "var(--color-primary)",
+														color: "var(--color-text-light)",
+														padding: "2px 8px",
+														borderRadius: "4px",
+														fontWeight: "bold",
+														display: "inline-block",
 													}}
 												>
-													{row.towerRenewalNoticeDate
-														? formatDate(row.towerRenewalNoticeDate)
-														: "N/A"}
-												</td>
-												<td style={tableCellStyle}>
-													<span
-														style={{
-															padding: "4px 8px",
-															borderRadius: "4px",
-															fontSize: "12px",
-															fontWeight: "bold",
-															backgroundColor: urgencyColor,
-															color: "var(--color-text-light)",
-														}}
-													>
-														{daysValue} {daysValue === 1 ? "day" : "days"}
-													</span>
-												</td>
-												{user?.role !== "NOC" && (
-													<td style={tableCellStyle}>
-														${parseFloat(row.towerMonthlyCost).toFixed(2)}
-													</td>
-												)}
-											</tr>
-										);
-									})}
-								</tbody>
-							</table>
+													{siteGroup.circuit.numberOfTowers || "N/A"}
+												</span>
+											</div>
+										</div>
+
+										{/* Tower Details Table */}
+										<table style={{ width: "100%", borderCollapse: "collapse" }}>
+											<thead>
+												<tr style={towerRenewalSubHeaderStyle}>
+													<td style={{ ...towerRenewalSubHeaderStyle, minWidth: "70px" }}>Tower #</td>
+													<td style={{ ...towerRenewalSubHeaderStyle, minWidth: "120px" }}>Provider</td>
+													<td style={{ ...towerRenewalSubHeaderStyle, minWidth: "120px" }}>Install Date</td>
+													<td style={{ ...towerRenewalSubHeaderStyle, minWidth: "130px" }}>Expiration Date</td>
+													<td style={{ ...towerRenewalSubHeaderStyle, minWidth: "150px" }}>Renewal Notice Date</td>
+													<td style={{ ...towerRenewalSubHeaderStyle, minWidth: "130px" }}>Days Until Expiration</td>
+													{user?.role !== "NOC" && (
+														<td style={{ ...towerRenewalSubHeaderStyle, minWidth: "110px" }}>Monthly Cost</td>
+													)}
+												</tr>
+											</thead>
+											<tbody>
+												{siteGroup.towers.map((row, towerIndex) => {
+													const daysValue = row.daysUntilExpiration;
+													let urgencyColor = "#10B981";
+													if (typeof daysValue === "number") {
+														if (daysValue <= 7) urgencyColor = "#EF4444";
+														else if (daysValue <= 14) urgencyColor = "#F59E0B";
+														else if (daysValue <= 30) urgencyColor = "#FBBF24";
+													}
+
+													return (
+														<tr
+															key={`${row.circuit.id}-tower-${row.towerNumber}`}
+															style={{
+																borderBottom:
+																	towerIndex < siteGroup.towers.length - 1
+																		? "1px solid #dee2e6"
+																		: "none",
+																backgroundColor: row.isQualifying
+																	? theme === "light"
+																		? "#fffbeb"
+																		: "rgba(245, 158, 11, 0.08)"
+																	: towerIndex % 2 === 0
+																		? "var(--color-dark-bg)"
+																		: "var(--color-dark-bg-secondary)",
+															}}
+														>
+															<td
+																style={{
+																	...tableCellStyle,
+																	fontWeight: "700",
+																	color: "var(--color-primary)",
+																	fontSize: "15px",
+																}}
+															>
+																Tower {row.towerNumber}
+																{row.isQualifying && (
+																	<span
+																		style={{
+																			marginLeft: "6px",
+																			fontSize: "11px",
+																			fontWeight: "bold",
+																			backgroundColor: "#f59e0b",
+																			color: "#fff",
+																			padding: "2px 6px",
+																			borderRadius: "4px",
+																		}}
+																	>
+																		Expiring Soon
+																	</span>
+																)}
+															</td>
+															<td style={{ ...tableCellStyle, fontWeight: "500" }}>
+																{row.towerProvider}
+															</td>
+															<td style={tableCellStyle}>
+																{formatDate(row.towerInstallDate)}
+															</td>
+															<td style={tableCellStyle}>
+																{formatDate(row.towerExpirationDate)}
+															</td>
+															<td
+																style={{
+																	...tableCellStyle,
+																	fontWeight: "600",
+																	color: row.towerRenewalNoticeDate ? "#1d4ed8" : "inherit",
+																}}
+															>
+																{row.towerRenewalNoticeDate
+																	? formatDate(row.towerRenewalNoticeDate)
+																	: "N/A"}
+															</td>
+															<td style={tableCellStyle}>
+																{row.isQualifying ? (
+																	<span
+																		style={{
+																			padding: "4px 8px",
+																			borderRadius: "4px",
+																			fontSize: "12px",
+																			fontWeight: "bold",
+																			backgroundColor: urgencyColor,
+																			color: "var(--color-text-light)",
+																		}}
+																	>
+																		{daysValue} {daysValue === 1 ? "day" : "days"}
+																	</span>
+																) : (
+																	<span style={{ color: "inherit", fontSize: "13px" }}>
+																		{typeof daysValue === "number" ? `${daysValue} days` : "N/A"}
+																	</span>
+																)}
+															</td>
+															{user?.role !== "NOC" && (
+																<td
+																	style={{
+																		...tableCellStyle,
+																		fontWeight: "600",
+																		color: "var(--color-success)",
+																	}}
+																>
+																	${parseFloat(row.towerMonthlyCost || 0).toFixed(2)}
+																</td>
+															)}
+														</tr>
+													);
+												})}
+											</tbody>
+										</table>
+									</div>
+								))}
+							</div>
 						) : (
 							<div
 								style={{
