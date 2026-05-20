@@ -2297,7 +2297,7 @@ function Circuits() {
 							onChange={(e) => setSearchTerm(e.target.value)}
 							className="form-input"
 							style={{
-								marginBottom: 0,
+								marginBottom: "8px",
 								fontSize: "var(--font-size-base)",
 								backgroundColor:
 									theme === "light" ? "#ffffff" : "var(--color-surface)",
@@ -2305,6 +2305,16 @@ function Circuits() {
 								border: `1px solid ${theme === "light" ? "#bdbdbd" : "var(--color-border)"}`,
 							}}
 						/>
+						<span
+							style={{
+								fontSize: "var(--font-size-sm)",
+								color: theme === "light" ? "#64748b" : "#95a5a6",
+								fontWeight: "500",
+							}}
+						>
+							{filteredCircuits.length} {filteredCircuits.length === 1 ? "circuit" : "circuits"}
+							{searchTerm && ` matching "${searchTerm}"`}
+						</span>
 					</div>
 					<table
 						style={{
