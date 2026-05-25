@@ -24,6 +24,101 @@ ChartJS.register(
 	ChartDataLabels,
 );
 
+// Renewal Analysis calculation helpers
+const raParseDate = (value) => {
+	if (!value) return null;
+	const datePart = String(value).split("T")[0];
+	const [year, month, day] = datePart.split("-").map(Number);
+	if ([year, month, day].some(Number.isNaN)) return null;
+	return new Date(year, month - 1, day);
+};
+
+const raRoundCurrency = (value) => {
+	if (!Number.isFinite(value)) return null;
+	return Math.round(value * 100) / 100;
+};
+
+const raGetStartOfNextMonth = (date) => {
+	if (!(date instanceof Date) || Number.isNaN(date.getTime())) return null;
+	return new Date(date.getFullYear(), date.getMonth() + 1, 1);
+};
+
+const raCalculateRoundedUpMonths = (startDate, endDate) => {
+	if (!(startDate instanceof Date) || !(endDate instanceof Date)) return null;
+	if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) return null;
+	if (endDate <= startDate) return 0;
+	let months =
+		(endDate.getFullYear() - startDate.getFullYear()) * 12 +
+		(endDate.getMonth() - startDate.getMonth());
+	const adjusted = new Date(startDate);
+	adjusted.setMonth(adjusted.getMonth() + months);
+	if (adjusted < endDate) months += 1;
+	return months;
+};
+
+const raBuildRenewalPreview = (circuit) => {
+	const currentMrc = Number(circuit.monthlyCost);
+	const renewalMrc = Number(circuit.renewalMonthlyCost);
+	const customerExpirationDate = raParseDate(circuit.site?.customerContractExpirationDate);
+	const renewalCircuitExpirationDate = raParseDate(circuit.renewalCircuitExpirationDate);
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+	const startOfNextMonth = raGetStartOfNextMonth(today);
+
+	const savingsDifference =
+		Number.isFinite(currentMrc) && Number.isFinite(renewalMrc)
+			? raRoundCurrency(currentMrc - renewalMrc)
+			: null;
+
+	const monthsToCustomerContractExpiration = customerExpirationDate
+		? raCalculateRoundedUpMonths(startOfNextMonth, customerExpirationDate)
+		: null;
+
+	const savingsUntilCustomerContractExpiration =
+		savingsDifference != null && monthsToCustomerContractExpiration != null
+			? raRoundCurrency(savingsDifference * monthsToCustomerContractExpiration)
+			: null;
+
+	const monthsBetweenExpirationDates =
+		customerExpirationDate && renewalCircuitExpirationDate
+			? raCalculateRoundedUpMonths(customerExpirationDate, renewalCircuitExpirationDate)
+			: null;
+
+	const costFromCustomerExpirationToRenewalExpiration =
+		Number.isFinite(renewalMrc) && monthsBetweenExpirationDates != null
+			? raRoundCurrency(renewalMrc * monthsBetweenExpirationDates)
+			: null;
+
+	const totalSavings =
+		savingsUntilCustomerContractExpiration != null &&
+		costFromCustomerExpirationToRenewalExpiration != null
+			? raRoundCurrency(
+					savingsUntilCustomerContractExpiration -
+						costFromCustomerExpirationToRenewalExpiration,
+				)
+			: null;
+
+	return {
+		savingsDifference,
+		monthsToCustomerContractExpiration,
+		savingsUntilCustomerContractExpiration,
+		costFromCustomerExpirationToRenewalExpiration,
+		totalSavings,
+	};
+};
+
+const raFormatCurrency = (value) => {
+	if (value == null || value === "") return "N/A";
+	const n = Number(value);
+	if (!Number.isFinite(n)) return "N/A";
+	return n.toLocaleString("en-US", {
+		style: "currency",
+		currency: "USD",
+		minimumFractionDigits: 2,
+		maximumFractionDigits: 2,
+	});
+};
+
 function Reports() {
 	const [selectedMenu, setSelectedMenu] = useState("Circuit Analytics");
 	const [circuits, setCircuits] = useState([]);
@@ -102,7 +197,8 @@ function Reports() {
 			selectedMenu === "Tower Report" ||
 			selectedMenu === "Tower Renewal Notice Report" ||
 			selectedMenu === "Tower Expiration Report" ||
-			selectedMenu === "New Build Sites Report"
+			selectedMenu === "New Build Sites Report" ||
+			selectedMenu === "Renewal Analysis Report"
 		) {
 			fetchCircuits();
 		}
@@ -1150,6 +1246,110 @@ function Reports() {
 		const filename = `Tower_Renewal_Notice_${timestamp}.xlsx`;
 
 		XLSX.writeFile(workbook, filename);
+	};
+
+	const getRenewalAnalysisCircuits = () =>
+		circuits
+			.filter(
+				(circuit) =>
+					circuit.renewalMonthlyCost != null ||
+					circuit.renewalCircuitExpirationDate ||
+					circuit.site?.customerContractExpirationDate,
+			)
+			.sort((a, b) =>
+				(a.site?.name || "").localeCompare(b.site?.name || "", undefined, {
+					sensitivity: "base",
+				}),
+			);
+
+	const downloadRenewalAnalysisAsExcel = () => {
+		const analysisCircuits = getRenewalAnalysisCircuits();
+		if (analysisCircuits.length === 0) {
+			alert("No renewal analysis data to export");
+			return;
+		}
+
+		const excelData = analysisCircuits.map((circuit) => {
+			const preview = raBuildRenewalPreview(circuit);
+			const row = {
+				Site: circuit.site?.name || "N/A",
+				Provider: circuit.provider?.name || "N/A",
+				Bandwidth: circuit.circuitBandwidth || "N/A",
+				Aggregator:
+					circuit.hasAggregator && circuit.aggregatorName
+						? circuit.aggregatorName
+						: "N/A",
+			};
+
+			if (user?.role !== "NOC") {
+				row["Current MRC"] =
+					circuit.monthlyCost != null
+						? `$${Number(circuit.monthlyCost).toFixed(2)}`
+						: "N/A";
+				row["Renewal MRC"] =
+					circuit.renewalMonthlyCost != null
+						? `$${Number(circuit.renewalMonthlyCost).toFixed(2)}`
+						: "N/A";
+				row["Monthly Savings"] =
+					preview.savingsDifference != null
+						? `$${preview.savingsDifference.toFixed(2)}`
+						: "N/A";
+			}
+
+			row["Circuit Expiration"] = formatDate(circuit.expirationDate);
+			row["Customer Contract Expiration"] = formatDate(
+				circuit.site?.customerContractExpirationDate,
+			);
+			row["Renewal Circuit Expiration"] = formatDate(
+				circuit.renewalCircuitExpirationDate,
+			);
+			row["Months to Customer Exp."] =
+				preview.monthsToCustomerContractExpiration != null
+					? preview.monthsToCustomerContractExpiration
+					: "N/A";
+
+			if (user?.role !== "NOC") {
+				row["Savings to Customer Exp."] =
+					preview.savingsUntilCustomerContractExpiration != null
+						? `$${preview.savingsUntilCustomerContractExpiration.toFixed(2)}`
+						: "N/A";
+				row["Cost After Customer Exp."] =
+					preview.costFromCustomerExpirationToRenewalExpiration != null
+						? `$${preview.costFromCustomerExpirationToRenewalExpiration.toFixed(2)}`
+						: "N/A";
+				row["Total Savings"] =
+					preview.totalSavings != null
+						? `$${preview.totalSavings.toFixed(2)}`
+						: "N/A";
+			}
+
+			return row;
+		});
+
+		const workbook = XLSX.utils.book_new();
+		const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+		worksheet["!cols"] = [
+			{ wch: 24 },
+			{ wch: 18 },
+			{ wch: 12 },
+			{ wch: 18 },
+			...(user?.role !== "NOC"
+				? [{ wch: 14 }, { wch: 14 }, { wch: 16 }]
+				: []),
+			{ wch: 20 },
+			{ wch: 26 },
+			{ wch: 26 },
+			{ wch: 22 },
+			...(user?.role !== "NOC"
+				? [{ wch: 22 }, { wch: 22 }, { wch: 16 }]
+				: []),
+		];
+
+		XLSX.utils.book_append_sheet(workbook, worksheet, "Renewal Analysis");
+
+		const timestamp = new Date().toISOString().split("T")[0];
+		XLSX.writeFile(workbook, `Renewal_Analysis_Report_${timestamp}.xlsx`);
 	};
 
 	const renderContent = () => {
@@ -4454,6 +4654,328 @@ function Reports() {
 			);
 		}
 
+		if (selectedMenu === "Renewal Analysis Report") {
+			const analysisCircuits = getRenewalAnalysisCircuits();
+
+			return (
+				<div style={{ width: "100%" }}>
+					<div
+						style={{
+							marginBottom: "20px",
+							backgroundColor:
+								theme === "light" ? "#f5f5f5" : "var(--color-dark-bg)",
+							padding: "15px 20px",
+							borderRadius: "4px",
+							color:
+								theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+							display: "flex",
+							justifyContent: "space-between",
+							alignItems: "center",
+							flexWrap: "wrap",
+							gap: "10px",
+						}}
+					>
+						<div>
+							<h2
+								style={{
+									margin: 0,
+									fontSize: "18px",
+									color: theme === "light" ? "#2c3e50" : "inherit",
+								}}
+							>
+								Renewal Analysis Report
+							</h2>
+							<div
+								style={{
+									fontSize: "14px",
+									marginTop: "5px",
+									color: theme === "light" ? "#555555" : "inherit",
+								}}
+							>
+								Showing {analysisCircuits.length} circuit
+								{analysisCircuits.length !== 1 ? "s" : ""} with saved renewal
+								analysis data
+							</div>
+						</div>
+						<button
+							onClick={downloadRenewalAnalysisAsExcel}
+							style={{
+								padding: "8px 16px",
+								border: "none",
+								borderRadius: "4px",
+								backgroundColor: "var(--color-success)",
+								color: "var(--color-text-light)",
+								fontSize: "14px",
+								fontWeight: "bold",
+								cursor: "pointer",
+								display: "flex",
+								alignItems: "center",
+								gap: "6px",
+							}}
+						>
+							📥 Download Excel
+						</button>
+					</div>
+
+					<div
+						style={{
+							backgroundColor: "var(--color-surface)",
+							padding: "20px",
+							borderRadius: "8px",
+							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+							margin: "0 auto",
+							maxWidth: "1600px",
+							width: "100%",
+							overflowX: "auto",
+						}}
+					>
+						{analysisCircuits.length > 0 ? (
+							<table style={{ width: "100%", borderCollapse: "collapse" }}>
+								<thead>
+									<tr
+										style={{
+											background:
+												"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
+											borderBottom: "3px solid var(--color-primary)",
+											color: "var(--color-text-light)",
+										}}
+									>
+										<th style={tableHeaderStyle}>Site</th>
+										<th style={tableHeaderStyle}>Provider</th>
+										<th style={tableHeaderStyle}>Bandwidth</th>
+										<th style={tableHeaderStyle}>Aggregator</th>
+										{user?.role !== "NOC" && (
+											<>
+												<th style={tableHeaderStyle}>Current MRC</th>
+												<th style={tableHeaderStyle}>Renewal MRC</th>
+												<th style={tableHeaderStyle}>Monthly Savings</th>
+											</>
+										)}
+										<th style={tableHeaderStyle}>Circuit Expiration</th>
+										<th style={tableHeaderStyle}>Customer Contract Exp.</th>
+										<th style={tableHeaderStyle}>Renewal Circuit Exp.</th>
+										<th style={tableHeaderStyle}>Months to Cust. Exp.</th>
+										{user?.role !== "NOC" && (
+											<>
+												<th style={tableHeaderStyle}>Savings to Cust. Exp.</th>
+												<th style={tableHeaderStyle}>Cost After Cust. Exp.</th>
+												<th style={tableHeaderStyle}>Total Savings</th>
+											</>
+										)}
+									</tr>
+								</thead>
+								<tbody>
+									{analysisCircuits.map((circuit, index) => {
+										const preview = raBuildRenewalPreview(circuit);
+
+										let totalSavingsColor = null;
+										if (preview.totalSavings != null) {
+											if (preview.totalSavings > 0) totalSavingsColor = "#10B981";
+											else if (preview.totalSavings < 0)
+												totalSavingsColor = "#EF4444";
+											else totalSavingsColor = "#F59E0B";
+										}
+
+										let monthlySavingsColor = null;
+										if (preview.savingsDifference != null) {
+											if (preview.savingsDifference > 0)
+												monthlySavingsColor = "#10B981";
+											else if (preview.savingsDifference < 0)
+												monthlySavingsColor = "#EF4444";
+										}
+
+										return (
+											<tr
+												key={circuit.id}
+												style={{
+													borderBottom: "1px solid var(--color-border-light)",
+													backgroundColor:
+														index % 2 === 0
+															? "var(--color-surface)"
+															: "var(--color-surface-light)",
+												}}
+											>
+												<td
+													style={{ ...tableCellStyle, fontWeight: "600" }}
+												>
+													{circuit.site?.name || "N/A"}
+												</td>
+												<td style={tableCellStyle}>
+													{circuit.provider?.name || "N/A"}
+												</td>
+												<td style={tableCellStyle}>
+													{circuit.circuitBandwidth || "N/A"}
+												</td>
+												<td style={tableCellStyle}>
+													{circuit.hasAggregator && circuit.aggregatorName
+														? circuit.aggregatorName
+														: "N/A"}
+												</td>
+												{user?.role !== "NOC" && (
+													<>
+														<td style={tableCellStyle}>
+															{circuit.monthlyCost != null
+																? raFormatCurrency(circuit.monthlyCost)
+																: "N/A"}
+														</td>
+														<td style={tableCellStyle}>
+															{circuit.renewalMonthlyCost != null
+																? raFormatCurrency(circuit.renewalMonthlyCost)
+																: "N/A"}
+														</td>
+														<td style={tableCellStyle}>
+															{preview.savingsDifference != null ? (
+																<span
+																	style={{
+																		padding: "4px 8px",
+																		borderRadius: "4px",
+																		fontSize: "12px",
+																		fontWeight: "bold",
+																		backgroundColor: monthlySavingsColor || "transparent",
+																		color: monthlySavingsColor
+																			? "#fff"
+																			: "inherit",
+																	}}
+																>
+																	{raFormatCurrency(preview.savingsDifference)}
+																</span>
+															) : (
+																"N/A"
+															)}
+														</td>
+													</>
+												)}
+												<td style={tableCellStyle}>
+													{formatDate(circuit.expirationDate)}
+												</td>
+												<td style={tableCellStyle}>
+													{formatDate(
+														circuit.site?.customerContractExpirationDate,
+													)}
+												</td>
+												<td style={tableCellStyle}>
+													{formatDate(circuit.renewalCircuitExpirationDate)}
+												</td>
+												<td style={tableCellStyle}>
+													{preview.monthsToCustomerContractExpiration != null
+														? `${preview.monthsToCustomerContractExpiration} mo`
+														: "N/A"}
+												</td>
+												{user?.role !== "NOC" && (
+													<>
+														<td style={tableCellStyle}>
+															{raFormatCurrency(
+																preview.savingsUntilCustomerContractExpiration,
+															)}
+														</td>
+														<td style={tableCellStyle}>
+															{raFormatCurrency(
+																preview.costFromCustomerExpirationToRenewalExpiration,
+															)}
+														</td>
+														<td style={tableCellStyle}>
+															{preview.totalSavings != null ? (
+																<span
+																	style={{
+																		padding: "4px 8px",
+																		borderRadius: "4px",
+																		fontSize: "12px",
+																		fontWeight: "bold",
+																		backgroundColor: totalSavingsColor,
+																		color: "#fff",
+																	}}
+																>
+																	{raFormatCurrency(preview.totalSavings)}
+																</span>
+															) : (
+																"N/A"
+															)}
+														</td>
+													</>
+												)}
+											</tr>
+										);
+									})}
+								</tbody>
+							</table>
+						) : (
+							<div
+								style={{
+									textAlign: "center",
+									padding: "30px",
+									color:
+										theme === "light" ? "#555555" : "var(--color-text-light)",
+									fontStyle: "italic",
+								}}
+							>
+								No circuits have renewal analysis data saved yet
+							</div>
+						)}
+					</div>
+
+					{user?.role !== "NOC" && (
+						<div
+							style={{
+								marginTop: "20px",
+								padding: "15px",
+								backgroundColor: "var(--color-surface)",
+								borderRadius: "8px",
+								maxWidth: "1600px",
+								margin: "20px auto 0",
+								boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+							}}
+						>
+							<h3 style={{ marginTop: 0, color: "var(--color-text-dark)" }}>
+								Total Savings Legend
+							</h3>
+							<div style={{ display: "flex", flexWrap: "wrap", gap: "15px" }}>
+								{[
+									{
+										color: "#10B981",
+										label: "Positive — renewal saves money overall",
+									},
+									{
+										color: "#EF4444",
+										label: "Negative — renewal costs more overall",
+									},
+									{ color: "#F59E0B", label: "Break-even" },
+								].map(({ color, label }) => (
+									<div
+										key={label}
+										style={{
+											display: "flex",
+											alignItems: "center",
+											gap: "8px",
+										}}
+									>
+										<div
+											style={{
+												width: "20px",
+												height: "20px",
+												backgroundColor: color,
+												borderRadius: "4px",
+											}}
+										/>
+										<span
+											style={{
+												fontSize: "14px",
+												color:
+													theme === "light"
+														? "#2c3e50"
+														: "var(--color-text-light)",
+											}}
+										>
+											{label}
+										</span>
+									</div>
+								))}
+							</div>
+						</div>
+					)}
+				</div>
+			);
+		}
+
 		return <h1>{selectedMenu}</h1>;
 	};
 
@@ -4530,6 +5052,7 @@ function Reports() {
 						"Tower Renewal Notice Report",
 						"Tower Expiration Report",
 						"New Build Sites Report",
+						"Renewal Analysis Report",
 					].map((item) => (
 						<li
 							key={item}
