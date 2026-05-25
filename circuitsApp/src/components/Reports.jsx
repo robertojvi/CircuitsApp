@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import { Bar } from "react-chartjs-2";
@@ -125,6 +126,7 @@ function Reports() {
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const { token, user } = useAuth();
+	const navigate = useNavigate();
 	const { theme } = useTheme();
 
 	// Theme-aware color palette for charts
@@ -4697,24 +4699,45 @@ function Reports() {
 								analysis data
 							</div>
 						</div>
-						<button
-							onClick={downloadRenewalAnalysisAsExcel}
-							style={{
-								padding: "8px 16px",
-								border: "none",
-								borderRadius: "4px",
-								backgroundColor: "var(--color-success)",
-								color: "var(--color-text-light)",
-								fontSize: "14px",
-								fontWeight: "bold",
-								cursor: "pointer",
-								display: "flex",
-								alignItems: "center",
-								gap: "6px",
-							}}
-						>
-							📥 Download Excel
-						</button>
+						<div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+							<button
+								onClick={() => navigate("/renewal-analysis")}
+								style={{
+									padding: "8px 16px",
+									border: "1px solid var(--color-primary)",
+									borderRadius: "4px",
+									backgroundColor: "transparent",
+									color:
+										theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+									fontSize: "14px",
+									fontWeight: "bold",
+									cursor: "pointer",
+									display: "flex",
+									alignItems: "center",
+									gap: "6px",
+								}}
+							>
+								✏️ Edit in Renewal Analysis
+							</button>
+							<button
+								onClick={downloadRenewalAnalysisAsExcel}
+								style={{
+									padding: "8px 16px",
+									border: "none",
+									borderRadius: "4px",
+									backgroundColor: "var(--color-success)",
+									color: "var(--color-text-light)",
+									fontSize: "14px",
+									fontWeight: "bold",
+									cursor: "pointer",
+									display: "flex",
+									alignItems: "center",
+									gap: "6px",
+								}}
+							>
+								📥 Download Excel
+							</button>
+						</div>
 					</div>
 
 					<div
