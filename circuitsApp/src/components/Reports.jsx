@@ -4715,58 +4715,113 @@ function Reports() {
 		if (selectedMenu === "Renewal Analysis Report") {
 			const analysisCircuits = getRenewalAnalysisCircuits();
 
+			const raSummaryStats = (() => {
+				if (analysisCircuits.length === 0) return null;
+				let monthlySavingsTotal = 0;
+				let monthlySavingsCount = 0;
+				let totalSavingsTotal = 0;
+				let totalSavingsCount = 0;
+				analysisCircuits.forEach((c) => {
+					const p = raBuildRenewalPreview(c);
+					if (p.savingsDifference != null) {
+						monthlySavingsTotal += p.savingsDifference;
+						monthlySavingsCount++;
+					}
+					if (p.totalSavings != null) {
+						totalSavingsTotal += p.totalSavings;
+						totalSavingsCount++;
+					}
+				});
+				return {
+					monthlySavingsTotal,
+					monthlySavingsCount,
+					totalSavingsTotal,
+					totalSavingsCount,
+				};
+			})();
+
+			const raGrpHeaderStyle = (color) => ({
+				padding: "7px 14px",
+				textAlign: "center",
+				fontSize: "10px",
+				fontWeight: "700",
+				textTransform: "uppercase",
+				letterSpacing: "0.1em",
+				backgroundColor: color + "25",
+				borderBottom: `2px solid ${color}`,
+				color: color,
+				whiteSpace: "nowrap",
+			});
+
+			const raNaStyle = {
+				color: theme === "light" ? "#bbb" : "#555",
+				fontSize: "12px",
+			};
+
+			const raGroupBorder = `1px solid ${theme === "light" ? "#e0e0e0" : "var(--color-border-light)"}`;
+			const raGroupBorderHeader = `2px solid ${theme === "light" ? "#4a5568" : "var(--color-border)"}`;
+
 			return (
 				<div style={{ width: "100%" }}>
+					{/* ── Header ── */}
 					<div
 						style={{
-							marginBottom: "20px",
+							marginBottom: "16px",
 							backgroundColor:
-								theme === "light" ? "#f5f5f5" : "var(--color-dark-bg)",
-							padding: "15px 20px",
-							borderRadius: "4px",
-							color:
-								theme === "light" ? "#2c3e50" : "var(--color-text-light)",
+								theme === "light" ? "#ffffff" : "var(--color-dark-bg)",
+							padding: "16px 20px",
+							borderRadius: "8px",
+							border: `1px solid ${theme === "light" ? "#e0e0e0" : "var(--color-border)"}`,
+							boxShadow: "0 2px 6px rgba(0,0,0,0.07)",
 							display: "flex",
 							justifyContent: "space-between",
 							alignItems: "center",
 							flexWrap: "wrap",
-							gap: "10px",
+							gap: "12px",
+							color:
+								theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 						}}
 					>
 						<div>
-							<h2
-								style={{
-									margin: 0,
-									fontSize: "18px",
-									color: theme === "light" ? "#2c3e50" : "inherit",
-								}}
-							>
+							<h2 style={{ margin: 0, fontSize: "20px", fontWeight: "700" }}>
 								Renewal Analysis Report
 							</h2>
 							<div
 								style={{
-									fontSize: "14px",
-									marginTop: "5px",
-									color: theme === "light" ? "#555555" : "inherit",
+									fontSize: "13px",
+									marginTop: "4px",
+									color:
+										theme === "light"
+											? "#666"
+											: "var(--color-text-muted)",
 								}}
 							>
-								Showing {analysisCircuits.length} circuit
-								{analysisCircuits.length !== 1 ? "s" : ""} with saved renewal
-								analysis data
+								{analysisCircuits.length === 0
+									? "No circuits with saved renewal data"
+									: `${analysisCircuits.length} circuit${analysisCircuits.length !== 1 ? "s" : ""} with saved renewal analysis data`}
 							</div>
 						</div>
-						<div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+						<div
+							style={{
+								display: "flex",
+								gap: "10px",
+								flexWrap: "wrap",
+								alignItems: "center",
+							}}
+						>
 							<button
 								onClick={() => navigate("/renewal-analysis")}
 								style={{
 									padding: "8px 16px",
 									border: "1px solid var(--color-primary)",
-									borderRadius: "4px",
+									borderRadius: "6px",
 									backgroundColor: "transparent",
 									color:
-										theme === "light" ? "#2c3e50" : "var(--color-text-light)",
-									fontSize: "14px",
-									fontWeight: "bold",
+										theme === "light"
+											? "var(--color-primary)"
+											: "var(--color-text-light)",
+									fontSize: "13px",
+									fontWeight: "600",
 									cursor: "pointer",
 									display: "flex",
 									alignItems: "center",
@@ -4780,11 +4835,11 @@ function Reports() {
 								style={{
 									padding: "8px 16px",
 									border: "none",
-									borderRadius: "4px",
+									borderRadius: "6px",
 									backgroundColor: "var(--color-success)",
-									color: "var(--color-text-light)",
-									fontSize: "14px",
-									fontWeight: "bold",
+									color: "#fff",
+									fontSize: "13px",
+									fontWeight: "600",
 									cursor: "pointer",
 									display: "flex",
 									alignItems: "center",
@@ -4796,21 +4851,176 @@ function Reports() {
 						</div>
 					</div>
 
+					{/* ── Summary stat cards (NOC-gated) ── */}
+					{user?.role !== "NOC" && raSummaryStats && analysisCircuits.length > 0 && (
+						<div
+							style={{
+								display: "grid",
+								gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))",
+								gap: "12px",
+								marginBottom: "16px",
+							}}
+						>
+							{[
+								{
+									label: "Circuits Analyzed",
+									value: String(analysisCircuits.length),
+									sub: "with saved data",
+									color: "#3B82F6",
+								},
+								{
+									label: "Full Analyses",
+									value: String(raSummaryStats.totalSavingsCount),
+									sub: "complete calculations",
+									color: "#8B5CF6",
+								},
+								{
+									label: "Total Monthly Savings",
+									value: raFormatCurrency(raSummaryStats.monthlySavingsTotal),
+									sub: `across ${raSummaryStats.monthlySavingsCount} circuits`,
+									color:
+										raSummaryStats.monthlySavingsTotal >= 0
+											? "#10B981"
+											: "#EF4444",
+								},
+								{
+									label: "Total Projected Savings",
+									value: raFormatCurrency(raSummaryStats.totalSavingsTotal),
+									sub: `across ${raSummaryStats.totalSavingsCount} circuits`,
+									color:
+										raSummaryStats.totalSavingsTotal > 0
+											? "#10B981"
+											: raSummaryStats.totalSavingsTotal < 0
+												? "#EF4444"
+												: "#F59E0B",
+								},
+							].map(({ label, value, sub, color }) => (
+								<div
+									key={label}
+									style={{
+										backgroundColor:
+											theme === "light"
+												? "#ffffff"
+												: "var(--color-dark-bg)",
+										border: `1px solid ${theme === "light" ? "#e0e0e0" : "var(--color-border)"}`,
+										borderLeft: `4px solid ${color}`,
+										borderRadius: "8px",
+										padding: "14px 16px",
+										boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+									}}
+								>
+									<div
+										style={{
+											fontSize: "11px",
+											fontWeight: "700",
+											textTransform: "uppercase",
+											letterSpacing: "0.06em",
+											color:
+												theme === "light"
+													? "#888"
+													: "var(--color-text-muted)",
+											marginBottom: "6px",
+										}}
+									>
+										{label}
+									</div>
+									<div
+										style={{
+											fontSize: "20px",
+											fontWeight: "700",
+											color,
+											lineHeight: 1.2,
+											fontVariantNumeric: "tabular-nums",
+										}}
+									>
+										{value}
+									</div>
+									<div
+										style={{
+											fontSize: "12px",
+											color:
+												theme === "light"
+													? "#999"
+													: "var(--color-text-muted)",
+											marginTop: "4px",
+										}}
+									>
+										{sub}
+									</div>
+								</div>
+							))}
+						</div>
+					)}
+
+					{/* ── Table ── */}
 					<div
 						style={{
-							backgroundColor: "var(--color-surface)",
-							padding: "20px",
-							borderRadius: "8px",
-							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-							margin: "0 auto",
-							maxWidth: "1600px",
-							width: "100%",
+							backgroundColor:
+								theme === "light"
+									? "#ffffff"
+									: "var(--color-dark-bg-secondary)",
+							borderRadius: "10px",
+							boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+							border: `1px solid ${theme === "light" ? "#e0e0e0" : "var(--color-border)"}`,
 							overflowX: "auto",
 						}}
 					>
 						{analysisCircuits.length > 0 ? (
-							<table style={{ width: "100%", borderCollapse: "collapse" }}>
+							<table
+								style={{
+									width: "100%",
+									borderCollapse: "collapse",
+									minWidth: "860px",
+								}}
+							>
 								<thead>
+									{/* Group header row */}
+									<tr>
+										<th colSpan={4} style={raGrpHeaderStyle("#3B82F6")}>
+											Circuit
+										</th>
+										{user?.role !== "NOC" && (
+											<th
+												colSpan={3}
+												style={{
+													...raGrpHeaderStyle("#10B981"),
+													borderLeft: raGroupBorder,
+												}}
+											>
+												Pricing
+											</th>
+										)}
+										<th
+											colSpan={4}
+											style={{
+												...raGrpHeaderStyle("#F59E0B"),
+												borderLeft: raGroupBorder,
+											}}
+										>
+											Timeline
+										</th>
+										{user?.role !== "NOC" && (
+											<th
+												colSpan={3}
+												style={{
+													...raGrpHeaderStyle("#8B5CF6"),
+													borderLeft: raGroupBorder,
+												}}
+											>
+												Analysis
+											</th>
+										)}
+										<th
+											colSpan={1}
+											style={{
+												...raGrpHeaderStyle("#64748B"),
+												borderLeft: raGroupBorder,
+											}}
+										>
+											&nbsp;
+										</th>
+									</tr>
+									{/* Column header row */}
 									<tr
 										style={{
 											background:
@@ -4819,29 +5029,146 @@ function Reports() {
 											color: "var(--color-text-light)",
 										}}
 									>
-										<th style={tableHeaderStyle}>Site</th>
-										<th style={tableHeaderStyle}>Provider</th>
-										<th style={tableHeaderStyle}>Bandwidth</th>
-										<th style={tableHeaderStyle}>Aggregator</th>
+										<th
+											style={{
+												...tableHeaderStyle,
+												whiteSpace: "nowrap",
+											}}
+										>
+											Site
+										</th>
+										<th
+											style={{
+												...tableHeaderStyle,
+												whiteSpace: "nowrap",
+											}}
+										>
+											Provider
+										</th>
+										<th
+											style={{
+												...tableHeaderStyle,
+												whiteSpace: "nowrap",
+											}}
+										>
+											Bandwidth
+										</th>
+										<th
+											style={{
+												...tableHeaderStyle,
+												whiteSpace: "nowrap",
+											}}
+										>
+											Aggregator
+										</th>
 										{user?.role !== "NOC" && (
 											<>
-												<th style={tableHeaderStyle}>Current MRC</th>
-												<th style={tableHeaderStyle}>Renewal MRC</th>
-												<th style={tableHeaderStyle}>Monthly Savings</th>
+												<th
+													style={{
+														...tableHeaderStyle,
+														textAlign: "right",
+														whiteSpace: "nowrap",
+														borderLeft: raGroupBorderHeader,
+													}}
+												>
+													Current MRC
+												</th>
+												<th
+													style={{
+														...tableHeaderStyle,
+														textAlign: "right",
+														whiteSpace: "nowrap",
+													}}
+												>
+													Renewal MRC
+												</th>
+												<th
+													style={{
+														...tableHeaderStyle,
+														textAlign: "right",
+														whiteSpace: "nowrap",
+													}}
+												>
+													Monthly Savings
+												</th>
 											</>
 										)}
-										<th style={tableHeaderStyle}>Circuit Expiration</th>
-										<th style={tableHeaderStyle}>Customer Contract Exp.</th>
-										<th style={tableHeaderStyle}>Renewal Circuit Exp.</th>
-										<th style={tableHeaderStyle}>Months to Cust. Exp.</th>
+										<th
+											style={{
+												...tableHeaderStyle,
+												whiteSpace: "nowrap",
+												borderLeft: raGroupBorderHeader,
+											}}
+										>
+											Circuit Exp.
+										</th>
+										<th
+											style={{
+												...tableHeaderStyle,
+												whiteSpace: "nowrap",
+											}}
+										>
+											Cust. Contract Exp.
+										</th>
+										<th
+											style={{
+												...tableHeaderStyle,
+												whiteSpace: "nowrap",
+											}}
+										>
+											Renewal Exp.
+										</th>
+										<th
+											style={{
+												...tableHeaderStyle,
+												textAlign: "right",
+												whiteSpace: "nowrap",
+											}}
+										>
+											Mo. to Cust. Exp.
+										</th>
 										{user?.role !== "NOC" && (
 											<>
-												<th style={tableHeaderStyle}>Savings to Cust. Exp.</th>
-												<th style={tableHeaderStyle}>Cost After Cust. Exp.</th>
-												<th style={tableHeaderStyle}>Total Savings</th>
+												<th
+													style={{
+														...tableHeaderStyle,
+														textAlign: "right",
+														whiteSpace: "nowrap",
+														borderLeft: raGroupBorderHeader,
+													}}
+												>
+													Savings to Cust. Exp.
+												</th>
+												<th
+													style={{
+														...tableHeaderStyle,
+														textAlign: "right",
+														whiteSpace: "nowrap",
+													}}
+												>
+													Cost After Cust. Exp.
+												</th>
+												<th
+													style={{
+														...tableHeaderStyle,
+														textAlign: "right",
+														whiteSpace: "nowrap",
+													}}
+												>
+													Total Savings
+												</th>
 											</>
 										)}
-										<th style={tableHeaderStyle}>Actions</th>
+										<th
+											style={{
+												...tableHeaderStyle,
+												textAlign: "center",
+												whiteSpace: "nowrap",
+												borderLeft: raGroupBorderHeader,
+											}}
+										>
+											Actions
+										</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -4850,7 +5177,8 @@ function Reports() {
 
 										let totalSavingsColor = null;
 										if (preview.totalSavings != null) {
-											if (preview.totalSavings > 0) totalSavingsColor = "#10B981";
+											if (preview.totalSavings > 0)
+												totalSavingsColor = "#10B981";
 											else if (preview.totalSavings < 0)
 												totalSavingsColor = "#EF4444";
 											else totalSavingsColor = "#F59E0B";
@@ -4868,125 +5196,322 @@ function Reports() {
 											<tr
 												key={circuit.id}
 												style={{
-													borderBottom: "1px solid var(--color-border-light)",
+													borderBottom:
+														"1px solid var(--color-border-light)",
 													backgroundColor:
 														index % 2 === 0
 															? "var(--color-surface)"
 															: "var(--color-surface-light)",
 												}}
 											>
+												{/* Circuit */}
 												<td
-													style={{ ...tableCellStyle, fontWeight: "600" }}
+													style={{
+														...tableCellStyle,
+														fontWeight: "600",
+														whiteSpace: "nowrap",
+													}}
 												>
-													{circuit.site?.name || "N/A"}
+													{circuit.site?.name || (
+														<span style={raNaStyle}>—</span>
+													)}
 												</td>
-												<td style={tableCellStyle}>
-													{circuit.provider?.name || "N/A"}
-												</td>
-												<td style={tableCellStyle}>
-													{circuit.circuitBandwidth || "N/A"}
-												</td>
-												<td style={tableCellStyle}>
-													{circuit.hasAggregator && circuit.aggregatorName
-														? circuit.aggregatorName
-														: "N/A"}
-												</td>
-												{user?.role !== "NOC" && (
-													<>
-														<td style={tableCellStyle}>
-															{circuit.monthlyCost != null
-																? raFormatCurrency(circuit.monthlyCost)
-																: "N/A"}
-														</td>
-														<td style={tableCellStyle}>
-															{circuit.renewalMonthlyCost != null
-																? raFormatCurrency(circuit.renewalMonthlyCost)
-																: "N/A"}
-														</td>
-														<td style={tableCellStyle}>
-															{preview.savingsDifference != null ? (
-																<span
-																	style={{
-																		padding: "4px 8px",
-																		borderRadius: "4px",
-																		fontSize: "12px",
-																		fontWeight: "bold",
-																		backgroundColor: monthlySavingsColor || "transparent",
-																		color: monthlySavingsColor
-																			? "#fff"
-																			: "inherit",
-																	}}
-																>
-																	{raFormatCurrency(preview.savingsDifference)}
-																</span>
-															) : (
-																"N/A"
-															)}
-														</td>
-													</>
-												)}
-												<td style={tableCellStyle}>
-													{formatDate(circuit.expirationDate)}
-												</td>
-												<td style={tableCellStyle}>
-													{formatDate(
-														circuit.site?.customerContractExpirationDate,
+												<td
+													style={{
+														...tableCellStyle,
+														whiteSpace: "nowrap",
+													}}
+												>
+													{circuit.provider?.name || (
+														<span style={raNaStyle}>—</span>
 													)}
 												</td>
 												<td style={tableCellStyle}>
-													{formatDate(circuit.renewalCircuitExpirationDate)}
+													<span
+														style={{
+															display: "inline-block",
+															padding: "3px 8px",
+															borderRadius: "4px",
+															fontSize: "12px",
+															fontWeight: "600",
+															backgroundColor:
+																theme === "light"
+																	? "#dbeafe"
+																	: "rgba(59,130,246,0.18)",
+															color:
+																theme === "light"
+																	? "#1d4ed8"
+																	: "#93c5fd",
+														}}
+													>
+														{circuit.circuitBandwidth || "N/A"}
+													</span>
 												</td>
-												<td style={tableCellStyle}>
-													{preview.monthsToCustomerContractExpiration != null
-														? `${preview.monthsToCustomerContractExpiration} mo`
-														: "N/A"}
+												<td
+													style={{
+														...tableCellStyle,
+														whiteSpace: "nowrap",
+													}}
+												>
+													{circuit.hasAggregator &&
+													circuit.aggregatorName ? (
+														circuit.aggregatorName
+													) : (
+														<span style={raNaStyle}>—</span>
+													)}
 												</td>
+
+												{/* Pricing */}
 												{user?.role !== "NOC" && (
 													<>
-														<td style={tableCellStyle}>
-															{raFormatCurrency(
-																preview.savingsUntilCustomerContractExpiration,
+														<td
+															style={{
+																...tableCellStyle,
+																textAlign: "right",
+																fontVariantNumeric: "tabular-nums",
+																borderLeft: raGroupBorder,
+															}}
+														>
+															{circuit.monthlyCost != null ? (
+																raFormatCurrency(circuit.monthlyCost)
+															) : (
+																<span style={raNaStyle}>—</span>
 															)}
 														</td>
-														<td style={tableCellStyle}>
-															{raFormatCurrency(
-																preview.costFromCustomerExpirationToRenewalExpiration,
+														<td
+															style={{
+																...tableCellStyle,
+																textAlign: "right",
+																fontVariantNumeric: "tabular-nums",
+															}}
+														>
+															{circuit.renewalMonthlyCost != null ? (
+																raFormatCurrency(
+																	circuit.renewalMonthlyCost,
+																)
+															) : (
+																<span style={raNaStyle}>—</span>
 															)}
 														</td>
-														<td style={tableCellStyle}>
-															{preview.totalSavings != null ? (
+														<td
+															style={{
+																...tableCellStyle,
+																textAlign: "right",
+															}}
+														>
+															{preview.savingsDifference != null ? (
 																<span
 																	style={{
-																		padding: "4px 8px",
+																		display: "inline-block",
+																		padding: "3px 8px",
 																		borderRadius: "4px",
-																		fontSize: "12px",
-																		fontWeight: "bold",
-																		backgroundColor: totalSavingsColor,
-																		color: "#fff",
+																		fontSize: "13px",
+																		fontWeight: "700",
+																		backgroundColor: monthlySavingsColor
+																			? monthlySavingsColor + "22"
+																			: "transparent",
+																		color:
+																			monthlySavingsColor || "inherit",
+																		fontVariantNumeric: "tabular-nums",
 																	}}
 																>
-																	{raFormatCurrency(preview.totalSavings)}
+																	{preview.savingsDifference > 0
+																		? "+"
+																		: ""}
+																	{raFormatCurrency(
+																		preview.savingsDifference,
+																	)}
 																</span>
 															) : (
-																"N/A"
+																<span style={raNaStyle}>—</span>
 															)}
 														</td>
 													</>
 												)}
-												<td style={tableCellStyle}>
+
+												{/* Timeline */}
+												<td
+													style={{
+														...tableCellStyle,
+														whiteSpace: "nowrap",
+														fontSize: "13px",
+														borderLeft: raGroupBorder,
+													}}
+												>
+													{circuit.expirationDate ? (
+														formatDate(circuit.expirationDate)
+													) : (
+														<span style={raNaStyle}>—</span>
+													)}
+												</td>
+												<td
+													style={{
+														...tableCellStyle,
+														whiteSpace: "nowrap",
+														fontSize: "13px",
+													}}
+												>
+													{circuit.site
+														?.customerContractExpirationDate ? (
+														formatDate(
+															circuit.site
+																.customerContractExpirationDate,
+														)
+													) : (
+														<span style={raNaStyle}>—</span>
+													)}
+												</td>
+												<td
+													style={{
+														...tableCellStyle,
+														whiteSpace: "nowrap",
+														fontSize: "13px",
+													}}
+												>
+													{circuit.renewalCircuitExpirationDate ? (
+														formatDate(
+															circuit.renewalCircuitExpirationDate,
+														)
+													) : (
+														<span style={raNaStyle}>—</span>
+													)}
+												</td>
+												<td
+													style={{
+														...tableCellStyle,
+														textAlign: "right",
+													}}
+												>
+													{preview.monthsToCustomerContractExpiration !=
+													null ? (
+														<span
+															style={{
+																display: "inline-block",
+																padding: "3px 8px",
+																borderRadius: "4px",
+																fontSize: "13px",
+																fontWeight: "600",
+																backgroundColor:
+																	theme === "light"
+																		? "#fef3c7"
+																		: "rgba(245,158,11,0.18)",
+																color:
+																	theme === "light"
+																		? "#92400e"
+																		: "#fcd34d",
+																fontVariantNumeric: "tabular-nums",
+															}}
+														>
+															{
+																preview.monthsToCustomerContractExpiration
+															}{" "}
+															mo
+														</span>
+													) : (
+														<span style={raNaStyle}>—</span>
+													)}
+												</td>
+
+												{/* Analysis */}
+												{user?.role !== "NOC" && (
+													<>
+														<td
+															style={{
+																...tableCellStyle,
+																textAlign: "right",
+																fontVariantNumeric: "tabular-nums",
+																borderLeft: raGroupBorder,
+															}}
+														>
+															{preview.savingsUntilCustomerContractExpiration !=
+															null ? (
+																raFormatCurrency(
+																	preview.savingsUntilCustomerContractExpiration,
+																)
+															) : (
+																<span style={raNaStyle}>—</span>
+															)}
+														</td>
+														<td
+															style={{
+																...tableCellStyle,
+																textAlign: "right",
+																fontVariantNumeric: "tabular-nums",
+															}}
+														>
+															{preview.costFromCustomerExpirationToRenewalExpiration !=
+															null ? (
+																raFormatCurrency(
+																	preview.costFromCustomerExpirationToRenewalExpiration,
+																)
+															) : (
+																<span style={raNaStyle}>—</span>
+															)}
+														</td>
+														<td
+															style={{
+																...tableCellStyle,
+																textAlign: "right",
+															}}
+														>
+															{preview.totalSavings != null ? (
+																<span
+																	style={{
+																		display: "inline-block",
+																		padding: "4px 10px",
+																		borderRadius: "6px",
+																		fontSize: "13px",
+																		fontWeight: "700",
+																		backgroundColor:
+																			totalSavingsColor,
+																		color: "#fff",
+																		fontVariantNumeric:
+																			"tabular-nums",
+																	}}
+																>
+																	{preview.totalSavings > 0
+																		? "+"
+																		: ""}
+																	{raFormatCurrency(
+																		preview.totalSavings,
+																	)}
+																</span>
+															) : (
+																<span style={raNaStyle}>—</span>
+															)}
+														</td>
+													</>
+												)}
+
+												{/* Actions */}
+												<td
+													style={{
+														...tableCellStyle,
+														textAlign: "center",
+														borderLeft: raGroupBorder,
+													}}
+												>
 													<button
 														type="button"
 														onClick={() => openRenewalModal(circuit)}
 														style={{
-															padding: "6px 12px",
-															border: "1px solid var(--color-primary)",
-															borderRadius: "4px",
-															backgroundColor: "rgba(52, 152, 219, 0.15)",
-															color: theme === "light" ? "var(--color-primary)" : "var(--color-primary-light)",
+															padding: "5px 12px",
+															border:
+																"1px solid var(--color-primary)",
+															borderRadius: "6px",
+															backgroundColor:
+																"rgba(52, 152, 219, 0.12)",
+															color:
+																theme === "light"
+																	? "var(--color-primary)"
+																	: "var(--color-primary-light)",
 															cursor: "pointer",
-															fontSize: "13px",
-															fontWeight: "bold",
+															fontSize: "12px",
+															fontWeight: "600",
 															whiteSpace: "nowrap",
+															display: "inline-flex",
+															alignItems: "center",
+															gap: "4px",
 														}}
 														title="Edit renewal analysis"
 													>
@@ -5002,74 +5527,131 @@ function Reports() {
 							<div
 								style={{
 									textAlign: "center",
-									padding: "30px",
+									padding: "48px 30px",
 									color:
-										theme === "light" ? "#555555" : "var(--color-text-light)",
-									fontStyle: "italic",
+										theme === "light"
+											? "#888"
+											: "var(--color-text-muted)",
 								}}
 							>
-								No circuits have renewal analysis data saved yet
+								<div style={{ fontSize: "40px", marginBottom: "12px" }}>
+									📊
+								</div>
+								<div
+									style={{
+										fontSize: "16px",
+										fontWeight: "600",
+										marginBottom: "6px",
+										color:
+											theme === "light"
+												? "#2c3e50"
+												: "var(--color-text-light)",
+									}}
+								>
+									No renewal analysis data yet
+								</div>
+								<div
+									style={{ fontSize: "14px", marginBottom: "16px", color: theme === "light" ? "#666" : "var(--color-text-muted)" }}
+								>
+									Open a circuit in Renewal Analysis to enter renewal
+									terms and save the data.
+								</div>
+								<button
+									onClick={() => navigate("/renewal-analysis")}
+									style={{
+										padding: "8px 18px",
+										border: "1px solid var(--color-primary)",
+										borderRadius: "6px",
+										backgroundColor: "transparent",
+										color:
+											theme === "light"
+												? "var(--color-primary)"
+												: "var(--color-primary-light)",
+										cursor: "pointer",
+										fontSize: "14px",
+										fontWeight: "600",
+									}}
+								>
+									✏️ Go to Renewal Analysis
+								</button>
 							</div>
 						)}
 					</div>
 
-					{user?.role !== "NOC" && (
+					{/* ── Legend (NOC-gated) ── */}
+					{user?.role !== "NOC" && analysisCircuits.length > 0 && (
 						<div
 							style={{
-								marginTop: "20px",
-								padding: "15px",
-								backgroundColor: "var(--color-surface)",
+								marginTop: "16px",
+								padding: "14px 18px",
+								backgroundColor:
+									theme === "light"
+										? "#ffffff"
+										: "var(--color-dark-bg)",
 								borderRadius: "8px",
-								maxWidth: "1600px",
-								margin: "20px auto 0",
-								boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+								border: `1px solid ${theme === "light" ? "#e0e0e0" : "var(--color-border)"}`,
+								boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+								display: "flex",
+								flexWrap: "wrap",
+								alignItems: "center",
+								gap: "20px",
 							}}
 						>
-							<h3 style={{ marginTop: 0, color: "var(--color-text-dark)" }}>
-								Total Savings Legend
-							</h3>
-							<div style={{ display: "flex", flexWrap: "wrap", gap: "15px" }}>
-								{[
-									{
-										color: "#10B981",
-										label: "Positive — renewal saves money overall",
-									},
-									{
-										color: "#EF4444",
-										label: "Negative — renewal costs more overall",
-									},
-									{ color: "#F59E0B", label: "Break-even" },
-								].map(({ color, label }) => (
+							<span
+								style={{
+									fontSize: "11px",
+									fontWeight: "700",
+									textTransform: "uppercase",
+									letterSpacing: "0.06em",
+									color:
+										theme === "light"
+											? "#888"
+											: "var(--color-text-muted)",
+								}}
+							>
+								Total Savings
+							</span>
+							{[
+								{
+									color: "#10B981",
+									label: "Positive — renewal saves money overall",
+								},
+								{
+									color: "#EF4444",
+									label: "Negative — renewal costs more overall",
+								},
+								{ color: "#F59E0B", label: "Break-even" },
+							].map(({ color, label }) => (
+								<div
+									key={label}
+									style={{
+										display: "flex",
+										alignItems: "center",
+										gap: "6px",
+									}}
+								>
 									<div
-										key={label}
 										style={{
-											display: "flex",
-											alignItems: "center",
-											gap: "8px",
+											width: "12px",
+											height: "12px",
+											backgroundColor: color,
+											borderRadius: "3px",
+											flexShrink: 0,
+										}}
+									/>
+									<span
+										style={{
+											fontSize: "13px",
+											color:
+												theme === "light"
+													? "#2c3e50"
+													: "var(--color-text-light)",
 										}}
 									>
-										<div
-											style={{
-												width: "20px",
-												height: "20px",
-												backgroundColor: color,
-												borderRadius: "4px",
-											}}
-										/>
-										<span
-											style={{
-												fontSize: "14px",
-												color:
-													theme === "light"
-														? "#2c3e50"
-														: "var(--color-text-light)",
-											}}
-										>
-											{label}
-										</span>
-									</div>
-								))}
-							</div>
+										{label}
+									</span>
+								</div>
+							))}
 						</div>
 					)}
 
