@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import AccessLogo from "../images/Access.png";
 
-const getApiErrorMessage = async (response, fallbackMessage) => {
+export const getApiErrorMessage = async (response, fallbackMessage) => {
 	try {
 		const contentType = response.headers.get("content-type") || "";
 
@@ -181,7 +181,7 @@ const formatDate = (value) => {
 	});
 };
 
-const RenewalAnalysisModal = ({
+export const RenewalAnalysisModal = ({
 	circuit,
 	onClose,
 	onChange,

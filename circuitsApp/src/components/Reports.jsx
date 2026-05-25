@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
+import { RenewalAnalysisModal, getApiErrorMessage } from "./RenewalAnalysis";
 import { Bar } from "react-chartjs-2";
 import {
 	Chart as ChartJS,
@@ -128,6 +129,9 @@ function Reports() {
 	const { token, user } = useAuth();
 	const navigate = useNavigate();
 	const { theme } = useTheme();
+	const [raSelectedCircuit, setRaSelectedCircuit] = useState(null);
+	const [raShowModal, setRaShowModal] = useState(false);
+	const [raSaving, setRaSaving] = useState(false);
 
 	// Theme-aware color palette for charts
 	const chartColors = {
@@ -1248,6 +1252,58 @@ function Reports() {
 		const filename = `Tower_Renewal_Notice_${timestamp}.xlsx`;
 
 		XLSX.writeFile(workbook, filename);
+	};
+
+	const openRenewalModal = (circuit) => {
+		setRaSelectedCircuit({
+			...circuit,
+			site: { ...circuit.site },
+			provider: { ...circuit.provider },
+		});
+		setRaShowModal(true);
+	};
+
+	const closeRenewalModal = () => {
+		setRaShowModal(false);
+		setRaSelectedCircuit(null);
+	};
+
+	const saveRenewalAnalysis = async () => {
+		if (!raSelectedCircuit) return;
+		setRaSaving(true);
+		try {
+			const response = await fetch("/api/circuits", {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify(raSelectedCircuit),
+			});
+			if (!response.ok) {
+				throw new Error(
+					await getApiErrorMessage(response, "Failed to save renewal analysis"),
+				);
+			}
+			await fetchCircuits();
+			const refreshedResponse = await fetch(
+				`/api/circuits/${raSelectedCircuit.id}`,
+				{ headers: { Authorization: `Bearer ${token}` } },
+			);
+			if (refreshedResponse.ok) {
+				const refreshed = await refreshedResponse.json();
+				setRaSelectedCircuit({
+					...refreshed,
+					site: { ...refreshed.site },
+					provider: { ...refreshed.provider },
+				});
+			}
+		} catch (saveError) {
+			console.error(saveError);
+			setError(saveError.message || "Failed to save renewal analysis");
+		} finally {
+			setRaSaving(false);
+		}
 	};
 
 	const getRenewalAnalysisCircuits = () =>
@@ -4785,6 +4841,7 @@ function Reports() {
 												<th style={tableHeaderStyle}>Total Savings</th>
 											</>
 										)}
+										<th style={tableHeaderStyle}>Actions</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -4916,6 +4973,26 @@ function Reports() {
 														</td>
 													</>
 												)}
+												<td style={tableCellStyle}>
+													<button
+														type="button"
+														onClick={() => openRenewalModal(circuit)}
+														style={{
+															padding: "6px 12px",
+															border: "1px solid var(--color-primary)",
+															borderRadius: "4px",
+															backgroundColor: "rgba(52, 152, 219, 0.15)",
+															color: theme === "light" ? "var(--color-primary)" : "var(--color-primary-light)",
+															cursor: "pointer",
+															fontSize: "13px",
+															fontWeight: "bold",
+															whiteSpace: "nowrap",
+														}}
+														title="Edit renewal analysis"
+													>
+														✏️ Edit
+													</button>
+												</td>
 											</tr>
 										);
 									})}
@@ -4994,6 +5071,16 @@ function Reports() {
 								))}
 							</div>
 						</div>
+					)}
+
+					{raShowModal && raSelectedCircuit && (
+						<RenewalAnalysisModal
+							circuit={raSelectedCircuit}
+							onClose={closeRenewalModal}
+							onChange={setRaSelectedCircuit}
+							onSave={saveRenewalAnalysis}
+							saving={raSaving}
+						/>
 					)}
 				</div>
 			);
