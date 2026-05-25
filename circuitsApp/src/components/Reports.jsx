@@ -4740,26 +4740,10 @@ function Reports() {
 				};
 			})();
 
-			const raGrpHeaderStyle = (color) => ({
-				padding: "7px 14px",
-				textAlign: "center",
-				fontSize: "10px",
-				fontWeight: "700",
-				textTransform: "uppercase",
-				letterSpacing: "0.1em",
-				backgroundColor: color + "25",
-				borderBottom: `2px solid ${color}`,
-				color: color,
-				whiteSpace: "nowrap",
-			});
-
 			const raNaStyle = {
 				color: theme === "light" ? "#bbb" : "#555",
 				fontSize: "12px",
 			};
-
-			const raGroupBorder = `1px solid ${theme === "light" ? "#e0e0e0" : "var(--color-border-light)"}`;
-			const raGroupBorderHeader = `2px solid ${theme === "light" ? "#4a5568" : "var(--color-border)"}`;
 
 			return (
 				<div style={{ width: "100%" }}>
@@ -4952,285 +4936,143 @@ function Reports() {
 						</div>
 					)}
 
-					{/* ── Table ── */}
-					<div
-						style={{
-							backgroundColor:
-								theme === "light"
-									? "#ffffff"
-									: "var(--color-dark-bg-secondary)",
-							borderRadius: "10px",
-							boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-							border: `1px solid ${theme === "light" ? "#e0e0e0" : "var(--color-border)"}`,
-							overflowX: "auto",
-						}}
-					>
+					{/* ── Cards ── */}
+					<div>
 						{analysisCircuits.length > 0 ? (
-							<table
+							<div
 								style={{
-									width: "100%",
-									borderCollapse: "collapse",
-									minWidth: "860px",
+									display: "flex",
+									flexDirection: "column",
+									gap: "10px",
 								}}
 							>
-								<thead>
-									{/* Group header row */}
-									<tr>
-										<th colSpan={4} style={raGrpHeaderStyle("#3B82F6")}>
-											Circuit
-										</th>
-										{user?.role !== "NOC" && (
-											<th
-												colSpan={3}
+								{analysisCircuits.map((circuit) => {
+									const preview = raBuildRenewalPreview(circuit);
+
+									let totalSavingsColor = null;
+									if (preview.totalSavings != null) {
+										if (preview.totalSavings > 0)
+											totalSavingsColor = "#10B981";
+										else if (preview.totalSavings < 0)
+											totalSavingsColor = "#EF4444";
+										else totalSavingsColor = "#F59E0B";
+									}
+
+									let monthlySavingsColor = null;
+									if (preview.savingsDifference != null) {
+										if (preview.savingsDifference > 0)
+											monthlySavingsColor = "#10B981";
+										else if (preview.savingsDifference < 0)
+											monthlySavingsColor = "#EF4444";
+									}
+
+									const cardDivider = `1px solid ${theme === "light" ? "#e8ecf0" : "var(--color-border-light)"}`;
+
+									const raField = (label, value, badge = null) => (
+										<div>
+											<div
 												style={{
-													...raGrpHeaderStyle("#10B981"),
-													borderLeft: raGroupBorder,
+													fontSize: "10px",
+													fontWeight: "700",
+													textTransform: "uppercase",
+													letterSpacing: "0.07em",
+													color:
+														theme === "light"
+															? "#94a3b8"
+															: "var(--color-text-muted)",
+													marginBottom: "4px",
 												}}
 											>
-												Pricing
-											</th>
-										)}
-										<th
-											colSpan={4}
+												{label}
+											</div>
+											{badge ? (
+												<span
+													style={{
+														display: "inline-block",
+														padding: "3px 10px",
+														borderRadius: "5px",
+														fontSize: "13px",
+														fontWeight: "700",
+														backgroundColor: badge,
+														color: "#fff",
+														fontVariantNumeric: "tabular-nums",
+													}}
+												>
+													{value}
+												</span>
+											) : value != null ? (
+												<div
+													style={{
+														fontSize: "14px",
+														fontWeight: "500",
+														color:
+															theme === "light"
+																? "#1e293b"
+																: "var(--color-text-light)",
+														fontVariantNumeric: "tabular-nums",
+													}}
+												>
+													{value}
+												</div>
+											) : (
+												<span style={raNaStyle}>—</span>
+											)}
+										</div>
+									);
+
+									return (
+										<div
+											key={circuit.id}
 											style={{
-												...raGrpHeaderStyle("#F59E0B"),
-												borderLeft: raGroupBorder,
+												backgroundColor:
+													theme === "light"
+														? "#ffffff"
+														: "var(--color-dark-bg-secondary)",
+												border: `1px solid ${theme === "light" ? "#e0e0e0" : "var(--color-border)"}`,
+												borderRadius: "10px",
+												boxShadow: "0 1px 4px rgba(0,0,0,0.07)",
+												overflow: "hidden",
 											}}
 										>
-											Timeline
-										</th>
-										{user?.role !== "NOC" && (
-											<th
-												colSpan={3}
+											{/* Card header */}
+											<div
 												style={{
-													...raGrpHeaderStyle("#8B5CF6"),
-													borderLeft: raGroupBorder,
-												}}
-											>
-												Analysis
-											</th>
-										)}
-										<th
-											colSpan={1}
-											style={{
-												...raGrpHeaderStyle("#64748B"),
-												borderLeft: raGroupBorder,
-											}}
-										>
-											&nbsp;
-										</th>
-									</tr>
-									{/* Column header row */}
-									<tr
-										style={{
-											background:
-												"linear-gradient(135deg, var(--color-dark-bg) 0%, var(--color-dark-bg-secondary) 100%)",
-											borderBottom: "3px solid var(--color-primary)",
-											color: "var(--color-text-light)",
-										}}
-									>
-										<th
-											style={{
-												...tableHeaderStyle,
-												whiteSpace: "nowrap",
-											}}
-										>
-											Site
-										</th>
-										<th
-											style={{
-												...tableHeaderStyle,
-												whiteSpace: "nowrap",
-											}}
-										>
-											Provider
-										</th>
-										<th
-											style={{
-												...tableHeaderStyle,
-												whiteSpace: "nowrap",
-											}}
-										>
-											Bandwidth
-										</th>
-										<th
-											style={{
-												...tableHeaderStyle,
-												whiteSpace: "nowrap",
-											}}
-										>
-											Aggregator
-										</th>
-										{user?.role !== "NOC" && (
-											<>
-												<th
-													style={{
-														...tableHeaderStyle,
-														textAlign: "right",
-														whiteSpace: "nowrap",
-														borderLeft: raGroupBorderHeader,
-													}}
-												>
-													Current MRC
-												</th>
-												<th
-													style={{
-														...tableHeaderStyle,
-														textAlign: "right",
-														whiteSpace: "nowrap",
-													}}
-												>
-													Renewal MRC
-												</th>
-												<th
-													style={{
-														...tableHeaderStyle,
-														textAlign: "right",
-														whiteSpace: "nowrap",
-													}}
-												>
-													Monthly Savings
-												</th>
-											</>
-										)}
-										<th
-											style={{
-												...tableHeaderStyle,
-												whiteSpace: "nowrap",
-												borderLeft: raGroupBorderHeader,
-											}}
-										>
-											Circuit Exp.
-										</th>
-										<th
-											style={{
-												...tableHeaderStyle,
-												whiteSpace: "nowrap",
-											}}
-										>
-											Cust. Contract Exp.
-										</th>
-										<th
-											style={{
-												...tableHeaderStyle,
-												whiteSpace: "nowrap",
-											}}
-										>
-											Renewal Exp.
-										</th>
-										<th
-											style={{
-												...tableHeaderStyle,
-												textAlign: "right",
-												whiteSpace: "nowrap",
-											}}
-										>
-											Mo. to Cust. Exp.
-										</th>
-										{user?.role !== "NOC" && (
-											<>
-												<th
-													style={{
-														...tableHeaderStyle,
-														textAlign: "right",
-														whiteSpace: "nowrap",
-														borderLeft: raGroupBorderHeader,
-													}}
-												>
-													Savings to Cust. Exp.
-												</th>
-												<th
-													style={{
-														...tableHeaderStyle,
-														textAlign: "right",
-														whiteSpace: "nowrap",
-													}}
-												>
-													Cost After Cust. Exp.
-												</th>
-												<th
-													style={{
-														...tableHeaderStyle,
-														textAlign: "right",
-														whiteSpace: "nowrap",
-													}}
-												>
-													Total Savings
-												</th>
-											</>
-										)}
-										<th
-											style={{
-												...tableHeaderStyle,
-												textAlign: "center",
-												whiteSpace: "nowrap",
-												borderLeft: raGroupBorderHeader,
-											}}
-										>
-											Actions
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									{analysisCircuits.map((circuit, index) => {
-										const preview = raBuildRenewalPreview(circuit);
-
-										let totalSavingsColor = null;
-										if (preview.totalSavings != null) {
-											if (preview.totalSavings > 0)
-												totalSavingsColor = "#10B981";
-											else if (preview.totalSavings < 0)
-												totalSavingsColor = "#EF4444";
-											else totalSavingsColor = "#F59E0B";
-										}
-
-										let monthlySavingsColor = null;
-										if (preview.savingsDifference != null) {
-											if (preview.savingsDifference > 0)
-												monthlySavingsColor = "#10B981";
-											else if (preview.savingsDifference < 0)
-												monthlySavingsColor = "#EF4444";
-										}
-
-										return (
-											<tr
-												key={circuit.id}
-												style={{
-													borderBottom:
-														"1px solid var(--color-border-light)",
+													padding: "12px 16px",
 													backgroundColor:
-														index % 2 === 0
-															? "var(--color-surface)"
-															: "var(--color-surface-light)",
+														theme === "light"
+															? "#f8faff"
+															: "var(--color-dark-bg)",
+													borderBottom: cardDivider,
+													display: "flex",
+													justifyContent: "space-between",
+													alignItems: "center",
+													gap: "10px",
+													flexWrap: "wrap",
 												}}
 											>
-												{/* Circuit */}
-												<td
+												<div
 													style={{
-														...tableCellStyle,
-														fontWeight: "600",
-														whiteSpace: "nowrap",
+														display: "flex",
+														alignItems: "center",
+														gap: "8px",
+														flexWrap: "wrap",
 													}}
 												>
-													{circuit.site?.name || (
-														<span style={raNaStyle}>—</span>
-													)}
-												</td>
-												<td
-													style={{
-														...tableCellStyle,
-														whiteSpace: "nowrap",
-													}}
-												>
-													{circuit.provider?.name || (
-														<span style={raNaStyle}>—</span>
-													)}
-												</td>
-												<td style={tableCellStyle}>
 													<span
 														style={{
-															display: "inline-block",
-															padding: "3px 8px",
+															fontSize: "15px",
+															fontWeight: "700",
+															color:
+																theme === "light"
+																	? "#1e293b"
+																	: "var(--color-text-light)",
+														}}
+													>
+														{circuit.site?.name || "—"}
+													</span>
+													<span
+														style={{
+															padding: "2px 8px",
 															borderRadius: "4px",
 															fontSize: "12px",
 															fontWeight: "600",
@@ -5244,290 +5086,276 @@ function Reports() {
 																	: "#93c5fd",
 														}}
 													>
-														{circuit.circuitBandwidth || "N/A"}
+														{circuit.provider?.name || "N/A"}
 													</span>
-												</td>
-												<td
-													style={{
-														...tableCellStyle,
-														whiteSpace: "nowrap",
-													}}
-												>
-													{circuit.hasAggregator &&
-													circuit.aggregatorName ? (
-														circuit.aggregatorName
-													) : (
-														<span style={raNaStyle}>—</span>
-													)}
-												</td>
-
-												{/* Pricing */}
-												{user?.role !== "NOC" && (
-													<>
-														<td
-															style={{
-																...tableCellStyle,
-																textAlign: "right",
-																fontVariantNumeric: "tabular-nums",
-																borderLeft: raGroupBorder,
-															}}
-														>
-															{circuit.monthlyCost != null ? (
-																raFormatCurrency(circuit.monthlyCost)
-															) : (
-																<span style={raNaStyle}>—</span>
-															)}
-														</td>
-														<td
-															style={{
-																...tableCellStyle,
-																textAlign: "right",
-																fontVariantNumeric: "tabular-nums",
-															}}
-														>
-															{circuit.renewalMonthlyCost != null ? (
-																raFormatCurrency(
-																	circuit.renewalMonthlyCost,
-																)
-															) : (
-																<span style={raNaStyle}>—</span>
-															)}
-														</td>
-														<td
-															style={{
-																...tableCellStyle,
-																textAlign: "right",
-															}}
-														>
-															{preview.savingsDifference != null ? (
-																<span
-																	style={{
-																		display: "inline-block",
-																		padding: "3px 8px",
-																		borderRadius: "4px",
-																		fontSize: "13px",
-																		fontWeight: "700",
-																		backgroundColor: monthlySavingsColor
-																			? monthlySavingsColor + "22"
-																			: "transparent",
-																		color:
-																			monthlySavingsColor || "inherit",
-																		fontVariantNumeric: "tabular-nums",
-																	}}
-																>
-																	{preview.savingsDifference > 0
-																		? "+"
-																		: ""}
-																	{raFormatCurrency(
-																		preview.savingsDifference,
-																	)}
-																</span>
-															) : (
-																<span style={raNaStyle}>—</span>
-															)}
-														</td>
-													</>
-												)}
-
-												{/* Timeline */}
-												<td
-													style={{
-														...tableCellStyle,
-														whiteSpace: "nowrap",
-														fontSize: "13px",
-														borderLeft: raGroupBorder,
-													}}
-												>
-													{circuit.expirationDate ? (
-														formatDate(circuit.expirationDate)
-													) : (
-														<span style={raNaStyle}>—</span>
-													)}
-												</td>
-												<td
-													style={{
-														...tableCellStyle,
-														whiteSpace: "nowrap",
-														fontSize: "13px",
-													}}
-												>
-													{circuit.site
-														?.customerContractExpirationDate ? (
-														formatDate(
-															circuit.site
-																.customerContractExpirationDate,
-														)
-													) : (
-														<span style={raNaStyle}>—</span>
-													)}
-												</td>
-												<td
-													style={{
-														...tableCellStyle,
-														whiteSpace: "nowrap",
-														fontSize: "13px",
-													}}
-												>
-													{circuit.renewalCircuitExpirationDate ? (
-														formatDate(
-															circuit.renewalCircuitExpirationDate,
-														)
-													) : (
-														<span style={raNaStyle}>—</span>
-													)}
-												</td>
-												<td
-													style={{
-														...tableCellStyle,
-														textAlign: "right",
-													}}
-												>
-													{preview.monthsToCustomerContractExpiration !=
-													null ? (
-														<span
-															style={{
-																display: "inline-block",
-																padding: "3px 8px",
-																borderRadius: "4px",
-																fontSize: "13px",
-																fontWeight: "600",
-																backgroundColor:
-																	theme === "light"
-																		? "#fef3c7"
-																		: "rgba(245,158,11,0.18)",
-																color:
-																	theme === "light"
-																		? "#92400e"
-																		: "#fcd34d",
-																fontVariantNumeric: "tabular-nums",
-															}}
-														>
-															{
-																preview.monthsToCustomerContractExpiration
-															}{" "}
-															mo
-														</span>
-													) : (
-														<span style={raNaStyle}>—</span>
-													)}
-												</td>
-
-												{/* Analysis */}
-												{user?.role !== "NOC" && (
-													<>
-														<td
-															style={{
-																...tableCellStyle,
-																textAlign: "right",
-																fontVariantNumeric: "tabular-nums",
-																borderLeft: raGroupBorder,
-															}}
-														>
-															{preview.savingsUntilCustomerContractExpiration !=
-															null ? (
-																raFormatCurrency(
-																	preview.savingsUntilCustomerContractExpiration,
-																)
-															) : (
-																<span style={raNaStyle}>—</span>
-															)}
-														</td>
-														<td
-															style={{
-																...tableCellStyle,
-																textAlign: "right",
-																fontVariantNumeric: "tabular-nums",
-															}}
-														>
-															{preview.costFromCustomerExpirationToRenewalExpiration !=
-															null ? (
-																raFormatCurrency(
-																	preview.costFromCustomerExpirationToRenewalExpiration,
-																)
-															) : (
-																<span style={raNaStyle}>—</span>
-															)}
-														</td>
-														<td
-															style={{
-																...tableCellStyle,
-																textAlign: "right",
-															}}
-														>
-															{preview.totalSavings != null ? (
-																<span
-																	style={{
-																		display: "inline-block",
-																		padding: "4px 10px",
-																		borderRadius: "6px",
-																		fontSize: "13px",
-																		fontWeight: "700",
-																		backgroundColor:
-																			totalSavingsColor,
-																		color: "#fff",
-																		fontVariantNumeric:
-																			"tabular-nums",
-																	}}
-																>
-																	{preview.totalSavings > 0
-																		? "+"
-																		: ""}
-																	{raFormatCurrency(
-																		preview.totalSavings,
-																	)}
-																</span>
-															) : (
-																<span style={raNaStyle}>—</span>
-															)}
-														</td>
-													</>
-												)}
-
-												{/* Actions */}
-												<td
-													style={{
-														...tableCellStyle,
-														textAlign: "center",
-														borderLeft: raGroupBorder,
-													}}
-												>
-													<button
-														type="button"
-														onClick={() => openRenewalModal(circuit)}
+													<span
 														style={{
-															padding: "5px 12px",
-															border:
-																"1px solid var(--color-primary)",
-															borderRadius: "6px",
-															backgroundColor:
-																"rgba(52, 152, 219, 0.12)",
-															color:
-																theme === "light"
-																	? "var(--color-primary)"
-																	: "var(--color-primary-light)",
-															cursor: "pointer",
+															padding: "2px 8px",
+															borderRadius: "4px",
 															fontSize: "12px",
 															fontWeight: "600",
-															whiteSpace: "nowrap",
-															display: "inline-flex",
-															alignItems: "center",
-															gap: "4px",
+															backgroundColor:
+																theme === "light"
+																	? "#d1fae5"
+																	: "rgba(16,185,129,0.18)",
+															color:
+																theme === "light"
+																	? "#065f46"
+																	: "#6ee7b7",
 														}}
-														title="Edit renewal analysis"
 													>
-														✏️ Edit
-													</button>
-												</td>
-											</tr>
-										);
-									})}
-								</tbody>
-							</table>
+														{circuit.circuitBandwidth || "N/A"}
+													</span>
+													{circuit.hasAggregator &&
+														circuit.aggregatorName && (
+															<span
+																style={{
+																	padding: "2px 8px",
+																	borderRadius: "4px",
+																	fontSize: "12px",
+																	fontWeight: "500",
+																	backgroundColor:
+																		theme === "light"
+																			? "#f1f5f9"
+																			: "rgba(100,116,139,0.2)",
+																	color:
+																		theme === "light"
+																			? "#475569"
+																			: "#94a3b8",
+																}}
+															>
+																{circuit.aggregatorName}
+															</span>
+														)}
+												</div>
+												<button
+													type="button"
+													onClick={() => openRenewalModal(circuit)}
+													style={{
+														padding: "5px 14px",
+														border: "1px solid var(--color-primary)",
+														borderRadius: "6px",
+														backgroundColor:
+															"rgba(52, 152, 219, 0.1)",
+														color:
+															theme === "light"
+																? "var(--color-primary)"
+																: "var(--color-primary-light)",
+														cursor: "pointer",
+														fontSize: "12px",
+														fontWeight: "600",
+														whiteSpace: "nowrap",
+														display: "inline-flex",
+														alignItems: "center",
+														gap: "5px",
+														flexShrink: 0,
+													}}
+												>
+													✏️ Edit
+												</button>
+											</div>
+
+											{/* Card body — sections side by side */}
+											<div style={{ display: "flex", flexWrap: "wrap" }}>
+												{/* Timeline */}
+												<div
+													style={{
+														flex: "1 1 220px",
+														padding: "14px 16px",
+														borderRight:
+															user?.role !== "NOC"
+																? cardDivider
+																: "none",
+													}}
+												>
+													<div
+														style={{
+															fontSize: "10px",
+															fontWeight: "700",
+															textTransform: "uppercase",
+															letterSpacing: "0.1em",
+															color: "#F59E0B",
+															marginBottom: "10px",
+														}}
+													>
+														📅 Timeline
+													</div>
+													<div
+														style={{
+															display: "grid",
+															gridTemplateColumns:
+																"repeat(auto-fit, minmax(130px, 1fr))",
+															gap: "12px",
+														}}
+													>
+														{raField(
+															"Circuit Expiration",
+															circuit.expirationDate
+																? formatDate(circuit.expirationDate)
+																: null,
+														)}
+														{raField(
+															"Cust. Contract Exp.",
+															circuit.site
+																?.customerContractExpirationDate
+																? formatDate(
+																		circuit.site
+																			.customerContractExpirationDate,
+																	)
+																: null,
+														)}
+														{raField(
+															"Renewal Circuit Exp.",
+															circuit.renewalCircuitExpirationDate
+																? formatDate(
+																		circuit.renewalCircuitExpirationDate,
+																	)
+																: null,
+														)}
+														{raField(
+															"Mo. to Cust. Exp.",
+															preview.monthsToCustomerContractExpiration !=
+																null
+																? `${preview.monthsToCustomerContractExpiration} mo`
+																: null,
+															preview.monthsToCustomerContractExpiration !=
+																null
+																? theme === "light"
+																	? "#d97706"
+																	: "#f59e0b"
+																: null,
+														)}
+													</div>
+												</div>
+
+												{/* Pricing (NOC-gated) */}
+												{user?.role !== "NOC" && (
+													<div
+														style={{
+															flex: "1 1 200px",
+															padding: "14px 16px",
+															borderRight: cardDivider,
+														}}
+													>
+														<div
+															style={{
+																fontSize: "10px",
+																fontWeight: "700",
+																textTransform: "uppercase",
+																letterSpacing: "0.1em",
+																color: "#10B981",
+																marginBottom: "10px",
+															}}
+														>
+															💰 Pricing
+														</div>
+														<div
+															style={{
+																display: "grid",
+																gridTemplateColumns:
+																	"repeat(3, 1fr)",
+																gap: "12px",
+															}}
+														>
+															{raField(
+																"Current MRC",
+																circuit.monthlyCost != null
+																	? raFormatCurrency(
+																			circuit.monthlyCost,
+																		)
+																	: null,
+															)}
+															{raField(
+																"Renewal MRC",
+																circuit.renewalMonthlyCost != null
+																	? raFormatCurrency(
+																			circuit.renewalMonthlyCost,
+																		)
+																	: null,
+															)}
+															{raField(
+																"Monthly Savings",
+																preview.savingsDifference != null
+																	? `${preview.savingsDifference > 0 ? "+" : ""}${raFormatCurrency(preview.savingsDifference)}`
+																	: null,
+																monthlySavingsColor,
+															)}
+														</div>
+													</div>
+												)}
+
+												{/* Analysis (NOC-gated) */}
+												{user?.role !== "NOC" && (
+													<div
+														style={{
+															flex: "1 1 220px",
+															padding: "14px 16px",
+														}}
+													>
+														<div
+															style={{
+																fontSize: "10px",
+																fontWeight: "700",
+																textTransform: "uppercase",
+																letterSpacing: "0.1em",
+																color: "#8B5CF6",
+																marginBottom: "10px",
+															}}
+														>
+															📊 Analysis
+														</div>
+														<div
+															style={{
+																display: "grid",
+																gridTemplateColumns:
+																	"repeat(3, 1fr)",
+																gap: "12px",
+															}}
+														>
+															{raField(
+																"Savings to Cust. Exp.",
+																preview.savingsUntilCustomerContractExpiration !=
+																	null
+																	? raFormatCurrency(
+																			preview.savingsUntilCustomerContractExpiration,
+																		)
+																	: null,
+															)}
+															{raField(
+																"Cost After Cust. Exp.",
+																preview.costFromCustomerExpirationToRenewalExpiration !=
+																	null
+																	? raFormatCurrency(
+																			preview.costFromCustomerExpirationToRenewalExpiration,
+																		)
+																	: null,
+															)}
+															{raField(
+																"Total Savings",
+																preview.totalSavings != null
+																	? `${preview.totalSavings > 0 ? "+" : ""}${raFormatCurrency(preview.totalSavings)}`
+																	: null,
+																totalSavingsColor,
+															)}
+														</div>
+													</div>
+												)}
+											</div>
+										</div>
+									);
+								})}
+							</div>
 						) : (
 							<div
 								style={{
 									textAlign: "center",
 									padding: "48px 30px",
+									backgroundColor:
+										theme === "light"
+											? "#ffffff"
+											: "var(--color-dark-bg-secondary)",
+									borderRadius: "10px",
+									border: `1px solid ${theme === "light" ? "#e0e0e0" : "var(--color-border)"}`,
 									color:
 										theme === "light"
 											? "#888"
