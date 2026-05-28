@@ -835,14 +835,23 @@ function Reports() {
 		}
 
 		// Prepare data for Excel
-		const excelData = filteredCircuits.map((circuit) => ({
-			"Venue Name": circuit.site.name,
-			"Site Type": circuit.site.siteType || "Unknown",
-			Provider: circuit.provider.name,
-			Bandwidth: circuit.circuitBandwidth,
-			"Circuit Type": circuit.circuitType || "Unknown",
-			Status: circuit.status || "Pending",
-		}));
+		const excelData = filteredCircuits.map((circuit) => {
+			const row = {
+				"Venue Name": circuit.site.name,
+				Address: formatSiteAddress(circuit.site),
+				"Site Type": circuit.site.siteType || "Unknown",
+				Provider: circuit.provider.name,
+				Bandwidth: circuit.circuitBandwidth,
+				"Circuit Type": circuit.circuitType || "Unknown",
+				Status: circuit.status || "Pending",
+			};
+			if (user?.role !== "NOC") {
+				row["Monthly Cost"] = circuit.monthlyCost != null
+					? `$${Number(circuit.monthlyCost).toFixed(2)}`
+					: "N/A";
+			}
+			return row;
+		});
 
 		// Create workbook and worksheet
 		const workbook = XLSX.utils.book_new();
@@ -851,11 +860,13 @@ function Reports() {
 		// Set column widths
 		const columnWidths = [
 			{ wch: 25 }, // Venue Name
+			{ wch: 40 }, // Address
 			{ wch: 15 }, // Site Type
 			{ wch: 15 }, // Provider
 			{ wch: 15 }, // Bandwidth
 			{ wch: 15 }, // Circuit Type
 			{ wch: 12 }, // Status
+			...(user?.role !== "NOC" ? [{ wch: 14 }] : []), // Monthly Cost
 		];
 		worksheet["!cols"] = columnWidths;
 
@@ -1962,7 +1973,6 @@ function Reports() {
 								borderRadius: "8px",
 								boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
 								margin: "0 auto",
-								maxWidth: "900px",
 								width: "100%",
 								overflowX: "auto",
 							}}
@@ -1979,11 +1989,15 @@ function Reports() {
 											}}
 										>
 											<th style={tableHeaderStyle}>Venue Name</th>
+											<th style={tableHeaderStyle}>Address</th>
 											<th style={tableHeaderStyle}>Site Type</th>
 											<th style={tableHeaderStyle}>Provider</th>
 											<th style={tableHeaderStyle}>Bandwidth</th>
 											<th style={tableHeaderStyle}>Circuit Type</th>
 											<th style={tableHeaderStyle}>Status</th>
+											{user?.role !== "NOC" && (
+												<th style={{ ...tableHeaderStyle, minWidth: "130px", whiteSpace: "nowrap" }}>Monthly Cost</th>
+											)}
 										</tr>
 									</thead>
 									<tbody>
@@ -2000,6 +2014,9 @@ function Reports() {
 											>
 												<td style={{ ...tableCellStyle, fontWeight: "600" }}>
 													{circuit.site.name}
+												</td>
+												<td style={{ ...tableCellStyle, fontSize: "12px" }}>
+													{formatSiteAddress(circuit.site)}
 												</td>
 												<td style={tableCellStyle}>
 													<span
@@ -2064,6 +2081,13 @@ function Reports() {
 														{circuit.status || "Pending"}
 													</span>
 												</td>
+												{user?.role !== "NOC" && (
+													<td style={{ ...tableCellStyle, whiteSpace: "nowrap" }}>
+														{circuit.monthlyCost != null
+															? `$${Number(circuit.monthlyCost).toFixed(2)}`
+															: "N/A"}
+													</td>
+												)}
 											</tr>
 										))}
 									</tbody>
