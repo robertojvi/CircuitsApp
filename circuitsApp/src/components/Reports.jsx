@@ -838,6 +838,8 @@ function Reports() {
 		const excelData = filteredCircuits.map((circuit) => {
 			const row = {
 				"Venue Name": circuit.site.name,
+				"Account #": circuit.accountNumber || "N/A",
+				"Circuit ID": circuit.circuitId || "N/A",
 				Address: formatSiteAddress(circuit.site),
 				"Site Type": circuit.site.siteType || "Unknown",
 				Provider: circuit.provider.name,
@@ -859,7 +861,9 @@ function Reports() {
 
 		// Set column widths
 		const columnWidths = [
-			{ wch: 25 }, // Venue Name
+			{ wch: 20 }, // Venue Name
+			{ wch: 16 }, // Account #
+			{ wch: 20 }, // Circuit ID
 			{ wch: 40 }, // Address
 			{ wch: 15 }, // Site Type
 			{ wch: 15 }, // Provider
@@ -1988,7 +1992,9 @@ function Reports() {
 												color: "var(--color-text-light)",
 											}}
 										>
-											<th style={tableHeaderStyle}>Venue Name</th>
+											<th style={{ ...tableHeaderStyle, minWidth: "140px" }}>Venue Name</th>
+											<th style={tableHeaderStyle}>Account #</th>
+											<th style={tableHeaderStyle}>Circuit ID</th>
 											<th style={tableHeaderStyle}>Address</th>
 											<th style={tableHeaderStyle}>Site Type</th>
 											<th style={tableHeaderStyle}>Provider</th>
@@ -2014,6 +2020,12 @@ function Reports() {
 											>
 												<td style={{ ...tableCellStyle, fontWeight: "600" }}>
 													{circuit.site.name}
+												</td>
+												<td style={{ ...tableCellStyle, fontSize: "12px" }}>
+													{circuit.accountNumber || "N/A"}
+												</td>
+												<td style={{ ...tableCellStyle, fontSize: "12px" }}>
+													{circuit.circuitId || "N/A"}
 												</td>
 												<td style={{ ...tableCellStyle, fontSize: "12px" }}>
 													{formatSiteAddress(circuit.site)}
