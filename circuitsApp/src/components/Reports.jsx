@@ -561,6 +561,20 @@ function Reports() {
 			});
 	};
 
+	const getExpiredCircuits = () => {
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		return circuits
+			.filter((circuit) => {
+				if (!circuit.expirationDate) return false;
+				const expirationDate = new Date(circuit.expirationDate);
+				expirationDate.setHours(0, 0, 0, 0);
+				return expirationDate < today;
+			})
+			.sort((a, b) => new Date(b.expirationDate) - new Date(a.expirationDate));
+	};
+
 	const getRenewalNoticeCircuits = () => {
 		const hasMeaningfulRenewalTerm = (renewalTerm) => {
 			if (!renewalTerm) return false;
