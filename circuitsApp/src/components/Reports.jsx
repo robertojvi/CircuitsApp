@@ -1481,6 +1481,7 @@ function Reports() {
 						</button>
 					</div>
 					<div
+						className="report-header-bar"
 						style={{
 							marginBottom: "20px",
 							backgroundColor:
@@ -1490,7 +1491,6 @@ function Reports() {
 							color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 							display: "flex",
 							justifyContent: "space-between",
-							alignItems: "center",
 							flexWrap: "wrap",
 							gap: "10px",
 						}}
@@ -1521,15 +1521,16 @@ function Reports() {
 							</div>
 						</div>
 						<div
+							className="report-filters-row"
 							style={{
 								display: "flex",
-								alignItems: "center",
 								gap: "10px",
 								flexWrap: "wrap",
 							}}
 						>
 							<div
-								style={{ display: "flex", alignItems: "center", gap: "10px" }}
+								className="report-filter-item"
+								style={{ display: "flex", gap: "10px" }}
 							>
 								<label htmlFor="siteTypeFilter" style={themedFilterLabelStyle}>
 									Site Type:
@@ -1547,7 +1548,8 @@ function Reports() {
 								</select>
 							</div>
 							<div
-								style={{ display: "flex", alignItems: "center", gap: "10px" }}
+								className="report-filter-item"
+								style={{ display: "flex", gap: "10px" }}
 							>
 								<label htmlFor="statusFilter" style={themedFilterLabelStyle}>
 									Circuit Status:
@@ -1565,7 +1567,8 @@ function Reports() {
 								</select>
 							</div>
 							<div
-								style={{ display: "flex", alignItems: "center", gap: "10px" }}
+								className="report-filter-item"
+								style={{ display: "flex", gap: "10px" }}
 							>
 								<label
 									htmlFor="circuitTypeFilter"
@@ -1586,7 +1589,8 @@ function Reports() {
 								</select>
 							</div>
 							<div
-								style={{ display: "flex", alignItems: "center", gap: "10px" }}
+								className="report-filter-item"
+								style={{ display: "flex", gap: "10px" }}
 							>
 								<label htmlFor="providerFilter" style={themedFilterLabelStyle}>
 									Provider:
@@ -1606,7 +1610,8 @@ function Reports() {
 								</select>
 							</div>
 							<div
-								style={{ display: "flex", alignItems: "center", gap: "10px" }}
+								className="report-filter-item"
+								style={{ display: "flex", gap: "10px" }}
 							>
 								<label
 									htmlFor="aggregatorFilter"
@@ -1630,7 +1635,8 @@ function Reports() {
 								</select>
 							</div>
 							<div
-								style={{ display: "flex", alignItems: "center", gap: "10px" }}
+								className="report-filter-item"
+								style={{ display: "flex", gap: "10px" }}
 							>
 								<label htmlFor="siteStateFilter" style={themedFilterLabelStyle}>
 									State:
@@ -1673,19 +1679,14 @@ function Reports() {
 								Bandwidth Distribution
 							</h2>
 							<div
+								className="report-chart-card"
 								style={{
 									backgroundColor: colors.containerBg,
-									padding: "20px",
 									borderRadius: "8px",
 									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-									height: "300px",
 									margin: "0 auto",
 									maxWidth: "800px",
 									width: "100%",
-									"@media (max-width: 768px)": {
-										padding: "10px",
-										height: "250px",
-									},
 								}}
 							>
 								<Bar
@@ -1765,19 +1766,14 @@ function Reports() {
 								Circuit Status Distribution
 							</h2>
 							<div
+								className="report-chart-card"
 								style={{
 									backgroundColor: colors.containerBg,
-									padding: "20px",
 									borderRadius: "8px",
 									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-									height: "300px",
 									margin: "0 auto",
 									maxWidth: "800px",
 									width: "100%",
-									"@media (max-width: 768px)": {
-										padding: "10px",
-										height: "250px",
-									},
 								}}
 							>
 								<Bar
@@ -1855,19 +1851,14 @@ function Reports() {
 								Provider Distribution
 							</h2>
 							<div
+								className="report-chart-card"
 								style={{
 									backgroundColor: colors.containerBg,
-									padding: "20px",
 									borderRadius: "8px",
 									boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-									height: "300px",
 									margin: "0 auto",
 									maxWidth: "800px",
 									width: "100%",
-									"@media (max-width: 768px)": {
-										padding: "10px",
-										height: "250px",
-									},
 								}}
 							>
 								<Bar
@@ -1998,7 +1989,13 @@ function Reports() {
 							}}
 						>
 							{getFilteredCircuits().length > 0 ? (
-								<table style={{ width: "100%", borderCollapse: "collapse" }}>
+								<table
+									style={{
+										width: "100%",
+										tableLayout: "fixed",
+										borderCollapse: "collapse",
+									}}
+								>
 									<thead>
 										<tr
 											style={{
@@ -2008,18 +2005,18 @@ function Reports() {
 												color: "var(--color-text-light)",
 											}}
 										>
-											<th style={{ ...tableHeaderStyle, minWidth: "140px" }}>Venue Name</th>
-											<th style={tableHeaderStyle}>Account #</th>
-											<th style={tableHeaderStyle}>Circuit ID</th>
-											<th style={tableHeaderStyle}>Address</th>
-											<th style={tableHeaderStyle}>Site Type</th>
-											<th style={tableHeaderStyle}>Provider</th>
-											<th style={tableHeaderStyle}>Bandwidth</th>
-											<th style={tableHeaderStyle}>Circuit Type</th>
-											<th style={tableHeaderStyle}>Status</th>
-											<th style={{ ...tableHeaderStyle, whiteSpace: "nowrap" }}>Expiration Date</th>
+											<th style={{ ...tableHeaderStyle, width: "13%" }}>Venue Name</th>
+											<th style={{ ...tableHeaderStyle, width: "9%" }}>Account #</th>
+											<th style={{ ...tableHeaderStyle, width: "11%" }}>Circuit ID</th>
+											<th style={{ ...tableHeaderStyle, width: "14%" }}>Address</th>
+											<th style={{ ...tableHeaderStyle, width: "8%" }}>Site Type</th>
+											<th style={{ ...tableHeaderStyle, width: "9%" }}>Provider</th>
+											<th style={{ ...tableHeaderStyle, width: "7%" }}>Bandwidth</th>
+											<th style={{ ...tableHeaderStyle, width: "8%" }}>Circuit Type</th>
+											<th style={{ ...tableHeaderStyle, width: "7%" }}>Status</th>
+											<th style={{ ...tableHeaderStyle, width: "7%" }}>Expiration Date</th>
 											{user?.role !== "NOC" && (
-												<th style={{ ...tableHeaderStyle, minWidth: "130px", whiteSpace: "nowrap" }}>Monthly Cost</th>
+												<th style={{ ...tableHeaderStyle, width: "7%" }}>Monthly Cost</th>
 											)}
 										</tr>
 									</thead>
@@ -2110,11 +2107,11 @@ function Reports() {
 														{circuit.status || "Pending"}
 													</span>
 												</td>
-												<td style={{ ...tableCellStyle, whiteSpace: "nowrap" }}>
+												<td style={tableCellStyle}>
 													{formatDate(circuit.expirationDate)}
 												</td>
 												{user?.role !== "NOC" && (
-													<td style={{ ...tableCellStyle, whiteSpace: "nowrap" }}>
+													<td style={tableCellStyle}>
 														{circuit.monthlyCost != null
 															? `$${Number(circuit.monthlyCost).toFixed(2)}`
 															: "N/A"}
@@ -5557,10 +5554,9 @@ function Reports() {
 
 	const responsiveChartContainer = {
 		width: "96%",
+		maxWidth: "100%",
 		padding: "var(--spacing-md)",
-		"@media (max-width: 768px)": {
-			padding: "var(--spacing-sm)",
-		},
+		boxSizing: "border-box",
 	};
 
 	const responsiveNavStyle = {
@@ -5590,6 +5586,8 @@ function Reports() {
 		color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 		textTransform: "uppercase",
 		letterSpacing: "0.5px",
+		overflowWrap: "break-word",
+		wordBreak: "break-word",
 	};
 
 	const tableCellStyle = {
@@ -5599,6 +5597,8 @@ function Reports() {
 		color: theme === "light" ? "#2c3e50" : "var(--color-text-light)",
 		fontWeight: "500",
 		backgroundColor: "var(--color-surface)",
+		overflowWrap: "break-word",
+		wordBreak: "break-word",
 	};
 
 	return (
@@ -5651,7 +5651,7 @@ function Reports() {
 				</ul>
 			</nav>
 			<div className="app-side-page-content" style={responsiveContentStyle}>
-				<div style={responsiveChartContainer}>{renderContent()}</div>
+				<div className="report-content" style={responsiveChartContainer}>{renderContent()}</div>
 			</div>
 		</div>
 	);

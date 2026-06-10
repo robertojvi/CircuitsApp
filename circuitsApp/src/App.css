@@ -773,3 +773,73 @@
 .read-the-docs {
   color: #888;
 }
+
+/* ==================== Reports ==================== */
+
+.report-content,
+.report-content *,
+.report-content *::before,
+.report-content *::after {
+  box-sizing: border-box;
+}
+
+.report-content {
+  overflow-x: hidden;
+}
+
+.report-chart-card {
+  height: 300px;
+  padding: 20px;
+}
+
+.report-header-bar,
+.report-filters-row,
+.report-filter-item {
+  align-items: center;
+}
+
+.report-filter-item select {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .report-header-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .report-filters-row {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .report-filter-item {
+    width: 100%;
+  }
+
+  .report-filter-item select {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .report-chart-card {
+    padding: 10px;
+    height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .report-filter-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .report-filter-item select {
+    width: 100%;
+  }
+
+  .report-chart-card {
+    height: 220px;
+  }
+}
