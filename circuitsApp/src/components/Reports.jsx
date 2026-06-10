@@ -2311,7 +2311,13 @@ function Reports() {
 						}}
 					>
 						{expiringCircuits.length > 0 ? (
-							<table style={{ width: "100%", borderCollapse: "collapse" }}>
+							<table
+								style={{
+									width: "100%",
+									borderCollapse: "collapse",
+									tableLayout: "fixed",
+								}}
+							>
 								<thead>
 									<tr
 										style={{
@@ -2321,18 +2327,18 @@ function Reports() {
 											color: "var(--color-text-light)",
 										}}
 									>
-										<th style={tableHeaderStyle}>Venue Name</th>
-										<th style={tableHeaderStyle}>Address</th>
-										<th style={tableHeaderStyle}>Provider</th>
-										<th style={tableHeaderStyle}>Aggregator</th>
-										<th style={tableHeaderStyle}>Bandwidth</th>
+										<th style={{ ...tableHeaderStyle, width: "12%" }}>Venue Name</th>
+										<th style={{ ...tableHeaderStyle, width: "16%" }}>Address</th>
+										<th style={{ ...tableHeaderStyle, width: "9%" }}>Provider</th>
+										<th style={{ ...tableHeaderStyle, width: "9%" }}>Aggregator</th>
+										<th style={{ ...tableHeaderStyle, width: "7%" }}>Bandwidth</th>
 										{user?.role !== "NOC" && (
-											<th style={tableHeaderStyle}>Monthly Cost</th>
+											<th style={{ ...tableHeaderStyle, width: "8%" }}>Monthly Cost</th>
 										)}
-										<th style={tableHeaderStyle}>Expiration Date</th>
-										<th style={tableHeaderStyle}>Months Remaining</th>
-										<th style={tableHeaderStyle}>Status</th>
-										<th style={{ ...tableHeaderStyle, minWidth: "320px" }}>
+										<th style={{ ...tableHeaderStyle, width: "9%" }}>Expiration Date</th>
+										<th style={{ ...tableHeaderStyle, width: "9%" }}>Months Remaining</th>
+										<th style={{ ...tableHeaderStyle, width: "7%" }}>Status</th>
+										<th style={{ ...tableHeaderStyle, width: "14%" }}>
 											Notes
 										</th>
 									</tr>
@@ -2440,7 +2446,6 @@ function Reports() {
 												<td
 													style={{
 														...tableCellStyle,
-														minWidth: "320px",
 														whiteSpace: "normal",
 														wordBreak: "break-word",
 													}}
@@ -2742,13 +2747,19 @@ function Reports() {
 							borderRadius: "8px",
 							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
 							margin: "0 auto",
-							maxWidth: "1200px",
+							maxWidth: "1400px",
 							width: "100%",
 							overflowX: "auto",
 						}}
 					>
 						{renewalNoticeCircuits.length > 0 ? (
-							<table style={{ width: "100%", borderCollapse: "collapse" }}>
+							<table
+								style={{
+									width: "100%",
+									borderCollapse: "collapse",
+									tableLayout: "fixed",
+								}}
+							>
 								<thead>
 									<tr
 										style={{
@@ -2758,18 +2769,18 @@ function Reports() {
 											color: "var(--color-text-light)",
 										}}
 									>
-										<th style={tableHeaderStyle}>Venue Name</th>
-										<th style={tableHeaderStyle}>Address</th>
-										<th style={tableHeaderStyle}>Provider</th>
-										<th style={tableHeaderStyle}>Aggregator</th>
-										<th style={tableHeaderStyle}>Bandwidth</th>
-										<th style={tableHeaderStyle}>Renewal Term</th>
+										<th style={{ ...tableHeaderStyle, width: "18%" }}>Venue Name</th>
+										<th style={{ ...tableHeaderStyle, width: "14%" }}>Address</th>
+										<th style={{ ...tableHeaderStyle, width: "8%" }}>Provider</th>
+										<th style={{ ...tableHeaderStyle, width: "9%" }}>Aggregator</th>
+										<th style={{ ...tableHeaderStyle, width: "8%" }}>Bandwidth</th>
+										<th style={{ ...tableHeaderStyle, width: "9%" }}>Renewal Term</th>
 										{user?.role !== "NOC" && (
-											<th style={tableHeaderStyle}>Monthly Cost</th>
+											<th style={{ ...tableHeaderStyle, width: "8%" }}>Monthly Cost</th>
 										)}
-										<th style={tableHeaderStyle}>Expiration Date</th>
-										<th style={tableHeaderStyle}>Renewal Notification Date</th>
-										<th style={tableHeaderStyle}>Days Remaining</th>
+										<th style={{ ...tableHeaderStyle, width: "9%" }}>Expiration Date</th>
+										<th style={{ ...tableHeaderStyle, width: "9%" }}>Renewal Notification Date</th>
+										<th style={{ ...tableHeaderStyle, width: "8%" }}>Days Remaining</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -2869,7 +2880,7 @@ function Reports() {
 							padding: "15px",
 							backgroundColor: "var(--color-surface)",
 							borderRadius: "8px",
-							maxWidth: "1200px",
+							maxWidth: "1400px",
 							margin: "20px auto 0",
 							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
 							fontSize: "14px",
@@ -4142,13 +4153,19 @@ function Reports() {
 							borderRadius: "8px",
 							boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
 							margin: "0 auto",
-							maxWidth: "1000px",
+							maxWidth: "1200px",
 							width: "100%",
 							overflowX: "auto",
 						}}
 					>
 						{expiredCircuits.length > 0 ? (
-							<table style={{ width: "100%", borderCollapse: "collapse" }}>
+							<table
+								style={{
+									width: "100%",
+									borderCollapse: "collapse",
+									tableLayout: "fixed",
+								}}
+							>
 								<thead>
 									<tr
 										style={{
@@ -4166,6 +4183,7 @@ function Reports() {
 										<th
 											style={{
 												...tableHeaderStyle,
+												width: "20%",
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
@@ -4191,6 +4209,7 @@ function Reports() {
 										<th
 											style={{
 												...tableHeaderStyle,
+												width: "9%",
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
@@ -4214,6 +4233,7 @@ function Reports() {
 										<th
 											style={{
 												...tableHeaderStyle,
+												width: "11%",
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
@@ -4237,6 +4257,7 @@ function Reports() {
 										<th
 											style={{
 												...tableHeaderStyle,
+												width: "11%",
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
@@ -4262,6 +4283,7 @@ function Reports() {
 										<th
 											style={{
 												...tableHeaderStyle,
+												width: "10%",
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
@@ -4287,6 +4309,7 @@ function Reports() {
 										<th
 											style={{
 												...tableHeaderStyle,
+												width: "10%",
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
@@ -4312,6 +4335,7 @@ function Reports() {
 										<th
 											style={{
 												...tableHeaderStyle,
+												width: "11%",
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
@@ -4337,6 +4361,7 @@ function Reports() {
 										<th
 											style={{
 												...tableHeaderStyle,
+												width: "9%",
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
@@ -4362,6 +4387,7 @@ function Reports() {
 										<th
 											style={{
 												...tableHeaderStyle,
+												width: "9%",
 												cursor: "pointer",
 												userSelect: "none",
 												backgroundColor:
@@ -4594,7 +4620,13 @@ function Reports() {
 						}}
 					>
 						{towerData.length > 0 ? (
-							<table style={{ width: "100%", borderCollapse: "collapse" }}>
+							<table
+								style={{
+									width: "100%",
+									borderCollapse: "collapse",
+									tableLayout: "fixed",
+								}}
+							>
 								<thead>
 									<tr
 										style={{
@@ -4604,15 +4636,15 @@ function Reports() {
 											color: "var(--color-text-light)",
 										}}
 									>
-										<th style={tableHeaderStyle}>Venue Name</th>
-										<th style={tableHeaderStyle}>Address</th>
-										<th style={tableHeaderStyle}>Tower #</th>
-										<th style={tableHeaderStyle}>Tower Provider</th>
-										<th style={tableHeaderStyle}>Install Date</th>
-										<th style={tableHeaderStyle}>Expiration Date</th>
-										<th style={tableHeaderStyle}>Days Until Expiration</th>
+										<th style={{ ...tableHeaderStyle, width: "16%" }}>Venue Name</th>
+										<th style={{ ...tableHeaderStyle, width: "20%" }}>Address</th>
+										<th style={{ ...tableHeaderStyle, width: "7%" }}>Tower #</th>
+										<th style={{ ...tableHeaderStyle, width: "13%" }}>Tower Provider</th>
+										<th style={{ ...tableHeaderStyle, width: "11%" }}>Install Date</th>
+										<th style={{ ...tableHeaderStyle, width: "11%" }}>Expiration Date</th>
+										<th style={{ ...tableHeaderStyle, width: "12%" }}>Days Until Expiration</th>
 										{user?.role !== "NOC" && (
-											<th style={tableHeaderStyle}>Monthly Cost</th>
+											<th style={{ ...tableHeaderStyle, width: "10%" }}>Monthly Cost</th>
 										)}
 									</tr>
 								</thead>
