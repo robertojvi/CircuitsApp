@@ -860,6 +860,7 @@ function Reports() {
 				Bandwidth: circuit.circuitBandwidth,
 				"Circuit Type": circuit.circuitType || "Unknown",
 				Status: circuit.status || "Pending",
+				"Expiration Date": formatDate(circuit.expirationDate),
 			};
 			if (user?.role !== "NOC") {
 				row["Monthly Cost"] = circuit.monthlyCost != null
@@ -884,6 +885,7 @@ function Reports() {
 			{ wch: 15 }, // Bandwidth
 			{ wch: 15 }, // Circuit Type
 			{ wch: 12 }, // Status
+			{ wch: 16 }, // Expiration Date
 			...(user?.role !== "NOC" ? [{ wch: 14 }] : []), // Monthly Cost
 		];
 		worksheet["!cols"] = columnWidths;
@@ -2015,6 +2017,7 @@ function Reports() {
 											<th style={tableHeaderStyle}>Bandwidth</th>
 											<th style={tableHeaderStyle}>Circuit Type</th>
 											<th style={tableHeaderStyle}>Status</th>
+											<th style={{ ...tableHeaderStyle, whiteSpace: "nowrap" }}>Expiration Date</th>
 											{user?.role !== "NOC" && (
 												<th style={{ ...tableHeaderStyle, minWidth: "130px", whiteSpace: "nowrap" }}>Monthly Cost</th>
 											)}
@@ -2106,6 +2109,9 @@ function Reports() {
 													>
 														{circuit.status || "Pending"}
 													</span>
+												</td>
+												<td style={{ ...tableCellStyle, whiteSpace: "nowrap" }}>
+													{formatDate(circuit.expirationDate)}
 												</td>
 												{user?.role !== "NOC" && (
 													<td style={{ ...tableCellStyle, whiteSpace: "nowrap" }}>

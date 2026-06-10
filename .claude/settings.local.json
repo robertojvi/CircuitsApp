@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(python3 -)",
-      "Bash(npx --yes eslint src/components/Reports.jsx --rule '{\"no-undef\": \"error\"}')"
+      "Bash(npx --yes eslint src/components/Reports.jsx --rule '{\"no-undef\": \"error\"}')",
+      "Bash(python3 -c ' *)"
     ]
   }
 }
