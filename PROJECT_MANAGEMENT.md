@@ -35,11 +35,11 @@ delete controls).
 | `project_update` | One row per posted update: `update_date`, `text` (LONGTEXT), `created_at`. |
 | `project_update_image` | One row per image attached to an update: `image_url`, `file_name`. |
 
-### The 14 scope categories
+### The 17 scope categories
 
 Headend, BN or DN, Point To Point, Outdoor/Indoor AP, CN or RN, Direct Burial Poles +
 Electrical, Pole Test and Turn Up, Direct Burial Fiber, Conduit, Fiber Pull, Breaker
-Disconnects, Cameras, NEMA-Electrical, Home Installs.
+Disconnects, Cameras, NEMA-Electrical, Home Installs, Inventory, Vaults, Testing.
 
 Each category has a `<category>Quantity` (Double) and `<category>Label` (String, e.g.
 "Poles" or "Cameras") field on `ProjectScopeOfWork`.

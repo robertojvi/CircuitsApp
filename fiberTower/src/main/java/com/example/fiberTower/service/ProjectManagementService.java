@@ -16,7 +16,8 @@ public class ProjectManagementService implements IProjectManagementService {
     private static final String[] CATEGORY_KEYS = {
             "headend", "bnOrDn", "pointToPoint", "outdoorIndoorAp", "cnOrRn",
             "directBurialPolesElectrical", "poleTestTurnUp", "directBurialFiber", "conduit",
-            "fiberPull", "breakerDisconnects", "cameras", "nemaElectrical", "homeInstalls"
+            "fiberPull", "breakerDisconnects", "cameras", "nemaElectrical", "homeInstalls",
+            "inventory", "vaults", "testing"
     };
 
     @Autowired
@@ -200,6 +201,9 @@ public class ProjectManagementService implements IProjectManagementService {
             case "cameras": return scope.getCamerasQuantity();
             case "nemaElectrical": return scope.getNemaElectricalQuantity();
             case "homeInstalls": return scope.getHomeInstallsQuantity();
+            case "inventory": return scope.getInventoryQuantity();
+            case "vaults": return scope.getVaultsQuantity();
+            case "testing": return scope.getTestingQuantity();
             default: return null;
         }
     }

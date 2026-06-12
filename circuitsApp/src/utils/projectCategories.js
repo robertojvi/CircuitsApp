@@ -16,6 +16,9 @@ export const SCOPE_CATEGORIES = [
 	{ key: "cameras", name: "Cameras" },
 	{ key: "nemaElectrical", name: "NEMA-Electrical" },
 	{ key: "homeInstalls", name: "Home Installs" },
+	{ key: "inventory", name: "Inventory" },
+	{ key: "vaults", name: "Vaults" },
+	{ key: "testing", name: "Testing" },
 ];
 
 export const quantityField = (key) => `${key}Quantity`;

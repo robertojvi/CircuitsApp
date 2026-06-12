@@ -47,6 +47,15 @@ public class ProjectScopeOfWorkDTO {
     private Double homeInstallsQuantity;
     private String homeInstallsLabel;
 
+    private Double inventoryQuantity;
+    private String inventoryLabel;
+
+    private Double vaultsQuantity;
+    private String vaultsLabel;
+
+    private Double testingQuantity;
+    private String testingLabel;
+
     private Integer daysToComplete;
 
     public Long getId() {
@@ -287,6 +296,54 @@ public class ProjectScopeOfWorkDTO {
 
     public void setHomeInstallsLabel(String homeInstallsLabel) {
         this.homeInstallsLabel = homeInstallsLabel;
+    }
+
+    public Double getInventoryQuantity() {
+        return inventoryQuantity;
+    }
+
+    public void setInventoryQuantity(Double inventoryQuantity) {
+        this.inventoryQuantity = inventoryQuantity;
+    }
+
+    public String getInventoryLabel() {
+        return inventoryLabel;
+    }
+
+    public void setInventoryLabel(String inventoryLabel) {
+        this.inventoryLabel = inventoryLabel;
+    }
+
+    public Double getVaultsQuantity() {
+        return vaultsQuantity;
+    }
+
+    public void setVaultsQuantity(Double vaultsQuantity) {
+        this.vaultsQuantity = vaultsQuantity;
+    }
+
+    public String getVaultsLabel() {
+        return vaultsLabel;
+    }
+
+    public void setVaultsLabel(String vaultsLabel) {
+        this.vaultsLabel = vaultsLabel;
+    }
+
+    public Double getTestingQuantity() {
+        return testingQuantity;
+    }
+
+    public void setTestingQuantity(Double testingQuantity) {
+        this.testingQuantity = testingQuantity;
+    }
+
+    public String getTestingLabel() {
+        return testingLabel;
+    }
+
+    public void setTestingLabel(String testingLabel) {
+        this.testingLabel = testingLabel;
     }
 
     public Integer getDaysToComplete() {
