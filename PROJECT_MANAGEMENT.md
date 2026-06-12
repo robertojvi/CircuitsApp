@@ -7,7 +7,7 @@ scope, when it will be done, how it's progressing, and a running log of dated up
 photos. It's accessible from the main navbar and is organized per-site, mirroring the layout
 used by the Circuits page (a vertical sub-navigation with four tabs).
 
-- **Scope of Work** - define the quantities/labels for 14 construction categories and the
+- **Scope of Work** - define the quantities for 17 construction categories and the
   estimated number of days to complete the project.
 - **Timeline** - set the construction start date and working-days-per-week, track delays, and
   view a calendar with the calculated completion date.
@@ -27,7 +27,7 @@ delete controls).
 
 | Table | Purpose |
 |---|---|
-| `project_scope_of_work` | One row per site. Quantity + label for each of the 14 scope categories, plus `days_to_complete`. |
+| `project_scope_of_work` | One row per site. Quantity for each of the 17 scope categories, plus `days_to_complete`. |
 | `project_timeline` | One row per site. `construction_start_date` and `working_days_per_week` (5 or 6). |
 | `project_delay` | One row per recorded delay: `number_of_days`, `reason`, `date_recorded`. |
 | `project_workday_override` | One row per date where the default work-day calendar is manually overridden (`date`, `is_work_day`). |
@@ -41,8 +41,7 @@ Headend, BN or DN, Point To Point, Outdoor/Indoor AP, CN or RN, Direct Burial Po
 Electrical, Pole Test and Turn Up, Direct Burial Fiber, Conduit, Fiber Pull, Breaker
 Disconnects, Cameras, NEMA-Electrical, Home Installs, Inventory, Vaults, Testing.
 
-Each category has a `<category>Quantity` (Double) and `<category>Label` (String, e.g.
-"Poles" or "Cameras") field on `ProjectScopeOfWork`.
+Each category has a `<category>Quantity` (Double) field on `ProjectScopeOfWork`.
 
 ### Key behaviors
 
@@ -103,7 +102,7 @@ All endpoints require authentication. Mutating endpoints additionally require th
 |---|---|
 | `ProjectManagement.jsx` | Landing page - searchable table of all sites with a "Manage Project" button per row. |
 | `ProjectManagementDetail.jsx` | Detail page shell - vertical nav (Scope of Work / Timeline / Construction Progress / Updates), fetches combined project data once and passes it + a `refresh()` callback to each tab. |
-| `ScopeOfWork.jsx` | Form for the 14 categories (label + quantity) and "Days to Complete". |
+| `ScopeOfWork.jsx` | Form for the 17 categories (quantity) and "Days to Complete". |
 | `Timeline.jsx` | Construction start date, working days/week, delay tracking, and original vs. current completion date. |
 | `ProjectCalendar.jsx` | Month-grid calendar showing work days, holidays, manual overrides, and the completion-date marker. Click a day to toggle it as a work/non-work day. |
 | `ConstructionProgress.jsx` | Lists scoped items (quantity > 0) with a status selector and overall progress bar. |
@@ -111,9 +110,9 @@ All endpoints require authentication. Mutating endpoints additionally require th
 
 ### Utilities (`src/utils/`)
 
-- `projectCategories.js` - shared list of the 14 scope categories (key + display name) and
-  helpers `quantityField(key)` / `labelField(key)` that match the backend's camelCase field
-  names, plus the `PROGRESS_STATUSES` options.
+- `projectCategories.js` - shared list of the 17 scope categories (key + display name) and the
+  `quantityField(key)` helper that matches the backend's camelCase field names, plus the
+  `PROGRESS_STATUSES` options.
 - `projectTimeline.js` - date helpers (`parseDateInputValue`/`formatDateInputValue`),
   `getUSHolidays(year)`, `isDefaultWorkDay`, `isWorkDay`, `getDayInfo` (used by the calendar),
   and `calculateCompletionDate(...)`, which walks day-by-day from the start date counting work
@@ -160,9 +159,8 @@ The Timeline tab shows two completion dates:
 ### 1. Scope of Work
 
 1. Open the **Scope of Work** tab.
-2. For each of the 14 categories (Headend, BN or DN, Point To Point, etc.), enter:
-   - **Label** - a short name for what's being tracked (e.g. "Poles", "Cameras", "Homes").
-   - **Quantity** - the number of items, feet, etc. for that category.
+2. For each of the 17 categories (Headend, BN or DN, Point To Point, etc.), enter the
+   **Quantity** - the number of items, feet, etc. for that category.
 3. Enter **Days to Complete** - the estimated number of working days for the whole project.
 4. Click **Save**.
 
@@ -205,7 +203,7 @@ tab.
 ### 3. Construction Progress
 
 1. Open the **Construction Progress** tab. It lists every category from Scope of Work that has
-   a quantity greater than 0, showing its label and quantity.
+   a quantity greater than 0, showing its category name and quantity.
 2. For each item, set its **Status**:
    - **Pending** - 0% complete.
    - **Complete** - 100% complete.

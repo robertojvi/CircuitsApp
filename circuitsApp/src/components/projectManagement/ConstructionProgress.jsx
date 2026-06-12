@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
-import { SCOPE_CATEGORIES, quantityField, labelField, PROGRESS_STATUSES } from "../../utils/projectCategories";
+import { SCOPE_CATEGORIES, quantityField, PROGRESS_STATUSES } from "../../utils/projectCategories";
 import { saveProgressItems } from "../../utils/projectManagementApi";
 
 const statusToPercent = (status, currentPercent) => {
@@ -18,12 +18,10 @@ const buildRows = (scopeOfWork, progressItems) => {
 		return Number(quantity) > 0;
 	}).map(({ key, name }) => {
 		const existing = (progressItems || []).find((item) => item.category === key);
-		const label = scopeOfWork[labelField(key)] || name;
 
 		return {
 			category: key,
 			name,
-			label,
 			quantity: scopeOfWork[quantityField(key)],
 			id: existing?.id ?? null,
 			status: existing?.status ?? "PENDING",
@@ -199,7 +197,6 @@ function ConstructionProgress({ siteId, projectData, canEdit, onRefresh }) {
 					>
 						<tr>
 							<th style={tableHeaderStyle}>Category</th>
-							<th style={tableHeaderStyle}>Label</th>
 							<th style={tableHeaderStyle}>Quantity</th>
 							<th style={tableHeaderStyle}>Status</th>
 							<th style={tableHeaderStyle}>% Complete</th>
@@ -214,7 +211,6 @@ function ConstructionProgress({ siteId, projectData, canEdit, onRefresh }) {
 								}}
 							>
 								<td style={{ ...tableCellStyle, fontWeight: "600" }}>{row.name}</td>
-								<td style={tableCellStyle}>{row.label}</td>
 								<td style={tableCellStyle}>{row.quantity}</td>
 								<td style={tableCellStyle}>
 									<select

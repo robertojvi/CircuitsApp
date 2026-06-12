@@ -1,6 +1,6 @@
 // Scope of work categories shared between the Scope of Work and Construction Progress tabs.
-// `key` must match the camelCase field prefixes on ProjectScopeOfWork / ProjectScopeOfWorkDTO
-// (e.g. "headend" -> headendQuantity / headendLabel) on the backend.
+// `key` must match the camelCase field prefix on ProjectScopeOfWork / ProjectScopeOfWorkDTO
+// (e.g. "headend" -> headendQuantity) on the backend.
 export const SCOPE_CATEGORIES = [
 	{ key: "headend", name: "Headend" },
 	{ key: "bnOrDn", name: "BN or DN" },
@@ -22,7 +22,6 @@ export const SCOPE_CATEGORIES = [
 ];
 
 export const quantityField = (key) => `${key}Quantity`;
-export const labelField = (key) => `${key}Label`;
 
 export const PROGRESS_STATUSES = [
 	{ value: "PENDING", label: "Pending" },

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
-import { SCOPE_CATEGORIES, quantityField, labelField } from "../../utils/projectCategories";
+import { SCOPE_CATEGORIES, quantityField } from "../../utils/projectCategories";
 import { saveScopeOfWork } from "../../utils/projectManagementApi";
 
 const buildFormState = (scopeOfWork) => {
@@ -9,7 +9,6 @@ const buildFormState = (scopeOfWork) => {
 
 	for (const { key } of SCOPE_CATEGORIES) {
 		form[quantityField(key)] = scopeOfWork?.[quantityField(key)] ?? "";
-		form[labelField(key)] = scopeOfWork?.[labelField(key)] ?? "";
 	}
 
 	return form;
@@ -47,9 +46,7 @@ function ScopeOfWork({ siteId, projectData, canEdit, onRefresh }) {
 
 			for (const { key } of SCOPE_CATEGORIES) {
 				const qField = quantityField(key);
-				const lField = labelField(key);
 				dto[qField] = form[qField] === "" ? null : Number(form[qField]);
-				dto[lField] = form[lField] || "";
 			}
 
 			await saveScopeOfWork(token, siteId, dto);
@@ -130,7 +127,6 @@ function ScopeOfWork({ siteId, projectData, canEdit, onRefresh }) {
 						>
 							<tr>
 								<th style={tableHeaderStyle}>Category</th>
-								<th style={tableHeaderStyle}>Label</th>
 								<th style={tableHeaderStyle}>Quantity</th>
 							</tr>
 						</thead>
@@ -143,16 +139,6 @@ function ScopeOfWork({ siteId, projectData, canEdit, onRefresh }) {
 									}}
 								>
 									<td style={{ ...tableCellStyle, fontWeight: "600" }}>{name}</td>
-									<td style={tableCellStyle}>
-										<input
-											type="text"
-											placeholder="e.g. Poles, Cameras"
-											value={form[labelField(key)]}
-											disabled={!canEdit}
-											onChange={(e) => handleFieldChange(labelField(key), e.target.value)}
-											style={inputStyle}
-										/>
-									</td>
 									<td style={tableCellStyle}>
 										<input
 											type="number"

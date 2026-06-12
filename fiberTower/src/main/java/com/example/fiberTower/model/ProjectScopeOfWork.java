@@ -15,55 +15,38 @@ public class ProjectScopeOfWork {
     private Site site;
 
     private Double headendQuantity;
-    private String headendLabel;
 
     private Double bnOrDnQuantity;
-    private String bnOrDnLabel;
 
     private Double pointToPointQuantity;
-    private String pointToPointLabel;
 
     private Double outdoorIndoorApQuantity;
-    private String outdoorIndoorApLabel;
 
     private Double cnOrRnQuantity;
-    private String cnOrRnLabel;
 
     private Double directBurialPolesElectricalQuantity;
-    private String directBurialPolesElectricalLabel;
 
     private Double poleTestTurnUpQuantity;
-    private String poleTestTurnUpLabel;
 
     private Double directBurialFiberQuantity;
-    private String directBurialFiberLabel;
 
     private Double conduitQuantity;
-    private String conduitLabel;
 
     private Double fiberPullQuantity;
-    private String fiberPullLabel;
 
     private Double breakerDisconnectsQuantity;
-    private String breakerDisconnectsLabel;
 
     private Double camerasQuantity;
-    private String camerasLabel;
 
     private Double nemaElectricalQuantity;
-    private String nemaElectricalLabel;
 
     private Double homeInstallsQuantity;
-    private String homeInstallsLabel;
 
     private Double inventoryQuantity;
-    private String inventoryLabel;
 
     private Double vaultsQuantity;
-    private String vaultsLabel;
 
     private Double testingQuantity;
-    private String testingLabel;
 
     private Integer daysToComplete;
 
@@ -91,28 +74,12 @@ public class ProjectScopeOfWork {
         this.headendQuantity = headendQuantity;
     }
 
-    public String getHeadendLabel() {
-        return headendLabel;
-    }
-
-    public void setHeadendLabel(String headendLabel) {
-        this.headendLabel = headendLabel;
-    }
-
     public Double getBnOrDnQuantity() {
         return bnOrDnQuantity;
     }
 
     public void setBnOrDnQuantity(Double bnOrDnQuantity) {
         this.bnOrDnQuantity = bnOrDnQuantity;
-    }
-
-    public String getBnOrDnLabel() {
-        return bnOrDnLabel;
-    }
-
-    public void setBnOrDnLabel(String bnOrDnLabel) {
-        this.bnOrDnLabel = bnOrDnLabel;
     }
 
     public Double getPointToPointQuantity() {
@@ -123,28 +90,12 @@ public class ProjectScopeOfWork {
         this.pointToPointQuantity = pointToPointQuantity;
     }
 
-    public String getPointToPointLabel() {
-        return pointToPointLabel;
-    }
-
-    public void setPointToPointLabel(String pointToPointLabel) {
-        this.pointToPointLabel = pointToPointLabel;
-    }
-
     public Double getOutdoorIndoorApQuantity() {
         return outdoorIndoorApQuantity;
     }
 
     public void setOutdoorIndoorApQuantity(Double outdoorIndoorApQuantity) {
         this.outdoorIndoorApQuantity = outdoorIndoorApQuantity;
-    }
-
-    public String getOutdoorIndoorApLabel() {
-        return outdoorIndoorApLabel;
-    }
-
-    public void setOutdoorIndoorApLabel(String outdoorIndoorApLabel) {
-        this.outdoorIndoorApLabel = outdoorIndoorApLabel;
     }
 
     public Double getCnOrRnQuantity() {
@@ -155,28 +106,12 @@ public class ProjectScopeOfWork {
         this.cnOrRnQuantity = cnOrRnQuantity;
     }
 
-    public String getCnOrRnLabel() {
-        return cnOrRnLabel;
-    }
-
-    public void setCnOrRnLabel(String cnOrRnLabel) {
-        this.cnOrRnLabel = cnOrRnLabel;
-    }
-
     public Double getDirectBurialPolesElectricalQuantity() {
         return directBurialPolesElectricalQuantity;
     }
 
     public void setDirectBurialPolesElectricalQuantity(Double directBurialPolesElectricalQuantity) {
         this.directBurialPolesElectricalQuantity = directBurialPolesElectricalQuantity;
-    }
-
-    public String getDirectBurialPolesElectricalLabel() {
-        return directBurialPolesElectricalLabel;
-    }
-
-    public void setDirectBurialPolesElectricalLabel(String directBurialPolesElectricalLabel) {
-        this.directBurialPolesElectricalLabel = directBurialPolesElectricalLabel;
     }
 
     public Double getPoleTestTurnUpQuantity() {
@@ -187,28 +122,12 @@ public class ProjectScopeOfWork {
         this.poleTestTurnUpQuantity = poleTestTurnUpQuantity;
     }
 
-    public String getPoleTestTurnUpLabel() {
-        return poleTestTurnUpLabel;
-    }
-
-    public void setPoleTestTurnUpLabel(String poleTestTurnUpLabel) {
-        this.poleTestTurnUpLabel = poleTestTurnUpLabel;
-    }
-
     public Double getDirectBurialFiberQuantity() {
         return directBurialFiberQuantity;
     }
 
     public void setDirectBurialFiberQuantity(Double directBurialFiberQuantity) {
         this.directBurialFiberQuantity = directBurialFiberQuantity;
-    }
-
-    public String getDirectBurialFiberLabel() {
-        return directBurialFiberLabel;
-    }
-
-    public void setDirectBurialFiberLabel(String directBurialFiberLabel) {
-        this.directBurialFiberLabel = directBurialFiberLabel;
     }
 
     public Double getConduitQuantity() {
@@ -219,28 +138,12 @@ public class ProjectScopeOfWork {
         this.conduitQuantity = conduitQuantity;
     }
 
-    public String getConduitLabel() {
-        return conduitLabel;
-    }
-
-    public void setConduitLabel(String conduitLabel) {
-        this.conduitLabel = conduitLabel;
-    }
-
     public Double getFiberPullQuantity() {
         return fiberPullQuantity;
     }
 
     public void setFiberPullQuantity(Double fiberPullQuantity) {
         this.fiberPullQuantity = fiberPullQuantity;
-    }
-
-    public String getFiberPullLabel() {
-        return fiberPullLabel;
-    }
-
-    public void setFiberPullLabel(String fiberPullLabel) {
-        this.fiberPullLabel = fiberPullLabel;
     }
 
     public Double getBreakerDisconnectsQuantity() {
@@ -251,28 +154,12 @@ public class ProjectScopeOfWork {
         this.breakerDisconnectsQuantity = breakerDisconnectsQuantity;
     }
 
-    public String getBreakerDisconnectsLabel() {
-        return breakerDisconnectsLabel;
-    }
-
-    public void setBreakerDisconnectsLabel(String breakerDisconnectsLabel) {
-        this.breakerDisconnectsLabel = breakerDisconnectsLabel;
-    }
-
     public Double getCamerasQuantity() {
         return camerasQuantity;
     }
 
     public void setCamerasQuantity(Double camerasQuantity) {
         this.camerasQuantity = camerasQuantity;
-    }
-
-    public String getCamerasLabel() {
-        return camerasLabel;
-    }
-
-    public void setCamerasLabel(String camerasLabel) {
-        this.camerasLabel = camerasLabel;
     }
 
     public Double getNemaElectricalQuantity() {
@@ -283,28 +170,12 @@ public class ProjectScopeOfWork {
         this.nemaElectricalQuantity = nemaElectricalQuantity;
     }
 
-    public String getNemaElectricalLabel() {
-        return nemaElectricalLabel;
-    }
-
-    public void setNemaElectricalLabel(String nemaElectricalLabel) {
-        this.nemaElectricalLabel = nemaElectricalLabel;
-    }
-
     public Double getHomeInstallsQuantity() {
         return homeInstallsQuantity;
     }
 
     public void setHomeInstallsQuantity(Double homeInstallsQuantity) {
         this.homeInstallsQuantity = homeInstallsQuantity;
-    }
-
-    public String getHomeInstallsLabel() {
-        return homeInstallsLabel;
-    }
-
-    public void setHomeInstallsLabel(String homeInstallsLabel) {
-        this.homeInstallsLabel = homeInstallsLabel;
     }
 
     public Double getInventoryQuantity() {
@@ -315,14 +186,6 @@ public class ProjectScopeOfWork {
         this.inventoryQuantity = inventoryQuantity;
     }
 
-    public String getInventoryLabel() {
-        return inventoryLabel;
-    }
-
-    public void setInventoryLabel(String inventoryLabel) {
-        this.inventoryLabel = inventoryLabel;
-    }
-
     public Double getVaultsQuantity() {
         return vaultsQuantity;
     }
@@ -331,28 +194,12 @@ public class ProjectScopeOfWork {
         this.vaultsQuantity = vaultsQuantity;
     }
 
-    public String getVaultsLabel() {
-        return vaultsLabel;
-    }
-
-    public void setVaultsLabel(String vaultsLabel) {
-        this.vaultsLabel = vaultsLabel;
-    }
-
     public Double getTestingQuantity() {
         return testingQuantity;
     }
 
     public void setTestingQuantity(Double testingQuantity) {
         this.testingQuantity = testingQuantity;
-    }
-
-    public String getTestingLabel() {
-        return testingLabel;
-    }
-
-    public void setTestingLabel(String testingLabel) {
-        this.testingLabel = testingLabel;
     }
 
     public Integer getDaysToComplete() {
