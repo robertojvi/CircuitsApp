@@ -10,6 +10,8 @@ import Admin from "./components/Admin";
 import Circuits from "./components/Circuits";
 import Reports from "./components/Reports";
 import RenewalAnalysis from "./components/RenewalAnalysis";
+import ProjectManagement from "./components/projectManagement/ProjectManagement";
+import ProjectManagementDetail from "./components/projectManagement/ProjectManagementDetail";
 import Login from "./components/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
@@ -69,6 +71,22 @@ function App() {
 								element={
 									<ProtectedRoute requiredRoles={["SUPER", "ADMIN"]}>
 										<RenewalAnalysis />
+									</ProtectedRoute>
+								}
+							/>
+							<Route
+								path="project-management"
+								element={
+									<ProtectedRoute>
+										<ProjectManagement />
+									</ProtectedRoute>
+								}
+							/>
+							<Route
+								path="project-management/:siteId"
+								element={
+									<ProtectedRoute>
+										<ProjectManagementDetail />
 									</ProtectedRoute>
 								}
 							/>

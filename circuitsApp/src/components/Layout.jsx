@@ -13,9 +13,12 @@ function Layout() {
 	const navigate = useNavigate();
 	const [showPasswordModal, setShowPasswordModal] = useState(false);
 	const [showUserManagementModal, setShowUserManagementModal] = useState(false);
-	const usesSideNavigationLayout = ["/circuits", "/reports", "/admin"].some(
-		(path) => location.pathname.startsWith(path),
-	);
+	const usesSideNavigationLayout = [
+		"/circuits",
+		"/reports",
+		"/admin",
+		"/project-management/",
+	].some((path) => location.pathname.startsWith(path));
 
 	const handleLogout = () => {
 		logout();
@@ -68,6 +71,12 @@ function Layout() {
 							className={`navbar-link ${location.pathname.startsWith("/reports") ? "active" : ""}`}
 						>
 							Reports
+						</Link>
+						<Link
+							to="/project-management"
+							className={`navbar-link ${location.pathname.startsWith("/project-management") ? "active" : ""}`}
+						>
+							Project Management
 						</Link>
 						{user && (user.role === "SUPER" || user.role === "ADMIN") && (
 							<Link
