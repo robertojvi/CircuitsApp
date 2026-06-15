@@ -193,6 +193,10 @@ function Reports() {
 		key: "expirationDate",
 		direction: "ascending",
 	});
+	const [circuitListSortConfig, setCircuitListSortConfig] = useState({
+		key: "venueName",
+		direction: "ascending",
+	});
 
 	useEffect(() => {
 		if (
@@ -276,11 +280,112 @@ function Reports() {
 			);
 		});
 
-		// Sort the filtered circuits by site name
-		return filtered.sort((a, b) =>
-			a.site.name.toLowerCase().localeCompare(b.site.name.toLowerCase()),
-		);
+		return getSortedCircuitList(filtered);
 	};
+
+	// Function to sort the Circuit Analytics circuit list based on selected column
+	const getSortedCircuitList = (circuitsToSort) => {
+		const sorted = [...circuitsToSort];
+
+		sorted.sort((a, b) => {
+			let aValue, bValue;
+
+			switch (circuitListSortConfig.key) {
+				case "venueName":
+					aValue = (a.site?.name || "").toLowerCase();
+					bValue = (b.site?.name || "").toLowerCase();
+					break;
+				case "accountNumber":
+					aValue = (a.accountNumber || "").toLowerCase();
+					bValue = (b.accountNumber || "").toLowerCase();
+					break;
+				case "circuitId":
+					aValue = (a.circuitId || "").toLowerCase();
+					bValue = (b.circuitId || "").toLowerCase();
+					break;
+				case "address":
+					aValue = formatSiteAddress(a.site).toLowerCase();
+					bValue = formatSiteAddress(b.site).toLowerCase();
+					break;
+				case "siteType":
+					aValue = (a.site?.siteType || "").toLowerCase();
+					bValue = (b.site?.siteType || "").toLowerCase();
+					break;
+				case "provider":
+					aValue = (a.provider?.name || "").toLowerCase();
+					bValue = (b.provider?.name || "").toLowerCase();
+					break;
+				case "bandwidth":
+					aValue = parseInt(a.circuitBandwidth) || 0;
+					bValue = parseInt(b.circuitBandwidth) || 0;
+					break;
+				case "circuitType":
+					aValue = (a.circuitType || "").toLowerCase();
+					bValue = (b.circuitType || "").toLowerCase();
+					break;
+				case "status":
+					aValue = (a.status || "").toLowerCase();
+					bValue = (b.status || "").toLowerCase();
+					break;
+				case "expirationDate":
+					aValue = a.expirationDate ? new Date(a.expirationDate) : new Date(0);
+					bValue = b.expirationDate ? new Date(b.expirationDate) : new Date(0);
+					break;
+				case "monthlyCost":
+					aValue = Number(a.monthlyCost) || 0;
+					bValue = Number(b.monthlyCost) || 0;
+					break;
+				default:
+					return 0;
+			}
+
+			if (typeof aValue === "string") {
+				return circuitListSortConfig.direction === "ascending"
+					? aValue.localeCompare(bValue)
+					: bValue.localeCompare(aValue);
+			}
+
+			return circuitListSortConfig.direction === "ascending"
+				? aValue - bValue
+				: bValue - aValue;
+		});
+
+		return sorted;
+	};
+
+	// Function to handle sorting column click for the Circuit Analytics circuit list
+	const handleCircuitListSortClick = (columnKey) => {
+		let newDirection = "ascending";
+		if (
+			circuitListSortConfig.key === columnKey &&
+			circuitListSortConfig.direction === "ascending"
+		) {
+			newDirection = "descending";
+		}
+		setCircuitListSortConfig({ key: columnKey, direction: newDirection });
+	};
+
+	// Helper to render a sortable column header for the Circuit Analytics circuit list
+	const renderCircuitListHeader = (label, columnKey, width) => (
+		<th
+			style={{
+				...tableHeaderStyle,
+				width,
+				cursor: "pointer",
+				userSelect: "none",
+				backgroundColor:
+					circuitListSortConfig.key === columnKey
+						? "rgba(255, 255, 255, 0.15)"
+						: "transparent",
+			}}
+			onClick={() => handleCircuitListSortClick(columnKey)}
+			title="Click to sort"
+		>
+			{label}{" "}
+			{circuitListSortConfig.key === columnKey &&
+				(circuitListSortConfig.direction === "ascending" ? "↑" : "↓")}
+		</th>
+	);
 
 	// Helper function to generate filter subtitle text
 	const getFilterSubtitle = () => {
@@ -2005,19 +2110,18 @@ function Reports() {
 												color: "var(--color-text-light)",
 											}}
 										>
-											<th style={{ ...tableHeaderStyle, width: "13%" }}>Venue Name</th>
-											<th style={{ ...tableHeaderStyle, width: "9%" }}>Account #</th>
-											<th style={{ ...tableHeaderStyle, width: "11%" }}>Circuit ID</th>
-											<th style={{ ...tableHeaderStyle, width: "14%" }}>Address</th>
-											<th style={{ ...tableHeaderStyle, width: "8%" }}>Site Type</th>
-											<th style={{ ...tableHeaderStyle, width: "9%" }}>Provider</th>
-											<th style={{ ...tableHeaderStyle, width: "7%" }}>Bandwidth</th>
-											<th style={{ ...tableHeaderStyle, width: "8%" }}>Circuit Type</th>
-											<th style={{ ...tableHeaderStyle, width: "7%" }}>Status</th>
-											<th style={{ ...tableHeaderStyle, width: "7%" }}>Expiration Date</th>
-											{user?.role !== "NOC" && (
-												<th style={{ ...tableHeaderStyle, width: "7%" }}>Monthly Cost</th>
-											)}
+											{renderCircuitListHeader("Venue Name", "venueName", "13%")}
+											{renderCircuitListHeader("Account #", "accountNumber", "9%")}
+											{renderCircuitListHeader("Circuit ID", "circuitId", "11%")}
+											{renderCircuitListHeader("Address", "address", "14%")}
+											{renderCircuitListHeader("Site Type", "siteType", "8%")}
+											{renderCircuitListHeader("Provider", "provider", "9%")}
+											{renderCircuitListHeader("Bandwidth", "bandwidth", "7%")}
+											{renderCircuitListHeader("Circuit Type", "circuitType", "8%")}
+											{renderCircuitListHeader("Status", "status", "7%")}
+											{renderCircuitListHeader("Expiration Date", "expirationDate", "7%")}
+											{user?.role !== "NOC" &&
+												renderCircuitListHeader("Monthly Cost", "monthlyCost", "7%")}
 										</tr>
 									</thead>
 									<tbody>
