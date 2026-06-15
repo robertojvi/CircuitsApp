@@ -1,8 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
 import { SCOPE_CATEGORIES, PHASE_CATEGORIES, quantityField, daysField, PROGRESS_STATUSES } from "../../utils/projectCategories";
 import { saveProgressItems } from "../../utils/projectManagementApi";
+import {
+	calculateCompletionDate,
+	calculatePhaseRange,
+	calculateExpectedProgressPercent,
+} from "../../utils/projectTimeline";
 
 const statusToPercent = (status, currentPercent) => {
 	if (status === "PENDING") return 0;
@@ -124,6 +129,46 @@ function ConstructionProgress({ siteId, projectData, canEdit, onRefresh }) {
 			: rows.reduce((sum, row) => sum + statusToPercent(row.status, row.percentComplete), 0) /
 				rows.length;
 
+	const expectedPercent = useMemo(() => {
+		const timeline = projectData?.timeline;
+		const scopeOfWork = projectData?.scopeOfWork;
+		const startDate = timeline?.constructionStartDate;
+
+		if (!startDate || !scopeOfWork) return null;
+
+		const workingDaysPerWeek = timeline?.workingDaysPerWeek || 5;
+		const workDayOverrides = projectData?.workDayOverrides || [];
+		const totalDelayDays = (projectData?.delays || []).reduce(
+			(sum, delay) => sum + (Number(delay.numberOfDays) || 0),
+			0,
+		);
+
+		const currentCompletionDate = calculateCompletionDate({
+			startDate,
+			totalDays: (scopeOfWork.daysToComplete || 0) + totalDelayDays,
+			workingDaysPerWeek,
+			workDayOverrides,
+		});
+
+		const softLaunchRange = calculatePhaseRange({
+			afterDate: currentCompletionDate,
+			totalDays: scopeOfWork.softLaunchDays || 0,
+			workingDaysPerWeek,
+			workDayOverrides,
+		});
+
+		const goLiveRange = calculatePhaseRange({
+			afterDate: softLaunchRange?.end || currentCompletionDate,
+			totalDays: scopeOfWork.goLiveDays || 0,
+			workingDaysPerWeek,
+			workDayOverrides,
+		});
+
+		const targetDate = goLiveRange?.end || softLaunchRange?.end || currentCompletionDate;
+
+		return calculateExpectedProgressPercent({ startDate, targetDate });
+	}, [projectData?.timeline, projectData?.scopeOfWork, projectData?.workDayOverrides, projectData?.delays]);
+
 	const inputStyle = {
 		padding: "8px 12px",
 		borderRadius: "4px",
@@ -198,6 +243,33 @@ function ConstructionProgress({ siteId, projectData, canEdit, onRefresh }) {
 					/>
 				</div>
 			</div>
+
+			{expectedPercent !== null && (
+				<div style={{ marginBottom: "var(--spacing-lg)" }}>
+					<div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+						<span style={{ fontWeight: "600" }}>Expected Progress</span>
+						<span style={{ fontWeight: "600" }}>{expectedPercent.toFixed(1)}%</span>
+					</div>
+					<div
+						style={{
+							width: "100%",
+							height: "16px",
+							borderRadius: "8px",
+							backgroundColor: theme === "light" ? "#e2e8f0" : "var(--color-dark-bg-secondary)",
+							overflow: "hidden",
+						}}
+					>
+						<div
+							style={{
+								height: "100%",
+								width: `${expectedPercent}%`,
+								backgroundColor: "var(--color-go-live, #7c3aed)",
+								transition: "width var(--transition-fast)",
+							}}
+						/>
+					</div>
+				</div>
+			)}
 
 			<div
 				style={{

@@ -166,6 +166,27 @@ export const calculateCompletionDate = ({
 	return null;
 };
 
+const MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+// Returns the percentage of the timeline (from `startDate` to `targetDate`) that has elapsed
+// as of today, clamped to [0, 100]. Returns null if either date is invalid or the range is empty.
+export const calculateExpectedProgressPercent = ({ startDate, targetDate }) => {
+	const start = parseDateInputValue(startDate);
+	const target = parseDateInputValue(targetDate);
+
+	if (!start || !target || target <= start) {
+		return null;
+	}
+
+	const now = new Date();
+	const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+
+	const totalDays = (target.getTime() - start.getTime()) / MS_PER_DAY;
+	const elapsedDays = (today.getTime() - start.getTime()) / MS_PER_DAY;
+
+	return Math.min(100, Math.max(0, (elapsedDays / totalDays) * 100));
+};
+
 // Computes the [start, end] date range for a phase (e.g. Soft-Launch, Go-Live) that runs for
 // `totalDays` business days, starting on the first work day after `afterDate`. Weekends,
 // holidays, and non-work-day overrides are skipped both when picking the start day and when
