@@ -10,6 +10,14 @@ const statusToPercent = (status, currentPercent) => {
 	return currentPercent ?? 0;
 };
 
+const STATUS_ORDER = { COMPLETE: 0, PARTIAL: 1, PENDING: 2 };
+
+const STATUS_CELL_COLORS = {
+	COMPLETE: { backgroundColor: "var(--color-status-success-bg)", color: "var(--color-status-success-text)" },
+	PARTIAL: { backgroundColor: "var(--color-status-warning-bg)", color: "var(--color-status-warning-text)" },
+	PENDING: { backgroundColor: "var(--color-status-error-bg)", color: "var(--color-status-error-text)" },
+};
+
 const buildRows = (scopeOfWork, progressItems) => {
 	if (!scopeOfWork) return [];
 
@@ -222,14 +230,16 @@ function ConstructionProgress({ siteId, projectData, canEdit, onRefresh }) {
 						</tr>
 					</thead>
 					<tbody>
-						{rows.map((row) => (
+						{[...rows]
+							.sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status])
+							.map((row) => (
 							<tr
 								key={row.category}
 								style={{
 									borderBottom: `1px solid ${theme === "light" ? "#dee2e6" : "var(--color-border)"}`,
 								}}
 							>
-								<td style={{ ...tableCellStyle, fontWeight: "600" }}>{row.name}</td>
+								<td style={{ ...tableCellStyle, ...STATUS_CELL_COLORS[row.status], fontWeight: "600" }}>{row.name}</td>
 								<td style={tableCellStyle}>{row.quantity}</td>
 								<td style={tableCellStyle}>
 									<select
