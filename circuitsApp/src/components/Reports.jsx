@@ -371,6 +371,8 @@ function Reports() {
 			style={{
 				...tableHeaderStyle,
 				width,
+				padding: "8px 10px",
+				fontSize: "11px",
 				cursor: "pointer",
 				userSelect: "none",
 				backgroundColor:
@@ -1551,6 +1553,12 @@ function Reports() {
 		if (error) return <div style={themedErrorStyle}>{error}</div>;
 
 		if (selectedMenu === "Circuit Analytics") {
+			const circuitListCellStyle = {
+				...tableCellStyle,
+				padding: "8px 10px",
+				fontSize: "12px",
+			};
+
 			return (
 				<div style={{ width: "100%" }}>
 					<div
@@ -2136,24 +2144,24 @@ function Reports() {
 															: "var(--color-surface-light)",
 												}}
 											>
-												<td style={{ ...tableCellStyle, fontWeight: "600" }}>
+												<td style={{ ...circuitListCellStyle, fontWeight: "600" }}>
 													{circuit.site.name}
 												</td>
-												<td style={{ ...tableCellStyle, fontSize: "12px" }}>
+												<td style={circuitListCellStyle}>
 													{circuit.accountNumber || "N/A"}
 												</td>
-												<td style={{ ...tableCellStyle, fontSize: "12px" }}>
+												<td style={circuitListCellStyle}>
 													{circuit.circuitId || "N/A"}
 												</td>
-												<td style={{ ...tableCellStyle, fontSize: "12px" }}>
+												<td style={circuitListCellStyle}>
 													{formatSiteAddress(circuit.site)}
 												</td>
-												<td style={tableCellStyle}>
+												<td style={circuitListCellStyle}>
 													<span
 														style={{
-															padding: "4px 8px",
+															padding: "3px 6px",
 															borderRadius: "4px",
-															fontSize: "12px",
+															fontSize: "11px",
 															fontWeight: "bold",
 															backgroundColor:
 																circuit.site.siteType === "MHC"
@@ -2169,16 +2177,16 @@ function Reports() {
 														{circuit.site.siteType || "Unknown"}
 													</span>
 												</td>
-												<td style={tableCellStyle}>{circuit.provider.name}</td>
-												<td style={tableCellStyle}>
+												<td style={circuitListCellStyle}>{circuit.provider.name}</td>
+												<td style={circuitListCellStyle}>
 													{circuit.circuitBandwidth}
 												</td>
-												<td style={tableCellStyle}>
+												<td style={circuitListCellStyle}>
 													<span
 														style={{
-															padding: "4px 8px",
+															padding: "3px 6px",
 															borderRadius: "4px",
-															fontSize: "12px",
+															fontSize: "11px",
 															fontWeight: "bold",
 															backgroundColor:
 																circuit.circuitType === "Fiber"
@@ -2192,12 +2200,12 @@ function Reports() {
 														{circuit.circuitType || "Unknown"}
 													</span>
 												</td>
-												<td style={tableCellStyle}>
+												<td style={circuitListCellStyle}>
 													<span
 														style={{
-															padding: "4px 8px",
+															padding: "3px 6px",
 															borderRadius: "4px",
-															fontSize: "12px",
+															fontSize: "11px",
 															fontWeight: "bold",
 															backgroundColor:
 																circuit.status === "Active"
@@ -2211,11 +2219,11 @@ function Reports() {
 														{circuit.status || "Pending"}
 													</span>
 												</td>
-												<td style={tableCellStyle}>
+												<td style={circuitListCellStyle}>
 													{formatDate(circuit.expirationDate)}
 												</td>
 												{user?.role !== "NOC" && (
-													<td style={tableCellStyle}>
+													<td style={circuitListCellStyle}>
 														{circuit.monthlyCost != null
 															? `$${Number(circuit.monthlyCost).toFixed(2)}`
 															: "N/A"}
