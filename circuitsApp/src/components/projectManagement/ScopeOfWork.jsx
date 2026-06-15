@@ -5,7 +5,11 @@ import { SCOPE_CATEGORIES, quantityField } from "../../utils/projectCategories";
 import { saveScopeOfWork } from "../../utils/projectManagementApi";
 
 const buildFormState = (scopeOfWork) => {
-	const form = { daysToComplete: scopeOfWork?.daysToComplete ?? "" };
+	const form = {
+		daysToComplete: scopeOfWork?.daysToComplete ?? "",
+		softLaunchDays: scopeOfWork?.softLaunchDays ?? "",
+		goLiveDays: scopeOfWork?.goLiveDays ?? "",
+	};
 
 	for (const { key } of SCOPE_CATEGORIES) {
 		form[quantityField(key)] = scopeOfWork?.[quantityField(key)] ?? "";
@@ -42,6 +46,10 @@ function ScopeOfWork({ siteId, projectData, canEdit, onRefresh }) {
 			const dto = {
 				daysToComplete:
 					form.daysToComplete === "" ? null : Number(form.daysToComplete),
+				softLaunchDays:
+					form.softLaunchDays === "" ? null : Number(form.softLaunchDays),
+				goLiveDays:
+					form.goLiveDays === "" ? null : Number(form.goLiveDays),
 			};
 
 			for (const { key } of SCOPE_CATEGORIES) {
@@ -156,7 +164,7 @@ function ScopeOfWork({ siteId, projectData, canEdit, onRefresh }) {
 					</table>
 				</div>
 
-				<div style={{ display: "flex", alignItems: "center", gap: "var(--spacing-md)" }}>
+				<div style={{ display: "flex", alignItems: "center", gap: "var(--spacing-md)", flexWrap: "wrap" }}>
 					<label style={{ fontWeight: "600" }}>
 						Days to Complete
 						<input
@@ -166,6 +174,32 @@ function ScopeOfWork({ siteId, projectData, canEdit, onRefresh }) {
 							value={form.daysToComplete}
 							disabled={!canEdit}
 							onChange={(e) => handleFieldChange("daysToComplete", e.target.value)}
+							style={{ ...inputStyle, marginLeft: "var(--spacing-md)", width: "120px", display: "inline-block" }}
+						/>
+					</label>
+
+					<label style={{ fontWeight: "600" }}>
+						Soft-Launch Days
+						<input
+							type="number"
+							min="0"
+							step="1"
+							value={form.softLaunchDays}
+							disabled={!canEdit}
+							onChange={(e) => handleFieldChange("softLaunchDays", e.target.value)}
+							style={{ ...inputStyle, marginLeft: "var(--spacing-md)", width: "120px", display: "inline-block" }}
+						/>
+					</label>
+
+					<label style={{ fontWeight: "600" }}>
+						Go-Live Days
+						<input
+							type="number"
+							min="0"
+							step="1"
+							value={form.goLiveDays}
+							disabled={!canEdit}
+							onChange={(e) => handleFieldChange("goLiveDays", e.target.value)}
 							style={{ ...inputStyle, marginLeft: "var(--spacing-md)", width: "120px", display: "inline-block" }}
 						/>
 					</label>

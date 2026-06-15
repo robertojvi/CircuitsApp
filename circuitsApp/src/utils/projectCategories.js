@@ -23,6 +23,16 @@ export const SCOPE_CATEGORIES = [
 
 export const quantityField = (key) => `${key}Quantity`;
 
+// Post-construction phases tracked alongside the scope categories.
+// `key` must match the camelCase field prefix on ProjectScopeOfWork / ProjectScopeOfWorkDTO
+// (e.g. "softLaunch" -> softLaunchDays) on the backend.
+export const PHASE_CATEGORIES = [
+	{ key: "softLaunch", name: "Soft-Launch" },
+	{ key: "goLive", name: "Go-Live" },
+];
+
+export const daysField = (key) => `${key}Days`;
+
 export const PROGRESS_STATUSES = [
 	{ value: "PENDING", label: "Pending" },
 	{ value: "PARTIAL", label: "Partially Complete" },

@@ -8,7 +8,13 @@ import {
 	saveWorkDayOverride,
 	deleteWorkDayOverride,
 } from "../../utils/projectManagementApi";
-import { calculateCompletionDate, buildOverridesMap, isWorkDay, getUSHolidays } from "../../utils/projectTimeline";
+import {
+	calculateCompletionDate,
+	calculatePhaseRange,
+	buildOverridesMap,
+	isWorkDay,
+	getUSHolidays,
+} from "../../utils/projectTimeline";
 import ProjectCalendar from "./ProjectCalendar";
 
 const todayString = () => new Date().toISOString().slice(0, 10);
@@ -24,6 +30,8 @@ function Timeline({ siteId, projectData, canEdit, onRefresh }) {
 		[projectData?.workDayOverrides],
 	);
 	const daysToComplete = projectData?.scopeOfWork?.daysToComplete || 0;
+	const softLaunchDays = projectData?.scopeOfWork?.softLaunchDays || 0;
+	const goLiveDays = projectData?.scopeOfWork?.goLiveDays || 0;
 
 	const [startDate, setStartDate] = useState(timeline?.constructionStartDate || "");
 	const [workingDaysPerWeek, setWorkingDaysPerWeek] = useState(
@@ -67,6 +75,28 @@ function Timeline({ siteId, projectData, canEdit, onRefresh }) {
 				workDayOverrides,
 			}),
 		[startDate, daysToComplete, totalDelayDays, workingDaysPerWeek, workDayOverrides],
+	);
+
+	const softLaunchRange = useMemo(
+		() =>
+			calculatePhaseRange({
+				afterDate: currentCompletionDate,
+				totalDays: softLaunchDays,
+				workingDaysPerWeek,
+				workDayOverrides,
+			}),
+		[currentCompletionDate, softLaunchDays, workingDaysPerWeek, workDayOverrides],
+	);
+
+	const goLiveRange = useMemo(
+		() =>
+			calculatePhaseRange({
+				afterDate: softLaunchRange?.end,
+				totalDays: goLiveDays,
+				workingDaysPerWeek,
+				workDayOverrides,
+			}),
+		[softLaunchRange, goLiveDays, workingDaysPerWeek, workDayOverrides],
 	);
 
 	const handleSaveTimeline = async (e) => {
@@ -243,7 +273,15 @@ function Timeline({ siteId, projectData, canEdit, onRefresh }) {
 						</button>
 					)}
 
-					<div style={{ marginLeft: "auto", display: "flex", gap: "var(--spacing-xl)" }}>
+					<div style={{ marginLeft: "auto", display: "flex", gap: "var(--spacing-xl)", flexWrap: "wrap" }}>
+						<div>
+							<div style={{ fontSize: "var(--font-size-sm)", opacity: 0.8 }}>
+								Project Start Date
+							</div>
+							<div style={{ fontWeight: "700", fontSize: "var(--font-size-lg)" }}>
+								{startDate || "N/A"}
+							</div>
+						</div>
 						<div>
 							<div style={{ fontSize: "var(--font-size-sm)", opacity: 0.8 }}>
 								Days to Complete (from Scope of Work)
@@ -266,6 +304,22 @@ function Timeline({ siteId, projectData, canEdit, onRefresh }) {
 							</div>
 							<div style={{ fontWeight: "700", fontSize: "var(--font-size-lg)", color: "var(--color-primary)" }}>
 								{currentCompletionDate || "N/A"}
+							</div>
+						</div>
+						<div>
+							<div style={{ fontSize: "var(--font-size-sm)", opacity: 0.8 }}>
+								Soft-Launch
+							</div>
+							<div style={{ fontWeight: "700", fontSize: "var(--font-size-lg)", color: "var(--color-soft-launch, #d97706)" }}>
+								{softLaunchRange ? `${softLaunchRange.start} - ${softLaunchRange.end}` : "N/A"}
+							</div>
+						</div>
+						<div>
+							<div style={{ fontSize: "var(--font-size-sm)", opacity: 0.8 }}>
+								Go-Live
+							</div>
+							<div style={{ fontWeight: "700", fontSize: "var(--font-size-lg)", color: "var(--color-go-live, #7c3aed)" }}>
+								{goLiveRange ? `${goLiveRange.start} - ${goLiveRange.end}` : "N/A"}
 							</div>
 						</div>
 					</div>
@@ -377,6 +431,8 @@ function Timeline({ siteId, projectData, canEdit, onRefresh }) {
 					workingDaysPerWeek={Number(workingDaysPerWeek)}
 					workDayOverrides={workDayOverrides}
 					completionDate={currentCompletionDate}
+					softLaunchRange={softLaunchRange}
+					goLiveRange={goLiveRange}
 					canEdit={canEdit}
 					onToggleWorkDay={handleToggleWorkDay}
 				/>

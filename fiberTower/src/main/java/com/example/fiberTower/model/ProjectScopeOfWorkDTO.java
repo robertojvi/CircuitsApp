@@ -41,6 +41,10 @@ public class ProjectScopeOfWorkDTO {
 
     private Integer daysToComplete;
 
+    private Integer softLaunchDays;
+
+    private Integer goLiveDays;
+
     public Long getId() {
         return id;
     }
@@ -199,5 +203,21 @@ public class ProjectScopeOfWorkDTO {
 
     public void setDaysToComplete(Integer daysToComplete) {
         this.daysToComplete = daysToComplete;
+    }
+
+    public Integer getSoftLaunchDays() {
+        return softLaunchDays;
+    }
+
+    public void setSoftLaunchDays(Integer softLaunchDays) {
+        this.softLaunchDays = softLaunchDays;
+    }
+
+    public Integer getGoLiveDays() {
+        return goLiveDays;
+    }
+
+    public void setGoLiveDays(Integer goLiveDays) {
+        this.goLiveDays = goLiveDays;
     }
 }

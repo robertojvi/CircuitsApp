@@ -11,7 +11,21 @@ const WEEKDAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const startOfMonth = (date) => new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1));
 
-function ProjectCalendar({ startDate, workingDaysPerWeek, workDayOverrides, completionDate, canEdit, onToggleWorkDay }) {
+const isDateInRange = (dateStr, start, end) => {
+	if (!start || !end) return false;
+	return dateStr >= start && dateStr <= end;
+};
+
+function ProjectCalendar({
+	startDate,
+	workingDaysPerWeek,
+	workDayOverrides,
+	completionDate,
+	softLaunchRange,
+	goLiveRange,
+	canEdit,
+	onToggleWorkDay,
+}) {
 	const { theme } = useTheme();
 
 	const initialMonth = useMemo(() => {
@@ -89,10 +103,24 @@ function ProjectCalendar({ startDate, workingDaysPerWeek, workDayOverrides, comp
 					}
 
 					const info = getDayInfo(date, { workingDaysPerWeek, overridesMap, holidaysByYear });
+					const isStartDay = info.dateStr === startDate;
 					const isCompletionDay = info.dateStr === completionDate;
+					const isConstructionDay = isDateInRange(info.dateStr, startDate, completionDate);
+					const isSoftLaunchDay = info.isWorkDay && isDateInRange(info.dateStr, softLaunchRange?.start, softLaunchRange?.end);
+					const isGoLiveDay = info.isWorkDay && isDateInRange(info.dateStr, goLiveRange?.start, goLiveRange?.end);
+					const isSoftLaunchStart = info.dateStr === softLaunchRange?.start;
+					const isGoLiveStart = info.dateStr === goLiveRange?.start;
 
 					let backgroundColor;
-					if (info.isWorkDay) {
+					if (isGoLiveDay) {
+						backgroundColor = theme === "light" ? "#ddd6fe" : "#4c1d95";
+					} else if (isSoftLaunchDay) {
+						backgroundColor = theme === "light" ? "#fde68a" : "#78350f";
+					} else if (isConstructionDay) {
+						backgroundColor = info.isWorkDay
+							? (theme === "light" ? "#bfdbfe" : "#1e3a8a")
+							: (theme === "light" ? "#eff6ff" : "#1e293b");
+					} else if (info.isWorkDay) {
 						backgroundColor = theme === "light" ? "#dcfce7" : "#14532d";
 					} else {
 						backgroundColor = theme === "light" ? "#f1f5f9" : "var(--color-dark-bg-secondary)";
@@ -122,9 +150,24 @@ function ProjectCalendar({ startDate, workingDaysPerWeek, workDayOverrides, comp
 									{info.holidayName}
 								</div>
 							)}
+							{isStartDay && (
+								<div style={{ fontSize: "10px", fontWeight: "700", color: theme === "light" ? "#1d4ed8" : "#93c5fd" }}>
+									Start
+								</div>
+							)}
 							{isCompletionDay && (
 								<div style={{ fontSize: "10px", fontWeight: "700", color: "var(--color-primary)" }}>
 									Completion
+								</div>
+							)}
+							{isSoftLaunchStart && (
+								<div style={{ fontSize: "10px", fontWeight: "700", color: theme === "light" ? "#92400e" : "#fde68a" }}>
+									Soft-Launch
+								</div>
+							)}
+							{isGoLiveStart && (
+								<div style={{ fontSize: "10px", fontWeight: "700", color: theme === "light" ? "#5b21b6" : "#ddd6fe" }}>
+									Go-Live
 								</div>
 							)}
 						</div>
@@ -140,6 +183,18 @@ function ProjectCalendar({ startDate, workingDaysPerWeek, workDayOverrides, comp
 				<div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
 					<span style={{ width: "14px", height: "14px", borderRadius: "3px", display: "inline-block", backgroundColor: theme === "light" ? "#f1f5f9" : "var(--color-dark-bg-secondary)" }} />
 					Non-work day
+				</div>
+				<div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+					<span style={{ width: "14px", height: "14px", borderRadius: "3px", display: "inline-block", backgroundColor: theme === "light" ? "#bfdbfe" : "#1e3a8a" }} />
+					Construction
+				</div>
+				<div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+					<span style={{ width: "14px", height: "14px", borderRadius: "3px", display: "inline-block", backgroundColor: theme === "light" ? "#fde68a" : "#78350f" }} />
+					Soft-Launch
+				</div>
+				<div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+					<span style={{ width: "14px", height: "14px", borderRadius: "3px", display: "inline-block", backgroundColor: theme === "light" ? "#ddd6fe" : "#4c1d95" }} />
+					Go-Live
 				</div>
 				<div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
 					<span style={{ width: "14px", height: "14px", borderRadius: "3px", display: "inline-block", border: `2px dashed ${theme === "light" ? "#d97706" : "#fbbf24"}` }} />

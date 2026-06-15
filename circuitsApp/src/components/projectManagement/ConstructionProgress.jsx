@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useTheme } from "../../context/ThemeContext";
-import { SCOPE_CATEGORIES, quantityField, PROGRESS_STATUSES } from "../../utils/projectCategories";
+import { SCOPE_CATEGORIES, PHASE_CATEGORIES, quantityField, daysField, PROGRESS_STATUSES } from "../../utils/projectCategories";
 import { saveProgressItems } from "../../utils/projectManagementApi";
 
 const statusToPercent = (status, currentPercent) => {
@@ -13,7 +13,7 @@ const statusToPercent = (status, currentPercent) => {
 const buildRows = (scopeOfWork, progressItems) => {
 	if (!scopeOfWork) return [];
 
-	return SCOPE_CATEGORIES.filter(({ key }) => {
+	const scopeRows = SCOPE_CATEGORIES.filter(({ key }) => {
 		const quantity = scopeOfWork[quantityField(key)];
 		return Number(quantity) > 0;
 	}).map(({ key, name }) => {
@@ -28,6 +28,25 @@ const buildRows = (scopeOfWork, progressItems) => {
 			percentComplete: existing?.percentComplete ?? 0,
 		};
 	});
+
+	const phaseRows = PHASE_CATEGORIES.filter(({ key }) => {
+		const days = scopeOfWork[daysField(key)];
+		return Number(days) > 0;
+	}).map(({ key, name }) => {
+		const existing = (progressItems || []).find((item) => item.category === key);
+		const days = scopeOfWork[daysField(key)];
+
+		return {
+			category: key,
+			name,
+			quantity: `${days} day${Number(days) === 1 ? "" : "s"}`,
+			id: existing?.id ?? null,
+			status: existing?.status ?? "PENDING",
+			percentComplete: existing?.percentComplete ?? 0,
+		};
+	});
+
+	return [...scopeRows, ...phaseRows];
 };
 
 function ConstructionProgress({ siteId, projectData, canEdit, onRefresh }) {

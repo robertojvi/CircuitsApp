@@ -165,3 +165,50 @@ export const calculateCompletionDate = ({
 
 	return null;
 };
+
+// Computes the [start, end] date range for a phase (e.g. Soft-Launch, Go-Live) that runs for
+// `totalDays` business days, starting on the first work day after `afterDate`. Weekends,
+// holidays, and non-work-day overrides are skipped both when picking the start day and when
+// counting toward `totalDays`. Returns null if inputs are invalid.
+export const calculatePhaseRange = ({
+	afterDate,
+	totalDays,
+	workingDaysPerWeek,
+	workDayOverrides = [],
+}) => {
+	const after = parseDateInputValue(afterDate);
+
+	if (!after || !Number.isFinite(totalDays) || totalDays <= 0) {
+		return null;
+	}
+
+	const overridesMap = buildOverridesMap(workDayOverrides);
+	const holidaysByYear = {};
+
+	const maxIterations = totalDays * 10 + 730;
+	let current = addDays(after, 1);
+	let start = null;
+	let workDaysCounted = 0;
+
+	for (let i = 0; i < maxIterations; i++) {
+		const year = current.getUTCFullYear();
+		if (!holidaysByYear[year]) {
+			holidaysByYear[year] = getUSHolidays(year);
+		}
+
+		if (isWorkDay(current, workingDaysPerWeek, overridesMap, holidaysByYear[year])) {
+			if (!start) {
+				start = formatDateInputValue(current);
+			}
+
+			workDaysCounted++;
+			if (workDaysCounted === totalDays) {
+				return { start, end: formatDateInputValue(current) };
+			}
+		}
+
+		current = addDays(current, 1);
+	}
+
+	return null;
+};

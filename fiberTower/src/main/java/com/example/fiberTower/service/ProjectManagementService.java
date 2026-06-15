@@ -17,7 +17,7 @@ public class ProjectManagementService implements IProjectManagementService {
             "headend", "bnOrDn", "pointToPoint", "outdoorIndoorAp", "cnOrRn",
             "directBurialPolesElectrical", "poleTestTurnUp", "directBurialFiber", "conduit",
             "fiberPull", "breakerDisconnects", "cameras", "nemaElectrical", "homeInstalls",
-            "inventory", "vaults", "testing"
+            "inventory", "vaults", "testing", "softLaunch", "goLive"
     };
 
     @Autowired
@@ -204,6 +204,8 @@ public class ProjectManagementService implements IProjectManagementService {
             case "inventory": return scope.getInventoryQuantity();
             case "vaults": return scope.getVaultsQuantity();
             case "testing": return scope.getTestingQuantity();
+            case "softLaunch": return scope.getSoftLaunchDays() != null ? scope.getSoftLaunchDays().doubleValue() : null;
+            case "goLive": return scope.getGoLiveDays() != null ? scope.getGoLiveDays().doubleValue() : null;
             default: return null;
         }
     }
