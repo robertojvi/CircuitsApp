@@ -39,6 +39,16 @@ function ProjectCalendar({
 		setViewMonth(initialMonth);
 	}, [initialMonth]);
 
+	const todayStr = useMemo(() => {
+		const t = new Date();
+		return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, "0")}-${String(t.getDate()).padStart(2, "0")}`;
+	}, []);
+
+	const goToToday = () => {
+		const t = new Date();
+		setViewMonth(new Date(Date.UTC(t.getFullYear(), t.getMonth(), 1)));
+	};
+
 	const overridesMap = useMemo(() => buildOverridesMap(workDayOverrides), [workDayOverrides]);
 	const holidaysByYear = {};
 
@@ -80,8 +90,13 @@ function ProjectCalendar({
 				<button onClick={goToPrevMonth} className="btn btn-ghost" style={{ fontSize: "13px", padding: "4px 10px" }}>
 					&larr; Prev
 				</button>
-				<div style={{ fontWeight: "700", fontSize: "var(--font-size-lg)" }}>
-					{MONTH_NAMES[month]} {year}
+				<div style={{ display: "flex", alignItems: "center", gap: "var(--spacing-sm)" }}>
+					<div style={{ fontWeight: "700", fontSize: "var(--font-size-lg)" }}>
+						{MONTH_NAMES[month]} {year}
+					</div>
+					<button onClick={goToToday} className="btn btn-ghost" style={{ fontSize: "11px", padding: "2px 8px", border: "2px solid #f97316", color: "#f97316", borderRadius: "var(--radius-md)" }}>
+						Today
+					</button>
 				</div>
 				<button onClick={goToNextMonth} className="btn btn-ghost" style={{ fontSize: "13px", padding: "4px 10px" }}>
 					Next &rarr;
@@ -110,6 +125,8 @@ function ProjectCalendar({
 					const isGoLiveDay = info.isWorkDay && isDateInRange(info.dateStr, goLiveRange?.start, goLiveRange?.end);
 					const isSoftLaunchStart = info.dateStr === softLaunchRange?.start;
 					const isGoLiveStart = info.dateStr === goLiveRange?.start;
+					const isPast = info.dateStr < todayStr;
+					const isToday = info.dateStr === todayStr;
 
 					let backgroundColor;
 					if (isGoLiveDay) {
@@ -130,11 +147,14 @@ function ProjectCalendar({
 						...dayCellBase,
 						backgroundColor,
 						cursor: canEdit ? "pointer" : "default",
-						border: isCompletionDay
-							? "2px solid var(--color-primary)"
-							: info.isOverridden
-								? `2px dashed ${theme === "light" ? "#d97706" : "#fbbf24"}`
-								: dayCellBase.border,
+						opacity: isPast ? 0.5 : 1,
+						border: isToday
+							? "3px solid #f97316"
+							: isCompletionDay
+								? "2px solid var(--color-primary)"
+								: info.isOverridden
+									? `2px dashed ${theme === "light" ? "#d97706" : "#fbbf24"}`
+									: dayCellBase.border,
 					};
 
 					return (
@@ -144,7 +164,12 @@ function ProjectCalendar({
 							title={info.holidayName || undefined}
 							onClick={() => canEdit && onToggleWorkDay(info.dateStr)}
 						>
-							<div style={{ fontWeight: "700" }}>{date.getUTCDate()}</div>
+							<div style={{ fontWeight: "700", color: isToday ? "#f97316" : undefined }}>{date.getUTCDate()}</div>
+							{isToday && (
+								<div style={{ fontSize: "10px", fontWeight: "700", color: "#f97316" }}>
+									Today
+								</div>
+							)}
 							{info.isHoliday && (
 								<div style={{ fontSize: "10px", color: theme === "light" ? "#92400e" : "#fbbf24" }}>
 									{info.holidayName}
@@ -176,6 +201,14 @@ function ProjectCalendar({
 			</div>
 
 			<div style={{ display: "flex", gap: "var(--spacing-lg)", marginTop: "var(--spacing-md)", flexWrap: "wrap", fontSize: "12px" }}>
+				<div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+					<span style={{ width: "14px", height: "14px", borderRadius: "3px", display: "inline-block", border: "3px solid #f97316" }} />
+					Today
+				</div>
+				<div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+					<span style={{ width: "14px", height: "14px", borderRadius: "3px", display: "inline-block", backgroundColor: theme === "light" ? "#bfdbfe" : "#1e3a8a", opacity: 0.5 }} />
+					Past
+				</div>
 				<div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
 					<span style={{ width: "14px", height: "14px", borderRadius: "3px", display: "inline-block", backgroundColor: theme === "light" ? "#dcfce7" : "#14532d" }} />
 					Work day

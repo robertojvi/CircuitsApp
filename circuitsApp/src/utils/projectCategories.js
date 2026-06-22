@@ -9,7 +9,7 @@ export const SCOPE_CATEGORIES = [
 	{ key: "cnOrRn", name: "CN or RN" },
 	{ key: "directBurialPolesElectrical", name: "Direct Burial Poles + Electrical" },
 	{ key: "poleTestTurnUp", name: "Pole Test and Turn Up" },
-	{ key: "directBurialFiber", name: "Direct Burial Fiber" },
+	{ key: "directBurialFiber", name: "Direct Burial Fiber/Ethernet" },
 	{ key: "conduit", name: "Conduit" },
 	{ key: "fiberPull", name: "Fiber Pull" },
 	{ key: "breakerDisconnects", name: "Breaker Disconnects" },
