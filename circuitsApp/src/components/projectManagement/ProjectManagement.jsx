@@ -12,6 +12,17 @@ function ProjectManagement() {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
 	const [searchTerm, setSearchTerm] = useState("");
+	const [sortColumn, setSortColumn] = useState("name");
+	const [sortDirection, setSortDirection] = useState("asc");
+
+	const handleSort = (column) => {
+		if (sortColumn === column) {
+			setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+		} else {
+			setSortColumn(column);
+			setSortDirection("asc");
+		}
+	};
 
 	useEffect(() => {
 		const fetchSites = async () => {
@@ -47,6 +58,13 @@ function ProjectManagement() {
 		);
 	});
 
+	const sortedSites = [...filteredSites].sort((a, b) => {
+		const aVal = (a[sortColumn] || "").toString().toLowerCase();
+		const bVal = (b[sortColumn] || "").toString().toLowerCase();
+		const cmp = aVal.localeCompare(bVal);
+		return sortDirection === "asc" ? cmp : -cmp;
+	});
+
 	const tableHeaderStyle = {
 		padding: "var(--spacing-lg)",
 		textAlign: "left",
@@ -56,6 +74,18 @@ function ProjectManagement() {
 		textTransform: "uppercase",
 		letterSpacing: "0.5px",
 		boxShadow: "none",
+	};
+
+	const sortableHeaderStyle = {
+		...tableHeaderStyle,
+		cursor: "pointer",
+		userSelect: "none",
+		whiteSpace: "nowrap",
+	};
+
+	const getSortIndicator = (column) => {
+		if (sortColumn !== column) return " ↕";
+		return sortDirection === "asc" ? " ↑" : " ↓";
 	};
 
 	const tableCellStyle = {
@@ -145,16 +175,26 @@ function ProjectManagement() {
 						}}
 					>
 						<tr>
-							<th style={tableHeaderStyle}>Site Name</th>
-							<th style={tableHeaderStyle}>Address</th>
-							<th style={tableHeaderStyle}>City</th>
-							<th style={tableHeaderStyle}>State</th>
-							<th style={tableHeaderStyle}>Site Type</th>
+							<th style={sortableHeaderStyle} onClick={() => handleSort("name")}>
+								Site Name{getSortIndicator("name")}
+							</th>
+							<th style={sortableHeaderStyle} onClick={() => handleSort("address")}>
+								Address{getSortIndicator("address")}
+							</th>
+							<th style={sortableHeaderStyle} onClick={() => handleSort("city")}>
+								City{getSortIndicator("city")}
+							</th>
+							<th style={sortableHeaderStyle} onClick={() => handleSort("state")}>
+								State{getSortIndicator("state")}
+							</th>
+							<th style={sortableHeaderStyle} onClick={() => handleSort("siteType")}>
+								Site Type{getSortIndicator("siteType")}
+							</th>
 							<th style={tableHeaderStyle}></th>
 						</tr>
 					</thead>
 					<tbody>
-						{filteredSites.map((site) => (
+						{sortedSites.map((site) => (
 							<tr
 								key={site.id}
 								style={{
