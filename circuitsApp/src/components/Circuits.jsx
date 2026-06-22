@@ -713,26 +713,25 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 									style={{
 										...detailValueStyle,
 										backgroundColor: isExpired(circuit.expirationDate)
-											? "#fee2e2"
+											? theme === "light" ? "#fee2e2" : "#4a1010"
 											: isExpirationSoon(circuit.expirationDate)
-												? "#fef3c7"
-												: "transparent",
-										padding:
-											isExpired(circuit.expirationDate) ||
-											isExpirationSoon(circuit.expirationDate)
-												? "8px 10px"
-												: "0",
+												? theme === "light" ? "#fef3c7" : "#3d2800"
+												: theme === "light" ? "#eff6ff" : "#1e3a5f",
+										padding: "8px 10px",
 										borderRadius: "4px",
+										border: `1px solid ${
+											isExpired(circuit.expirationDate)
+												? theme === "light" ? "#fca5a5" : "#7f1d1d"
+												: isExpirationSoon(circuit.expirationDate)
+													? theme === "light" ? "#fcd34d" : "#78450a"
+													: theme === "light" ? "#93c5fd" : "#2563eb"
+										}`,
 										color: isExpired(circuit.expirationDate)
-											? "#7f1d1d"
+											? theme === "light" ? "#7f1d1d" : "#fca5a5"
 											: isExpirationSoon(circuit.expirationDate)
-												? "#92400e"
-												: "#1e293b",
-										fontWeight:
-											isExpired(circuit.expirationDate) ||
-											isExpirationSoon(circuit.expirationDate)
-												? "600"
-												: "500",
+												? theme === "light" ? "#92400e" : "#fcd34d"
+												: theme === "light" ? "#1e40af" : "#93c5fd",
+										fontWeight: "600",
 									}}
 								>
 									{circuit.expirationDate || "N/A"}
@@ -741,10 +740,11 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 											style={{
 												marginLeft: "8px",
 												fontSize: "11px",
-												color: "#7f1d1d",
+												fontWeight: "700",
+												color: theme === "light" ? "#7f1d1d" : "#fca5a5",
 											}}
 										>
-											(Expired)
+											⚠ EXPIRED
 										</span>
 									)}
 									{!isExpired(circuit.expirationDate) &&
@@ -753,10 +753,11 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 												style={{
 													marginLeft: "8px",
 													fontSize: "11px",
-													color: "#92400e",
+													fontWeight: "700",
+													color: theme === "light" ? "#92400e" : "#fcd34d",
 												}}
 											>
-												(Expires soon)
+												⏰ Expires soon
 											</span>
 										)}
 								</div>
@@ -1533,25 +1534,21 @@ const EditCircuitModal = ({
 									style={{
 										...inputStyle,
 										backgroundColor: isExpired(circuit.expirationDate)
-											? "#fee2e2"
+											? theme === "light" ? "#fee2e2" : "#4a1010"
 											: isExpirationSoon(circuit.expirationDate)
-												? "#fef3c7"
-												: "#ffffff",
+												? theme === "light" ? "#fef3c7" : "#3d2800"
+												: theme === "light" ? "#eff6ff" : "#1e3a5f",
 										borderColor: isExpired(circuit.expirationDate)
-											? "#dc2626"
+											? theme === "light" ? "#dc2626" : "#ef4444"
 											: isExpirationSoon(circuit.expirationDate)
-												? "#f59e0b"
-												: "#d1d5db",
+												? theme === "light" ? "#f59e0b" : "#fbbf24"
+												: theme === "light" ? "#93c5fd" : "#2563eb",
 										color: isExpired(circuit.expirationDate)
-											? "#7f1d1d"
+											? theme === "light" ? "#7f1d1d" : "#fca5a5"
 											: isExpirationSoon(circuit.expirationDate)
-												? "#92400e"
-												: "#1f2937",
-										fontWeight:
-											isExpired(circuit.expirationDate) ||
-											isExpirationSoon(circuit.expirationDate)
-												? "600"
-												: "400",
+												? theme === "light" ? "#92400e" : "#fcd34d"
+												: theme === "light" ? "#1e40af" : "#93c5fd",
+										fontWeight: "600",
 									}}
 									required
 								/>
@@ -1652,11 +1649,11 @@ const EditCircuitModal = ({
 					{circuit.hasTower && (
 						<div
 							style={{
-								backgroundColor: "var(--color-surface-light)",
+								backgroundColor: theme === "light" ? "#fffbeb" : "#1a1000",
 								padding: "20px",
 								borderRadius: "8px",
 								marginBottom: "20px",
-								border: "2px solid #f59e0b",
+								border: `2px solid ${theme === "light" ? "#f59e0b" : "#fbbf24"}`,
 							}}
 						>
 							<h3
@@ -1665,7 +1662,7 @@ const EditCircuitModal = ({
 									marginBottom: "16px",
 									fontSize: "15px",
 									fontWeight: "700",
-									color: "#92400e",
+									color: theme === "light" ? "#92400e" : "#fcd34d",
 									textTransform: "uppercase",
 									letterSpacing: "0.5px",
 									display: "flex",
@@ -1712,9 +1709,8 @@ const EditCircuitModal = ({
 										key={towerNum}
 										style={{
 											marginBottom: "16px",
-											borderLeft: "4px solid #f59e0b",
-											paddingLeft: "16px",
-											backgroundColor: "#ffffff",
+											borderLeft: `4px solid ${theme === "light" ? "#f59e0b" : "#fbbf24"}`,
+											backgroundColor: theme === "light" ? "#ffffff" : "#2a1a00",
 											padding: "16px",
 											borderRadius: "6px",
 										}}
@@ -1723,7 +1719,7 @@ const EditCircuitModal = ({
 											style={{
 												marginTop: 0,
 												marginBottom: "12px",
-												color: "#92400e",
+												color: theme === "light" ? "#92400e" : "#fcd34d",
 												fontSize: "13px",
 												fontWeight: "600",
 											}}
@@ -1895,11 +1891,11 @@ const EditCircuitModal = ({
 					{circuit.hasAggregator && (
 						<div
 							style={{
-								backgroundColor: "#f0fdf4",
+								backgroundColor: theme === "light" ? "#f0fdf4" : "#0a1f0d",
 								padding: "20px",
 								borderRadius: "8px",
 								marginBottom: "20px",
-								border: "2px solid #22c55e",
+								border: `2px solid ${theme === "light" ? "#22c55e" : "#16a34a"}`,
 							}}
 						>
 							<h3
@@ -1908,7 +1904,7 @@ const EditCircuitModal = ({
 									marginBottom: "16px",
 									fontSize: "15px",
 									fontWeight: "700",
-									color: "#16a34a",
+									color: theme === "light" ? "#16a34a" : "#4ade80",
 									textTransform: "uppercase",
 									letterSpacing: "0.5px",
 									display: "flex",
@@ -1991,7 +1987,7 @@ const EditCircuitModal = ({
 							justifyContent: "flex-end",
 							gap: "12px",
 							paddingTop: "16px",
-							borderTop: "1px solid #e5e7eb",
+							borderTop: `1px solid ${themedBorderColor}`,
 						}}
 					>
 						<button
