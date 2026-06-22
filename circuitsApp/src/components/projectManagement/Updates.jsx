@@ -5,6 +5,17 @@ import { getUpdates, createUpdate, deleteUpdate, deleteUpdateImage } from "../..
 
 const todayString = () => new Date().toISOString().slice(0, 10);
 
+const formatDisplayDate = (dateString) => {
+	if (!dateString) return "N/A";
+	const [year, month, day] = String(dateString).split("-").map(Number);
+	if ([year, month, day].some(Number.isNaN)) return "N/A";
+	return new Date(year, month - 1, day).toLocaleDateString("en-US", {
+		year: "numeric",
+		month: "short",
+		day: "numeric",
+	});
+};
+
 function Updates({ siteId, canEdit }) {
 	const { token } = useAuth();
 	const { theme } = useTheme();
@@ -174,7 +185,7 @@ function Updates({ siteId, canEdit }) {
 				updates.map((update) => (
 					<div key={update.id} style={cardStyle}>
 						<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--spacing-md)" }}>
-							<div style={{ fontWeight: "700", fontSize: "var(--font-size-lg)" }}>{update.updateDate}</div>
+							<div style={{ fontWeight: "700", fontSize: "var(--font-size-lg)" }}>{formatDisplayDate(update.updateDate)}</div>
 							{canEdit && (
 								<button
 									onClick={() => handleDeleteUpdate(update.id)}

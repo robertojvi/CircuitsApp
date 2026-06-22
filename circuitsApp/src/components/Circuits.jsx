@@ -3,6 +3,17 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 
+const formatDisplayDate = (dateString) => {
+	if (!dateString) return "N/A";
+	const [year, month, day] = String(dateString).split("-").map(Number);
+	if ([year, month, day].some(Number.isNaN)) return "N/A";
+	return new Date(year, month - 1, day).toLocaleDateString("en-US", {
+		year: "numeric",
+		month: "short",
+		day: "numeric",
+	});
+};
+
 // Helper function to check if a date is within the next 6 months
 const isExpirationSoon = (dateString) => {
 	if (!dateString) return false;
@@ -667,13 +678,13 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 							<div>
 								<span style={detailLabelStyle}>Installation Date</span>
 								<div style={detailValueStyle}>
-									{circuit.installationDate || "N/A"}
+									{formatDisplayDate(circuit.installationDate)}
 								</div>
 							</div>
 							<div>
 								<span style={detailLabelStyle}>Contract Date</span>
 								<div style={detailValueStyle}>
-									{circuit.circuitContractDate || "N/A"}
+									{formatDisplayDate(circuit.circuitContractDate)}
 								</div>
 							</div>
 							<div>
@@ -734,7 +745,7 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 										fontWeight: "600",
 									}}
 								>
-									{circuit.expirationDate || "N/A"}
+									{formatDisplayDate(circuit.expirationDate)}
 									{isExpired(circuit.expirationDate) && (
 										<span
 											style={{
@@ -884,7 +895,7 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 										color: theme === "light" ? "#1e40af" : "#93c5fd",
 									}}
 								>
-									{circuit.renewalNoticeDate || "N/A"}
+									{formatDisplayDate(circuit.renewalNoticeDate)}
 								</div>
 							</div>
 						</div>
@@ -1069,13 +1080,13 @@ const CircuitDetailModal = ({ circuit, onClose, user }) => {
 											<div>
 												<span style={detailLabelStyle}>Installation Date</span>
 												<div style={detailValueStyle}>
-													{circuit[`towerInstallDate${towerNum}`] || "N/A"}
+													{formatDisplayDate(circuit[`towerInstallDate${towerNum}`])}
 												</div>
 											</div>
 											<div>
 												<span style={detailLabelStyle}>Expiration Date</span>
 												<div style={detailValueStyle}>
-													{circuit[`towerExpirationDate${towerNum}`] || "N/A"}
+													{formatDisplayDate(circuit[`towerExpirationDate${towerNum}`])}
 												</div>
 											</div>
 											{user?.role !== "NOC" && (

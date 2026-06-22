@@ -19,6 +19,17 @@ import ProjectCalendar from "./ProjectCalendar";
 
 const todayString = () => new Date().toISOString().slice(0, 10);
 
+const formatDisplayDate = (dateString) => {
+	if (!dateString) return "N/A";
+	const [year, month, day] = String(dateString).split("-").map(Number);
+	if ([year, month, day].some(Number.isNaN)) return "N/A";
+	return new Date(year, month - 1, day).toLocaleDateString("en-US", {
+		year: "numeric",
+		month: "short",
+		day: "numeric",
+	});
+};
+
 function Timeline({ siteId, projectData, canEdit, onRefresh }) {
 	const { token } = useAuth();
 	const { theme } = useTheme();
@@ -279,7 +290,7 @@ function Timeline({ siteId, projectData, canEdit, onRefresh }) {
 								Project Start Date
 							</div>
 							<div style={{ fontWeight: "700", fontSize: "var(--font-size-lg)" }}>
-								{startDate || "N/A"}
+								{formatDisplayDate(startDate)}
 							</div>
 						</div>
 						<div>
@@ -295,7 +306,7 @@ function Timeline({ siteId, projectData, canEdit, onRefresh }) {
 								Original Completion Date
 							</div>
 							<div style={{ fontWeight: "700", fontSize: "var(--font-size-lg)" }}>
-								{originalCompletionDate || "N/A"}
+								{formatDisplayDate(originalCompletionDate)}
 							</div>
 						</div>
 						<div>
@@ -303,7 +314,7 @@ function Timeline({ siteId, projectData, canEdit, onRefresh }) {
 								Current Completion Date
 							</div>
 							<div style={{ fontWeight: "700", fontSize: "var(--font-size-lg)", color: "var(--color-primary)" }}>
-								{currentCompletionDate || "N/A"}
+								{formatDisplayDate(currentCompletionDate)}
 							</div>
 						</div>
 						<div>
@@ -311,7 +322,7 @@ function Timeline({ siteId, projectData, canEdit, onRefresh }) {
 								Soft-Launch
 							</div>
 							<div style={{ fontWeight: "700", fontSize: "var(--font-size-lg)", color: "var(--color-soft-launch, #d97706)" }}>
-								{softLaunchRange ? `${softLaunchRange.start} - ${softLaunchRange.end}` : "N/A"}
+								{softLaunchRange ? `${formatDisplayDate(softLaunchRange.start)} - ${formatDisplayDate(softLaunchRange.end)}` : "N/A"}
 							</div>
 						</div>
 						<div>
@@ -319,7 +330,7 @@ function Timeline({ siteId, projectData, canEdit, onRefresh }) {
 								Go-Live
 							</div>
 							<div style={{ fontWeight: "700", fontSize: "var(--font-size-lg)", color: "var(--color-go-live, #7c3aed)" }}>
-								{goLiveRange ? `${goLiveRange.start} - ${goLiveRange.end}` : "N/A"}
+								{goLiveRange ? `${formatDisplayDate(goLiveRange.start)} - ${formatDisplayDate(goLiveRange.end)}` : "N/A"}
 							</div>
 						</div>
 					</div>
@@ -402,7 +413,7 @@ function Timeline({ siteId, projectData, canEdit, onRefresh }) {
 											borderBottom: `1px solid ${theme === "light" ? "#dee2e6" : "var(--color-border)"}`,
 										}}
 									>
-										<td style={tableCellStyle}>{delay.dateRecorded}</td>
+										<td style={tableCellStyle}>{formatDisplayDate(delay.dateRecorded)}</td>
 										<td style={tableCellStyle}>{delay.numberOfDays}</td>
 										<td style={tableCellStyle}>{delay.reason}</td>
 										{canEdit && (
